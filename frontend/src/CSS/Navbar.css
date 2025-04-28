@@ -7,9 +7,62 @@
     height: 100px;
     width: 100%;
     background-color: #0265A9;
+    
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-box a{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    font-size: 17px;
+    color: whitesmoke;
+    text-decoration: none;
+
+    margin-right: 55px;
+}
+
+.navbar-links{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .tpa-logo img{
     height: 100px;
+    width: 175px;
     padding-left: 20px;
+}
+
+.tpa-logo img:hover{
+    cursor: pointer;
+}
+
+.tpa-circle-logo{
+    
+    display: inline-block;
+
+}
+
+.tpa-circle-logo img{
+    height: 50px;
+    margin-right: 25px;
+    display: block;
+}
+
+
+
+.spinning {
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin{
+    0% {transform: rotate(0deg); opacity: 75%;}
+    50% {transform: rotate(180deg); opacity: 25%;}
+    100% {transform: rotate(360deg); opacity: 100%;}
+
 }
