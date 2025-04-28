@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-box{
+    height: 100px;
+    width: 100%;
+    background-color: #0265A9;
+}
+
+.tpa-logo img{
+    height: 100px;
+    padding-left: 20px;
+}
