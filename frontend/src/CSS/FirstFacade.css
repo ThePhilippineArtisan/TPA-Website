@@ -1,0 +1,123 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Dark-BG-First-Facade{
+    margin-top: 10px;
+    /* AUTO GROWS */
+    background-color: #23343F;
+
+    border-radius: 10px;
+
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.DBFF-Left-Side{
+
+}
+
+.DBFF-Right-Side{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.DBFF-Headline h1{
+    padding: 20px;
+    padding-top: 30px;
+    padding-left: 35px;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    font-weight: bolder;
+    color: white;
+
+}
+
+.DBFF-Top-Paragraph h4{
+    font-size: 23px;
+    font-weight: 400;
+    padding: 25px;
+    
+    
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: #D3CFCF;
+
+    align-items: left;
+    flex-wrap: wrap;
+}
+
+.DBFF-Top-Paragraph span{
+    padding-bottom: 30px;
+
+}
+
+.DBFF-Bottom-Paragraph h4{
+    font-size: 23px;
+    font-weight: 400;
+    padding: 25px;
+
+    padding-bottom: 10em;
+    
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: #D3CFCF;
+
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.DBFF-Bottom-Paragraph span{
+    padding-top: 30px;
+
+}
+
+.Small-Prev-Image-Showcase{
+
+    width: 50em;
+    margin-left: 50px;
+    margin-top: 75px;
+    margin: 20px;
+    padding-top: 5em;
+    padding-bottom: 5em;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+
+}
+
+
+.Small-Prev-Image-Showcase img{
+    height: 150px;
+}
+
+.Small-Prev-Image-Showcase h4{
+    color: #D3CFCF;
+    padding-left: 20px;    
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+
+}
+
+.Small-Prev-Image-Showcase span{
+    padding-bottom: 30px;
+}
+
+.First-Facade-Image-Showcase{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.First-Facade-Image-Showcase img{
+    height: 650px;
+    margin-bottom: 15em;
+}
