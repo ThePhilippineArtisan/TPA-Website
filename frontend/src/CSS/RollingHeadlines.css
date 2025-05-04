@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Rolling-Headline {
+
+    background-color: #DDC9C9;
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+
+}
+
+.Rolling-Headline p {
+    padding-left: 10px;
+    padding-right: 10px;
+}

@@ -8,7 +8,7 @@
     /* AUTO GROWS */
     background-color: #23343F;
 
-    border-radius: 10px;
+    /*    border-radius: 10px; */
 
     
     display: flex;
@@ -20,11 +20,26 @@
 
 }
 
+#Kahong-Kalyo{
+
+
+}
+
 .DBFF-Right-Side{
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    align-items: center;
+
+    margin-left: 3em;
+    margin-top: 2em;
+
+
+}
+
+.DBFF-Right-Side img{
+    
 }
 
 .DBFF-Headline h1{
@@ -39,7 +54,7 @@
 }
 
 .DBFF-Top-Paragraph h4{
-    font-size: 23px;
+    font-size: 1.3em;
     font-weight: 400;
     padding: 25px;
     
@@ -57,7 +72,7 @@
 }
 
 .DBFF-Bottom-Paragraph h4{
-    font-size: 23px;
+    font-size: 1.3em;
     font-weight: 400;
     padding: 25px;
 
@@ -78,16 +93,21 @@
 
 .Small-Prev-Image-Showcase{
 
+    font-size: 0.8em;
     width: 50em;
     margin-left: 50px;
     margin-top: 75px;
     margin: 20px;
     padding-top: 5em;
     padding-bottom: 5em;
+    padding-left: 1em;
 
     align-items: center;
     display: flex;
     flex-direction: row;
+
+    
+
 
 }
 

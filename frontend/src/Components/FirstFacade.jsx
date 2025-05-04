@@ -65,7 +65,7 @@ const FirstFacade = () => {
                 </div>
                 <div className = "DBFF-Right-Side">
                     <div className = "First-Facade-Image-Showcase">
-                            <img
+                            <img id = "Kahong-Kalyo"
                                 src = {KahonKalyo}
 
                             />
