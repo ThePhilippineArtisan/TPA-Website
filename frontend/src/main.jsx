@@ -8,6 +8,7 @@ import NavbarComponent from './Components/NavbarComponent.jsx'
 import FirstFacade from './Components/FirstFacade.jsx'
 import SecondFacade from './Components/SecondFacade.jsx'
 import RollingHeadlines from './Components/RollingHeadlines.jsx'
+import Footer from './Components/Footer.jsx'
 
 // This is the "HTML" you see when you click [Inspect Element]
 
@@ -19,6 +20,6 @@ createRoot(document.getElementById('root')).render(
     <FirstFacade />
     <RollingHeadlines />
     <SecondFacade />
-    <App />
+    <Footer/>
   </StrictMode>,
 )

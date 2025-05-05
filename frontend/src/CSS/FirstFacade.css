@@ -4,7 +4,7 @@
 }
 
 .Dark-BG-First-Facade{
-    margin-top: 10px;
+
     /* AUTO GROWS */
     background-color: #23343F;
 
@@ -13,15 +13,11 @@
     
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.DBFF-Left-Side{
 
 }
 
 #Kahong-Kalyo{
-
+    height: 40em;
 
 }
 
@@ -35,12 +31,10 @@
     margin-left: 3em;
     margin-top: 2em;
 
+    padding-left: 3em;
 
 }
 
-.DBFF-Right-Side img{
-    
-}
 
 .DBFF-Headline h1{
     padding: 20px;
@@ -57,7 +51,6 @@
     font-size: 1.3em;
     font-weight: 400;
     padding: 25px;
-    
     
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: #D3CFCF;
@@ -106,9 +99,6 @@
     display: flex;
     flex-direction: row;
 
-    
-
-
 }
 
 
@@ -138,6 +128,6 @@
 }
 
 .First-Facade-Image-Showcase img{
-    height: 650px;
+    height: 5rem;
     margin-bottom: 15em;
 }
