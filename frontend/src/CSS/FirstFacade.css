@@ -13,11 +13,12 @@
     
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 
 }
 
 #Kahong-Kalyo{
-    height: 40em;
+    height: 50rem;
 
 }
 
@@ -25,7 +26,6 @@
     width: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     align-items: center;
 
     margin-left: 3em;
@@ -33,6 +33,28 @@
 
     padding-left: 3em;
 
+}
+
+.Navigate-Carousel{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+
+
+}
+
+.Navigate-Carousel button{
+
+    height: 15px;
+    width: 100px;
+
+    padding: 10px;
+
+    margin: 40px;
 }
 
 
@@ -48,7 +70,7 @@
 }
 
 .DBFF-Top-Paragraph h4{
-    font-size: 1.3em;
+    font-size: 1.5em;
     font-weight: 400;
     padding: 25px;
     
@@ -59,13 +81,30 @@
     flex-wrap: wrap;
 }
 
-.DBFF-Top-Paragraph span{
+.DBFF-Top-Paragraph1 span{
+    padding-bottom: 30px;
+
+}
+
+.DBFF-Top-Paragraph1 h4{
+    font-size: 1.75em;
+    font-weight: 400;
+    padding: 25px;
+    
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: #D3CFCF;
+
+    align-items: left;
+    flex-wrap: wrap;
+}
+
+.DBFF-Top-Paragraph1 span{
     padding-bottom: 30px;
 
 }
 
 .DBFF-Bottom-Paragraph h4{
-    font-size: 1.3em;
+    font-size: 1.5em;
     font-weight: 400;
     padding: 25px;
 
@@ -86,7 +125,7 @@
 
 .Small-Prev-Image-Showcase{
 
-    font-size: 0.8em;
+    font-size: 1em;
     width: 50em;
     margin-left: 50px;
     margin-top: 75px;
@@ -103,7 +142,7 @@
 
 
 .Small-Prev-Image-Showcase img{
-    height: 150px;
+    height: 200px;
 }
 
 .Small-Prev-Image-Showcase h4{
@@ -119,15 +158,16 @@
 
 .First-Facade-Image-Showcase{
     width: 100%;
+    height: 100%;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-direction: row;
     align-items: center;
     align-content: center;
 }
 
 .First-Facade-Image-Showcase img{
-    height: 5rem;
-    margin-bottom: 15em;
+    height: 100em;
+
 }
