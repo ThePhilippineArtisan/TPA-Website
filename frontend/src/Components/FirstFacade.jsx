@@ -9,15 +9,20 @@ const slides = [
     { 
         
         id: 1,
+            header: "The Philippine Artisan",
+            src: TPACircleLogo,
+            text1: "The 81-year old official student publication of Technological University of the Philippines Manila.",
+            text3: "Serving the academe and the country since 1944.",
 
-        id: 1, 
-            src: TPACircleLogo, 
+        id: 2, 
+            header: "KALYO: KAHON — '24 - 25",
+            src: KahonKalyo, 
             text1: "Ang kahon ay laberinto ng mga lihim at inaagiw na alaala.",
-            text2: "Sa mga sulok ng kuwadrado, matatagpuan ang katotohanan na pilit itinatago."},
+            text2: "Sa mga sulok ng kuwadrado, matatagpuan ang katotohanan na pilit itinatago.",
+            text3: "Ngunit kung tatalikuran, bawat hakbang, bawat yapak ay katumbas ng kartuturan ng mundo ang papasanin",
+            text4: "Mapalinlang ang taklob, sapagkat pagbukas nito'y maaring magbalik ng bigat o magpalaya ng diwa."},
 
 
-
-    { id: 2, src: KahonKalyo}
 ]
 
 
@@ -29,7 +34,7 @@ const FirstFacade = () => {
 
     const nextSlide = () => {
         const newIndex = (activeIndex + 1) % slides.length;
-        setHistory((prev) => [slides[activeIndex], ...prev].slice(0,1));
+        setHistory((prev) => [slides[activeIndex], ...prev].slice(0,0));
         setActiveIndex(newIndex);
     }
 
@@ -38,8 +43,16 @@ const FirstFacade = () => {
             <div className = "Dark-BG-First-Facade">
 
                 <div className = "DBFF-Left-Side">
+
                     <div className = "DBFF-Headline">
-                        <h1>KALYO: KAHON — ‘24-‘25</h1>
+                        {history.map((slide, index) => 
+                            (
+                                <div key = {slide.id} className = "DBFF-Headline">
+                                    <h1>
+                                        {slide.header}
+                                    </h1> 
+                                </div>
+                            ))}
                     </div>
 
                     <div className = "DBFF-Top-Paragraph">
@@ -58,7 +71,6 @@ const FirstFacade = () => {
                                     <br></br>
                                     </span>
                                 </h4>
-
                             </div>
                         ))}
                     </div>
@@ -88,20 +100,23 @@ const FirstFacade = () => {
 
 
                     <div className = "DBFF-Bottom-Paragraph">
-                        <h4>
-                            <span> 
-                                Ngunit kung tatalikuran, bawat hakbang,
-                                bawat yapak ay katumbas ng katuturan <br></br>
-                                ng mundo ang papasanin.<br></br>
-                            </span>
-
-                            <br></br>
-                        
-                            <span> 
-                                Sa mga sulok ng kuwadrado, matatagpuan ang <br></br>
-                                katotohanan na pilit itinatago. <br></br> 
-                            </span>
-                        </h4>
+                        {history.map((slide, index) =>(
+                            <div key = {slide.id} className = "DBFF-Top-Paragraph1">
+                                <h4>
+                                    <span>
+                                        {slide.text3}
+                                    </span>
+                                    <br></br>
+                                    
+                                    <br></br>
+                                    <span>
+                                        {slide.text4}
+                                    <br></br>
+                                    <br></br>
+                                    </span>
+                                </h4>
+                            </div>
+                        ))}
                     </div>
                 </div>
 

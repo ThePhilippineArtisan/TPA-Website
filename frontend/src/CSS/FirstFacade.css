@@ -22,8 +22,12 @@
 
 }
 
+.DBFF-Left-Side{
+    width: 40%;
+}
+
 .DBFF-Right-Side{
-    width: 50%;
+    width: 55%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,10 +53,11 @@
 
 .Navigate-Carousel button{
 
-    height: 15px;
+    height: 20px;
     width: 100px;
 
     padding: 10px;
+    border-radius: 30px;
 
     margin: 40px;
 }

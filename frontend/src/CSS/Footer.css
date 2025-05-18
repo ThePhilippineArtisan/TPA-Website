@@ -8,10 +8,16 @@
     height: 150px;
     background-color: #0265A9;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .Left-Footer img{
     height: 100px;
     padding: 20px;
+    display: flex;
+
+}
+
+.Left-Footer img:hover{
+    cursor: pointer;
 }

@@ -8,8 +8,9 @@ const Footer = () => {
             <div className = "Left-Footer">
                 <img 
                 src = {TPALOGO}
-                
                 />
+
+                
             </div>
 
             <div className = "Right-Footer">

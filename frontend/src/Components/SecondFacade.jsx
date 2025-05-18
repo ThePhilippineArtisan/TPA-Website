@@ -21,16 +21,16 @@ const SecondFacade = () => {
 
                     <div className = "FirstColumn">
                         <div className = "Box-Card">
-                            
                         </div>
+                        1st
                     </div>
 
                     <div className = "SecondColumn">
-                        
+                        2nd
                     </div>
 
                     <div className = "ThirdColumn">
-                        
+                        3rd
                     </div>
 
                 </div>
