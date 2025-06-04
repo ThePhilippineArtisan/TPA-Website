@@ -12,15 +12,16 @@ const slides = [
             header: "The Philippine Artisan",
             src: TPACircleLogo,
             text1: "The 81-year old official student publication of Technological University of the Philippines Manila.",
-            text3: "Serving the academe and the country since 1944.",
-
+            text2: "Serving the academe and the country since 1944.",
+        },{
         id: 2, 
             header: "KALYO: KAHON — '24 - 25",
             src: KahonKalyo, 
             text1: "Ang kahon ay laberinto ng mga lihim at inaagiw na alaala.",
             text2: "Sa mga sulok ng kuwadrado, matatagpuan ang katotohanan na pilit itinatago.",
             text3: "Ngunit kung tatalikuran, bawat hakbang, bawat yapak ay katumbas ng kartuturan ng mundo ang papasanin",
-            text4: "Mapalinlang ang taklob, sapagkat pagbukas nito'y maaring magbalik ng bigat o magpalaya ng diwa."},
+            text4: "Mapalinlang ang taklob, sapagkat pagbukas nito'y maaring magbalik ng bigat o magpalaya ng diwa."
+        }
 
 
 ]
@@ -28,15 +29,47 @@ const slides = [
 
 
 const FirstFacade = () => {
+    
+    const navigableSlides = slides.slice(1); // skips slide[id = 1]
 
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [history, setHistory] = useState([slides[0]]);
+    const [activeIndex, setActiveIndex] = useState(0); // Start with Slide ID 2 for Facade
+    const [previewIndex, setPreviewIndex] = useState(0);
+    const transitionDuration = 300; //in milliseconds
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+
 
     const nextSlide = () => {
-        const newIndex = (activeIndex + 1) % slides.length;
-        setHistory((prev) => [slides[activeIndex], ...prev].slice(0,0));
-        setActiveIndex(newIndex);
+        if(isTransitioning)
+            return;
+        setIsTransitioning(true);
+        setTimeout(() => {
+            const newIndex = (activeIndex + 1) % navigableSlides.length;
+            setPreviewIndex(activeIndex); // change activeindex to preview
+            setActiveIndex(newIndex) // set active index to next index
+            setIsTransitioning(false);
+
+                // setHistory((prev) => [slides[activeIndex], ...prev].slice(0,0));
+                // setActiveIndex(newIndex === 0 ? 1 : newIndex);
+
+        }, transitionDuration);
+            // Documentation: 
     }
+
+    const prevSlide = () => {
+        if(isTransitioning)
+            return;
+        setIsTransitioning(true);
+        setTimeout(() => {
+            const newIndex = (activeIndex - 1 + navigableSlides.length) % navigableSlides.length;
+            setPreviewIndex(activeIndex);
+            setActiveIndex(newIndex)
+            setIsTransitioning(false);
+        }, transitionDuration)
+    }
+
+    const mainSlide = navigableSlides[activeIndex];
+    const previewSlide = slides[0]; // Always show TPA Slides
 
     return(
         <div className = "Literary-Showcase-First-Facade">
@@ -45,96 +78,52 @@ const FirstFacade = () => {
                 <div className = "DBFF-Left-Side">
 
                     <div className = "DBFF-Headline">
-                        {history.map((slide, index) => 
-                            (
-                                <div key = {slide.id} className = "DBFF-Headline">
-                                    <h1>
-                                        {slide.header}
-                                    </h1> 
-                                </div>
-                            ))}
+                        <h1>{mainSlide.header}</h1>
                     </div>
 
                     <div className = "DBFF-Top-Paragraph">
-                        {history.map((slide, index) =>(
-                            <div key = {slide.id} className = "DBFF-Top-Paragraph1">
-                                <h4>
-                                    <span>
-                                        {slide.text1}
-                                    </span>
-                                    <br></br>
-                                    
-                                    <br></br>
-                                    <span>
-                                        {slide.text2}
-                                    <br></br>
-                                    <br></br>
-                                    </span>
-                                </h4>
-                            </div>
-                        ))}
+                        <h4>
+                            <span>{mainSlide.text1}</span>
+                            <br /> <br />
+                            <span>{mainSlide.text2}</span>
+                        </h4>
                     </div>
 
                         {/* BEGINNING OF SMALL PREV IMAGE SHOWCASE*/}
-
-                    <div className = "Small-Prev-Image-Showcase">
-                        {history.map((slide, index) => 
-                            (
-                            <img
-                                key = {slide.id}
-                                src = {slide.src}
-                                className = "history-slide"
-
-                            /> 
-                            ))}
-
+                    <div className={`Small-Prev-Image-Showcase ${isTransitioning ? 'transitioning' : ''}`}>
+                        <img src={previewSlide.src} className="history-slide" />
+                        <h4>
+                            <span>{previewSlide.text1}</span>
+                            <br /><br />
+                            <span>{previewSlide.text2}</span>
+                        </h4>
                         {/* END OF SMALL PREV IMAGE SHOWCASE*/}
 
-                            <h4>
-                                <span>The 81-year old official student publication of Technological University of the Philippines Manila.</span>
-                                <br></br>                                <br></br>
-                                <span>Serving the academe and the country since 1944.</span>
-                            </h4>
                     </div>
 
 
 
                     <div className = "DBFF-Bottom-Paragraph">
-                        {history.map((slide, index) =>(
-                            <div key = {slide.id} className = "DBFF-Top-Paragraph1">
-                                <h4>
-                                    <span>
-                                        {slide.text3}
-                                    </span>
-                                    <br></br>
-                                    
-                                    <br></br>
-                                    <span>
-                                        {slide.text4}
-                                    <br></br>
-                                    <br></br>
-                                    </span>
-                                </h4>
-                            </div>
-                        ))}
+                    <h4>
+                        <span>{mainSlide.text3}</span>
+                        <br /> <br />
+                        <span>{mainSlide.text4}</span>
+                    </h4>
                     </div>
                 </div>
 
+
+
                 <div className = "DBFF-Right-Side">
-                    <div className = "First-Facade-Image-Showcase">
-                            <img id = "Kahong-Kalyo"
-                                src = {slides[activeIndex].src}
-                                
-                            />
-                        </div>
+                    <div className={`First-Facade-Image-Showcase ${isTransitioning ? 'transitioning' : ''}`}>
+                        <img id="Kahong-Kalyo" src={mainSlide.src} />
+                    </div>
 
                     <div className = "Navigate-Carousel">    
                         <button
-                            onClick = {nextSlide}>
-                        </button>
+                            onClick = {nextSlide}> ◀ </button>
                         <button
-                            onClick = {nextSlide}>
-                        </button>
+                            onClick = {prevSlide}> ▶ </button>
                     </div>
                 </div>
 
