@@ -4,20 +4,57 @@
 }
 
 .Footer{
-
     height: 150px;
     background-color: #0265A9;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: white;
+}
+
+.Left-Footer{
+    display: flex;
+    align-items: center;
 }
 
 .Left-Footer img{
     height: 100px;
     padding: 20px;
-    display: flex;
-
 }
 
 .Left-Footer img:hover{
     cursor: pointer;
+    transition: 0.2s;
+    transform: scale(1.2);
 }
+
+.Right-Footer{
+    padding: 10px;
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.Right-Footer p{
+    padding-bottom: 20px;
+    padding-left: 40px;
+}
+
+.Right-Footer-Links{
+    padding-right: 10px;
+}
+
+.Right-Footer-Links img{
+    padding: 5px;
+    
+    height: 45px;
+    cursor: pointer;
+}
+
+.Right-Footer-Links img:hover{
+    transition: 0.2s;
+    transform: scale(1.2);
+}
+

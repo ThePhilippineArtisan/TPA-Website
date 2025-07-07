@@ -4,20 +4,44 @@
 
 }
 
-.RollingHeadline {
-    background-color: #D9D9D9;
-}
-
 .Rolling-Headline {
 
     background-color: #DDC9C9;
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+
 
     margin-top: 2px;
     margin-bottom: 2px;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+
+    display: -webkit-box;                
+    -webkit-box-orient: vertical;        
+    -webkit-line-clamp: 1;               
+    overflow: hidden;                    
+    text-overflow: ellipsis;           
+
 }
 
-.Rolling-Headline p {
+.Rolling-Headline a {
     padding-left: 10px;
     padding-right: 10px;
+
+    font-size: 15px;
+
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+    color: black;
+}
+
+.Rolling-Headline img{
+    padding-right: 10px;    
+    padding-left: 10px;
+    height: 17px;
 }

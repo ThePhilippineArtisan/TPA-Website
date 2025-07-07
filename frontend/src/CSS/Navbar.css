@@ -36,6 +36,12 @@
     align-items: center;
 }
 
+.navbar-links a:hover{
+    
+    transition: 0.2s;
+    transform: scale(1.2);
+}
+
 .tpa-logo img{
     height: 100px;
     width: 175px;
@@ -43,25 +49,29 @@
 }
 
 .tpa-logo img:hover{
+    transition: 0.2s;
+    transform: scale(1.2);
     cursor: pointer;
 }
 
 .tpa-circle-logo{
-    
     display: inline-block;
 
 }
 
 .tpa-circle-logo img{
-    height: 50px;
+    height: 70px;
     margin-right: 25px;
     display: block;
 }
 
 .tpa-circle-logo:hover{
+    transition: 0.2s;
+    transform: scale(1.2);
     cursor:pointer;
 }
 
+/*
 
 .spinning {
     animation: spin 0.5s linear infinite;
@@ -73,3 +83,5 @@
     100% {transform: rotate(360deg); opacity: 100%;}
 
 }
+
+*/

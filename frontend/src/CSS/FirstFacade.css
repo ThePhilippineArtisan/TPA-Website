@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding: 0;
@@ -85,24 +86,7 @@
     flex-wrap: wrap;
 }
 
-.DBFF-Top-Paragraph1 span{
-    padding-bottom: 30px;
-
-}
-
-.DBFF-Top-Paragraph1 h4{
-    font-size: 1.5em;
-    font-weight: 400;
-    padding: 25px;
-    
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    color: #D3CFCF;
-
-    align-items: left;
-    flex-wrap: wrap;
-}
-
-.DBFF-Top-Paragraph1 span{
+.DBFF-Top-Paragraph span{
     padding-bottom: 30px;
 
 }

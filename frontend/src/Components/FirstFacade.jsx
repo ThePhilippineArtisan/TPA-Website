@@ -1,9 +1,24 @@
 import React, {useState} from 'react';
 
-import KahonKalyo from "/KahonKalyo.png";
-import TPACircleLogo from "/TPACircleLogo.png";
+// import KahonKalyo from "/KahonKalyo.png";
+// import TPACircleLogo from "/TPACircleLogo.png";
 
 import "../CSS/FirstFacade.css"
+
+const FirstFacade = () => {
+    return(
+        <div className = "Literary-Showcase-First-Facade">
+                <div className = "Dark-BG-FirstFacade">
+                    
+                    
+                </div>
+        </div>
+    )
+}
+
+export default FirstFacade;
+
+{/*
 
 const slides = [
     { 
@@ -26,10 +41,8 @@ const slides = [
 
 ]
 
-
-
 const FirstFacade = () => {
-    
+
     const navigableSlides = slides.slice(1); // skips slide[id = 1]
 
     const [activeIndex, setActiveIndex] = useState(0); // Start with Slide ID 2 for Facade
@@ -89,7 +102,8 @@ const FirstFacade = () => {
                         </h4>
                     </div>
 
-                        {/* BEGINNING OF SMALL PREV IMAGE SHOWCASE*/}
+                        // BEGINNING OF SMALL PREV IMAGE SHOWCASE
+
                     <div className={`Small-Prev-Image-Showcase ${isTransitioning ? 'transitioning' : ''}`}>
                         <img src={previewSlide.src} className="history-slide" />
                         <h4>
@@ -97,7 +111,8 @@ const FirstFacade = () => {
                             <br /><br />
                             <span>{previewSlide.text2}</span>
                         </h4>
-                        {/* END OF SMALL PREV IMAGE SHOWCASE*/}
+
+                        // END OF SMALL PREV IMAGE SHOWCASE
 
                     </div>
 
@@ -121,15 +136,18 @@ const FirstFacade = () => {
 
                     <div className = "Navigate-Carousel">    
                         <button
-                            onClick = {nextSlide}> ◀ </button>
+                            onClick = {nextSlide}>  </button>
                         <button
-                            onClick = {prevSlide}> ▶ </button>
+                            onClick = {prevSlide}>  </button>
                     </div>
                 </div>
 
             </div>
         </div>
     )
-}
+    
+} 
 
 export default FirstFacade;
+
+*/}
