@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-// import KahonKalyo from "/KahonKalyo.png";
+import KahonKalyo from "/KahonKalyo.png";
 // import TPACircleLogo from "/TPACircleLogo.png";
 
 import "../CSS/FirstFacade.css"
@@ -8,9 +8,90 @@ import "../CSS/FirstFacade.css"
 const FirstFacade = () => {
     return(
         <div className = "Literary-Showcase-First-Facade">
-                <div className = "Dark-BG-FirstFacade">
+                <div className = "First-BG-First-Facade">
+                    <div className = "Cards">
+                        <div className = "DBFF-Headline">
+                            <h1> KALYO: KAHON — '24 - 25 </h1>
+                            <div className = "DBFF-Top-Paragraph">
+                                <h2> 
+                                    <span> Ang kahon ay laberinto ng mga lihim at inaagiw na alaala. <br /> <br /> </span>
+                                    <span> Sa mga sulok ng kuwadrado, <br /> <br /> </span>
+                                    <span> Matatagpuan ang katotohanan na pilit itinatago. <br /> <br /> </span>
+
+                                    <br /> <br /> <br /> <br /> <br />
+
+                                    <span> Ngunit kung tatalikuran, bawat hakbang, <br /> <br /> </span>
+                                    <span> Bawat yapak ay katumbas ng kartuturan ng mundo ang papasanin <br /> <br /> </span>
+                                    <span> Mapalinlang ang taklob, <br /> <br /> </span>
+                                    <span> Sapagkat pagbukas nito'y maaring magbalik ng bigat o magpalaya ng diwa. <br /> <br /> </span>
+                                </h2> 
+                            </div>
+                        </div>
+
+                        <div className = "Card-Images">
+                            <img src = {KahonKalyo} />
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div className = "Second-BG-First-Facade">
                     
-                    
+                    <div className = "Cards">
+                        <div className = "Card-Images" id = "iframes">
+                            <iframe 
+                                width="1024" height="576" 
+                                src = "https://www.youtube-nocookie.com/embed/IT6crhxDzhI?si=Ql4Y4ntnRlFjWh2m" 
+                                title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
+                                allow = 
+                                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy = "strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+                        
+                        <div className = "DBFF-Headline">
+
+                            <h1> GAWAD TEK R. TISAN — '24 - 25 </h1>
+
+                            <div className = "DBFF-Top-Paragraph">
+                                <h2> 
+                                    <span> Are you carrying a box filled with unexpressed emotions, <br /> <br /> </span>
+                                    <span> or are you the one hidden inside it with unspoken thoughts? <br /> <br /> </span>
+                                    <span> Every story matters, as well as every inspiration. <br /> <br /> </span>
+
+                                    <br /> <br /> <br /> <br /> <br />
+
+                                    <span> The Philippine Artisan invites you to join Gawad Tek 2025, <br /> <br /> </span>
+                                    <span> as you turn your journey into colors and words. <br /> <br /> </span>
+                                    <br /> <br />
+                                    <span> Check out TUPian's artistry shared with us.  <br /> <br /> </span>
+                                    <br /> <br />
+                                    <span> Click here for their works. <br /> <br /> </span>
+                                </h2> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className = "Third-BG-First-Facade">
+                    <div className = "Cards">
+                        <div className = "Card-Images">
+
+                        </div>
+                        
+                        <div className = "DBFF-Headline">
+
+                            <h1> THE PHILIPPINE ARTISAN'S PORTFOLIO </h1>
+
+                            <div className = "DBFF-Top-Paragraph">
+                                <h2> 
+
+                                </h2> 
+                            </div>
+                        </div>
+                    </div>
                 </div>
         </div>
     )

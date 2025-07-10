@@ -4,25 +4,88 @@
     padding: 0;
 }
 
-.Dark-BG-First-Facade{
+.First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
 
     /* AUTO GROWS */
     background-color: #23343F;
 
     /*    border-radius: 10px; */
 
+    padding-top: 24px;
+    padding-bottom: 50px;
+
+    /*
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+    */
+
+}
+
+.Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
+
+    /* AUTO GROWS */
+    background-color: #2a4e66;
+
+    /*    border-radius: 10px; */
+
+    padding-top: 24px;
+    padding-bottom: 50px;
+    padding-right: 100px;
+
+    /*
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+    */
+
+}
+
+.Third-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
+
+    /* AUTO GROWS */
+    background-color: #4b8bb6;
+
+    /*    border-radius: 10px; */
+
+    padding-top: 24px;
+    padding-bottom: 50px;
+    padding-right: 100px;
+
     
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
+    
 
 }
 
-#Kahong-Kalyo{
+.Cards{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* #Kahong-Kalyo{
     height: 47rem;
 
+} */
+
+.Card-Images img{
+    height: 750px;
+
+    padding-top: 75px; 
+    padding-right: 75px;
 }
 
+#iframes{
+    padding-top: 125px;
+    padding-left: 50px;
+    padding-bottom: 125px;
+
+}
+
+/*
 .DBFF-Left-Side{
     width: 40%;
 }
@@ -61,11 +124,11 @@
     border-radius: 30px;
 
 }
-
+*/
 
 .DBFF-Headline h1{
     padding: 20px;
-    padding-top: 30px;
+    padding-top: 175px;
     padding-left: 35px;
 
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
@@ -74,8 +137,7 @@
 
 }
 
-.DBFF-Top-Paragraph h4{
-    font-size: 1em;
+.DBFF-Top-Paragraph h2{
     font-weight: 400;
     padding: 25px;
     

@@ -16,14 +16,14 @@
 
 .SearchBar{
     width: 50em;
-    position: static;
-    bottom: 40rem;
+    position: relative;
+    bottom: 10em;
     transform: translateX(90%);
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 10px;
 
-    border: 1px solid #a8a8a8;
+    border: 3px solid #0265A9;
 
 }
 
@@ -111,6 +111,7 @@
     transition: 0.2s;
     transform: scale(1.02);
     cursor: pointer;
+    border: 2px solid #0265A9;
 }
 
 .Box-Card-Headline{
