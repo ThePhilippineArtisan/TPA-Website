@@ -84,12 +84,6 @@ const SecondFacade = () => {
                         </div>
                     </div>
 
-
-
-
-
-
-
                     <div className = "ThirdColumn">
 
                         <h1> Makata Mondays </h1>

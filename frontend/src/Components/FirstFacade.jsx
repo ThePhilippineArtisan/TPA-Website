@@ -39,9 +39,8 @@ const FirstFacade = () => {
                 <div className = "Second-BG-First-Facade">
                     
                     <div className = "Cards">
-                        <div className = "Card-Images" id = "iframes">
+                        <div className = "Iframe-Wrapper" id = "iframes">
                             <iframe 
-                                width="1024" height="576" 
                                 src = "https://www.youtube-nocookie.com/embed/IT6crhxDzhI?si=Ql4Y4ntnRlFjWh2m" 
                                 title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
                                 allow = 
@@ -49,7 +48,6 @@ const FirstFacade = () => {
                                     referrerpolicy = "strict-origin-when-cross-origin" 
                                 allowfullscreen>
                             </iframe>
-
                         </div>
                         
                         <div className = "DBFF-Headline">
@@ -69,37 +67,9 @@ const FirstFacade = () => {
                                     <br /> <br />
                                     <span> Check out TUPian's artistry shared with us.  <br /> <br /> </span>
                                     <br /> <br />
-                                    <span> Click here for their works. <br /> <br /> </span>
+                                    Click here for their <span> <a href = "#"> works. </a> </span><br /> <br /> 
                                 </h2> 
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className = "Third-BG-First-Facade">
-                        <div className = "DBFF-Third-Headline">
-                            <h1> THE PHILIPPINE ARTISAN'S 2024 — 2025 PORTFOLIO </h1>
-                        </div>
-                    <div id = "Portfolio-Showcase">
-                        <div className = "Image-Showcase">
-                            <img
-                                src = {LampoonCover} 
-                            />
-                            <h2> Lampoon 2025 </h2>                                        
-                        </div>
-
-                        <div className = "Image-Showcase">
-                            <img
-                                src = {LampoonCover} 
-                            />
-                            <h2> Lampoon 2025 </h2>                                        
-                        </div>
-
-                        <div className = "Image-Showcase">
-                            <img
-                                src = {LampoonCover} 
-                            />
-                            <h2> Lampoon 2025 </h2>                                        
                         </div>
                     </div>
                 </div>

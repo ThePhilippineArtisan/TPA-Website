@@ -1,0 +1,67 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Third-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
+
+    /* AUTO GROWS */
+    background-color: #183142;
+
+    /*    border-radius: 10px; */
+
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+
+
+}
+
+.DBFF-Third-Headline{
+    padding-top: 3.5vh;
+    padding-left: 60vw;
+    padding-bottom: 3.5vh;
+    
+    font-weight: 500;
+    font-size: 1.8vh;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    font-weight: bolder;
+    color: white;
+
+    text-shadow: 3px 3px 6px black;
+}
+
+#Portfolio-Showcase{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+
+}
+
+.Image-Showcase:hover{
+    transition: 0.2s;
+    transform: scale(1.03);
+    cursor: pointer;
+
+}
+
+.Image-Showcase img{
+    width: 25vw;
+    filter: drop-shadow(5px 5px 10px rgb(29, 29, 29));
+    padding: 2vw;
+}
+
+.Image-Showcase h2{
+    padding: 1vw;
+
+    display: flex;
+    justify-content: center;
+    
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    font-weight: bolder;
+    color: white;
+
+    text-shadow: 3px 3px 6px black;
+}

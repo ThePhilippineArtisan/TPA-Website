@@ -4,48 +4,47 @@
 }
 
 .navbar-box{
-    height:100px;
-    width: 100%;
+    height: 8.5rem;
     background-color: #0265A9;
     
     
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
 
     position: sticky;
     top: 0;
-    backdrop-filter: blur(100px);
+    z-index: 999;
 }
 
 .navbar-box a{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    font-size: 17px;
+    font-size: 1.5rem;
     color: whitesmoke;
     text-decoration: none;
 
-    margin-right: 55px;
+    margin-right: 5rem;
 }
 
 .navbar-links{
     
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
 .navbar-links a:hover{
-    
+    cursor: pointer;
     transition: 0.2s;
     transform: scale(1.2);
 }
 
-.tpa-logo img{
-    height: 100px;
-    width: 175px;
-    padding-left: 20px;
+#tpa-logo {
+    height: 7.5rem;
+    width: 12.5rem;
+    padding-left: 1.7rem;
+    padding-top: 0.3rem;
 }
 
 .tpa-logo img:hover{
@@ -56,12 +55,17 @@
 
 .tpa-circle-logo{
     display: inline-block;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding-top: 0.2rem;
 
 }
 
 .tpa-circle-logo img{
-    height: 70px;
-    margin-right: 25px;
+    height: 7rem;
+    margin-right: 1.5rem;
     display: block;
 }
 
@@ -70,6 +74,44 @@
     transform: scale(1.2);
     cursor:pointer;
 }
+
+/* --- Mobile Media Query--- */
+@media (max-width: 1024px) {
+  .navbar-box a{
+    font-size:  1.3rem;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tpa-logo {
+    height: 0.9rem;
+    margin-bottom: 0.3rem;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1023px) {
+  .navbar-box {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .navbar-links {
+    display: none;
+
+  }
+
+  .tpa-logo {
+    height: 1rem;
+    margin-bottom: 0.3rem;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
 
 /*
 
