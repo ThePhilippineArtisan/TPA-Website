@@ -1,6 +1,8 @@
 import LampoonCover from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
 import KalyoCover from "../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-100.png"
 
+import TekMegaphone from "/Tek-Megaphone.svg"
+
 import "../CSS/ReleasesFacade.css"
 
 const ReleasesFacade = () =>{
@@ -31,6 +33,7 @@ const ReleasesFacade = () =>{
                             <h2> Lampoon 2025 </h2>                                        
                         </div>
                     </div>
+
                 </div>
     )
 }

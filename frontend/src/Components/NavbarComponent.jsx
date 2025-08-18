@@ -59,12 +59,11 @@ const NavbarComponent = ({refs}) => {
                 </div>
 
                 <div className="navbar-links">
-                    <a onClick = {handleReload}> Home </a>
+                    <a onClick = "#"> Home </a>
+                    <a onClick = {() => handleScroll(refs.newsRef)}> News </a>
                     <a onClick = {() => handleScroll(refs.releasesRef)}> Releases </a>
                     <a onClick = {() => handleScroll(refs.mediaRef)}> Media Segments</a>
-                    <a onClick = {() => handleScroll(refs.newsRef)}> Latest News </a>
-
-
+                    <a onClick = "#" > About </a>
                 </div>
 
                     <div className = "tpa-circle-logo">
@@ -74,7 +73,7 @@ const NavbarComponent = ({refs}) => {
                             /** Calls function sidebar and 
                             * toggle negating negation ("!") **/
                         />
-                </div>
+                    </div>
 
 
             {/* SIDE BAR PART When the TPACircleLogo is clicked 

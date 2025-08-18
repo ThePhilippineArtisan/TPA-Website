@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+
 import KahonKalyo from "/KahonKalyo.png";
 import LampoonCover from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
 // import TPACircleLogo from "/TPACircleLogo.png";
@@ -12,7 +13,9 @@ const FirstFacade = () => {
                 <div className = "First-BG-First-Facade">
                     <div className = "Cards">
                         <div className = "DBFF-Headline">
+                            
                             <h1> KALYO: KAHON — '24 - 25 </h1>
+                            
                             <div className = "DBFF-Top-Paragraph">
                                 <h2> 
                                     <span> Ang kahon ay laberinto ng mga lihim at inaagiw na alaala. <br /> <br /> </span>
@@ -32,8 +35,8 @@ const FirstFacade = () => {
                         <div className = "Card-Images">
                             <img src = {KahonKalyo} />
                         </div>
-
                     </div>
+                    
                 </div>
                 
                 <div className = "Second-BG-First-Facade">

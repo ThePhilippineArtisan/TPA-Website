@@ -4,9 +4,8 @@
 }
 
 .navbar-box{
-    height: 8.5rem;
+    height: 7rem;
     background-color: #0265A9;
-    
     
     display: flex;
     flex-direction: row;
@@ -19,18 +18,17 @@
 
 .navbar-box a{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    font-size: 1.5rem;
-    color: whitesmoke;
+    font-size: 1.25rem;
+    color: white;
     text-decoration: none;
 
     margin-right: 5rem;
 }
 
 .navbar-links{
-    
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -41,15 +39,13 @@
 }
 
 #tpa-logo {
-    height: 7.5rem;
-    width: 12.5rem;
-    padding-left: 1.7rem;
-    padding-top: 0.3rem;
+    height: 8rem;
+    width: 14rem;
+    padding-left: 2rem;
+    padding-bottom: 2rem;
 }
 
 .tpa-logo img:hover{
-    transition: 0.2s;
-    transform: scale(1.2);
     cursor: pointer;
 }
 
@@ -59,37 +55,37 @@
     justify-content: flex-end;
     align-items: center;
 
-    padding-top: 0.2rem;
-
 }
 
 .tpa-circle-logo img{
-    height: 7rem;
-    margin-right: 1.5rem;
     display: block;
+    
+    height: 4rem;
+    margin-right: 1.5rem;
 }
 
 .tpa-circle-logo:hover{
+    cursor:pointer;
+
     transition: 0.2s;
     transform: scale(1.2);
-    cursor:pointer;
 }
 
 /* --- Mobile Media Query--- */
 @media (max-width: 1024px) {
   .navbar-box a{
-    font-size:  1.3rem;
     display: flex;
-
     justify-content: center;
     align-items: center;
+    font-size:  1.3rem;
   }
 
   .tpa-logo {
-    height: 0.9rem;
-    margin-bottom: 0.3rem;
     justify-content: flex-end;
     align-items: center;
+
+    height: 0.9rem;
+    margin-bottom: 0.3rem;
   }
 }
 
@@ -105,25 +101,11 @@
   }
 
   .tpa-logo {
-    height: 1rem;
-    margin-bottom: 0.3rem;
     justify-content: flex-end;
     align-items: center;
+
+    height: 1rem;
+    margin-bottom: 0.3rem;
   }
 }
 
-
-/*
-
-.spinning {
-    animation: spin 0.5s linear infinite;
-}
-
-@keyframes spin{
-    0% {transform: rotate(0deg); opacity: 75%;}
-    50% {transform: rotate(180deg); opacity: 25%;}
-    100% {transform: rotate(360deg); opacity: 100%;}
-
-}
-
-*/

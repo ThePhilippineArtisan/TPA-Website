@@ -5,6 +5,7 @@
 
 .Footer{
     height: 150px;
+    width: 100%;
     background-color: #0265A9;
     display: flex;
     justify-content: space-between;

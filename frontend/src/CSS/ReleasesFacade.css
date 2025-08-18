@@ -11,19 +11,27 @@
 
     /*    border-radius: 10px; */
 
-    padding-top: 3vh;
-    padding-bottom: 3vh;
+    padding-top: 14rem;
+    padding-bottom: 14rem;
+
+    
+
+    background-image: url('/batthern.png');
+    background-repeat: repeat;
+    background-size: auto;
+
+    
 
 
 }
 
 .DBFF-Third-Headline{
-    padding-top: 3.5vh;
-    padding-left: 60vw;
-    padding-bottom: 3.5vh;
+    padding-top: 3.5rem;
+    padding-left: 30rem;
+    padding-bottom: 3.5rem;
     
     font-weight: 500;
-    font-size: 1.8vh;
+    font-size: 1.4rem;
 
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     font-weight: bolder;
@@ -37,7 +45,6 @@
     flex-direction: row;
     flex-wrap: wrap-reverse;
     justify-content: space-evenly;
-
 }
 
 .Image-Showcase:hover{
@@ -48,13 +55,14 @@
 }
 
 .Image-Showcase img{
-    width: 25vw;
+    width: 43rem;
     filter: drop-shadow(5px 5px 10px rgb(29, 29, 29));
-    padding: 2vw;
+    padding: 2rem;
 }
 
 .Image-Showcase h2{
-    padding: 1vw;
+    padding: 1.5rem;
+    padding-bottom: 3rem;
 
     display: flex;
     justify-content: center;
@@ -64,4 +72,33 @@
     color: white;
 
     text-shadow: 3px 3px 6px black;
+
+}
+
+
+@media (max-width: 768px){
+    .DBFF-Third-Headline{
+        padding-left: 0.8rem;
+        font-size: 01.1rem;
+
+        display: flex;
+        justify-content: center;
+
+        padding-top: 50px;
+    }
+
+    
+    #Portfolio-Showcase .Image-Showcase{
+        display: none;
+
+        padding-bottom: 30px;
+    }
+
+    #Portfolio-Showcase .Image-Showcase:last-child{
+        display: block;
+    }
+
+    #Portfolio-Showcase img{
+        width: 20rem;
+    }
 }
