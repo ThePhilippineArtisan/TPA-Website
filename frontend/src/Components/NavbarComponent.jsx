@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import TPAWhite from "../assets/Miniature_Icon_Version/TPA-White.png";
-import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.png";
+import TPAWhite from "../assets/Miniature_Icon_Version/TPA-Blue.svg";
+import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg";
 
 import "../CSS/Navbar.css"
 
@@ -59,7 +59,7 @@ const NavbarComponent = ({refs}) => {
                 </div>
 
                 <div className="navbar-links">
-                    <a onClick = "#"> Home </a>
+                    <a href = "/" > Home </a>
                     <a onClick = {() => handleScroll(refs.newsRef)}> News </a>
                     <a onClick = {() => handleScroll(refs.releasesRef)}> Releases </a>
                     <a onClick = {() => handleScroll(refs.mediaRef)}> Media Segments</a>

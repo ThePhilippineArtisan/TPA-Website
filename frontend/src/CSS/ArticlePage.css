@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;;
+}
+
+.Article-Page{
+    background-color: whitesmoke
+}
+
+.Article-Headline{
+    display: flex;
+    flex-direction: column;
+    flex-direction: wrap;
+    align-content: center;
+    justify-content: center;
+
+    margin-left: 27%;
+    margin-right: 27%;
+
+    padding: 2rem 0rem;
+}
+
+.Article-Headline h2{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+    color: black;
+
+    font-size: 4rem;
+    padding-bottom: 1rem
+}
+
+.Author-and-Date{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Author{
+    display: flex;
+}
+
+.Author a h3{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+    color: black;
+
+    font-size: 1em;
+    margin-top: 0.5em;
+
+    margin-right: 0.2em;
+}
+
+.Date {
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+    font-size: 1em;
+    margin-top: 0.5em;
+
+    margin-right: 0.1em;
+
+    display: flex;
+    justify-content: flex-end;
+    color: gray;
+}
+.Foreground-Photo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2rem;
+}
+
+.Foreground-Photo img{
+    height: 35rem;
+    
+    margin: 0.5rem;
+    
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+hr{
+    border: 0.5px solid #0265A9;
+}
+
+.Extra-Photos{
+    display: flex;
+    justify-content: center;
+
+    margin-left:5%;
+    margin-right:5%;
+
+    padding-bottom: 2rem;
+}
+
+.Extra-Photos img {
+    height: 7rem;
+    margin: 10px;
+
+    border-radius: 5px;
+    
+}
+
+.Photo-Illustration-Layout-Credits{
+    display: flex;
+    justify-content: center;
+    
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+    color: black;
+
+    font-size: 1rem;
+
+    margin-top: 1rem;
+}
+
+.Below-Small-Photos{
+    display: flex;
+    justify-content: center;
+
+}
+
+.Article-Body{
+    max-width: 50%;
+    padding: 3rem;
+}
+
+.Article-Body p{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+    color: black;
+
+    font-size: 1.5rem;
+
+    padding: 4rem 0rem;
+}
+
+.Suggested-Articles{
+    display: flex;
+    justify-content: center;
+}

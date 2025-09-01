@@ -5,8 +5,10 @@
 
 .navbar-box{
     height: 7rem;
-    background-color: #0265A9;
+    background-color: white;
     
+    border-bottom: 3px solid #0265A9;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -18,11 +20,12 @@
 
 .navbar-box a{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    font-size: 1.25rem;
-    color: white;
+    font-size: 1.3rem;
+    color: #0265A9;
     text-decoration: none;
 
     margin-right: 5rem;
+    font-weight: 800;
 }
 
 .navbar-links{

@@ -13,19 +13,19 @@ const RollingHeadlines = () => {
                 <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>
                 <img src = {TPALogoBlack}/>
 
-                <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>
+                <a href = "#" > JUST IN: BIEBER! ESTUDYANTENG TAKBO NANG TAKBO, NADAPA SA PWD RAMP-NAPILAY! </a>
                 <img src = {TPALogoBlack}/>
 
                 <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>
                 <img src = {TPALogoBlack}/>
 
-                <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>
+                <a href = "#" > JUST IN: BIEBER! ESTUDYANTENG TAKBO NANG TAKBO, NADAPA SA PWD RAMP-NAPILAY! </a>
                 <img src = {TPALogoBlack}/>
 
                 <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>
                 <img src = {TPALogoBlack}/>
 
-                <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>
+                <a href = "#" > JUST IN: BIEBER! ESTUDYANTENG TAKBO NANG TAKBO, NADAPA SA PWD RAMP-NAPILAY! </a>
                 <img src = {TPALogoBlack}/>
 
                 <a href = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </a>

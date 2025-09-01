@@ -9,7 +9,13 @@ import SecondFacade from './Components/SecondFacade.jsx';
 import MediaSegmentsFacade from './Components/MediaSegmentsFacade.jsx';
 import Footer from './Components/Footer.jsx';
 
-import TPACircleLogo from "./assets/Miniature_Icon_Version/TPACircleLogo.png";
+
+
+import ArticlePage from './Components/ArticlePage.jsx';
+import MediaSegmentPage from './Components/MediaSegmentPage.jsx';
+
+import TPACircleLogo from "./assets/Miniature_Icon_Version/TPACircleLogo.svg";
+import RollingHeadlines from './Components/RollingHeadlines.jsx';
 
 const App = () => {
   const homeRef = useRef(null);
@@ -36,18 +42,23 @@ const App = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#0265A9"
+        backgroundColor: "#ffffffff"
       }}>
         <style>
           {`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
+            @keyframes scale {
+              0% { transform: scale(6); 
+                    opacity: 100%; }
+              25% { opacity: 75%; }
+              50% { opacity: 100%; }
+              75% { opacity: 75%; height: 0vh;}
+              105% { transform: scale(1);
+                     opacity: 100%;}
             }
             .loader-logo {
-              width: 300px;
-              height: 300px;
-              animation: spin 1s linear infinite;
+              width: 125px;
+              height: 125px;
+              animation: scale 1s ease-in;
             }
           `}
         </style>
@@ -91,8 +102,19 @@ const App = () => {
               element = {
                 <>
                   <NavbarComponent refs={scrollRefs} />
+                  <RollingHeadlines />
+                  <ArticlePage />
+                  <Footer />
+                </>
+              }
+            />
 
-
+            <Route 
+              path = "/Media-Segment-Page"
+              element = {
+                <>
+                  <NavbarComponent refs={scrollRefs} />
+                  <MediaSegmentPage />
                   <Footer />
                 </>
               }

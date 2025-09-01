@@ -4,6 +4,10 @@
 
 }
 
+a:hover{
+    color: #0265A9;
+}
+
 .Second-Facade{
     background-color: whitesmoke;
 }
@@ -47,7 +51,9 @@
 .Rolling-Headline {
 
     background-color: #DDC9C9;
+    border-left: 25px solid #0265A9;
 
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,10 +68,6 @@
     text-overflow: ellipsis;           
 
  */
-
-    background-image: url('/brushed-alum.png');
-    background-repeat: repeat;
-    background-size: auto;
 
 }
 
@@ -102,10 +104,10 @@
     background-color: #003f69;
     
     padding: 10px 0px;
+
+    margin-bottom: 1rem;
     z-index: 1;
-
 }
-
 
 .Tabs a{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
@@ -119,8 +121,10 @@
 
     padding: 1rem;
     gap: 1rem;
-    border-radius: 3px;
+    margin-right: 1rem;
+
     border: 2px solid transparent;
+    
     box-sizing: border-box;
     will-change: transform;
     
@@ -133,7 +137,9 @@
     cursor: pointer;
     transform: scale(1.3);
     transition: transform 0.3s ease-in-out;
-    
+    z-index: 3;
+
+    background-color: #003f69;
 }
 
 #MM:hover, #TTu:hover, #WW:hover, #TTh:hover, #FF:hover, #StS:hover, #SpS:hover {
@@ -196,7 +202,7 @@
 
     background-color: rgba(99, 218, 248, 0.5);
     padding: 0.5rem 0.25rem;
-    font-size: 0.75rem;
+    font-size: 2rem;
     margin-top: 10px;
     border-radius: 10px;
     max-width: 100%;    
@@ -211,7 +217,7 @@
     height: 100%;
     background-color: #0265A9;
     transform: translateX(-100%);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.4s ease-in-out;
     z-index: -1;
 }
 
@@ -219,18 +225,22 @@
     transform: translateX(0); /* Slide in fully */
 }
 
-.Category a{
+.Category {
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    color: rgb(99, 99, 99);
+    color: rgb(88, 88, 88);
     text-decoration: none;
     font-weight: bolder;
-    font-size: 3rem;
+    font-size: 3.5rem;
 
-    padding: 1rem;
+    padding: 2rem;
 }
 
-.Category:hover a{
+.Category:hover {
     color: white;
+}
+
+#Category-Outside{
+    width: 100vw;
 }
 
 .Below-Cover-Photo{
@@ -272,7 +282,6 @@
     background-color: whitesmoke;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
-
 }
 
 .Primary-News-Headline{
@@ -287,8 +296,8 @@
     font-weight:900;
     font-size: 2em;
 
-    padding-top: 4rem;
-    padding-bottom: 1rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
 
 
     display: -webkit-box;
@@ -301,13 +310,14 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+
+    margin: 1rem;
 }
 
 .Small-News-Boxes{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 2fr);
     gap: 1rem;
-    padding: 1rem;
 }
 
 
@@ -317,28 +327,31 @@
     object-fit: cover;
     align-items: center;
 
-    width: 100%;
+    max-width: 100%;
 
-    padding: 1rem;
+    padding: 0.5rem;
     /** box-shadow: 3px 7px 7px rgba(0, 0, 0, 0.1); */
     background-color: whitesmoke;
 }
 
 .Small-Photo-News:hover{
-    transform: scale(1.01);
-    transition: transform 0.3s ease-in-out;
     cursor: pointer;    
     background-color: rgb(218, 216, 216);
+    border-radius: 10px;
 
 }
 
+.Small-Photo-News a:hover{
+    color: #0265A9;
+}
+
 .Small-Photo-News img{
-    width: 35rem;
+    width: 25rem;
     object-fit: cover;
     aspect-ratio: 16 / 9;
     margin: 1rem;
 
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
 .Small-News{
@@ -351,8 +364,10 @@
 .Secondary-News-Headline{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 2rem;
+    
+    margin-top: 1rem;
 }
 
 .Secondary-News-Headline a{
@@ -364,14 +379,14 @@
     font-size: 1.5rem;
 
     padding-bottom: 1rem;
-    max-width: 75%;
+    max-width: 100%;
     
     display: -webkit-box;                
     -webkit-box-orient: vertical;     
 }
 
 .Article-Author-Time{
-    display: flex;
+    display: block;
     justify-content: flex-end;
     align-items: flex-end;
 
@@ -383,7 +398,7 @@
     color: black;
     font-weight: bold;
 
-    padding: 1rem;
+    margin: 1rem;
 }
 
 @media (max-width: 1024px) {
