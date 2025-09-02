@@ -1,10 +1,11 @@
 *{
     margin: 0;
-    padding: 0;;
+    padding: 0;
 }
 
 .Article-Page{
-    background-color: whitesmoke
+    background-color: whitesmoke;
+    background: linear-gradient(to bottom, #ffffff 0%, #0099ff41 100%);
 }
 
 .Article-Headline{
@@ -86,9 +87,6 @@ hr{
 .Extra-Photos{
     display: flex;
     justify-content: center;
-
-    margin-left:5%;
-    margin-right:5%;
 
     padding-bottom: 2rem;
 }

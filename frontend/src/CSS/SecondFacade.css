@@ -10,6 +10,7 @@ a:hover{
 
 .Second-Facade{
     background-color: whitesmoke;
+    background: linear-gradient(to bottom, #ffffff8f 0%, #0099ff41 100%);
 }
 
 .Cover-Photo-Image-Facade{
@@ -51,9 +52,7 @@ a:hover{
 .Rolling-Headline {
 
     background-color: #DDC9C9;
-    border-left: 25px solid #0265A9;
 
-    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,19 +73,22 @@ a:hover{
 .Rolling-Headline a {
     padding-left: 10px;
     padding-right: 10px;
-
     font-size: 15px;
 
 
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
     color: black;
+
+    z-index: 100;
 }
 
 .Rolling-Headline img{
     padding-right: 10px;    
     padding-left: 10px;
     height: 17px;
+
+    z-index: 100;
 }
 
 
@@ -199,8 +201,8 @@ a:hover{
     cursor: pointer;
 
     z-index: 1;
-
-    background-color: rgba(99, 218, 248, 0.5);
+    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.1);
+    background-color: rgba(99, 218, 248, 0.623);
     padding: 0.5rem 0.25rem;
     font-size: 2rem;
     margin-top: 10px;
@@ -227,7 +229,7 @@ a:hover{
 
 .Category {
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    color: rgb(88, 88, 88);
+    color: rgb(44, 43, 43);
     text-decoration: none;
     font-weight: bolder;
     font-size: 3.5rem;
@@ -250,6 +252,7 @@ a:hover{
 
     margin-left: 10%;
     margin-right: 10%;
+    
 }
 
 .Large-News-Boxes{
@@ -261,10 +264,10 @@ a:hover{
 .Large-Photo-News{
     display: flex;
     flex-direction: row;
-    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.1);
     object-fit: cover;
     background-color: white;
 
+    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.1);
     padding: 3rem;
 }
 
@@ -311,13 +314,20 @@ a:hover{
     flex-direction: column;
     flex-wrap: wrap;
 
-    margin: 1rem;
+    background-color: azure;
+    background: linear-gradient(to bottom, #3f6e8f8f 0%, #0099ff00 100%);
+
+    padding: 0rem 1rem;
 }
 
 .Small-News-Boxes{
     display: grid;
-    grid-template-columns: repeat(5, 2fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
+}
+
+.Small-Photo-News:hover{
+    transform: scale(1.01);
 }
 
 
@@ -331,14 +341,11 @@ a:hover{
 
     padding: 0.5rem;
     /** box-shadow: 3px 7px 7px rgba(0, 0, 0, 0.1); */
-    background-color: whitesmoke;
+    border-radius: 10px;
 }
 
 .Small-Photo-News:hover{
     cursor: pointer;    
-    background-color: rgb(218, 216, 216);
-    border-radius: 10px;
-
 }
 
 .Small-Photo-News a:hover{
@@ -351,7 +358,7 @@ a:hover{
     aspect-ratio: 16 / 9;
     margin: 1rem;
 
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 .Small-News{
@@ -367,7 +374,6 @@ a:hover{
     justify-content: center;
     align-items: center;
     
-    margin-top: 1rem;
 }
 
 .Secondary-News-Headline a{
@@ -378,11 +384,10 @@ a:hover{
     font-weight: bolder;
     font-size: 1.5rem;
 
-    padding-bottom: 1rem;
-    max-width: 100%;
+    padding: 1rem 0rem;
     
     display: -webkit-box;                
-    -webkit-box-orient: vertical;     
+    -webkit-box-orient: vertical;
 }
 
 .Article-Author-Time{

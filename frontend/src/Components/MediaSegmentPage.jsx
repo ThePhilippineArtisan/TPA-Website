@@ -18,7 +18,7 @@ const MediaSegmentPage = () => {
             </div>
 
             <div className = "Below-Media-Segments">
-                
+                        
             </div>
 
         </div>

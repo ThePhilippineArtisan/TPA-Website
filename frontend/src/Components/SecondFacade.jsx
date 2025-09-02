@@ -98,34 +98,12 @@ const SecondFacade = () => {
                                     <span>Cathlene Torrenueva • 3 days ago</span>   
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
                     <div className = "Small-News-Box">
                         <div className = "Small-News-Boxes"> 
-
-                            <div className = "Small-Photo-News">                            
-                                <img
-                                    src = {JUSTIN}
-                                />
-                                <div className = "Small-News">
-                                    <div className = "Secondary-News-Headline">
-                                        <Link to = "#"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className = "Small-Photo-News">                            
-                                <img
-                                    src = {JUSTIN}
-                                />
-                                <div className = "Small-News">
-                                    <div className = "Secondary-News-Headline">
-                                        <Link to = "#"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
-                                    </div>
-                                </div>
-                            </div>
-
 
                             <div className = "Small-Photo-News">                            
                                 <img
@@ -160,9 +138,30 @@ const SecondFacade = () => {
                                 </div>
                             </div>
 
+                            <div className = "Small-Photo-News">                            
+                                <img
+                                    src = {OPINION}
+                                />
+                                <div className = "Small-News">
+                                    <div className = "Secondary-News-Headline">
+                                        <Link to = "#"> Wankjob Wednesday </Link>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className = "Small-Photo-News">                            
+                                <img
+                                    src = {OPINION}
+                                />
+                                <div className = "Small-News">
+                                    <div className = "Secondary-News-Headline">
+                                        <Link to = "#"> Wankjob Wednesday </Link>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-
 
 
     {/** 

@@ -53,7 +53,7 @@ const ArticlePage = () => {
                 <img src = {SamplePhoto10} loading = "lazy"/>
             </div>
 
-            <hr></hr>
+            <hr style={{ border: '20px solid #0265A9'}} />
 
                     <div className = "Photo-Illustration-Layout-Credits"> 
                         Photos by Angela Genio & John Peregrin
@@ -78,7 +78,7 @@ const ArticlePage = () => {
                 </div>
             </div>
 
-            
+
             <div className = "Suggested-Articles">
                 <h1> READ MORE </h1>
             </div>

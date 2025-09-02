@@ -15,22 +15,28 @@
     align-items: center;
 
     background-color: #3a6079;
-
+    background: linear-gradient(to bottom, #3a6079 0%, #000000 100%);
     padding: 1.5rem;
 
 }
 
 .Latest-Media-Segment-Image img{
-    max-width: 50%;
+    max-width: 50rem;
     object-fit: cover;
-    box-shadow: 7px 7px 7px 7px rgba(0, 0, 0, 0.5);
+    box-shadow: 7px 7px 7px 7px rgba(0, 0, 0, 0.5);   
+}
+
+.Latest-Media-Segment-Image img:hover{
+    transform: scale(1.005);
 }
 
 .Latest-MS-Title{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
-    max-width: 50%;
 
+    max-width: 50%;
+    max-height: 50%;
+    
     color: rgb(233, 233, 233);
 
     padding: 1.5rem;
@@ -46,9 +52,18 @@
 }
 
 .Latest-Media-Segment-Image h4{
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .Latest-Media-Segment-Image a:hover{
     color: white;
+}
+
+.Below-Media-Segments{
+    display: grid;
+    
+    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+
+    background-color: azure;    
 }

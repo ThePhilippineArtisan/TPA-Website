@@ -60,6 +60,10 @@ const App = () => {
               height: 125px;
               animation: scale 1s ease-in;
             }
+              span{
+              lo
+              }
+              
           `}
         </style>
         <img src={TPACircleLogo} className="loader-logo" alt="Loading" />
