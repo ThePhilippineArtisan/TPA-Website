@@ -13,6 +13,7 @@ import Footer from './Components/Footer.jsx';
 
 import ArticlePage from './Components/ArticlePage.jsx';
 import MediaSegmentPage from './Components/MediaSegmentPage.jsx';
+import NewArticlePage from './Components/NewArticlePage.jsx';
 
 import TPACircleLogo from "./assets/Miniature_Icon_Version/TPACircleLogo.svg";
 import RollingHeadlines from './Components/RollingHeadlines.jsx';
@@ -91,12 +92,7 @@ const App = () => {
                     <ReleasesFacade />
                   </section>
 
-                  <section ref={mediaRef}>
-                    <MediaSegmentsFacade />
-                  </section>
-
                   <Footer />
-
                 </>
               }
             />
@@ -124,6 +120,26 @@ const App = () => {
               }
             />
 
+            <Route 
+              path = "/About"
+              element = {
+                <>
+                  <NavbarComponent refs={scrollRefs} />
+                  <Footer/>
+                </>
+              }
+            />
+
+            <Route
+              path = "/NewArticlePage"
+              element = {
+                <>
+                  <NavbarComponent refs = {scrollRefs} />
+                  <NewArticlePage />
+                  <Footer />
+                </>
+              }
+            />
               {/** <Route path = "/KalyoFinalists" element {< Name of the thing />} >/ */}
 
           </Routes>

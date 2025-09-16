@@ -5,6 +5,7 @@ import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
 import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
 import OPINION from "../Sample-Photos/OPINION.jpg"
 
+
 import TPALogoBlack from "../assets/Miniature_Icon_Version/TPALogoBlack.svg"
 
 import "../CSS/SecondFacade.css"
@@ -12,109 +13,341 @@ import "../CSS/SecondFacade.css"
 const SecondFacade = () => {
     return(
         <div className = "Second-Facade">
-                <div className = "Cover-Photo-Image-Facade">
-                    <input type = "text" className = "SearchBar"
-                    placeholder = "Turno en contra."/>
-                </div>
             <div className = "Rolling-Headline"> {/** JUST TO BE APT, MAXIMUM 5 LATEST HEADLINES  */}
-
                 <marquee behavior="scroll" direction="left" scrollamount="5">
                     <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
+                    <Link to = "/Joseph-Brian-Balut"> JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                     <img src = {TPALogoBlack}/>
                 </marquee>
             </div>
 
+            <div className = "Cover-Photo-Image-Facade">
+                <input type = "text" className = "SearchBar" placeholder = "Turno en contra."/>                    
+            </div>
 
-                <div className = "Tabs">
-                    <Link to = "#"> Top Story </Link>
-                    <Link to = "#"> Latest </Link>
-                    <Link to = "#"> Opinion </Link>
-                    <Link to = "#" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>
-                    <Link to = "#" title = "Our Teks dive into the world of technology!"> Tek Tuesday </Link>
-                    <Link to = "#" title = "Editorial Cartoonist and Wankers Wanking for attention"> Wankjob Wednesday </Link>
-                    <Link to = "#" title = "Filipino por Indio words of the Day!"> Tala Thursday </Link>
-                    <Link to = "#" title = "Professional Yappers Yapping About Yap"> Features Friday </Link>
-                    <Link to = "#" title = "Professional Yappers Yapping About Yap"> Streaming Saturday </Link>
-                    <Link to = "#" title = "May Athletes pa pala tayo bukod kina Pacquiao, Yulo, Eala, at Diaz?"> Sports Sunday </Link>
+        <div className = "Tabs">
+            <Link to = "#"> Top Story </Link>
+            <Link to = "#"> Latest </Link>
+            <Link to = "#"> Opinion </Link>
+            <Link to = "#" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>
+            <Link to = "#" title = "Our Teks dive into the world of technology!"> Tek Tuesday </Link>
+            <Link to = "#" title = "Editorial Cartoonist and Wankers Wanking for attention"> Wankjob Wednesday </Link>
+            <Link to = "#" title = "Filipino por Indio words of the Day!"> Tala Thursday </Link>
+            <Link to = "#" title = "Professional Yappers Yapping About Yap"> Features Friday </Link>
+            <Link to = "#" title = "Professional Yappers Yapping About Yap"> Streaming Saturday </Link>
+            <Link to = "#" title = "May Athletes pa pala tayo bukod kina Pacquiao, Yulo, Eala, at Diaz?"> Sports Sunday </Link>
+        </div>
 
-                {/** 
-                    <a id = "MM" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>
-                    <a id = "TTu" title = "Our Teks dive into the world of technology!"> Tek Tuesday </Link>
-                    <a id = "WW" title = "Editorial Cartoonist and Wankers Wanking for attention"> Wankjob Wednesday </Link>
-                    <a id = "TTh"  title = "Filipino por Indio words of the Day!" > Tala Thursday </Link>
-                    <a id = "FF"  title = "Professional Yappers Yapping About Yap"> Features Friday </Link>
-                    <a id = "StS" title = "Professional Yappers Yapping About Yap"> Streaming Saturday </Link>
-                    <a id = "SpS" title = "May Athletes pa pala tayo bukod kina Pacquiao, Yulo, Eala, at Diaz?"> Sports Sunday</Link>
-                */}
+        <div className = "Below-Cover-Photo">   
+            <div className = "letterA">
+                <div className = "Large-News-Boxes">
+                    <Link to = "#" className = "Category" > LATEST ———{`>`}</Link>  
+                    <div className = "Large-Photo-News" style = {{ flexWrap: "wrap", justifyContent: "center"}} onClick = "#">
+
+                        <img
+                            style = {{ marginBottom: "1.5rem", width: "85rem",}}
+                            src = {Photo2}
+                        />
+
+                        <div className = "Large-News" >
+                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th asdsadsadasdsadsaadsadsdsaasdasdasdsaasdasdadsasd asdadsdsadsadsadsadsadsadsa asdasddsadsdsasad commencement exercises with graduates from CLA, COS, and graduate programs </Link>
+                                
+                                <div className = "Sample-Text">
+                                    <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+ </p>
+                                </div>
+
+                                <div className = "Article-Author-Time">
+                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>  
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
 
-
-                
-            <div className = "Below-Cover-Photo"> 
-                <Link to = "#" className = "Category">  TOP STORY  </Link>     
-                
-                    <div className = "Large-News-Boxes">
-                        <div className = "Large-Photo-News" onClick = "#">
-                            
+                <div className = "Vertical-Headlines">
+                    <Link to = "/"> MEDIA SEGMENTS <hr></hr> </Link>
+                    <div className = "Vertical-Side-News">       
                             <img
-                                src = {Photo1}
-                            />
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
 
-                            <div className = "Large-News">
-                                <div className = "Primary-News-Headline">
-                                    <Link to = "#"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
-                                </div>
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
 
-                                <div className = "Sample-Text"> 
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div className = "letterA">
+                <div className = "Large-News-Boxes">
+                    <Link to = "#" className = "Category" id = "Category"> LATEST <Link to = "#" id = "Category"> ———{`>`} </Link></Link>
+                      
+                    <div className = "Large-Photo-News" onClick = "#">
+
+                        <img
+                            src = {Photo2}
+                        />
+
+                        <div className = "Large-News" >
+                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th asdsadsadasdsadsaadsadsdsaasdasdasdsaasdasdadsasd asdadsdsadsadsadsadsadsadsa asdasddsadsdsasad commencement exercises with graduates from CLA, COS, and graduate programs </Link>
+
+                                <div className = "Article-Author-Time">
+                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>  
                                 </div>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
+                <div className = "Vertical-Headlines">
+                    <Link to = "/Media-Segment/Page"> MEDIA SEGMENTS <hr></hr> </Link>
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div className = "Video-Showcase">
+            <Link to = "#"> TEK'S VIDEOS ———{`>`} </Link>
+            
+            <div className = "Iframe-Container" id = "iframes">
+                <div className = "Iframe-Videos">
+                    <iframe 
+                        src = "https://www.youtube.com/embed/IG_qfEQpQPo?si=6ItPok_Hm9XbORpS" 
+                        title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
+                        allow = 
+                        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy = "strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+
+                    <iframe 
+                        src = "https://www.youtube.com/embed/gftm9yIGx2M?si=Z6uSuA3Wlb4hKcsw" 
+                        title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
+                        allow = 
+                        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy = "strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+
+
+                    <iframe 
+                        src = "https://www.youtube-nocookie.com/embed/IT6crhxDzhI?si=Ql4Y4ntnRlFjWh2m" 
+                        title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
+                        allow = 
+                        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy = "strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>                
+            </div>
+        </div>
+        
+        <div className = "Below-Cover-Photo">
+        
+        <Link to = "/Latest-News" className = "Category"> MEDIA SEGMENTS </Link>
+        <div className = "Small-News-Box-Container">
+            <div className = "Small-News-Box">
+                    <div className = "Small-News">
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+
+                <div className = "Small-News-Boxes"> 
+                    <div className = "Small-Photo-News">                            
+        
+                        <img
+                            src = {JUSTIN}
+                        />
+                    </div>
+
+                </div>
+            </div>
+
+            <div className = "Small-News-Box">
+                <div className = "Small-News-Boxes"> 
+                    <div className = "Small-Photo-News">                            
+        
+                        <img
+                            src = {JUSTIN}
+                        />
+                    </div>
+                </div>
+                <div className = "Small-News">
+                    <div className = "Secondary-News-Headline">
+                        <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        
+        </div>
+    </div>
+)
+}
+
+{/** 
+
+            <Link to = "#" className = "Category"> LATEST </Link>     
+                <div className = "Large-News-Boxes">
+
+                    <div className = "Large-Photo-News" onClick = "#">
+                            
+                        <img
+                            src = {Photo1}
+                        />
+
+                        <div className = "Large-News">
+                            <div className = "Large-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
 
                                 <div className = "Article-Author-Time">
                                     <span> Cathlene Torrenueva • 3 days ago </span>   
                                 </div>
                             </div>
                         </div>
-                    </div>
-                
-                <Link to = "#" className = "Category"> LATEST </Link>     
-                    <div className = "Large-News-Boxes">
+                    </div>                                        
+                </div>
 
 
-                        <div className = "Large-Photo-News" onClick = "#">
-                            
-                            <img
-                                src = {Photo1}
-                            />
-
-                            <div className = "Large-News">
-                                <div className = "Primary-News-Headline">
-                                    <Link to = "#"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
-                                </div>
-
-                                <div className = "Sample-Text"> 
-                                </div>
-
-                                <div className = "Article-Author-Time">
-                                    <span>Cathlene Torrenueva • 3 days ago</span>   
-                                </div>
+            <div className = "Column">
+                <div className = "Row">
+                    <div className = "Small-Photo-News">                            
+        
+                        <img
+                            src = {JUSTIN}
+                        />
+        
+                        <div className = "Small-News">
+                            <div className = "Secondary-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
                             </div>
-
                         </div>
                     </div>
                 </div>
-                    <div className = "Small-News-Box">
-                        <div className = "Small-News-Boxes"> 
+            </div>
 
-                            <div className = "Small-Photo-News">                            
-                                <img
-                                    src = {JUSTIN}
-                                />
-                                <div className = "Small-News">
-                                    <div className = "Secondary-News-Headline">
-                                        <Link to = "#"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
-                                    </div>
-                                </div>
+            <div className = "Column">
+                <div className = "Row">
+                    <div className = "Small-Photo-News">                            
+        
+                        <img
+                            src = {JUSTIN}
+                        />
+        
+                        <div className = "Small-News">
+                            <div className = "Secondary-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className = "Column">
+                <div className = "Row">
+                    <div className = "Small-Photo-News">                            
+        
+                        <img
+                            src = {JUSTIN}
+                        />
+        
+                        <div className = "Small-News">
+                            <div className = "Secondary-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <a id = "MM" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>
+    <a id = "TTu" title = "Our Teks dive into the world of technology!"> Tek Tuesday </Link>
+    <a id = "WW" title = "Editorial Cartoonist and Wankers Wanking for attention"> Wankjob Wednesday </Link>
+    <a id = "TTh"  title = "Filipino por Indio words of the Day!" > Tala Thursday </Link>
+    <a id = "FF"  title = "Professional Yappers Yapping About Yap"> Features Friday </Link>
+    <a id = "StS" title = "Professional Yappers Yapping About Yap"> Streaming Saturday </Link>
+    <a id = "SpS" title = "May Athletes pa pala tayo bukod kina Pacquiao, Yulo, Eala, at Diaz?"> Sports Sunday</Link>
 
                             <div className = "Small-Photo-News">                            
                                 <img
@@ -160,33 +393,7 @@ const SecondFacade = () => {
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-
-
-    {/** 
-     * 
-     * 
-     * 
-    */}
-                
-
-                <Link to = "/Media-Segment-Page" className = "Category" id = "Category-Outside"> MEDIA SEGMENTS </Link>     
-
-                    <div className = "Small-News-Box">
-                        <div className = "Small-News-Boxes"> 
-
-                            <div className = "Small-Photo-News">                            
-                                <img
-                                    src = {JUSTIN}
-                                />
-                                <div className = "Small-News">
-                                    <div className = "Secondary-News-Headline">
-                                        <Link to = "#"> Makata Mondays: The Hunchback of Calle Juan Luna</Link>
-                                    </div>
-                                </div>
-                            </div>
-
+                            
                             <div className = "Small-Photo-News">                            
                                 <img
                                     src = {Photo2}
@@ -230,11 +437,6 @@ const SecondFacade = () => {
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
-                    </div>
-        </div>
-    )
-}
+*/}
 
 export default SecondFacade;

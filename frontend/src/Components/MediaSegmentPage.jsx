@@ -3,7 +3,6 @@ import "../CSS/MediaSegmentPage.css"
 import Photo1 from "../Sample-Photos/Bata.jpg"
 
 const MediaSegmentPage = () => {
-
     return(
         <div className = "Media-Segment-Page">
             <div className = "Latest-Media-Segment-Image">
@@ -18,7 +17,7 @@ const MediaSegmentPage = () => {
             </div>
 
             <div className = "Below-Media-Segments">
-                        
+                
             </div>
 
         </div>

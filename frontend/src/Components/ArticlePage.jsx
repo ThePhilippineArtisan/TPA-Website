@@ -9,15 +9,50 @@ import SamplePhoto8 from "../Sample-Photos/8.jpg"
 import SamplePhoto9 from "../Sample-Photos/9.jpg"
 import SamplePhoto10 from "../Sample-Photos/10.jpg"
 
+import Photo1 from "../Sample-Photos/GAD-Kapihan.jpg"
+import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
+import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
+import OPINION from "../Sample-Photos/OPINION.jpg"
+
+import {useState} from "react"
+
 import "../CSS/ArticlePage.css"
 
 const ArticlePage = () => {
+
+    const photos = [
+        SamplePhoto1,
+        SamplePhoto2,
+        SamplePhoto3,
+        SamplePhoto4,
+        SamplePhoto5,
+        SamplePhoto6,
+        SamplePhoto7,
+        SamplePhoto8,
+        SamplePhoto9,
+        SamplePhoto10,
+        Photo1,
+        Photo2,
+        SamplePhoto5,
+        SamplePhoto6,
+        SamplePhoto7,
+        JUSTIN,
+        OPINION,
+        SamplePhoto4,
+        SamplePhoto5,
+        SamplePhoto6,
+        SamplePhoto7,
+        SamplePhoto8,
+    ]
+
+    const [currentPhoto, setCurrentPhoto] = useState(photos[0])
 
     return(
         <div className = "Article-Page">
 
             <div className = "Article-Headline">
                 <h2> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h2>
+
                 <br></br> 
                 <hr></hr>
 
@@ -38,26 +73,30 @@ const ArticlePage = () => {
 
 
             <div className = "Foreground-Photo">
-                <img src = {SamplePhoto1}/>
+                <img src = {currentPhoto}/>
+
             </div>
-
-            <div className = "Extra-Photos"> 
-                <img src = {SamplePhoto2} loading = "lazy"/>
-                <img src = {SamplePhoto3} loading = "lazy"/>
-                <img src = {SamplePhoto4} loading = "lazy"/>
-                <img src = {SamplePhoto5} loading = "lazy"/>
-                <img src = {SamplePhoto6} loading = "lazy"/>
-                <img src = {SamplePhoto7} loading = "lazy"/>
-                <img src = {SamplePhoto8} loading = "lazy"/>
-                <img src = {SamplePhoto9} loading = "lazy"/>
-                <img src = {SamplePhoto10} loading = "lazy"/>
-            </div>
-
-            <hr style={{ border: '20px solid #0265A9'}} />
-
                     <div className = "Photo-Illustration-Layout-Credits"> 
                         Photos by Angela Genio & John Peregrin
                     </div>
+                    
+            <div className = "Extra-Photos-Container">
+                <div className = "Extra-Photos"> 
+                    
+                    {photos.slice(1).map((photo, index) => (
+                        <img
+                            key = {index}
+                            src = {photo}
+                            loading = "lazy"
+                            onClick = {() => setCurrentPhoto(photo)}
+                            style = {{ cursor: "pointer" }}
+                        />
+                    ))}
+                    
+                </div>
+
+            </div>
+
             <div className = "Below-Small-Photos">
                 <div className = "Article-Body">
                     <p>

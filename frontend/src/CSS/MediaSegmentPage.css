@@ -3,11 +3,6 @@
     padding: 0;
 }
 
-.Media-Segment-Page{
-    width: 100%;
-
-}
-
 .Latest-Media-Segment-Image{
     display: flex;
     flex-direction: row;
@@ -15,13 +10,14 @@
     align-items: center;
 
     background-color: #3a6079;
-    background: linear-gradient(to bottom, #3a6079 0%, #000000 100%);
+    background: linear-gradient(to bottom, #01315298 20%, #0099ff98 70%, #012d4b7e 100%);
+
     padding: 1.5rem;
 
 }
 
 .Latest-Media-Segment-Image img{
-    max-width: 50rem;
+    max-width: 45rem;
     object-fit: cover;
     box-shadow: 7px 7px 7px 7px rgba(0, 0, 0, 0.5);   
 }
@@ -48,7 +44,7 @@
 }
 
 .Latest-Media-Segment-Image a{
-    font-size: 2rem
+    font-size: 3rem
 }
 
 .Latest-Media-Segment-Image h4{
