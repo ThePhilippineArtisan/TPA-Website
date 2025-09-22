@@ -29,6 +29,7 @@ const SecondFacade = () => {
             <Link to = "#"> Top Story </Link>
             <Link to = "#"> Latest </Link>
             <Link to = "#"> Opinion </Link>
+            <Link to = "#"> Editorial </Link>
             <Link to = "#" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>
             <Link to = "#" title = "Our Teks dive into the world of technology!"> Tek Tuesday </Link>
             <Link to = "#" title = "Editorial Cartoonist and Wankers Wanking for attention"> Wankjob Wednesday </Link>
@@ -42,25 +43,27 @@ const SecondFacade = () => {
             <div className = "letterA">
                 <div className = "Large-News-Boxes">
                     <Link to = "#" className = "Category" > LATEST ———{`>`}</Link>  
-                    <div className = "Large-Photo-News" style = {{ flexWrap: "wrap", justifyContent: "center"}} onClick = "#">
+                    <div className = "Large-Photo-News" onClick = "#"> 
 
                         <img
-                            style = {{ marginBottom: "1.5rem", width: "85rem",}}
+                            // style = {{ marginBottom: "1.5rem", width: "85rem",}} style = {{ flexWrap: "wrap", justifyContent: "center"}}
                             src = {Photo2}
                         />
 
                         <div className = "Large-News" >
                             <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th asdsadsadasdsadsaadsadsdsaasdasdasdsaasdasdadsasd asdadsdsadsadsadsadsadsadsa asdasddsadsdsasad commencement exercises with graduates from CLA, COS, and graduate programs </Link>
+                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
                                 
-                                <div className = "Sample-Text">
-                                    <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
-Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
- </p>
-                                </div>
-
                                 <div className = "Article-Author-Time">
                                     <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>  
+                                </div>
+
+                                <div className = "Vertical-Side-News">
+                                    <div className = "Sample-Text">
+                                        <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+    Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+    </p>
+                                    </div>
                                 </div>
                             </Link>
                         </div>
@@ -68,13 +71,13 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                 </div>
 
                 <div className = "Vertical-Headlines">
-                    <Link to = "/"> MEDIA SEGMENTS <hr></hr> </Link>
+                    <Link to = "/"> FAST NEWS <hr></hr> </Link>
                     <div className = "Vertical-Side-News">       
                             <img
                                 src = {JUSTIN}
                             />                     
                         <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                            <Link to = "/Joseph-Brian-Balut"> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </Link>
                         </div>
                     </div>
 
@@ -83,7 +86,7 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                                 src = {JUSTIN}
                             />                     
                         <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                            <Link to = "/Joseph-Brian-Balut"> JUST IN: Ferdinand Marcos Jr. Signs Means to Pre-Emptive Declaration of State of Disaster</Link>
                         </div>
                     </div>
 
@@ -92,7 +95,20 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                                 src = {JUSTIN}
                             />                     
                         <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                            <Link to = "/Joseph-Brian-Balut"> ICYMI: Protesters cross Pasig River resemble River Styx for Marcos Admin through Ayala Bridge</Link>
+                        </div>
+                    </div>
+
+                    <Link to = "/"> BULLETIN BOARD <hr></hr> </Link>
+
+
+
+                    <div className = "Vertical-Side-News">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> LOCAL NEWS: Technological University of the Philippines Manila becomes refuge for demonstrators </Link>
                         </div>
                     </div>
 
@@ -101,34 +117,7 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                                 src = {JUSTIN}
                             />                     
                         <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
-                        </div>
-                    </div>
-
-                    <div className = "Vertical-Side-News">       
-                            <img
-                                src = {JUSTIN}
-                            />                     
-                        <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
-                        </div>
-                    </div>
-
-                    <div className = "Vertical-Side-News">       
-                            <img
-                                src = {JUSTIN}
-                            />                     
-                        <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
-                        </div>
-                    </div>
-
-                    <div className = "Vertical-Side-News">       
-                            <img
-                                src = {JUSTIN}
-                            />                     
-                        <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                            <Link to = "/Joseph-Brian-Balut"> ANNOUNCEMENT: TUP declared sanctuary for demonstrators </Link>
                         </div>
                     </div>
 
@@ -136,20 +125,23 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                 </div>
 
             </div>
+        <div className = "Below-Cover-Photo">
+        
+        </div>
 
+            <Link to = "#" className = "Category" id = "Category"> MEDIA SEGMENTS <Link to = "#" id = "Category"> ———{`>`} </Link></Link>
+            
             <div className = "letterA">
-                <div className = "Large-News-Boxes">
-                    <Link to = "#" className = "Category" id = "Category"> LATEST <Link to = "#" id = "Category"> ———{`>`} </Link></Link>
-                      
+                <div className = "Large-News-Boxes" id = "Media-Segment-Large-Photo">
                     <div className = "Large-Photo-News" onClick = "#">
 
                         <img
-                            src = {Photo2}
+                            src = {JUSTIN}
                         />
 
                         <div className = "Large-News" >
                             <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th asdsadsadasdsadsaadsadsdsaasdasdasdsaasdasdadsasd asdadsdsadsadsadsadsadsadsa asdasddsadsdsasad commencement exercises with graduates from CLA, COS, and graduate programs </Link>
+                                <Link to = "/Joseph-Brian-Balut"> SPORTS SUNDAY: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
 
                                 <div className = "Article-Author-Time">
                                     <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>  
@@ -157,11 +149,15 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                             </Link>
                         </div>
                     </div>
+
                 </div>
 
                 <div className = "Vertical-Headlines">
-                    <Link to = "/Media-Segment/Page"> MEDIA SEGMENTS <hr></hr> </Link>
-                    <div className = "Vertical-Side-News">       
+                    {
+                        // <Link to = "/Media-Segment/Page"> READ MORE <hr></hr> </Link> //
+                    }
+
+                    <div className = "Vertical-Side-News" id = "MM">       
                             <img
                                 src = {JUSTIN}
                             />                     
@@ -170,12 +166,48 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
                         </div>
                     </div>
 
-                    <div className = "Vertical-Side-News">       
+                    <div className = "Vertical-Side-News" id = "TTu">       
                             <img
                                 src = {JUSTIN}
                             />                     
                         <div className = "Secondary-News-Headline">
-                            <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                            <Link to = "/Joseph-Brian-Balut"> Tek Tuesdays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News"  id = "WW">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Wankjob Wednesdays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News"  id = "TTh">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Tala Thursdays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News"  id = "FF">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Features Friday: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                        </div>
+                    </div>
+
+                    <div className = "Vertical-Side-News"  id = "StS">       
+                            <img
+                                src = {JUSTIN}
+                            />                     
+                        <div className = "Secondary-News-Headline">
+                            <Link to = "/Joseph-Brian-Balut"> Streaming Saturday: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
                         </div>
                     </div>
 
@@ -219,48 +251,45 @@ Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa
             </div>
         </div>
         
-        <div className = "Below-Cover-Photo">
-        
-        <Link to = "/Latest-News" className = "Category"> MEDIA SEGMENTS </Link>
-        <div className = "Small-News-Box-Container">
-            <div className = "Small-News-Box">
+        <div className = "Large-Photo-News">
+            <Link to = "/Latest-News" className = "Category"> PHOTO LIBRARY </Link>
+            <div className = "Small-News-Box-Container">
+                <div className = "Small-News-Box">
+                        <div className = "Small-News">
+                            <div className = "Secondary-News-Headline">
+                                <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
+                            </div>
+                        </div>
+
+
+                    <div className = "Small-News-Boxes"> 
+                        <div className = "Small-Photo-News">                            
+            
+                            <img
+                                src = {JUSTIN}
+                            />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div className = "Small-News-Box">
+                    <div className = "Small-News-Boxes"> 
+                        <div className = "Small-Photo-News">                            
+            
+                            <img
+                                src = {JUSTIN}
+                            />
+                        </div>
+                    </div>
                     <div className = "Small-News">
                         <div className = "Secondary-News-Headline">
                             <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
                         </div>
                     </div>
-
-
-                <div className = "Small-News-Boxes"> 
-                    <div className = "Small-Photo-News">                            
-        
-                        <img
-                            src = {JUSTIN}
-                        />
-                    </div>
-
                 </div>
+
             </div>
-
-            <div className = "Small-News-Box">
-                <div className = "Small-News-Boxes"> 
-                    <div className = "Small-Photo-News">                            
-        
-                        <img
-                            src = {JUSTIN}
-                        />
-                    </div>
-                </div>
-                <div className = "Small-News">
-                    <div className = "Secondary-News-Headline">
-                        <Link to = "/Joseph-Brian-Balut"> Makata Mondays: The Hunchback of Calle Juan Luna Pero Contigo 'yo Haso Chi eh simple lang ang shangeringe</Link>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-        
         </div>
     </div>
 )

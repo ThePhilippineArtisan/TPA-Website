@@ -51,7 +51,10 @@ const ArticlePage = () => {
         <div className = "Article-Page">
 
             <div className = "Article-Headline">
-                <h2> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h2>
+                <div className = "Simple-Tag"> 
+                    <h4>  LOOK, NEWS, 120th Commencement Exercise, Graduation, Batch Hiraya  </h4>  
+                </div>
+                <h2> TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h2>
 
                 <br></br> 
                 <hr></hr>
@@ -59,7 +62,7 @@ const ArticlePage = () => {
                 <div className = "Author-and-Date">
                     <div className = "Author">
                         <a><h3> Aldous Paras, </h3> </a>
-                        <a><h3> Jim Rojan Raguindin, </h3> </a>
+                        <a><h3> Jim Raguindin, </h3> </a>
                         <a><h3> Laurean Aquino </h3> </a>
                         <br></br>
                     </div>
@@ -117,12 +120,26 @@ const ArticlePage = () => {
                 </div>
             </div>
 
-
+            <h1 id = "Read-More"> READ MORE </h1>
+            
             <div className = "Suggested-Articles">
-                <h1> READ MORE </h1>
+                <div className = "Suggested-News">
+                        <div className = "Three-News">
+                            <img src = {SamplePhoto1} />
+                            <a> TUPM Shifts from deathly afraid of the dark </a>
+                        </div>
+                        <div className = "Three-News">
+                            <img src = {SamplePhoto1} />
+                            <a> TUPM Shifts from deathly afraid of the dark </a>
+                        </div>
+                        <div className = "Three-News">
+                            <img src = {SamplePhoto1} />
+                            <a> TUPM Shifts from deathly afraid of the dark </a>
+                        </div>
+                        
+                </div>
             </div>
         </div>
-        
     )
 } 
 

@@ -8,7 +8,7 @@
     background-color: white;
     
     border-bottom: 3px solid #0265A9;
-
+    margin: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -38,8 +38,8 @@
 
 .navbar-links a:hover{
     cursor: pointer;
-    transition: 0.2s;
-    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.1);
 }
 
 #tpa-logo {

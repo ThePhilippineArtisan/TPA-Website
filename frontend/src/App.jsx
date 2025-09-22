@@ -50,12 +50,14 @@ const App = () => {
             @keyframes scale {
               0% { transform: scale(6); 
                     opacity: 100%; }
-              25% { opacity: 75%; }
+              25% { opacity: 50%; }
               50% { opacity: 100%; }
-              75% { opacity: 75%; height: 0vh;}
+              75% { opacity: 50%; height: 0vh;}
+              100% { opacity: 100%; }
               105% { transform: scale(1);
-                     opacity: 100%;}
+                     opacity: 50%;}
             }
+            
             .loader-logo {
               width: 125px;
               height: 125px;
@@ -67,7 +69,7 @@ const App = () => {
               
           `}
         </style>
-        <img src={TPACircleLogo} className="loader-logo" alt="Loading" />
+        <img src={TPACircleLogo} className="loader-logo" alt="Loading" style = {{ filter: "drop-shadow(2px 5px 7px rgba(0, 0, 0, 0.8))"}}/>
       </div>
     ) : (
 

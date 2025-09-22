@@ -13,30 +13,30 @@
     background: linear-gradient(to bottom, #01315298 20%, #0099ff98 70%, #012d4b7e 100%);
 
     padding: 1.5rem;
-
 }
 
 .Latest-Media-Segment-Image img{
-    max-width: 45rem;
+    max-height: 45rem;
     object-fit: cover;
-    box-shadow: 7px 7px 7px 7px rgba(0, 0, 0, 0.5);   
+    box-shadow: 7px 7px 7px 7px rgba(0, 0, 0, 0.267);   
+    filter: opacity(0.90);
+
+    transition: transform 0.3s ease-in-out;
 }
 
 .Latest-Media-Segment-Image img:hover{
     transform: scale(1.005);
+    cursor: pointer;
 }
 
 .Latest-MS-Title{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
-
-    max-width: 50%;
-    max-height: 50%;
     
-    color: rgb(233, 233, 233);
+}
 
-    padding: 1.5rem;
-    padding-left: 2.5rem;
+.Latest-MS-Title h3{
+    font-weight: 500;
 }
 
 .Latest-MS-Title:hover{
@@ -55,11 +55,68 @@
     color: white;
 }
 
-.Below-Media-Segments{
-    display: grid;
+.Tabs{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
     
-    gap: 1rem;
-    grid-template-columns: repeat(4, 1fr);
+    background-color: #003f69;
+    padding: 1rem 0px;
+    margin: 0;
+}
 
-    background-color: azure;    
+.Tabs a{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: white;
+    text-decoration: none;
+
+    display: flex;
+    justify-content: center;
+
+    font-size: 1.1rem;
+    font-weight: 500;    
+
+    padding: 1rem;
+    margin-right: 1.5rem;
+
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    
+    will-change: transform;
+}
+
+.Tabs a:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+    z-index: 3;
+
+}
+
+.Below-Media-Segments{
+    display: flex;
+
+    padding: 10rem;
+    
+    background: linear-gradient(to bottom, hsla(204, 100%, 77%, 0.596) 20%, #0099ff98 70%, #012d4b7e 100%);
+}
+
+.List-of-Media-Segments{
+    display: flex;
+    flex-direction: row;
+}
+
+.Media-Segment-Card{
+
+}
+
+.Media-Segment-Card img{
+    object-fit: cover;
+    object-position: center;
+
+    max-height: 50rem;
+
+    border: 2px solid black;
+    border-radius: 10px;
 }

@@ -42,7 +42,7 @@ const NavbarComponent = ({refs}) => {
                     <a href = "/" > Home </a>
                     <a onClick = {() => handleScroll(refs.newsRef)}> News </a>
                     <a onClick = {() => handleScroll(refs.releasesRef)}> Releases </a>
-                    <Link to = "/Media-Segment-Page"> Media Segments</Link>
+                    <Link to = "/Media-Segment-Page"> Media Segments </Link>
                     <a onClick = "#" > About </a>
                 </div>
 

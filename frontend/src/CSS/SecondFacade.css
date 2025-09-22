@@ -9,7 +9,7 @@ a:hover{
 }
 
 .Second-Facade{
-    background-color: rgb(237, 246, 255);
+    background: linear-gradient(to bottom, #80d0ff 0%, #afdfff6c 30%, #0099ff50 100%);
 }
 
 .Cover-Photo-Image-Facade{
@@ -18,7 +18,7 @@ a:hover{
 
     z-index: 0;
     width: 100%;
-    height: 50vh;
+    height: 60vh;
 }
 
 .Cover-Photo-Image-Facade::before{
@@ -45,6 +45,8 @@ a:hover{
     background-image: url('/cursor.png');
     background-repeat: no-repeat;
     background-size: cover;
+
+    filter: drop-shadow(2px 5px 7px rgba(0, 0, 0, 0.8));
     
     background-position-x: 99.5%;
     background-position-y: 50%;
@@ -58,6 +60,7 @@ a:hover{
 
     padding: 1.25rem;
     font-size: 1rem;
+    font-weight: 600;
 
     border: 2px solid #0265A9;
     border-radius: 3rem;
@@ -71,6 +74,9 @@ a:hover{
     align-content: center;
 
     background-color: #DDC9C9;
+
+    margin: 0;
+
 }
 
 .Rolling-Headline a {
@@ -86,7 +92,7 @@ a:hover{
 .Rolling-Headline img{
     padding-right: 10px;    
     padding-left: 10px;
-    height: 17px;
+    height: 1rem;
 }
 
 @keyframes marquee {
@@ -101,8 +107,9 @@ a:hover{
     justify-content: center;
     
     background-color: #003f69;
-    border: 3px solid black;
     padding: 1rem 0px;
+
+    margin-bottom: 3rem;
 }
 
 .Tabs a{
@@ -137,7 +144,6 @@ a:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
 }
 
 #Category a{
@@ -154,12 +160,13 @@ a:hover{
     width: 95%;
     font-size: 2rem;
 
-    background-color: rgba(99, 218, 248, 0.623);
+    background-color: rgba(99, 218, 248, 0.322);
     z-index: 1;
 
-    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.445);
     padding: 0.5rem 0.25rem;
     border-radius: 16px;
+    margin: 1rem 0rem;
 }
 
 .Category::before {
@@ -209,48 +216,57 @@ a:hover{
     display: flex;
     flex-direction: column;
 
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-right: 3%;
-    margin-left: 3%;
+    margin: 2rem 3%;
+
 }
 
 .letterA{
-    display: grid;
-    grid-template-columns: 67% 28%;
-    gap:5%;
-    margin: 2rem 0rem;
+    display: flex;
+    gap: 5%;
 }
 
 .Large-Photo-News{
     display: flex;
     flex-direction: row;
     align-items: center;
+    overflow: hidden;
     
     padding: 2rem 2rem;
+
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .Large-Photo-News img{
-    width: 100rem;
+    width: 85rem;
+    margin-bottom: 1.5rem;
     border-radius: 20px;
 
     aspect-ratio: 16 / 9;
 
-    overflow: hidden;
     object-fit: cover;
+    object-position: center;
 
     border: 2px solid black;
+    
+    transition: object-position 0.3s, transform 0.3s ;
+    cursor: pointer;
+
 }
 
 .Large-Photo-News img:hover{
-    transform: scale(1.01);
-    transition: transform 0.1s ease-in-out;
-    cursor: pointer;
-    
+    object-position: 90% 90%;    
 }
 
 .Large-News{
     width: 100%;
+}
+
+#Media-Segment-Large-Photo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
 .Large-News-Headline{
@@ -288,10 +304,22 @@ a:hover{
     color: #0265A9
 }
 
+.Vertical-Side-News:hover{
+    color: black;
+
+    background-color: rgba(255, 255, 255, 0.75);
+
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.01);
+
+    z-index: 10;
+    cursor: pointer;
+}
+
 .Sample-Text p{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
-    color:#575757;
+    color:#414141;
     
     display: -webkit-box;              
     -webkit-line-clamp: 3;             
@@ -311,7 +339,7 @@ a:hover{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
 
-    gap: 0.5rem;
+    gap: 1rem;
     font-size: 2rem;
     font-weight: 700;
 }
@@ -321,20 +349,92 @@ a:hover{
     color: black;
 
     margin: 0.5rem 0rem;
+
+    display: -webkit-box;              
+    -webkit-line-clamp: 5;             
+    -webkit-box-orient: vertical;      
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+}
+
+.Vertical-Headlines a:hover{
+    color: #0265A9;
 }
 
 .Vertical-Side-News{
     display: flex;
     flex-direction: row;
-    
-    gap: 2rem;
+    filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
+
+    gap: 3rem;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-radius: 10px;
+    padding: 1.25rem;
 }
 
 .Vertical-Side-News img{
-    height: 10rem;
+    height: 9rem;
     cursor: pointer;
     object-fit: cover;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 5 / 3;
+}
+
+
+
+#MM{
+    background: rgba(255, 0, 0, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(255, 0, 0, 0.3));
+}
+
+#TTu{
+    background: rgba(255, 166, 0, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(255, 166, 0, 0.3));
+}
+
+#WW{
+    background: rgba(255, 255, 0, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(255, 255, 0, 0.3));
+}
+
+#TTh{
+    background: rgba(0, 128, 0, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(0, 128, 0, 0.3));
+}
+
+#FF{
+    background: rgba(0, 0, 255, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(0, 0, 255, 0.3));
+}
+
+#StS{
+    background: rgba(76, 0, 130, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(76, 0, 130, 0.3));
+}
+
+#SpS{
+    background: rgba(238, 130, 238, 0.2);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+    filter: drop-shadow(2px 5px 7px rgba(238, 130, 238, 0.3));
 }
 
 hr{
@@ -358,7 +458,7 @@ hr{
 }
 
 .Iframe-Container{
-    margin: 3rem 0rem;
+    margin-top: 3rem;
 
     overflow-x: hidden;
     border: 1px solid transparent;
@@ -371,12 +471,18 @@ hr{
 
     overflow-x: auto;
     overflow-y: hidden;
+    
+    gap: 2rem;
+    padding: 0rem 3rem;
+
+    background: rgba(29, 29, 29, 0.288);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+
 
     scrollbar-width: thick;
     scrollbar-color:  #1a3b6d #001420;
     scroll-behavior: smooth;
-
-    gap: 3rem;
 }
 
 .Iframe-Container::-webkit-scrollbar-track {
@@ -397,7 +503,11 @@ hr{
 }
 
 iframe{
-    padding-bottom: 3rem;
+    margin: 5rem 0rem;
+}
+
+iframe:hover{
+    transform: scale(1.01);
 }
 
 .Small-News-Box-Container{
@@ -421,6 +531,10 @@ iframe{
     flex-direction: column;
 }
 
+.Small-Photo-News img{
+    cursor: pointer;
+}
+
 .Small-Photo-News img:hover{
 
     transform: scale(1.02);
@@ -437,7 +551,6 @@ iframe{
 }
 
 .Small-Photo-News a:hover{
-    transform: scale(1.01);
     transition: transform 0.2s ease-in-out;
 
     color: #0265A9;
