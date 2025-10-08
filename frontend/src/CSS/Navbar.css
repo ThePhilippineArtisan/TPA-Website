@@ -1,10 +1,25 @@
 *{
     margin: 0;
     padding: 0;
+    border: 0;
+  }
+
+.skeleton{
+    opacity: .7;
+    animation: skeleton-loading 1s linear infinite alternate;
 }
 
+@keyframes skeleton-loading{
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+
+    100% {
+        background-color: hsl(200, 20%, 90%);
+    }
+}
 .navbar-box{
-    height: 10rem;
+    height: 7rem;
     background-color: white;
     
     border-bottom: 3px solid #0265A9;
@@ -13,51 +28,39 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 11;
 }
 
 .navbar-box a{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: #0265A9;
     text-decoration: none;
 
-    margin-right: 5rem;
-    font-weight: 800;
+    font-weight: bolder;
+
+    gap: 3rem;
 }
 
 .navbar-links{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.navbar-links a:hover{
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-    transform: scale(1.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 
 #tpa-logo {
-    height: 8rem;
-    width: 14rem;
-    padding-left: 2rem;
-}
+  width: 15rem;
 
-.tpa-logo img:hover{
-    cursor: pointer;
 }
 
 .tpa-circle-logo{
-    display: inline-block;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
 }
 
 .tpa-circle-logo img{
@@ -78,41 +81,112 @@
 
 /* --- Mobile Media Query--- */
 
-@media (max-width: 1024px) {
-  .navbar-box a{
+@media (min-width: 320px){
+  .tpa-circle-logo{
+    display: none;
+  }
+
+  .navbar-links{
+    display: none;
+  }
+
+  .navbar-box{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size:  1.3rem;
+    align-content: center;
   }
 
-  .tpa-logo {
-    justify-content: flex-end;
-    align-items: center;
-
-    height: 0.9rem;
-    margin-bottom: 0.3rem;
+  #tpa-logo{
+    padding: 0rem;
   }
+
+  .tpa-logo a{
+    margin: 0rem;
+  }
+
 }
 
-@media (max-width: 1023px) {
-  .navbar-box {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .navbar-links {
+@media (min-width: 500px) {
+  #tpa-logo{
     display: none;
-
   }
 
-  .tpa-logo {
-    justify-content: flex-end;
+  .navbar-box{
+    display: flex;
+    justify-content: center;
     align-items: center;
+    align-content: center;
+  }
 
-    height: 1rem;
-    margin-bottom: 0.3rem;
+  .navbar-links{
+    display: flex;
+    gap: 2rem;
+  }
+
+  .navbar-links a{
+    font-size: 1rem;
   }
 }
 
+@media (min-width: 768px) {
+  .navbar-box{
+    display: flex;
+    justify-content: space-between;
+  }
 
+  .tpa-circle-logo{
+    display: inline-block;
+    justify-content: flex-end;
+  }
+
+  .tpa-circle-logo img{
+    height: 3rem;
+  }
+
+  #tpa-logo{
+    display: flex;
+    height: 3rem;
+  }
+
+  .navbar-links{
+    display: flex;
+    gap: 1rem;
+  }
+
+  .navbar-links a{
+    font-size: 0.75rem;
+  }
+  
+}
+
+@media (min-width: 900px){
+  .navbar-links{
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .navbar-links a{
+    font-size: 1rem;
+  }
+
+  .navbar-links{
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  #tpa-logo{
+    height: 4rem;
+  }
+
+  .tpa-circle-logo img{
+    height: 4rem;
+  }
+
+  .navbar-links{
+    gap: 5.5rem;
+  }
+
+}

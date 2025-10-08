@@ -14,9 +14,13 @@
 
     font-family:  'Inter', sans-serif; 
     font-weight: bolder;
-    color: white;
-
-    text-shadow: 3px 3px 6px black;
+    color: transparent; /* Set the desired text color */
+    text-shadow:
+    
+    -1px -1px 0 white,  /* Top-left shadow */
+    2px -1px 0 black,   /* Top-right shadow */
+    -2px 1px 0 black,   /* Bottom-left shadow */
+    2px 1px 0 white;    /* Bottom-right shadow */
 
 }
 
@@ -123,13 +127,13 @@
 }
 
 .Card-Images img{    
-    height: 10rem;
+    height: 8rem;
     filter: drop-shadow(15px 10px 10px rgb(49, 49, 49));
 }
 
 .Card-Images img:hover{
     transition: 0.2s;
-    transform: scale(1.1);
+    transform: scale(1.05);
     cursor: pointer;
 
     z-index: 10;

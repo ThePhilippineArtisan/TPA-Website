@@ -25,13 +25,20 @@ const NavbarComponent = ({refs}) => {
                 });}
             };
 
+        const [logoLoaded, setLogoLoaded] = useState(false);
+        const [circleLoaded, setCircleLoaded] = useState(false);
+
         return(
             
             <div className = "navbar-box">
                 <div className = "tpa-logo">
 
                     <Link to = "/">
-                        <img  id = "tpa-logo"
+                        <img
+                            onLoad={() => setLogoLoaded(true)}
+                            className={!logoLoaded ? "skeleton" : ""}
+                            loading = "lazy"
+                            id = "tpa-logo"
                             src = {TPAWhite} 
                             alt = "The Philippine Artisan Logo" 
                         />       
@@ -48,6 +55,8 @@ const NavbarComponent = ({refs}) => {
 
                     <div className = "tpa-circle-logo">
                         <img
+                            onLoad={() => setLogoLoaded(true)}
+                            className={!logoLoaded ? "skeleton" : ""}
                             src = {TPACircleLogo}
                         />
                     </div>

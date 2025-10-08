@@ -11,7 +11,7 @@ const Footer = () => {
     return(
         <div className = "Footer">
             <div className = "Left-Footer">
-                <img 
+                <img  loading = "lazy"
                     src = {TPALOGO}
                 />
 
@@ -31,23 +31,23 @@ const Footer = () => {
                 <p> Follow our social media profiles! </p>
                 <div className = "Right-Footer-Links">
                     {/* arrow function () => "_blank" opens link on another tab */ }
-                    <img 
+                    <img  loading = "lazy" 
                         src = {FBLogo}
                         onClick = {() => window.open("https://www.facebook.com/PhilArtisanMNL", "_blank")}
                     /> 
-                    <img 
+                    <img  loading = "lazy" 
                         src = {XLogo}
                         onClick = {() => window.open("https://www.x.com/PhilArtisanMNL", "_blank")}
                     />
-                    <img 
+                    <img  loading = "lazy" 
                         src = {IGLogo}
                         onClick = {() => window.open("https://www.instagram.com/PhilArtisanMNL", "_blank")}
                     /> 
-                    <img 
+                    <img  loading = "lazy" 
                         src = {YTLogo}
                         onClick = {() => window.open("https://www.youtube.com/@tek_artisanmnl", "_blank")}
                     /> 
-                    <img 
+                    <img  loading = "lazy" 
                         src = {TTLogo}
                         onClick = {() => window.open("https://www.tiktok.com/@tek_artisanmnl", "_blank")}
                     /> 

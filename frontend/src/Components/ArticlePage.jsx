@@ -1,48 +1,26 @@
-import SamplePhoto1 from "../Sample-Photos/1.jpg"
-import SamplePhoto2 from "../Sample-Photos/2.jpg"
-import SamplePhoto3 from "../Sample-Photos/3.jpg"
-import SamplePhoto4 from "../Sample-Photos/4.jpg"
-import SamplePhoto5 from "../Sample-Photos/5.jpg"
-import SamplePhoto6 from "../Sample-Photos/6.jpg"
-import SamplePhoto7 from "../Sample-Photos/7.jpg"
-import SamplePhoto8 from "../Sample-Photos/8.jpg"
-import SamplePhoto9 from "../Sample-Photos/9.jpg"
-import SamplePhoto10 from "../Sample-Photos/10.jpg"
-
-import Photo1 from "../Sample-Photos/GAD-Kapihan.jpg"
-import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
-import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
-import OPINION from "../Sample-Photos/OPINION.jpg"
-
 import {useState} from "react"
+
+import ARROW from "../assets/Miniature_Icon_Version/arrow.svg"
 
 import "../CSS/ArticlePage.css"
 
 const ArticlePage = () => {
 
     const photos = [
-        SamplePhoto1,
-        SamplePhoto2,
-        SamplePhoto3,
-        SamplePhoto4,
-        SamplePhoto5,
-        SamplePhoto6,
-        SamplePhoto7,
-        SamplePhoto8,
-        SamplePhoto9,
-        SamplePhoto10,
-        Photo1,
-        Photo2,
-        SamplePhoto5,
-        SamplePhoto6,
-        SamplePhoto7,
-        JUSTIN,
-        OPINION,
-        SamplePhoto4,
-        SamplePhoto5,
-        SamplePhoto6,
-        SamplePhoto7,
-        SamplePhoto8,
+        new URL("../Sample-Photos/1.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/2.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/3.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/JUST-IN.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/4.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/5.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/6.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/Multification-Invication.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/7.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/8.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/9.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/GAD-Kapihan.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/10.jpg", import.meta.url).href,
+        new URL("../Sample-Photos/OPINION.jpg", import.meta.url).href,
     ]
 
     const [currentPhoto, setCurrentPhoto] = useState(photos[0])
@@ -52,9 +30,10 @@ const ArticlePage = () => {
 
             <div className = "Article-Headline">
                 <div className = "Simple-Tag"> 
-                    <h4>  LOOK, NEWS, 120th Commencement Exercise, Graduation, Batch Hiraya  </h4>  
+                    <h4>  LOOK, NEWS, 120th Commencement Exercise, Graduation, Batch Hiraya </h4>  
                 </div>
-                <h2> TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h2>
+                
+                <h1 id = "Headline"> TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h1>
 
                 <br></br> 
                 <hr></hr>
@@ -75,18 +54,18 @@ const ArticlePage = () => {
             </div>
 
 
-            <div className = "Foreground-Photo">
-                <img src = {currentPhoto}/>
+            <div className = "Foreground-Photo ">
+                <img src = {currentPhoto} loading = "lazy"/>
 
             </div>
                     <div className = "Photo-Illustration-Layout-Credits"> 
-                        Photos by Angela Genio & John Peregrin
+                        Photos by Angela Genio & John Peregrin asasdsadssaddsa
                     </div>
                     
             <div className = "Extra-Photos-Container">
                 <div className = "Extra-Photos"> 
                     
-                    {photos.slice(1).map((photo, index) => (
+                    {photos.slice(0).map((photo, index) => (
                         <img
                             key = {index}
                             src = {photo}
@@ -96,6 +75,7 @@ const ArticlePage = () => {
                         />
                     ))}
                     
+                    <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
                 </div>
 
             </div>
@@ -125,15 +105,12 @@ const ArticlePage = () => {
             <div className = "Suggested-Articles">
                 <div className = "Suggested-News">
                         <div className = "Three-News">
-                            <img src = {SamplePhoto1} />
                             <a> TUPM Shifts from deathly afraid of the dark </a>
                         </div>
                         <div className = "Three-News">
-                            <img src = {SamplePhoto1} />
                             <a> TUPM Shifts from deathly afraid of the dark </a>
                         </div>
-                        <div className = "Three-News">
-                            <img src = {SamplePhoto1} />
+                        <div className = "Three-News">  
                             <a> TUPM Shifts from deathly afraid of the dark </a>
                         </div>
                         

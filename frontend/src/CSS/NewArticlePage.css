@@ -1,37 +1,121 @@
 *{
     margin: 0;
     padding: 0;
-    
 }
 
 .Entire-Page{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 
-    padding: 5rem;
+    padding: 2rem;
+    height: 70vh;
+    
+    background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff3f 100%);
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+}
+
+.Editor-Rectangle{
+    display: flex;
+    flex-direction: column;
+
+    margin: 1rem;
 }
 
 .Text-Formatting-Section{
     display: flex;
-    justify-content: space-between;
+    padding: 1rem;
+
+    border: 3px solid black;
+    background-color: white;
+    border-radius: 30px;
+}
+
+.Text-Formatting-Section img{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: transparent;
+
+    border: 1px solid transparent;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: black;
+    text-decoration: none;
+
+    margin: 5px;
+
+}
+
+.Text-Formatting-Section img{
+    height: 30px;
+    width: auto;
+}
+
+.Text-Formatting-Section img:hover{
+    cursor: pointer;
+    background-color: aliceblue;
+}
+
+select{
+    border: 2px solid black;
+}
+
+#Article-Type{
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.Text-Area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 1rem;
+}
+
+#body-text{
+    min-height: 400px;
+    width: 100%;
+    font-size: 1rem;
+
+    border: 3px solid rgb(70, 70, 70);
+    border-radius: 10px;
+
+    padding: 15px;
+    margin: 1rem 0rem;
+
+    box-sizing: border-box;
+    resize: none;
+
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: black;
     text-decoration: none;
 }
 
-button{
-    padding: 1rem;
-    border-radius: 3px;
-    
-    background-color: whitesmoke;
+#headline-text{
+    max-height: 50px;
+    width: 100%;
+    font-size: 1rem;
+
+    border: 3px solid rgb(70, 70, 70);
+    border-radius: 10px;
+
+    padding: 10px;
+    margin: 1rem 0rem;
+
+    box-sizing: border-box;
+    resize: none;
+
+    font-weight: bold;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: black;
+    text-decoration: none;
 }
 
-textarea{
-    height: 40rem;
-    width: 50rem;
-
-
-    font-size: 1.25rem;
+.Preview-Section{
+    display: flex;
+    justify-content: center;
 }
