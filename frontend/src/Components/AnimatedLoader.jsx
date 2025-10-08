@@ -28,7 +28,7 @@ const AnimatedLoader = () => {
             .loader-logo {
               width: 125px;
               height: 125px;
-              animation: scale 1s linear infinite alternate;
+              animation: scale 0.75s linear infinite alternate;
             }
               span{
               lo

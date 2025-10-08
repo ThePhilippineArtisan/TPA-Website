@@ -31,10 +31,65 @@ const MediaSegmentPage = () => {
             </div>
 
             <div className = "Below-Media-Segments">
-                <h1 id = "Latest-Weekly-Segments"> Latest Weekly Segments </h1>
                     
                 <div className = "List-of-Media-Segments">
+                <h1 id = "Latest-Weekly-Segments"> Latest Weekly Segments </h1>
                     <div className = "Media-Segment-Card">
+                        <Link to = "#" className = "Media-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                            
+
+                        </Link>
+
+                        <Link to = "#" className = "Media-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                            
+
+                        </Link>
+
+                        <Link to = "#" className = "Media-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                            
+
+                        </Link>
+
+                        <Link to = "#" className = "Media-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                            
+
+                        </Link>
+
+
+                        <Link to = "#" className = "Media-Card">
+                            <p id = "MMSegment" > Streaming Sunday</p>
+                            <img
+                                src = {StreamingSat}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+
+                        </Link>
+
                         <Link to = "#" className = "Media-Card">
                             <img
                                 src = {Photo1}
@@ -52,12 +107,6 @@ const MediaSegmentPage = () => {
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
                         </Link>
-                                                <img
-                            src = {Photo1}
-                        />
-                        <img
-                            src = {StreamingSat}
-                        />
                     </div>
 
 

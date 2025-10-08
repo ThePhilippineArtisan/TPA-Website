@@ -49,7 +49,7 @@ const SecondFacade = () => {
                     <Link to = "#" className = "Category" > LATEST ———{`>`}</Link>  
                     <div className = "Large-Photo-News" onClick = "#" style = {{flexWrap: "wrap"}}> 
 
-                        <img  loading = "lazy" 
+                        <img
                             // style = {{ marginBottom: "1.5rem", width: "85rem",}} style = {{ flexWrap: "wrap", justifyContent: "center"}}
                             src = {Photo2}
                         />
@@ -207,6 +207,7 @@ const SecondFacade = () => {
             <div className = "Iframe-Container" id = "iframes">
                 <div className = "Iframe-Videos">
                     <iframe 
+                        loading = "lazy"
                         src="https://www.youtube.com/embed/_gMtQVJwzBA?si=7JdevQ6D32JZKgiL" 
                         title="YouTube video player" frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -215,6 +216,7 @@ const SecondFacade = () => {
                     </iframe>
 
                     <iframe 
+                        loading = "lazy"
                         src = "https://www.youtube.com/embed/wZh6KP2qgKc?si=5KLeDg_K-agffYq_" 
                         title = "Youtube video player" frameborder = "0" 
                         allow = 
@@ -224,6 +226,7 @@ const SecondFacade = () => {
                     </iframe>
 
                     <iframe 
+                        loading = "lazy"
                         src = "https://www.youtube.com/embed/z5_hpf3Ix7g?si=xQss33snI2jyVPhP" 
                         title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
                         allow = 
@@ -233,6 +236,7 @@ const SecondFacade = () => {
                     </iframe>
 
                     <iframe 
+                        loading = "lazy"
                         src = "https://www.youtube.com/embed/7Aoe2kCeygQ?si=Js5KPY5xAziuHPTq" 
                         title = "Gawad Tek R Tisan 2024-2025" frameborder = "0" 
                         allow = 
