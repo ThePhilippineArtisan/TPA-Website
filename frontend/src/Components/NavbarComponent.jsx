@@ -22,11 +22,11 @@ const NavbarComponent = ({refs}) => {
                 navigate("/");
                 setTimeout(() => {
                     ref.current.scrollIntoView({behavior: "smooth"});
-                });}
+                }, 300);}
             };
 
-        const [logoLoaded, setLogoLoaded] = useState(false);
-        const [circleLoaded, setCircleLoaded] = useState(false);
+        //        const [logoLoaded, setLogoLoaded] = useState(false);
+        //      const [circleLoaded, setCircleLoaded] = useState(false);
 
         return(
             
@@ -35,8 +35,8 @@ const NavbarComponent = ({refs}) => {
 
                     <Link to = "/">
                         <img
-                            onLoad={() => setLogoLoaded(true)}
-                            className={!logoLoaded ? "skeleton" : ""}
+                            // onLoad={() => setLogoLoaded(true)}
+                           //  className={!logoLoaded ? "skeleton" : ""}
                             loading = "lazy"
                             id = "tpa-logo"
                             src = {TPAWhite} 
@@ -46,7 +46,7 @@ const NavbarComponent = ({refs}) => {
                 </div>
 
                 <div className="navbar-links">
-                    <a href = "/" > Home </a>
+                    <Link to = "/" > Home </Link>
                     <a onClick = {() => handleScroll(refs.newsRef)}> News </a>
                     <a onClick = {() => handleScroll(refs.releasesRef)}> Releases </a>
                     <Link to = "/Media-Segment-Page"> Media Segments </Link>
@@ -55,8 +55,6 @@ const NavbarComponent = ({refs}) => {
 
                     <div className = "tpa-circle-logo">
                         <img
-                            onLoad={() => setLogoLoaded(true)}
-                            className={!logoLoaded ? "skeleton" : ""}
                             src = {TPACircleLogo}
                         />
                     </div>

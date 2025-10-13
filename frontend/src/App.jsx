@@ -2,18 +2,19 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useRef, useState, useEffect } from "react";
 import React, { Suspense, lazy } from 'react';
 
-import AnimatedLoader from "./Components/AnimatedLoader.jsx";
+import AnimatedLoader from "./Pages/AnimatedLoader.jsx";
 
 const NavbarComponent = lazy (() => import('./Components/NavbarComponent.jsx'));
-const FirstFacade = lazy (() => import('./Components/FirstFacade.jsx'));
-const ReleasesFacade = lazy (() => import('./Components/ReleasesFacade.jsx'));
-const SecondFacade = lazy (() => import('./Components/SecondFacade.jsx'));
-const MediaSegmentsFacade = lazy (() => import('./Components/MediaSegmentsFacade.jsx'));
 const Footer = lazy (() => import('./Components/Footer.jsx'));
 
-const ArticlePage = lazy (() => import('./Components/ArticlePage.jsx'));
-const MediaSegmentPage = lazy (() => import('./Components/MediaSegmentPage.jsx'));
-const NewArticlePage = lazy (() => import('./Components/NewArticlePage.jsx'));
+const FirstFacade = lazy (() => import('./Pages/FirstFacade.jsx'));
+const SecondFacade = lazy (() => import('./Pages/SecondFacade.jsx'));
+const ReleasesFacade = lazy (() => import('./Pages/ReleasesFacade.jsx'));
+const MediaSegmentsFacade = lazy (() => import('./Pages/MediaSegmentsFacade.jsx'));
+
+const ArticlePage = lazy (() => import('./Pages/ArticlePage.jsx'));
+const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
+const NewArticlePage = lazy (() => import('./Pages/NewArticlePage.jsx'));
 
 const App = () => {
   const homeRef = useRef(null);

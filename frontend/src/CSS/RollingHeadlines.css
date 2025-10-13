@@ -19,44 +19,30 @@
     align-items: center;
     align-content: center;
 
-/*
-    display: -webkit-box;                
-    -webkit-box-orient: vertical;        
-    -webkit-line-clamp: 1;               
-    overflow: hidden;                    
-    text-overflow: ellipsis;           
-
- */
-
     background-image: url('/brushed-alum.png');
     background-repeat: repeat;
     background-size: auto;
 
-    border-radius: 15px;
     overflow-x: hidden;
-
 }
 
 .Rolling-Headline a {
-    padding-left: 10px;
-    padding-right: 10px;
-
-    font-size: 15px;
-
-
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
     color: black;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 15px;
 }
 
 .Rolling-Headline img{
     padding-right: 10px;    
     padding-left: 10px;
-    height: 17px;
+    height: 1rem;
 }
-
 
 @keyframes marquee {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* move left half of total length */
+  100% { transform: translateX(-50%); }
 }

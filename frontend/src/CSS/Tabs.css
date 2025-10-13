@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Tabs{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    
+    background-color: #003f69;
+    padding: 1rem 0px;
+
+}
+
+.Tabs a{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: white;
+    text-decoration: none;
+    
+    display: flex;
+    justify-content: center;
+
+    font-size: 1rem;
+    font-weight: 500;    
+
+    padding: 0.5rem;
+    margin-right: 2rem;
+
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    
+    will-change: transform;
+}
+
+.Tabs a:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+}

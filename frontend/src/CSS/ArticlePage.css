@@ -134,13 +134,14 @@ hr{
 }
 
 .Extra-Photos-Container{
-    margin: 0rem 3rem;
+    margin: 1rem 3rem;
 
     overflow-x: hidden;
-    border: 1px solid transparent;
+    border: 3px solid black;
     border-radius: 1.5rem;
 
     background-color: #07273d2c;
+    
 }
 
 .Extra-Photos{
@@ -160,6 +161,7 @@ hr{
     background: #f0f0f0;
     border-radius: 10px;
 
+    background-color: #0077ff57;
     width: 90%;
 }
 
@@ -174,14 +176,17 @@ hr{
 }
 
 .Below-Small-Photos{
-    display: flex;
-    justify-content: center;
-
+    display: grid;
+    grid-template-columns: 7fr 2fr;
+    margin: 2% 5%;
 }
 
 .Article-Body{
-    max-width:80%;
-    padding: 3rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    max-width:90%;
+
 }
 
 .Article-Body p{
@@ -191,7 +196,7 @@ hr{
 
     font-size: 1.5rem;
 
-    padding: 4rem 0rem;
+    padding: 2rem 0rem;
 }
 
 #Read-More{

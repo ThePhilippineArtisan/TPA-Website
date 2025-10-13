@@ -1,0 +1,60 @@
+DATABASE STUFF YOU SHOULD KNOW ABOUT
+
+Name of Database: TPADatabase
+Password: superuser
+Schema: public
+
+// I did not create a custom schema, just did it in "public" schema because "SET search_path TO TPA_Schema, public" doesn't work in rerouting the search path.
+
+Tables/Entities:
+
+- article    // contains all articles
+    => article_id (PK, AI), article_headline (TEXT), article_body (TEXT), article_type (article_type), 
+    => published_At (timestamp without time zone), is_Published (boolean)
+
+- article_media     // contains articles => media (article_id FK => media FK)
+    => article_id (FK, INTEGER), media_id (FK, INTEGER), caption (TEXT), order (SERIAL)
+
+- media     // contains all media/photos/illustration/design/video?
+    => media_id (PK, AI), media_url (text), media_contributor (staff_credit), 
+    => media_altText(text), created_at (timestamp without time zone)
+
+- media_segments // dedicated media segment table for the 7 segments for 7 days of the week
+    => segment_id (PK, AI), segment_type (segment_type),  published_At (timestamp without time zone)
+    => segment_body (text), segment_headline (text)
+
+- staff // contains all staff information
+    => staff_id (PK, AI), staff_first_name (text), staff_middle_name (text), 
+    => staff_last_name (text), staff_pseudonym (text),
+    => staff_bio (text), staff_birthday (date), staff_isActive (boolean),
+    => staff_position (staff_position), staff_display_name (text) 
+
+- staff_article // contains staff => article (staff_id FK => article_id)
+    => id (PK, AI), article_id (FK, AI), staff_id (FK, AI), 
+    => contribution_As (staff_credit), display_name (text),
+    => credit_order (integer)
+    
+Types (for Enumeration)
+
+- article_type (for static pubmat, no need photos)
+    => LOOK, ICYMI, ANNOUNCEMENT, ADVISORY, ALERT,
+    => JUST_IN, WALANG_PASOK, HAPPENING_NOW, LOCAL_NEWS,
+    => UNIVERSITY_NEWS, NATIONAL_NEWS, INTERNATIONAL_NEWS,
+    => DEVELOPING_STORY
+
+- segment_type (7 days segments)
+    => Makata_Monday, Tek_Tuesday, Wankjob_Wednesday,
+    => Tala_Thursday, Feature_Friday, Streaming_Saturday,
+    => Sports_Sunday, Special_Posting (there's also the plural version, don't use).
+
+- staff_credit
+    => writer, photojournalist, design, layout,
+    => video_shooter, video_editor, voice_by,
+    => illustrator
+
+- staff_position
+    => Editor-In-Chief, Associate_Editor, Circulations_Manager,
+    => Managing_Editor, News_Editor, Features_Editor, Literary_Editor,
+    => Sports_Editor, Web_Editor, Graphics_Editor, Multimedia_Editor,
+    => Senior_Staff_Writer/Designer/Illustrator/Photojournalist/Video_Editor/Broadcaster
+    => Junior_Staff_Writer/Designer/Illustrator/Photojournalist/Video_Editor/Broadcaster
