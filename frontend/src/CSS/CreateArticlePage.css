@@ -46,20 +46,22 @@
 
     margin: 5px;
 
-}
-
-.Text-Formatting-Section img{
     height: 30px;
     width: auto;
+
 }
 
 .Text-Formatting-Section img:hover{
     cursor: pointer;
-    background-color: aliceblue;
+    background-color: rgb(195, 222, 247);
 }
 
 select{
     border: 2px solid black;
+}
+
+select:hover{
+    cursor: pointer;
 }
 
 #Article-Type{

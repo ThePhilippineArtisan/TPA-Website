@@ -1,0 +1,79 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.Latest-Media-Segment-Image::before{
+    content: "";
+    position: absolute;
+    
+    background-image: url("../Sample-Photos/Bata.jpg");
+    
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    inset: 0;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+
+.Latest-Media-Segment-Image{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+
+    padding: 3rem;
+    gap: 5rem;
+    z-index: 1;
+}
+
+.Latest-Media-Segment-Image img{
+    max-height: 45rem;
+    max-width: 60rem;
+    object-fit: cover;
+
+    filter: opacity(0.96);
+    border: 3px solid black;
+    border-radius: 20px;
+
+    transition: transform 0.1s ease-in-out;
+}
+
+.Latest-Media-Segment-Image img:hover{
+    transform: scale(1.05);
+    transition: 0.25s;
+    cursor: pointer;
+    box-shadow: 7px 10px rgba(0, 0, 0, 0.267);   
+}
+
+.Latest-MS-Title h1 h3{
+    font-weight: 500;
+    color: white;
+}
+
+.Latest-MS-Title a{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+}
+
+.Latest-MS-Title:hover a{
+    cursor: pointer;
+    color: #74c8ff;
+}
+
+.Latest-Media-Segment-Image a{
+    font-size: 3rem;
+    color: white;
+}
+
+.Latest-Media-Segment-Image h3{
+    padding: 0.5rem;
+    font-size: 1.5rem;
+}

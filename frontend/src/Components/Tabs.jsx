@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import RANDOMIZE from "../assets/Miniature_Icon_Version/random.svg"
+
 import "../CSS/Tabs.css"
 
 const Tabs = () => {
@@ -15,6 +17,7 @@ const Tabs = () => {
         <Link to = "#" title = "Professional Yappers Yapping About Yap"> Features Friday </Link>
         <Link to = "#" title = "Professional Yappers Yapping About Yap"> Streaming Saturday </Link>
         <Link to = "#" title = "May Athletes pa pala tayo bukod kina Pacquiao, Yulo, Eala, at Diaz?"> Sports Sunday </Link>
+        <Link to = "#" title = "Can't figure out what you want? RED FLAG!"> <img src = {RANDOMIZE} style = {{height: "1.5rem"}} /> </Link>
     </div>
 )}
 

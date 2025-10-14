@@ -1,0 +1,110 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.List-of-Media-Segments{
+    overflow-x: visible;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+
+    margin: 1.5rem;
+}
+
+
+#Latest-Weekly-Segments{
+    display: flex;
+    font-size: 2rem;
+    padding-bottom: 1.5rem;
+}
+
+
+.Media-Segment-Card{
+    display: flex;
+    flex-wrap: nowrap;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+    
+    gap: 1rem;
+    padding: 2rem;
+
+    background-color: rgba(1, 52, 100, 0.5);
+    border-radius: 20px;
+
+    scrollbar-gutter: stable;
+    scrollbar-width: thick;
+    scrollbar-color:  #1b5ec4 #034066;
+    scroll-behavior: smooth;
+}
+
+.Media-Segment-Card::-webkit-scrollbar{
+    height: 10px;
+}
+
+.Media-Segment-Card::-webkit-scrollbar-track {
+    background: #ffffff;
+
+    width: 100%;
+}
+
+
+.Media-Segment-Card img{
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 67 / 69; /* 6-7, 67? because it takes two to 69 */
+    max-height: 20rem;
+    max-width: 20rem;
+
+    border: 2px solid black;
+}
+
+.Media-Card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+
+    max-height: 30rem;
+    max-width: 30rem;
+    padding: 1rem;
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+}
+
+.Media-Card p{
+    color: black;
+    font-size: 1.25rem;
+    display: -webkit-box;              
+    -webkit-line-clamp: 3;             
+    -webkit-box-orient: vertical;      
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+}
+
+.Media-Card img{
+    margin: 1rem;
+}
+
+.Media-Card:hover{
+    transform: scale(1.01);
+    z-index: 5;
+
+    filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
+    box-shadow: 7px 7px 7px 7px rgba(0, 0, 0, 0.267);   
+    background: rgba(255, 255, 255);
+
+    transition: 0.25s;
+}
+
+#MMSegment{
+    font-weight: bolder;
+}

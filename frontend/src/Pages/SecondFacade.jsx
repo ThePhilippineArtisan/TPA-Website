@@ -15,9 +15,10 @@ import RollingHeadlines from "../Components/RollingHeadlines.jsx";
 import Tabs from "../Components/Tabs.jsx";
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import VideoShowcase from "../Components/VideoShowcase.jsx";
+import LatestMediaSegment from "../Components/LatestMediaSegment.jsx";
+import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx";
 
 const SecondFacade = () => {
-
     return(
         <div className = "Second-Facade">
             <RollingHeadlines/>
@@ -34,7 +35,7 @@ const SecondFacade = () => {
                 <div className = "Large-News-Boxes">
                 <div className = "Large-Left-News-Column">
                     <Link to = "#" className = "Category" > LATEST ———{`>`}</Link>  
-                    <div className = "Large-Photo-News" onClick = "#" style = {{flexWrap: "wrap"}}> 
+                    <Link to = "/Joseph-Brian-Balut" className = "Large-Photo-News" onClick = "#" style = {{flexWrap: "wrap"}}> 
 
                         <img
                             // style = {{ marginBottom: "1.5rem", width: "85rem",}} style = {{ flexWrap: "wrap", justifyContent: "center"}}
@@ -43,11 +44,11 @@ const SecondFacade = () => {
                         />
 
                         <div className = "Large-News" >
-                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
+                            <div className = "Large-News-Headline">
+                                <a> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </a>
                                 
                                 <div className = "Article-Author-Time">
-                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>  
+                                    <a to = "/" >Cathlene Torrenueva | September 12, 2025</a>  
                                 </div>
                                 <div className = "Vertical-Side-News"><hr id = "Sample-Text-HR"></hr>
                                     <div className = "Sample-Text">
@@ -56,24 +57,21 @@ const SecondFacade = () => {
                                         </p>
                                     </div>
                                 </div>
-                            </Link>
-                        
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 </div>
                 
                 <VerticalFastNews />
 
             </div>
-                    <div className = "Large-Photo-News">
+
+
                         <Link to = "/Latest-News" className = "Category"> LOOK, IN PHOTOS, & HIGHLIGHTS ———{`>`}</Link>
-                    </div>
-
+                        
                     <div className = "Large-Photo-News" onClick = "#"> 
-
                         <img  loading = "lazy"  style = {{height: "20rem", aspectRatio: "16 / 9"}}
-                            // style = {{ marginBottom: "1.5rem", width: "85rem",}} style = {{ flexWrap: "wrap", justifyContent: "center"}}
                             src = {Photo2}
                         />
 
@@ -99,10 +97,19 @@ const SecondFacade = () => {
 
         <VideoShowcase />
 
+
         <div className = "Below-Cover-Photo">
-            <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS <Link to = "#" id = "Category"> ———{`>`} </Link></Link>
+            <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS  ———{`>`} </Link>
+        <div style={{border: "3px solid black"}}>
+            <LatestMediaSegment/>
+        </div>            
+        </div>
             
+        <div className = "Below-Cover-Photo">
+
             <div className = "letterA" style = {{flexDirection: "column"}}>
+                
+                {/** 
                 <div className = "Large-News-Boxes" id = "Media-Segment-Large-Photo">
                     <div className = "Large-Photo-News" onClick = "#" style = {{flexWrap: "wrap"}}>
 
@@ -120,14 +127,9 @@ const SecondFacade = () => {
                             </Link>
                         </div>
                     </div>
-
                 </div>
 
                 <div className = "Horizontal-Headlines" style = {{ gridTemplateAreas: "1fr 1fr 1fr 1fr 1fr 1fr"}}>
-
-                    {
-                        // <Link to = "/Media-Segment/Page"> READ MORE <hr></hr> </Link> //
-                    }
                     
                     <Link to = "/Joseph-Brian-Balut" className = "Horizontal-Side-News" id = "MM">       
                             <img  loading = "lazy" 
@@ -182,8 +184,10 @@ const SecondFacade = () => {
                             <Link to = "/Joseph-Brian-Balut"> Streaming Saturday</Link>
                         </div>
                     </div>
-
                 </div>
+            */}
+
+            <ListOfMediaSegments />
             </div>
         </div>
     </div>

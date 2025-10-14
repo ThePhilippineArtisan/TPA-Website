@@ -17,7 +17,7 @@ const VerticalFastNews = () => {
                     </div>
 
                     <Link to = "/" style = {{fontSize: "1.75rem"}}> FAST NEWS ———{`>`}</Link>
-                    <hr style = {{marginBottom: '0.5rem'}}></hr> 
+                    <hr style = {{marginBottom: '0.5rem', height: "0px"}}></hr> 
                     <div className = "Vertical-Side-News">       
                             <img  loading = "lazy" 
                                 src = {JUSTIN}

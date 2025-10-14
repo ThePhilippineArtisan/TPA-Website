@@ -14,7 +14,7 @@ const MediaSegmentsFacade = lazy (() => import('./Pages/MediaSegmentsFacade.jsx'
 
 const ArticlePage = lazy (() => import('./Pages/ArticlePage.jsx'));
 const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
-const NewArticlePage = lazy (() => import('./Pages/NewArticlePage.jsx'));
+const CreateArticlePage = lazy (() => import('./Pages/CreateArticlePage.jsx'));
 
 const App = () => {
   const homeRef = useRef(null);
@@ -119,7 +119,7 @@ const App = () => {
                   <Suspense>
                   <>
                     <NavbarComponent refs = {scrollRefs} />
-                    <NewArticlePage />
+                    <CreateArticlePage />
                     <Footer />
                   </>
                   </Suspense>

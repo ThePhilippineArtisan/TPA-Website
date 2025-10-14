@@ -33,13 +33,23 @@ app.use(express.json());
 
 
 
-// ROUTES, REST API (For CRUD using HTTP) //
+// ROUTES, REST API (For CRUD using HTTP) for Article Operations//
 
 // Create an article (C)
 
-app.post("/articles", async(req, res) => {
+const slugify = str => str.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "_")
+
+app.post("/article", async(req, res) => {
     try {
-        console.log(req.body);
+        const {
+            article_headline,
+            article_body,
+            article_type,
+            publised_At,
+            is_Published
+        } = req.body;
+
+
     } catch (error) {
         console.error(error.message);
     }
@@ -47,10 +57,84 @@ app.post("/articles", async(req, res) => {
 
 // Get latest articles (R)
 
-app.get
+app.get("/article", async(req, res) => {
+    try { //find a way to only get at most 10 headlines, text, author, first/one image, and graphics responsible 
+        const allArticles = await pool.query("SELECT * FROM article")
+        res.json(allArticles.rows)
+    } catch (error) {
+        console.error(error.message)
+    }
+})
 
 // Get an article (R)
+
+app.get("/article/:id", async (req, res) => {
+    try {
+        console.log(req.params);
+        const { article_id } = req.params;
+        const article = await pool.query("SELECT * FROM staff WHERE article = $1", [article_id]) 
+    } catch (error) {
+        console.error(error.message)
+    }
+})
 
 // Update/Edit an article (U)
 
 // Delete an article (D)
+
+
+
+
+
+
+
+// ROUTES, REST API (For CRUD using HTTP) for STAFFER Operations//
+
+// Create staff (C)
+
+app.post("/staff", async(req, res) => {
+    try {
+        console.log(req.body);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// Get active staff (R)
+
+app.get("/staff", async(req, res) => {
+    try { //find a way to only get at first only the active ones
+        const allStaff = await pool.query("SELECT * FROM staff")
+        res.json(allStaff.rows)
+    } catch (error) {
+        console.error(error.message)
+    }
+})
+
+// Get a staff (R)
+
+app.get("/staff/:id", async (req, res) => {
+    try {
+        console.log(req.params);
+        const { id } = req.params;
+        const staff = await pool.query("SELECT * FROM staff WHERE staff_id = $1", [id]) 
+        res.json(staff.rows[0])
+    } catch (error) {
+        console.error(error.message)
+    }
+})
+
+// Update/Edit a staff (U)
+
+// Delete a staff (D)
+
+app.delete("/staff/:id", async (req, res) => {
+    try {
+        console.log(req.params);
+        const { id } = req.params;
+        const deleteStaff = await pool.query("DELETE FROM staff WHERE staff_id = $1", [id]) 
+        res.json(staff.rows[0])
+    } catch (error) {
+        console.error(error.message)
+    }
+})

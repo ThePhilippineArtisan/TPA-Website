@@ -69,7 +69,6 @@ a:hover{
     flex-direction: column;
     justify-content: space-around;
 
-    padding: 2% 3%;
 }
 
 .letterA{
@@ -128,6 +127,8 @@ a:hover{
 }
 
 .Category {
+    display: flex;
+    align-self: center;
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: rgb(0, 0, 0);
     text-decoration: none;
@@ -157,9 +158,12 @@ a:hover{
     flex-direction: row;
     align-items: center;
     overflow: hidden;
+    
+    text-decoration: none;
 
     justify-content: center;
     gap: 1rem;
+    margin: 0rem 1rem;
 }
 
 .Large-Photo-News img{
