@@ -19,3 +19,9 @@
     font-size: 2rem;
     padding-bottom: 1.5rem;
 }
+
+.Media-Segment-Grid{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}

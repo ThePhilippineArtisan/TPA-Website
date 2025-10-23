@@ -1,0 +1,100 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Latest-Articles{
+    padding: 2rem;
+    padding-bottom: 0rem;
+    display: flex;
+}
+
+.Latest-Articles h1{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: black;
+    text-decoration: none;
+
+    font-size: 2.5rem;
+}
+
+.Day-Articles{
+    display: flex;
+
+    margin: 1% 0%;
+}
+
+.Three-Article-Column{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+    padding: 0rem 3rem;
+}
+
+.Individual-Article{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0.5rem;
+
+    background-color: #35aeff25;
+    padding: 3rem;
+
+    border-radius: 20px;
+
+    width: 32rem;
+}
+
+.Individual-Article:hover{
+    background-color: #ffffff;
+
+}
+
+.Individual-Article img{
+    width: 32rem;
+
+    aspect-ratio: 16 / 9;
+
+    object-fit: cover;
+    object-position: center;
+
+    border: 2px solid black;
+    border-radius: 20px;
+    
+    transition: object-position 0.3s, transform 0.3s ;
+    cursor: pointer;
+}
+
+.Individual-Article img:hover{
+    object-position: 90% 90%;    
+}
+
+.Individual-Article{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: none;
+
+    padding: 1rem;
+}
+
+.Large-News-Headline a{
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    color: black;
+    font-weight: bolder;
+    text-decoration: none;
+
+    font-size: 1.5rem;
+
+    display: -webkit-box;              
+    -webkit-line-clamp: 3;             
+    -webkit-box-orient: vertical;      
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+}

@@ -5,29 +5,26 @@
 }
 
 .DBFF-Headline h1{
-    
-    padding: 2rem;
-    padding-top: 5rem;
-    padding-bottom: 3rem;
-    padding-left: 1.5rem;
-
+    display: flex;
+    justify-content: center;
 
     font-family:  'Inter', sans-serif; 
     font-weight: bolder;
-    color: transparent; /* Set the desired text color */
+    color: transparent;
     text-shadow:
     
-    -1px -1px 0 white,  /* Top-left shadow */
-    2px -1px 0 black,   /* Top-right shadow */
-    -2px 1px 0 black,   /* Bottom-left shadow */
-    2px 1px 0 white;    /* Bottom-right shadow */
+    -1px -1px 0 white,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 white;
 
+    padding-bottom: 5rem;
 }
 
 .DBFF-Headline h1 {
   opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 2s ease-out forwards;
+  transform: translateY(50px);
+  animation: fadeUp 1s ease-out forwards;
 }
 
 @keyframes fadeUp {
@@ -37,20 +34,26 @@
   }
 }
 
+.DBFF-Headline{
+    height: 70vh;
+
+    padding: 0rem 5rem;
+}
+
 .DBFF-Top-Paragraph h2{
+    padding: 1rem 0rem;
+
     font-weight: 500;
-
-    padding: 2rem;
     
-
     font-family:  'Inter', sans-serif;
     color: #D3CFCF;
 
-    align-items: left;
     flex-wrap: wrap;
 
     text-shadow: 1px 2px 4px black;
-
+    
+    transform: translateY(20px);
+    animation: fadeUp 2s ease-out forwards;
 }
 
 .DBFF-Top-Paragraph a{
@@ -63,26 +66,11 @@
     margin: 0 auto;
 }
 
-
-.First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
+.First-BG-First-Facade{ 
     background-color: #23343F;
-    width: 100%;
-
-    padding-top: 7vh;
-    padding-bottom: 7vh;
     
-    background-image: 
-        url('/Tek1.png'),
-        url('/Tek-Megaphone.svg'),
-        url('/always-grey.png');
-    background-repeat: no-repeat, no-repeat, repeat;
-    background-size: 150px, 150px, auto;
-    
-    background-blend-mode: hard-light;
-    background-position-x: 100%, 0;
-    background-position-y: 103%, 55%;    
-
+    background-image: url('/3px-tile.png');
+    background-repeat: repeat;
 }
 
 .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
@@ -107,8 +95,8 @@
 
 .Cards{
     display: flex;
-    justify-content: space-evenly;
-    width: 100%;
+    justify-content: space-between;
+    width: 100vw;
 
     position: relative;
     
@@ -124,18 +112,23 @@
     transform: translateX(20px);
     animation: fadeLeft 3s ease-out forwards;
 
+    padding: 3rem;
+
 }
 
 .Card-Images img{    
     height: 8rem;
     filter: drop-shadow(15px 10px 10px rgb(49, 49, 49));
+    transform: rotate(3deg);
+    
 }
 
 .Card-Images img:hover{
     transition: 0.2s;
     transform: scale(1.05);
     cursor: pointer;
-
+    
+    transform: rotate(10deg);
     z-index: 10;
 }
 
@@ -153,11 +146,86 @@
 iframe{
     width: 45rem;
     height: auto;
-    aspect-ratio: 16 / 9;   
+    aspect-ratio: 16 / 9;
+    opacity: 0;
+    transform: translateX(20px);
+    animation: fadeLeft 3s ease-out forwards;
 }
 
 #iframes{
     padding-top: 15rem;
+}
+
+.Slide-Navigation{
+    display: flex;
+    justify-content: center;
+
+    align-content: flex-end;
+
+    gap: 2rem;
+    filter: invert(1);
+}
+
+.Slide-Navigation img {
+    height: 5rem;
+    z-index: 3;
+}
+
+.SlideWrapper {
+    will-change: transform, opacity;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.SlideWrapper.enter.next {
+  animation: tumbleInRight 0.6s ease forwards;
+}
+
+.SlideWrapper.enter.prev {
+  animation: tumbleInLeft 0.6s ease forwards;
+}
+
+@keyframes tumbleOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes tumbleOutLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes tumbleInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tumbleInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /*
@@ -262,42 +330,23 @@ iframe{
         .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
 
         background-color: #23343F;
-        width: 100%;
 
-        padding-top: 7vh;
-        padding-bottom: 7vh;
+        padding-top: 5rem 0rem;
         
         background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 25rem, 30rem, 5rem;
+            url('/3px-tile.png');
+        background-repeat:repeat;
         
-        background-blend-mode:soft-light;
-        background-position-x: 105%, 0;
-        background-position-y: 115%, 95%, 0%;    
     }
 
     .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
 
         background-color: #2a4e66;
 
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
+        background-image:
             url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 35rem, 30rem, 9.5rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 105%, -7%, 0%;
-        background-position-y: 120%, 120%, 0%;    
+        background-repeat: repeat;
+        background-size: 10rem;
     }
 
     .Cards{
@@ -307,12 +356,12 @@ iframe{
     }
 
     .DBFF-Top-Paragraph h2{
-        font-size: 2rem;
+        font-size: 1.5rem;
         
     }
 
     .DBFF-Headline h1{
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
     
     .Card-Images{        
@@ -333,18 +382,11 @@ iframe{
     }
     
     iframe{
-
-    width: 66rem;
+    width: 55rem;
     height: auto;
     aspect-ratio: 16 / 9;
-        
-
     }
 
-    #iframes{
-        padding-top: 0.1rem;
-        padding-bottom: 5rem;
-    }
 }
 
 @media (max-width: 1440px) {
@@ -713,197 +755,3 @@ iframe{
         height: 200px;
     }
 }
-
-/*
-.DBFF-Left-Side{
-    width: 40%;
-}
-
-.DBFF-Right-Side{
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    margin-left: 3em;
-    margin-top: 2em;
-
-    padding-left: 3em;
-    transition: transform 0.4s ease, opacity 0.4 ease;
-    overflow: hidden;
-
-}
-
-.Navigate-Carousel{
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-
-}
-
-.Navigate-Carousel button{
-
-    height: 20px;
-    width: 100px;
-
-    padding: 10px;
-    border-radius: 30px;
-
-}
-
-
-.DBFF-Headline h1{
-    padding: 20px;
-    padding-top: 175px;
-    padding-left: 35px;
-
-    font-family:  'Inter', sans-serif; 
-    font-weight: bolder;
-    color: white;
-
-    text-shadow: 3px 3px 6px black;
-
-}
-
-.DBFF-Top-Paragraph h2{
-    font-weight: 400;
-    padding: 25px;
-    
-    font-family:  'Inter', sans-serif;
-    color: #D3CFCF;
-
-    align-items: left;
-    flex-wrap: wrap;
-
-    text-shadow: 2px 2px 4px black;
-}
-
-.DBFF-Top-Paragraph span{
-    padding-bottom: 30px;
-
-}
-
-.DBFF-Bottom-Paragraph h4{
-    font-size: 1.5em;
-    font-weight: 400;
-    padding: 25px;
-
-    padding-bottom: 10em;
-    
-    font-family:  'Inter', sans-serif;
-    color: #D3CFCF;
-
-    justify-content: flex-end;
-    align-items: flex-start;
-    flex-wrap: wrap;
-}
-
-.DBFF-Bottom-Paragraph span{
-    padding-top: 30px;
-
-}
-
-.Small-Prev-Image-Showcase{
-
-    font-size: 1em;
-    width: 50em;
-    margin-left: 50px;
-    margin-top: 75px;
-    margin: 20px;
-    padding-top: 5em;
-    padding-bottom: 5em;
-    padding-left: 1em;
-
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    overflow: hidden;
-    min-height: 250px;
-
-}
-
-
-.Small-Prev-Image-Showcase img{
-    height: 200px;
-}
-
-.Small-Prev-Image-Showcase h4{
-    color: #D3CFCF;
-    padding-left: 20px;    
-    font-family:  'Inter', sans-serif; 
-
-}
-
-.Small-Prev-Image-Showcase span{
-    padding-bottom: 30px;
-}
-
-.First-Facade-Image-Showcase{
-    width: 90%;
-
-
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-}
-
-.First-Facade-Image-Showcase img{
-    height: 90em;
-    padding: 30px;
-
-}
-
-
-
-
-
-
-
-.First-Facade-Image-Showcase.transitioning {
-  animation: slideOut 0.3s ease-in-out;
-}
-
-.Small-Prev-Image-Showcase.transitioning {
-  animation: slideIn 0.3s ease-in-out;
-}
-
-.slide-out{
-    animation: slideOut 0.4s ease forwards;
-}
-
-@keyframes slideOut{
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    to {
-        transform: translateX(-50%);
-        opacity: 0;
-    }
-}
-
-.slide-in {
-    animation: slideIn 0.4s ease forwards;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-*/

@@ -12,13 +12,34 @@
     margin: 1.5rem;
 }
 
-
 #Latest-Weekly-Segments{
     display: flex;
     font-size: 2rem;
     padding-bottom: 1.5rem;
 }
 
+.List-Of-MS-Card{
+    background-color: rgba(245, 245, 245, 0.5);
+    text-align: center;
+
+    border-radius: 10px;
+    padding: 1rem;
+
+    text-decoration: none;
+
+    color: black;
+}
+
+.List-Of-MS-Card img{
+    padding: 1rem;
+}
+
+.List-Of-MS-Card:hover{
+    background-color: rgba(245, 245, 245, 0.75);
+    transition: 0.25s;
+    transform: scale(1.05);
+    z-index: 3;
+}
 
 .Media-Segment-Card{
     display: flex;
@@ -29,9 +50,9 @@
     
     gap: 1rem;
     padding: 2rem;
+    border-radius: 10px;
 
     background-color: rgba(1, 52, 100, 0.5);
-    border-radius: 20px;
 
     scrollbar-gutter: stable;
     scrollbar-width: thick;
@@ -49,15 +70,12 @@
     width: 100%;
 }
 
-
 .Media-Segment-Card img{
     object-fit: cover;
     object-position: center;
-    aspect-ratio: 67 / 69; /* 6-7, 67? because it takes two to 69 */
     max-height: 20rem;
-    max-width: 20rem;
 
-    border: 2px solid black;
+    border-radius: 10px;
 }
 
 .Media-Card{
@@ -67,14 +85,17 @@
     text-align: center;
     justify-content: space-between;
 
-    max-height: 30rem;
-    max-width: 30rem;
+    max-height: 20rem;
+    min-height: 20rem;
+    max-width: 20rem;
+    min-width: 20rem;
     padding: 1rem;
     border-radius: 10px;
 
     background: rgba(255, 255, 255, 0.75);
     text-decoration: none;
 }
+
 
 .Media-Card p{
     color: black;
@@ -92,6 +113,7 @@
 
 .Media-Card img{
     margin: 1rem;
+    height: 10rem;
 }
 
 .Media-Card:hover{

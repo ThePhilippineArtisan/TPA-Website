@@ -15,6 +15,7 @@ const MediaSegmentsFacade = lazy (() => import('./Pages/MediaSegmentsFacade.jsx'
 const ArticlePage = lazy (() => import('./Pages/ArticlePage.jsx'));
 const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
 const CreateArticlePage = lazy (() => import('./Pages/CreateArticlePage.jsx'));
+const LatestArticle = lazy (() => import('./Pages/LatestArticles.jsx'));
 
 const App = () => {
   const homeRef = useRef(null);
@@ -33,7 +34,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app-wrapper" style = {{backgroundColor: '#e2e2e26c', scrollBehavior: 'smooth'}}>
+    <div className="app-wrapper" style = {{scrollBehavior: 'smooth', backgroundColor: "white"}} >
     {loading ? (
       <AnimatedLoader />
     ) : (
@@ -49,17 +50,18 @@ const App = () => {
                     <section ref={homeRef}>
                     </section>
 
+                    <section>
+                      <suspense  >
+                      <FirstFacade />
+                      </suspense>
+                    </section>
+
                     <section ref={newsRef}>
                     <Suspense  >
                       <SecondFacade />
                     </Suspense>
                     </section>
 
-                    <section>
-                      <suspense  >
-                      <FirstFacade />
-                      </suspense>
-                    </section>
 
                     <section ref={releasesRef}>
                     <Suspense  >
@@ -82,6 +84,19 @@ const App = () => {
                   <>
                     <NavbarComponent refs={scrollRefs} />
                     <ArticlePage />
+                    <Footer />
+                  </>
+                  </Suspense>
+                }
+              />
+
+              <Route 
+                path = "/LatestArticles"
+                element = {
+                  <Suspense>
+                  <>
+                    <NavbarComponent refs={scrollRefs} />
+                    <LatestArticle />
                     <Footer />
                   </>
                   </Suspense>

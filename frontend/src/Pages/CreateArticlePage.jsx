@@ -1,4 +1,5 @@
-import { useState, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
+
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
 import EMDASH from "../assets/Miniature_Icon_Version/EmDash.svg"
@@ -10,11 +11,35 @@ import NUMBERED from "../assets/Miniature_Icon_Version/Numbered.svg"
 import REFERENCE from "../assets/Miniature_Icon_Version/reference.svg"
 import ATTACH from "../assets/Miniature_Icon_Version/Attach-File.svg"
 
+import Author from "../assets/Miniature_Icon_Version/Author.svg"
+import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
+
 import "../CSS/CreateArticlePage.css"
 
 const CreateArticlePage = () => {
+    const dialogRef = useRef(null)
+
+    const openDialog = () => dialogRef.current.showModal()
+    const closeDialog = () => dialogRef.current.close()
+
+    const [staffList, setStaffList] = useState([]);
+    const [selectedAuthor, setSelectedAuthor] = useState([])
+
+    useEffect(() =>{
+        fetch("http://localhost:5000/staff")
+            .then((res) => res.json())
+            .then((data) => setStaffList(data))
+            .catch((err) => console.error("Failed to fetch staff: ", err))
+    }, []);
+
+    const toggleAuthor = (id) => {
+        setSelectedAuthor((prev) =>
+        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        )
+    }
 
     return(
+        
         <div className = "Entire-Page">
             <div className = "Editor-Rectangle">
 
@@ -62,6 +87,41 @@ const CreateArticlePage = () => {
                             style = {{cursor: "pointer" }} 
                         />
                     </label>
+                
+                    <img 
+                        src = {Author}
+                        alt = "Select Author/s"
+                        onClick = {openDialog}
+                    />
+
+                    <dialog ref = {dialogRef} className = "staff-dialog">
+                        <div className = "Dialog-Box">
+                            <h1> Select Authors </h1>
+                            <div className = "Staffer-Box"> 
+                                <div className = "Staffer-List">
+                                    {staffList.map((staff) => (
+                                        <label key = {staff.staff_id} className = "staff-item">
+                                            <input
+                                                type = "checkbox"
+                                                checked = {selectedAuthor.includes(staff.staff_id)}
+                                                onChange = {() => toggleAuthor(staff.staff_id)}
+                                            />
+                                            <bold id = "staff-name"> {staff.staff_display_name} </bold>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                            <button onClick = {closeDialog}> Done </button>
+                    </dialog>
+
+                    <img 
+                        src = {MediaProvider}
+                        alt = "Select Media Provider/s"
+                    />
 
                     <input 
                         id = "file-upload"
@@ -71,50 +131,28 @@ const CreateArticlePage = () => {
                         onChange = {(e) => console.log(e.target.files)} 
                     />
 
-                    <select name = "Article-Type[]" id = "Article-Type">
-                        <option value = "LOOK"> Select Author </option>
-                        <option value = "LOOK"> LOOK </option>
-                        <option value = "ICYMI"> ICYMI </option>
-                        <option value = "ANNOUNCEMENT"> ANNOUNCEMENT </option>
-                        <option value = "ADVISORY"> ADVISORY </option>    
-                        <option value = "ALERT"> ALERT </option>
-                        <option value = "JUST_IN"> JUST IN </option>
-                        <option value = "UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
-                        <option value = "NATIONAL_NEWS"> NATIONAL NEWS</option>
-                        <option value = "INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
-                        <option value = "DEVELOPING_STORY"> DEVELOPING STORY </option>
-                    </select> 
-
-                    <select name = "Article-Type" id = "Article-Type">
-                        <option value = "LOOK"> Select Media </option>
-                        <option value = "LOOK"> LOOK </option>
-                        <option value = "ICYMI"> ICYMI </option>
-                        <option value = "ANNOUNCEMENT"> ANNOUNCEMENT </option>
-                        <option value = "ADVISORY"> ADVISORY </option>    
-                        <option value = "ALERT"> ALERT </option>
-                        <option value = "JUST_IN"> JUST IN </option>
-                        <option value = "UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
-                        <option value = "NATIONAL_NEWS"> NATIONAL NEWS</option>
-                        <option value = "INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
-                        <option value = "DEVELOPING_STORY"> DEVELOPING STORY </option>
-                    </select> 
 
                 </div>
 
                 <div className = "Text-Area">
-                    <textarea 
-                        placeholder = "Enter your new article headline here.                                                                                              (Follow/Subscribe/Add @AvoirJoseph)"
+                    <input
+                        type = "text"
+                        placeholder = "Enter your new article headline here.                                                                    (Follow/Subscribe/Add @AvoirJoseph)"
                         id = "headline-text"
-                    >
-                    </textarea>
+                        className = "headline-input"
+                    />
 
-
-                    <textarea 
-                        placeholder = "Enter your new article here."
+                    <div
+                        contentEditable = {true}
+                        suppressContentEditableWarning = {true}
                         id = "body-text"
-                    > 
-                    </textarea>
-                </div>
+                        className = "headline-input">
+
+                        </div>
+
+                    Enter your new article here.
+
+               </div>
 
             </div>
 
@@ -126,39 +164,3 @@ const CreateArticlePage = () => {
 }
 
 export default CreateArticlePage;
-
-{/**
-    const [text, setText] = useState("")
-    const textareaRef = useRef(null)
-
-    const insertAtCursor = (insertText) => {
-        const textarea = textareaRef.current
-        const start = textarea.selectionStart
-        const end = textarea.selectionEnd
-
-        const newText = 
-            text.substring(0, start) + insertText + text.substring(end, text.length)
-        
-        setText(newText)
-        
-        setTimeout(() => {
-            textarea.selectionStart = textarea.selectionEnd = start + insertText.length
-            textarea.focus()
-        }, 0)
-    }
- 
-    
-                    ref = {textareaRef} 
-                    value = {text}
-                    onChange = {(e) => setText(e.target.value)}
-
-
-
-                    <button onClick = {() => insertAtCursor ("<b>")}> <b> Bold </b>  
-                    <button onClick = {() => insertAtCursor ("<i>")}> <i> Italic </i>  
-                    
-                    <input type = "file"/> 
-
-                    <button> Submit  
-
-*/}

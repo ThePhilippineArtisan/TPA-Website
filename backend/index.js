@@ -40,18 +40,48 @@ app.use(express.json());
 const slugify = str => str.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "_")
 
 app.post("/article", async(req, res) => {
+    const client = await pool.connect(); // begin the thing, await for everything to be done first
     try {
         const {
             article_headline,
             article_body,
             article_type,
-            publised_At,
-            is_Published
         } = req.body;
 
+        const slug_headline = slugify(article_headline)
+
+        await client.query("BEGIN"); // starts the transaction
+
+        // Create the article
+        const newArticle = await client.query(
+            `INSERT INTO article (article_headline, article_body, article_type, slug_headline)
+            VALUES ($1, $2, $3, $4) RETURNING *`, [article_headline, article_body, article_type, slug_headline]
+        );
+
+        const article = newArticle.rows[0]
+
+        // Add contributors
+        for(const credit of staff_credits){ // create object "credit" having traits of "credit"
+            const{
+                staff_id,
+                contribution_As,
+                display_name
+            } = credit;
+
+            await client.query(
+                `INSERT INTO staff_article(
+                article_id, staff_id, contribution_As, display_name
+                ) VALUES ($1, $2, $3, $4)`, [article.article_id, staff_id, contribution_As, display_name]
+            )
+        }
+
+        res
+            .status(201)
+            .location(`/article/${article.article_id}/${article.slug_headline}`)
+            .json(article);
 
     } catch (error) {
-        console.error(error.message);
+        console.error("Error creating article: ", error.message);
     }
 })
 
@@ -68,11 +98,21 @@ app.get("/article", async(req, res) => {
 
 // Get an article (R)
 
-app.get("/article/:id", async (req, res) => {
+app.get("/article/:id/:slug", async (req, res) => {
     try {
-        console.log(req.params);
-        const { article_id } = req.params;
-        const article = await pool.query("SELECT * FROM staff WHERE article = $1", [article_id]) 
+        const { id, slug } = req.params;
+
+        const result = await pool.query(
+            "SELECT * FROM article WHERE article_id = $1", [id]);
+        
+        const article = result.rows[0];
+
+        if(!article) {
+            return res.status(404).json({error: "Article not found"});
+        }
+
+        res.json(article)
+
     } catch (error) {
         console.error(error.message)
     }

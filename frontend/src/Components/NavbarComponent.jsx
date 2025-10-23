@@ -29,7 +29,6 @@ const NavbarComponent = ({refs}) => {
         //      const [circleLoaded, setCircleLoaded] = useState(false);
 
         return(
-            
             <div className = "navbar-box">
                 <div className = "tpa-logo">
 
@@ -50,7 +49,6 @@ const NavbarComponent = ({refs}) => {
                     <a onClick = {() => handleScroll(refs.newsRef)}> News </a>
                     <a onClick = {() => handleScroll(refs.releasesRef)}> Releases </a>
                     <Link to = "/Media-Segment-Page"> Media Segments </Link>
-                    <a onClick = "#" > About </a>
                 </div>
 
                     <div className = "tpa-circle-logo">
