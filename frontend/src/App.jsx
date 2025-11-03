@@ -13,6 +13,7 @@ const ReleasesFacade = lazy (() => import('./Pages/ReleasesFacade.jsx'));
 const MediaSegmentsFacade = lazy (() => import('./Pages/MediaSegmentsFacade.jsx'));
 
 const ArticlePage = lazy (() => import('./Pages/ArticlePage.jsx'));
+const AboutPage = lazy (() => import('./Pages/AboutPage.jsx'));
 const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
 const CreateArticlePage = lazy (() => import('./Pages/CreateArticlePage.jsx'));
 const LatestArticle = lazy (() => import('./Pages/LatestArticles.jsx'));
@@ -122,6 +123,7 @@ const App = () => {
                   <Suspense>
                   <>
                     <NavbarComponent refs={scrollRefs} />
+                    <AboutPage />
                     <Footer/>
                   </>
                   </Suspense>

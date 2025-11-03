@@ -1,0 +1,66 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.About-Page{
+}
+
+.First-Part{
+    background-color: rgba(0, 7, 17, 0.932);
+    background-image: url("/notebook-dark.png");
+    color: whitesmoke;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 2rem;
+}
+
+.Slide-Navigation{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+
+    align-content: flex-end;
+
+    gap: 2rem;
+    filter: invert(1);
+}
+
+.Slide-Navigation img {
+    height: 5rem;
+    z-index: 3;
+}
+
+.Slide-Navigation:hover{
+    cursor: pointer;
+}
+
+#TPAWTurno{
+    align-self: center;
+    width: 45rem;
+    padding: 5rem;
+
+}
+
+.First-Part-Text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.First-Part-Text li{
+    display: flex;
+    align-items: center;
+
+    padding: 1rem;
+    font-size: 1.25rem;
+}
+
+.Releases-Part{
+    background-color: rgb(0, 20, 48, 0.932);
+    background-image: url("/notebook-dark.png");
+}

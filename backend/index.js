@@ -37,7 +37,7 @@ app.use(express.json());
 
 // Create an article (C)
 
-const slugify = str => str.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "_")
+const slugify = str => str.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "-")
 
 app.post("/article", async(req, res) => {
     const client = await pool.connect(); // begin the thing, await for everything to be done first
