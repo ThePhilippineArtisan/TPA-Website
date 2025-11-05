@@ -48,27 +48,27 @@ const FirstFacade = () => {
     const [direction, setDirection] = useState("next");
 
     const handleSlideChange = (dir) => {
-    setDirection(dir);
-    const slide = document.querySelector(".SlideWrapper");
+        setDirection(dir);
+        const slide = document.querySelector(".SlideWrapper");
 
-    slide.classList.add("pending", dir);
-
-    setTimeout(() => {
-        slide.classList.remove("pending", dir);
-
-        setActiveIndex((i) =>
-        dir === "next"
-            ? (i + 1) % slides.length
-            : (i - 1 + slides.length) % slides.length
-        );
-
-        const newSlide = document.querySelector(".SlideWrapper");
-        newSlide.classList.add("enter", dir);
+        slide.classList.add("pending", dir);
 
         setTimeout(() => {
-        newSlide.classList.remove("enter", dir);
+            slide.classList.remove("pending", dir);
+
+            setActiveIndex((i) =>
+            dir === "next"
+                ? (i + 1) % slides.length // if dir is next, move on
+                : ((i - 1) % slides.length + slides.length) % slides.length // if dir is prev, move back
+            );
+
+            const newSlide = document.querySelector(".SlideWrapper");
+            newSlide.classList.add("enter", dir);
+
+            setTimeout(() => {
+            newSlide.classList.remove("enter", dir);
+            }, 600); 
         }, 600); 
-    }, 600); 
     };
 
     const handleNext = () => handleSlideChange("next");

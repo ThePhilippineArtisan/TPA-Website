@@ -4,12 +4,17 @@
 
 }
 
+a{
+    text-decoration: none;
+    color: black;
+}
+
 a:hover{
     color: #0265A9;
 }
 
 .Second-Facade{
-    background-color: #9edcff5b;
+    background-color: #9edbff50;
 }
 
 .Cover-Photo-Image-Facade{
@@ -37,7 +42,6 @@ a:hover{
 
 
 .SearchBar{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: black;
     text-decoration: none;
 
@@ -133,7 +137,6 @@ a:hover{
 .Category {
     display: flex;
     align-self: center;
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-weight: bolder;
@@ -200,7 +203,6 @@ a:hover{
 }
 
 .Large-News-Headline a{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: black;
     font-weight: bolder;
     text-decoration: none;
@@ -224,7 +226,6 @@ a:hover{
 
 
 .Sample-Text p{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
     color:#414141;
     
@@ -260,8 +261,18 @@ hr{
     background-color: #0265A9;
 
     height: 2rem;
-    width: 4px;
+    width: 0.25rem;
     margin: 0rem 0.5rem;
+}
+
+#Horizontal-Line{
+    display: flex;
+    justify-content: flex-end;
+    height: 0rem;
+    margin: 0rem;
+    rotate: 90deg;
+
+    z-index: 2
 }
 
 .Vertical-Side-News{
@@ -282,13 +293,107 @@ hr{
 }
 
 .Article-Author-Time a{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: black;
 
     font-size: 1rem;
     font-weight: 500;
     display: -webkit-box;              
     -webkit-line-clamp: 1;             
+    -webkit-box-orient: vertical;      
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+}
+
+.Three-Column-Wrapper{
+    display: flex;
+    justify-self: center;
+    padding: 3rem;
+}
+
+.Three-Columns{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+}
+
+.Column{
+    display: flex;
+    flex-direction: column;
+    
+    text-decoration: none;
+    overflow: hidden;
+
+    justify-content: space-around;
+    padding: 0.5rem;
+
+    width: 37rem;
+
+    border-top: 3px black solid;
+    border-left: 1px black solid;
+    border-right: 1px black solid;
+}
+
+.Column:first-child{
+    border-left: 3px black solid;
+    border-top-left-radius: 2rem;
+}
+
+.Column:last-child{
+    border-right: 3px black solid;
+    border-top-right-radius: 2rem;
+}
+
+.Large-Column-News a{
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 1rem;
+
+    display: -webkit-box;              
+    -webkit-line-clamp: 3;             
+    -webkit-box-orient: vertical;      
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+}
+
+.Large-Column-News img{
+    border-radius: 1rem;
+    width: 35rem;
+
+    aspect-ratio: 16 / 9;
+
+    object-fit: cover;
+    object-position: 90% 90%;    
+
+    padding-bottom: 1rem;
+    
+    cursor: pointer;
+}
+
+.Small-Column-News{
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background-color: #ffffff75;
+}
+
+.Small-Column-News a{
+    font-size: 1rem;
+    padding-left: 5px;
+
+    display: -webkit-box;              
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;      
     overflow: hidden;                  
     text-overflow: ellipsis;           

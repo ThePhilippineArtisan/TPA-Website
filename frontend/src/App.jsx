@@ -34,47 +34,33 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  if (loading) return <AnimatedLoader />;
+
   return (
     <div className="app-wrapper" style = {{scrollBehavior: 'smooth', backgroundColor: "white"}} >
-    {loading ? (
-      <AnimatedLoader />
-    ) : (
         <Router>
-          <Suspense>
+          <Suspense fallback = {<AnimatedLoader />}>
             <Routes>
               <Route
                 path = "/"
                 element = {
-                  <Suspense>
                   <>
                     <NavbarComponent refs={scrollRefs} />
                     <section ref={homeRef}>
-                    </section>
-
-                    <section>
-                      <suspense  >
                       <FirstFacade />
-                      </suspense>
                     </section>
 
                     <section ref={newsRef}>
-                    <Suspense  >
                       <SecondFacade />
-                    </Suspense>
                     </section>
-
 
                     <section ref={releasesRef}>
-                    <Suspense  >
                       <ReleasesFacade />
-                    </Suspense>
                     </section>
                     
-                    <Suspense  >
                     <Footer />
-                    </Suspense>
+                    
                   </>
-                  </Suspense>
                 }
               />
 
@@ -147,7 +133,6 @@ const App = () => {
           </Routes>
         </Suspense>
         </Router>
-      )}
     </div>
   );
 };

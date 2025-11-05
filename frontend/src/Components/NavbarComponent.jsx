@@ -29,6 +29,7 @@ const NavbarComponent = ({refs}) => {
         //      const [circleLoaded, setCircleLoaded] = useState(false);
 
         return(
+            <div style = {{marginTop: '8.25rem'}}>
             <div className = "navbar-box">
                 <div className = "tpa-logo">
 
@@ -51,11 +52,12 @@ const NavbarComponent = ({refs}) => {
                     <Link to = "/Media-Segment-Page"> Media Segments </Link>
                 </div>
 
-                    <div className = "tpa-circle-logo">
+                    <Link to = "/About" className = "tpa-circle-logo">
                         <img
                             src = {TPACircleLogo}
                         />
-                    </div>
+                    </Link>
+            </div>
             </div>
         )
 }

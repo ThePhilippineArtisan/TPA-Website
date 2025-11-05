@@ -82,11 +82,11 @@
 
 .Large-News-Headline a{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    color: black;
+    color: rgb(0, 0, 0);
     font-weight: bolder;
     text-decoration: none;
 
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 
     display: -webkit-box;              
     -webkit-line-clamp: 3;             
@@ -97,4 +97,10 @@
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
+}
+
+.Article-Author-Time a{
+    color: rgb(51, 51, 51);
+    font-size: 1rem;
+    font-weight: bold;
 }
