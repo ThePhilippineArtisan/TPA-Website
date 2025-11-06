@@ -7,7 +7,7 @@ import "../CSS/Tabs.css"
 const Tabs = () => {
     return(
     <div className = "Tabs">
-        <Link to = "#"> Latest </Link>
+        <Link to = "/Latest-News"> Latest </Link>
         <Link to = "#"> Opinion </Link>
         <Link to = "#"> Editorial </Link>
         <Link to = "#" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>

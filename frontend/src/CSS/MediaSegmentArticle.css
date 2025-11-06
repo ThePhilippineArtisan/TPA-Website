@@ -1,0 +1,109 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Media-Segment-Article-Page{
+    background-color: whitesmoke;
+    background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff11 100%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+}
+
+.Latest-Media-Segment-Image::before{
+    content: "";
+    position: absolute;
+    
+    background-image: url("../Sample-Photos/Bata.jpg");
+    
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    inset: 0;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+
+.Latest-Media-Segment-Image{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    text-decoration: none;
+
+    border: 3px black solid;
+    border-radius: 1rem;
+    padding: 3rem;
+    gap: 5rem;
+    z-index: 1;
+}
+
+.Latest-Media-Segment-Image img{
+    max-height: 45rem;
+    max-width: 60rem;
+    object-fit: cover;
+
+    filter: opacity(0.96);
+    border: 3px solid black;
+    border-radius: 20px;
+
+    transition: transform 0.1s ease-in-out;
+}
+
+.Latest-Media-Segment-Image img:hover{
+    transform: scale(1.05);
+    transition: 0.25s;
+    cursor: pointer;
+    box-shadow: 7px 10px rgba(0, 0, 0, 0.267);   
+}
+
+.Media-Segment-Article{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin: 1rem 5rem;
+}
+
+.Media-Segment-Article h2{
+    text-align: center;
+    margin: 1rem;
+}
+
+.Media-Segment-Article-Text{
+    background-color:rgba(215, 234, 250, 0.5);
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.Media-Segment-Article-Below-Photo{
+    display: grid;
+    grid-template-columns: 4fr 10fr;
+    border-top: 3px rgb(0, 77, 179) solid;
+    
+}
+
+.Author-and-Details{
+    border-right: 3px rgb(0, 77, 179) solid;
+    color: black;
+    padding: 2rem 1rem;
+    font-weight: bold;
+
+    justify-content: flex-end;
+}
+
+.Author-and-Details span{
+    color: rgb(0, 77, 179);
+}
+
+.Author-and-Details span:hover{
+    cursor: pointer;
+}

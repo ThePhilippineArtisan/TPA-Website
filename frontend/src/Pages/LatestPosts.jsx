@@ -2,14 +2,15 @@ import { Link } from "react-router-dom";
 
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
 
-import "../CSS/LatestArticles.css"
+import "../CSS/LatestPosts.css"
 
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
 
-const LatestArticles = () => {
+const LatestPosts = () => {
     return(
         <div style = {{backgroundColor: "#9edcff5b"}}>
             <CoverPhotoSearch />
+            <h1 style = {{textAlign: 'center', paddingTop: '1rem'}}> ALL POSTS OKAY?? </h1>
             <div className = "Latest-Articles">
                 <h1> • 06 / 19 / 2025</h1> <hr style = {{margin: "1rem", height: "3px", width: "80%"}}></hr>                
             </div>
@@ -86,4 +87,4 @@ const LatestArticles = () => {
     )
 }
 
-export default LatestArticles;
+export default LatestPosts;

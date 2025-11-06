@@ -34,7 +34,6 @@ const SecondFacade = () => {
     return(
         <div className = "Second-Facade">
             <RollingHeadlines/>
-            <CoverPhotoSearch />
             <Tabs />
             
             <div className = "Below-Cover-Photo">   
@@ -42,7 +41,7 @@ const SecondFacade = () => {
                 <div className = "letterA">
                     <div className = "Large-News-Boxes">
                         <div className = "Large-Left-News-Column">
-                            <Link to = "/LatestArticles" className = "Category" > LATEST ———{`>`} </Link>  
+                            <Link to = "/Latest-Posts" className = "Category" > PUT HERE ANYTHING LATEST EXCEPT FAST NEWS ———{`>`} </Link>  
                     
                                 {latestArticle && 
                                 (<Link to = {`/article/${latestArticle.article_id}/${latestArticle.slug_headline}`} 
@@ -136,11 +135,27 @@ const SecondFacade = () => {
                 </div>
 
         </div>
+
+            <div className = "Below-Cover-Photo">
+                <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS  ———{`>`} </Link>
+                <div style={{border: "3px solid black"}}>
+                    <LatestMediaSegment/>
+                </div>            
+            </div>
+                
+            <div className = "Below-Cover-Photo">
+                <div className = "letterA">
+                    <ListOfMediaSegments />
+                </div>
+            </div>
+
         
         <div className = "Three-Column-Wrapper">
             <div className = "Three-Columns">
                 <div className = "Column">
+                    <h1> LOOK, LOCAL NEWS </h1>
                     <div className = "Large-Column-News Small-Column-News">
+                        
                         <Link>
                             <img src = {Photo2} />
                             <a> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </a>
@@ -155,6 +170,7 @@ const SecondFacade = () => {
                 </div>
                 
                 <div className = "Column">
+                    <h1> OPINION & EDITORIAL</h1>
                     <div className = "Large-Column-News Small-Column-News">
                         <Link>
                             <img src = {Photo2} />
@@ -170,6 +186,7 @@ const SecondFacade = () => {
                 </div>
 
                 <div className = "Column">
+                    <h1> LOCAL, NATIONAL, & SPORTS NEWS </h1>
                     <div className = "Large-Column-News Small-Column-News">
                         <Link>
                             <img src = {Photo2} />
@@ -190,18 +207,7 @@ const SecondFacade = () => {
 
         <VideoShowcase />
 
-            <div className = "Below-Cover-Photo">
-                <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS  ———{`>`} </Link>
-                <div style={{border: "3px solid black"}}>
-                    <LatestMediaSegment/>
-                </div>            
-            </div>
-                
-            <div className = "Below-Cover-Photo">
-                <div className = "letterA">
-                    <ListOfMediaSegments />
-                </div>
-            </div>
+
         </div>
 )}
 

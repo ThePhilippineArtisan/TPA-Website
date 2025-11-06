@@ -14,7 +14,10 @@ a:hover{
 }
 
 .Second-Facade{
-    background-color: #9edbff50;
+    background-color: #9edbff20;
+    background-image: url('crisp-paper-ruffles.png');
+    
+    
 }
 
 .Cover-Photo-Image-Facade{
@@ -158,6 +161,10 @@ a:hover{
 #Category-Outside{
     width: 95%;
     margin: 0% 3%;
+}
+
+.Large-News{
+    padding-bottom: 1rem;
 }
 
 .Large-Photo-News{
@@ -323,7 +330,7 @@ hr{
 .Column{
     display: flex;
     flex-direction: column;
-    
+    text-align: center;    
     text-decoration: none;
     overflow: hidden;
 

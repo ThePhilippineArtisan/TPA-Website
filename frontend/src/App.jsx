@@ -15,8 +15,9 @@ const MediaSegmentsFacade = lazy (() => import('./Pages/MediaSegmentsFacade.jsx'
 const ArticlePage = lazy (() => import('./Pages/ArticlePage.jsx'));
 const AboutPage = lazy (() => import('./Pages/AboutPage.jsx'));
 const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
+const MediaSegmentArticle = lazy (() => import('./Pages/MediaSegmentArticle.jsx'));
 const CreateArticlePage = lazy (() => import('./Pages/CreateArticlePage.jsx'));
-const LatestArticle = lazy (() => import('./Pages/LatestArticles.jsx'));
+const LatestPosts = lazy (() => import('./Pages/LatestPosts.jsx'));
 
 const App = () => {
   const homeRef = useRef(null);
@@ -37,7 +38,7 @@ const App = () => {
   if (loading) return <AnimatedLoader />;
 
   return (
-    <div className="app-wrapper" style = {{scrollBehavior: 'smooth', backgroundColor: "white"}} >
+    <div className="app-wrapper">
         <Router>
           <Suspense fallback = {<AnimatedLoader />}>
             <Routes>
@@ -78,12 +79,12 @@ const App = () => {
               />
 
               <Route 
-                path = "/LatestArticles"
+                path = "/Latest-Posts"
                 element = {
                   <Suspense>
                   <>
                     <NavbarComponent refs={scrollRefs} />
-                    <LatestArticle />
+                    <LatestPosts />
                     <Footer />
                   </>
                   </Suspense>
@@ -115,6 +116,19 @@ const App = () => {
                   </Suspense>
                 }
               />
+              
+              <Route 
+                path = "/Media-Segment/id"
+                element = {
+                  <Suspense>
+                    <>
+                      <NavbarComponent refs = {scrollRefs} />
+                      <MediaSegmentArticle />
+                      <Footer />
+                    </>
+                  </Suspense>
+                }
+              />
 
               <Route
                 path = "/Create-Article-Page"
@@ -128,8 +142,6 @@ const App = () => {
                   </Suspense>
                 }
               />
-                {/** <Route path = "/KalyoFinalists" element {< Name of the thing />} >/ */}
-
           </Routes>
         </Suspense>
         </Router>

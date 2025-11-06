@@ -9,79 +9,81 @@ const ListOfMediaSegments = () => {
     return(
             <div className = "List-of-Media-Segments">
                 <h1 id = "Latest-Weekly-Segments"> Latest Weekly Segments </h1>
+                <div className = "Media-Segment-Card-Wrapper">
 
                     <div className = "Media-Segment-Card">
-                            <Link to = "#" className = "List-Of-MS-Card" id = "Segment">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {Photo1}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card" id = "Segment">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
-                            <Link to = "#" className = "List-Of-MS-Card">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {StreamingSat}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {StreamingSat}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
-                            <Link to = "#" className = "List-Of-MS-Card">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {Photo1}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
-                            <Link to = "#" className = "List-Of-MS-Card">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {StreamingSat}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {StreamingSat}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
-                            <Link to = "#" className = "List-Of-MS-Card">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {Photo1}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {Photo1}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
-                            <Link to = "#" className = "List-Of-MS-Card">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {StreamingSat}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {StreamingSat}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
-                            <Link to = "#" className = "List-Of-MS-Card">
-                                <p id = "MMSegment"> Makata Monday </p>
-                                <img
-                                    src = {StreamingSat}
-                                    
-                                />
-                                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
+                        <Link to = "#" className = "List-Of-MS-Card">
+                            <p id = "MMSegment"> Makata Monday </p>
+                            <img
+                                src = {StreamingSat}
+                                
+                            />
+                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
 
-                            </Link>
+                        </Link>
 
                     </div>
+                </div>
             </div>
     )
 }

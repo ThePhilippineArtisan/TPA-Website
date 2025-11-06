@@ -4,8 +4,7 @@
 }
 
 .List-of-Media-Segments{
-    overflow-x: visible;
-
+    
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
 
@@ -41,19 +40,29 @@
     z-index: 3;
 }
 
+.Media-Segment-Card-Wrapper{
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: rgba(1, 52, 100, 0.5);
+}
+
 .Media-Segment-Card{
+    width: 109rem;
+
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    padding: 2rem;
+    scrollbar-gutter: stable;
+    
     display: flex;
     flex-wrap: nowrap;
 
     overflow-x: scroll;
-    overflow-y: hidden;
     
     gap: 1rem;
     padding: 2rem;
-    border-radius: 10px;
-
-    background-color: rgba(1, 52, 100, 0.5);
-
+    
     scrollbar-gutter: stable;
     scrollbar-width: thick;
     scrollbar-color:  #1b5ec4 #034066;

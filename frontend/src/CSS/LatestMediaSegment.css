@@ -18,7 +18,6 @@
     z-index: -1;
 }
 
-
 .Latest-Media-Segment-Image{
     position: relative;
     display: flex;
@@ -29,8 +28,6 @@
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
 
-    padding: 3rem;
-    gap: 5rem;
     z-index: 1;
 }
 
@@ -74,6 +71,21 @@
 }
 
 .Latest-Media-Segment-Image h3{
-    padding: 0.5rem;
-    font-size: 1.5rem;
+    padding: 2rem;
+    font-size: 1.25rem;
+}
+
+.Sample-Text p{
+    text-decoration: none;
+    color:#414141;
+    
+    display: -webkit-box;              
+    -webkit-line-clamp: 3;             
+    -webkit-box-orient: vertical;      
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
 }

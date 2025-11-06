@@ -16,7 +16,7 @@ const VerticalFastNews = () => {
                     </div>
                     </div>
 
-                    <Link to = "/" style = {{fontSize: "1.75rem"}}> FAST NEWS ———{`>`}</Link>
+                    <Link to = "/" style = {{fontSize: "1.75rem"}}> W/O PICS FAST NEWS ———{`>`}</Link>
                     <hr style = {{marginBottom: '0.5rem', height: "0px"}}></hr> 
                     <div className = "Vertical-Side-News">       
                             <img  loading = "lazy" 
