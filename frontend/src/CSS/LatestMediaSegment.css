@@ -29,6 +29,8 @@
     text-decoration: none;
 
     z-index: 1;
+
+    padding: 2rem;
 }
 
 .Latest-Media-Segment-Image img{
@@ -48,6 +50,10 @@
     transition: 0.25s;
     cursor: pointer;
     box-shadow: 7px 10px rgba(0, 0, 0, 0.267);   
+}
+
+.Latest-MS-Title{
+    padding: 3rem;
 }
 
 .Latest-MS-Title h1 h3{

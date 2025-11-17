@@ -1,9 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-
-}
-
 a{
     text-decoration: none;
     color: black;
@@ -16,8 +10,6 @@ a:hover{
 .Second-Facade{
     background-color: #9edbff20;
     background-image: url('crisp-paper-ruffles.png');
-    
-    
 }
 
 .Cover-Photo-Image-Facade{
@@ -75,6 +67,9 @@ a:hover{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+
+    
+    margin: 0rem 3rem;
 
 }
 
@@ -177,7 +172,6 @@ a:hover{
 
     justify-content: center;
     gap: 1rem;
-    margin: 0rem 1rem;
 }
 
 .Large-Photo-News img{
@@ -286,11 +280,6 @@ hr{
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-.Vertical-Side-News img{
-    height: 10rem;
-    aspect-ratio: 1 / 1;
 }
 
 .Vertical-Side-News:hover{

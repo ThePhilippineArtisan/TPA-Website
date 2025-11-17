@@ -5,7 +5,6 @@ import Photo1 from "../Sample-Photos/GAD-Kapihan.jpg"
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
 import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
 import OPINION from "../Sample-Photos/OPINION.jpg"
-import VIDEO from "../Sample-Photos/CA240830_172531.mp4"
 
 import TPALogoBlack from "../assets/Miniature_Icon_Version/TPALogoBlack.svg"
 
@@ -33,7 +32,7 @@ const SecondFacade = () => {
 
     return(
         <div className = "Second-Facade">
-            <RollingHeadlines/>
+            <RollingHeadlines />
             <Tabs />
             
             <div className = "Below-Cover-Photo">   
@@ -82,10 +81,10 @@ const SecondFacade = () => {
             <Link to = "/Latest-News" className = "Category"> LOOK, IN PHOTOS, & HIGHLIGHTS ———{`>`}</Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
-
                     <hr></hr>
-
-                    <img  loading = "lazy"  style = {{height: "17rem", aspectRatio: "16 / 9"}}
+                    <img  
+                        loading = "lazy"  
+                        style = {{height: "17rem", aspectRatio: "16 / 9"}}
                         src = {Photo2}
                     />
                     
@@ -109,7 +108,42 @@ const SecondFacade = () => {
                         </Link>
                     </div>
                 </div>
+
                 <div className = "Large-Photo-News" onClick = "#"> 
+                    <div className = "Large-News" >
+                        <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
+                            <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
+                                
+                            <div className = "Article-Author-Time">
+                                <a to = "/" >Cathlene Torrenueva | September 12, 2025</a>
+                            </div>
+
+                            <div className = "Vertical-Side-News">
+                                <hr></hr>
+                                <div className = "Sample-Text">
+                                    <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+                                        Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                    
+                    <img  
+                        loading = "lazy"  
+                        style = {{height: "17rem", aspectRatio: "16 / 9"}}
+                        src = {Photo2}
+                    />
+                    <hr></hr>
+                </div>
+                <div className = "Large-Photo-News" onClick = "#"> 
+                    <hr></hr>
+                    <img  
+                        loading = "lazy"  
+                        style = {{height: "17rem", aspectRatio: "16 / 9"}}
+                        src = {Photo2}
+                    />
+                    
                     <div className = "Large-News" >
                         <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
                             <a> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </a>
@@ -126,15 +160,49 @@ const SecondFacade = () => {
                                     </p>
                                 </div>
                             </div>
+                            
                         </Link>
                     </div>
-                    <img  loading = "lazy"  style = {{height: "17rem", aspectRatio: "16 / 9"}}
+                </div>
+
+                <div className = "Large-Photo-News" onClick = "#"> 
+                    <div className = "Large-News" >
+                        <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
+                            <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
+                                
+                            <div className = "Article-Author-Time">
+                                <a to = "/" >Cathlene Torrenueva | September 12, 2025</a>
+                            </div>
+
+                            <div className = "Vertical-Side-News">
+                                <hr></hr>
+                                <div className = "Sample-Text">
+                                    <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+                                        Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                    
+                    <img  
+                        loading = "lazy"  
+                        style = {{height: "17rem", aspectRatio: "16 / 9"}}
                         src = {Photo2}
                     />
                     <hr></hr>
                 </div>
 
+
         </div>
+
+
+
+
+
+
+
+
 
             <div className = "Below-Cover-Photo">
                 <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS  ———{`>`} </Link>
@@ -149,7 +217,19 @@ const SecondFacade = () => {
                 </div>
             </div>
 
-        
+
+        <VideoShowcase />
+
+
+
+
+
+
+
+
+
+
+
         <div className = "Three-Column-Wrapper">
             <div className = "Three-Columns">
                 <div className = "Column">
@@ -186,7 +266,7 @@ const SecondFacade = () => {
                 </div>
 
                 <div className = "Column">
-                    <h1> LOCAL, NATIONAL, & SPORTS NEWS </h1>
+                    <h1> NATIONAL, & SPORTS NEWS </h1>
                     <div className = "Large-Column-News Small-Column-News">
                         <Link>
                             <img src = {Photo2} />
@@ -204,9 +284,6 @@ const SecondFacade = () => {
             </div>
             
         </div>
-
-        <VideoShowcase />
-
 
         </div>
 )}

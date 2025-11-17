@@ -54,13 +54,8 @@ const App = () => {
                     <section ref={newsRef}>
                       <SecondFacade />
                     </section>
-
-                    <section ref={releasesRef}>
-                      <ReleasesFacade />
-                    </section>
-                    
+                                        
                     <Footer />
-                    
                   </>
                 }
               />

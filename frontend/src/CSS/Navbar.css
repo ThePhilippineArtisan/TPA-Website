@@ -1,9 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-
 .skeleton{
     opacity: .7;
     animation: skeleton-loading 1s linear infinite alternate;
@@ -19,30 +13,24 @@
     }
 }
 
-.navbar-box::before{
-  content: "";
-  position: absolute;
-
-  inset: 0;
-  filter: blur(10px);
-  z-index: -1;
-}
-
 .navbar-box{
+  top: 0;
+  z-index: 11;
+
   height: 7rem;
   width: 96%;
+
   background-color: rgba(255, 255, 255, 0.95);
   
   border-bottom: 3px solid #0265A9;
   margin: 1% 2%;
   border-radius: 20px;
+  
+  
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 0;
-  z-index: 11;
 }
 
 .navbar-box a{
@@ -85,11 +73,9 @@
 .tpa-circle-logo:hover{
     cursor:pointer;
 
-    transition: 0.2s;
-    transform: scale(1.2);
+    transition: 0.2s ease-in-out;
+    transform: scale(1.1) ;
 }
-
-
 
 /* --- Mobile Media Query--- */
 
