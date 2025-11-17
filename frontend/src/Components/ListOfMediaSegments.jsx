@@ -23,7 +23,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "#" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <p id = "MMSegment"> Tek Tuesday </p>
                             <img
                                 src = {StreamingSat}
                                 
@@ -33,7 +33,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "#" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <p id = "MMSegment"> Wankjob Wednesday </p>
                             <img
                                 src = {Photo1}
                                 
@@ -43,7 +43,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "#" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <p id = "MMSegment"> Tala Thursday </p>
                             <img
                                 src = {StreamingSat}
                                 
@@ -53,7 +53,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "#" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <p id = "MMSegment"> Features Friday </p>
                             <img
                                 src = {Photo1}
                                 
@@ -63,7 +63,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "#" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <p id = "MMSegment"> Streaming Saturday </p>
                             <img
                                 src = {StreamingSat}
                                 
@@ -73,7 +73,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "#" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <p id = "MMSegment"> Sports Sunday </p>
                             <img
                                 src = {StreamingSat}
                                 

@@ -40,7 +40,7 @@ const App = () => {
   return (
     <div className="app-wrapper">
         <Router>
-          <Suspense fallback = {<AnimatedLoader />}>
+          <Suspense>
             <Routes>
               <Route
                 path = "/"

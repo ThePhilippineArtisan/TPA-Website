@@ -111,9 +111,6 @@ const CreateArticlePage = () => {
                                     ))}
                                 </div>
                             </div>
-
-
-
                         </div>
                             <button onClick = {closeDialog}> Done </button>
                     </dialog>
@@ -137,25 +134,20 @@ const CreateArticlePage = () => {
                 <div className = "Text-Area">
                     <input
                         type = "text"
-                        placeholder = "Enter your new article headline here.                                                                    (Follow/Subscribe/Add @AvoirJoseph)"
-                        id = "headline-text"
-                        className = "headline-input"
+                        placeholder = "Enter your new article headline here. (Follow/Subscribe/Add @AvoirJoseph)"
+                        id = "Headline-Text"
+                        className = "Headline-Input"
                     />
 
                     <div
                         contentEditable = {true}
                         suppressContentEditableWarning = {true}
-                        id = "body-text"
-                        className = "headline-input">
-
-                        </div>
-
-                    Enter your new article here.
-
+                        id = "Body-Text"
+                        className = "Headline-Input">
+                        Enter your new article here.
+                    </div>
                </div>
-
             </div>
-
             <div className = "Preview-Section">
                 <h1> Article Preview </h1>
             </div>

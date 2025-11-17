@@ -1,30 +1,49 @@
-
 *{
     margin: 0;
     padding: 0;
 }
 
-.DBFF-Headline h1{
+.DBFF-Headline{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
 
-    font-family:  'Inter', sans-serif; 
-    font-weight: bolder;
-    color: transparent;
-    text-shadow:
-    
-    -1px -1px 0 white,
-    1px -1px 0 black,
-    -1px 1px 0 black,
-    1px 1px 0 white;
-
-    padding-bottom: 5rem;
+    min-height: 75vh;
+    width: 100%;
 }
 
-.DBFF-Headline h1 {
-  opacity: 0;
-  transform: translateY(50px);
-  animation: fadeUp 1s ease-out forwards;
+.DBFF-Headline p{
+    display: flex;
+    justify-content: flex-start;
+
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ffffff;
+    padding: 2rem 0rem;
+
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeUp 1s ease-out forwards;
+}
+
+.DBFF-Text p{
+    padding: 0.5rem 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    
+    color: #ffffff;
+
+    flex-wrap: wrap;
+
+    
+    transform: translateY(20px);
+    animation: fadeUp 2s ease-out forwards;
+}
+
+.DBFF-Text a{
+    color: #0099ff;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 @keyframes fadeUp {
@@ -34,43 +53,18 @@
   }
 }
 
-.DBFF-Headline{
-    height: 70vh;
-
-    padding: 0rem 5rem;
-}
-
-.DBFF-Top-Paragraph h2{
-    padding: 1rem 0rem;
-
-    font-weight: 500;
-    
-    font-family:  'Inter', sans-serif;
-    color: #D3CFCF;
-
-    flex-wrap: wrap;
-
-    text-shadow: 1px 2px 4px black;
-    
-    transform: translateY(20px);
-    animation: fadeUp 2s ease-out forwards;
-}
-
-.DBFF-Top-Paragraph a{
-    color: #0099ff;
-    cursor: pointer;
-    text-decoration: none;
-}
-
 .Literary-Showcase-First-Facade{
     margin: 0 auto;
 }
 
-.First-BG-First-Facade{ 
-    background-color: #23343F;
-    
-    background-image: url('/3px-tile.png');
-    background-repeat: repeat;
+.First-BG-First-Facade{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    z-index: 1;
 }
 
 .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
@@ -95,10 +89,8 @@
 
 .Cards{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100vw;
-
-    position: relative;
     
 }
 
@@ -117,7 +109,7 @@
 }
 
 .Card-Images img{    
-    height: 8rem;
+    height: 30rem;
     filter: drop-shadow(15px 10px 10px rgb(49, 49, 49));
     transform: rotate(3deg);
     
@@ -139,30 +131,10 @@
   }
 }
 
-#TekMegaphone{    
-    height: 500px;
-}
-
-iframe{
-    width: 45rem;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    opacity: 0;
-    transform: translateX(20px);
-    animation: fadeLeft 3s ease-out forwards;
-}
-
-#iframes{
-    padding-top: 15rem;
-}
-
 .Slide-Navigation{
     display: flex;
-    justify-content: center;
+    align-items: center;
 
-    align-content: flex-end;
-
-    gap: 2rem;
     filter: invert(1);
 }
 
@@ -233,525 +205,3 @@ iframe{
     MEDIA QUERIES
 
 */
-
-@media (max-width: 2560px){
-
-        .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-        width: 100%;
-
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-        
-        background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 40rem, 45rem, 10rem;
-        
-        background-blend-mode:soft-light;
-        background-position-x: 105%, 0;
-        background-position-y: 115%, 95%, 0%;    
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
-            url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 45rem, 50rem, 9.5rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 105%, -10%, 0%;
-        background-position-y: 116.5%, 130%, 0%;    
-    }
-
-    .Cards{
-        display: flex;
-        flex-wrap: nowrap;
-        
-    }
-
-    .DBFF-Top-Paragraph h2{
-        font-size: 3rem;
-    }
-
-    .DBFF-Headline h1{
-        font-size: 2rem;
-    }
-    
-    .Card-Images{
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .Card-Images img{
-        height: 50rem;
-        padding: 0;
-    }
-
-    .Iframe-Wrapper{
-        display: flex;
-        align-items: center;
-    }
-    
-    iframe{
-
-    width: 80rem;
-    height: auto;
-    aspect-ratio: 16 / 9;
-            
-    }
-
-    #iframes{
-        padding-top: 0.1rem;
-        padding-bottom: 5rem;
-    }
-
-    
-}
-
-
-@media (max-width: 1920px){
-
-        .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-
-        padding-top: 5rem 0rem;
-        
-        background-image: 
-            url('/3px-tile.png');
-        background-repeat:repeat;
-        
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        background-image:
-            url('/axiom-pattern.png');
-        background-repeat: repeat;
-        background-size: 10rem;
-    }
-
-    .Cards{
-        display: flex;
-        flex-wrap: nowrap;
-        
-    }
-
-    .DBFF-Top-Paragraph h2{
-        font-size: 1.5rem;
-        
-    }
-
-    .DBFF-Headline h1{
-        font-size: 3rem;
-    }
-    
-    .Card-Images{        
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .Card-Images img{
-        height: 44rem;
-        padding: 0;
-    }
-
-    .Iframe-Wrapper{
-        display: flex;
-        align-items: center;
-    }
-    
-    iframe{
-    width: 55rem;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    }
-
-}
-
-@media (max-width: 1440px) {
-
-        .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-        width: 100%;
-
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-        
-        background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 23rem, 20rem, 5rem;
-        
-        background-blend-mode:soft-light;
-        background-position-x: 105%, 0, 0;
-        background-position-y: 110%, 100%, 0%;    
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
-            url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 30rem, 25rem, 9.5rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 107%, -7%, 0%;
-        background-position-y: 120%, 110%, 0%;    
-    }
-
-    .Cards{
-        display: flex;
-        flex-wrap: nowrap;
-        
-    }
-
-    .DBFF-Top-Paragraph h2{
-        font-size: 1.75rem;
-        
-    }
-
-    .DBFF-Headline h1{
-        font-size: 2.25rem;
-    }
-    
-    .Card-Images{        
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .Card-Images img{
-        height: 27rem;
-        padding: 0;
-    }
-
-    .Iframe-Wrapper{
-        display: flex;
-        align-items: center;
-    }
-    
-    iframe{
-
-    width: 50rem;
-    height: auto;
-    aspect-ratio: 16 / 9;
-        
-    }
-
-    #iframes{
-        padding-top: 0.1rem;
-        padding-bottom: 5rem;
-    }
-    
-}
-
-@media (max-width: 1024px){
-
-        .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-        width: 100%;
-
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-        
-        background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 25rem, 30rem, 5rem;
-        
-        background-blend-mode:soft-light;
-        background-position-x: 110%, 0, 0;
-        background-position-y: 110%, 100%, 0%;    
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
-            url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 25rem, 25rem, 12rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 112%, -13%, 0%;
-        background-position-y: 108%, 104%, 0%;    
-    }
-    
-    .Cards{
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: center;
-        flex-wrap: wrap-reverse;
-    }
-
-    .DBFF-Top-Paragraph h2{
-        text-align: center;
-    }
-
-    .DBFF-Headline h1{
-        text-align: center;
-        font-size: 2rem;
-    }
-
-    .Card-Images{        
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .Card-Images img{
-        height: 300px;
-        
-    }
-
-
-    .Iframe-Wrapper{
-        display: flex;
-        align-items: center;
-    }
-    
-    iframe{
-
-    width: 50rem;
-    height: auto;
-    aspect-ratio: 16 / 9;
-        
-    }
-
-    #iframes{
-        padding-top: 0.1rem;
-        padding-bottom: 5rem;
-    }
-    
-}
-
-@media (max-width: 768px){
-    .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-        width: 100%;
-
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-        
-        background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 20rem, 20rem, 5rem;
-        
-        background-blend-mode:soft-light;
-        background-position-x: 110%, 0, 0;
-        background-position-y: 105%, 100%, 0%;    
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
-            url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 30rem, 30rem, 12rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 120%, -30%, 0%;
-        background-position-y: 113%, 104%, 0%;    
-    }
-
-    .Cards{
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: center;
-        flex-wrap: wrap-reverse;
-    }
-
-    .DBFF-Top-Paragraph h2{
-        text-align: center;
-    }
-
-    .DBFF-Headline h1{
-        text-align: center;
-        font-size: 175%;
-    }
-
-    .Card-Images{        
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .Card-Images img{
-        height: 300px;
-        
-    }
-
-
-    .Iframe-Wrapper{
-        display: flex;
-        align-items: center;
-    }
-    
-    iframe{
-
-    width: 20rem;
-    height: auto;
-    aspect-ratio: 16 / 9;
-        
-    }
-
-    #iframes{
-        padding-top: 0.1rem;
-        padding-bottom: 5rem;
-    }
-    
-}
-
-@media (max-width: 730px) {
-    .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-        width: 100%;
-
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-        
-        background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 15rem, 15rem, 5rem;
-        
-        background-blend-mode:soft-light;
-        background-position-x: 115%, 0, 0;
-        background-position-y: 105%, 100%, 0%;    
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
-            url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 20rem, 20rem, 12rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 110%, -17%, 0%;
-        background-position-y: 107%, 105%, 0%;    
-    }
-    
-}
-
-@media (max-width: 425px) {
-    .First-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #23343F;
-        width: 100%;
-
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-        
-        background-image: 
-            url('/Tek1.png'),
-            url('/Tek-Megaphone.svg'),
-            url('/always-grey.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 15rem, 15rem, 5rem;
-        
-        background-blend-mode:soft-light;
-        background-position-x: 115%, 0, 0;
-        background-position-y: 105%, 100%, 0%;    
-    }
-
-    .Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-        background-color: #2a4e66;
-
-        width: 100%;
-        padding-top: 7vh;
-        padding-bottom: 7vh;
-
-        background-image: 
-            url('/Tek2.png'),
-            url('/Tek3.png'),
-            url('/axiom-pattern.png');
-        background-repeat: no-repeat, no-repeat, repeat;
-        background-size: 15rem, 20rem, 12rem;
-        background-color: auto, auto, whitesmoke;
-        
-        background-blend-mode: soft-light;
-        background-position-x: 120%, -60%, 0%;
-        background-position-y: 104%, 40%, 0%;    
-    }
-    
-}
-
-@media (max-width: 320px){
-    .Card-Images img{        
-        height: 200px;
-    }
-}

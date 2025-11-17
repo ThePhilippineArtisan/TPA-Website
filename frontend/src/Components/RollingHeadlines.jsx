@@ -21,16 +21,13 @@ const RollingHeadlines = () => {
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>
-                <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>
+                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>

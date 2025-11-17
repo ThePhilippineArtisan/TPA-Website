@@ -36,23 +36,31 @@
     cursor: pointer;
 }
 
+.Vertical-Divider-Side-News{
+    background-color: #0265A9;
+    height: 2rem;
+    width: 0.33rem;
+
+    border: none;
+}
+
 .Vertical-Headlines{
     display: flex;
     flex-direction: column;
 
-    gap: 0.5rem;
+    gap: 1rem;
     font-size: 1rem;
     font-weight: 700;
 }
 
-.Vertical-Headlines a{
+.Vertical-Headlines p{
     text-decoration: none;
     color: black;
 
     margin: 0.5rem 0rem;
 
     display: -webkit-box;              
-    -webkit-line-clamp: 5;             
+    -webkit-line-clamp: 3;             
     -webkit-box-orient: vertical;      
     overflow: hidden;                  
     text-overflow: ellipsis;           
@@ -61,11 +69,6 @@
     overflow-wrap: break-word;
     word-break: keep-all;
 }
-
-.Vertical-Headlines a:hover{
-    color: #0265A9;
-}
-
 
 .Bulletin-Board{
     display: flex;
@@ -85,7 +88,4 @@
 
 .Bulletin-Board p{
     padding: 0rem 1rem;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-left: 3px solid #0265A9;
 }

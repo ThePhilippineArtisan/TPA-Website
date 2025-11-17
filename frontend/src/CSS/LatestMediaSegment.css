@@ -25,9 +25,6 @@
     justify-content: space-around;
     align-items: center;
 
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    text-decoration: none;
-
     z-index: 1;
 
     padding: 2rem;
