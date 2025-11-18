@@ -58,11 +58,11 @@ const ArticlePage = () => {
 
             <div className = "Foreground-Photo ">
                 <img src = {currentPhoto} loading = "lazy"/>
-
             </div>
-                    <div className = "Photo-Illustration-Layout-Credits" style = {{textAlign: "center"}}> 
-                        Photos by Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin Angela Genio & John Peregrin 
-                    </div>
+
+            <div className = "Photo-Illustration-Layout-Credits" style = {{textAlign: "center"}}> 
+                Photos by Angela Genio & John Peregrin 
+            </div>
                     
             <div className = "Extra-Photos-Container">
                 <div className = "Extra-Photos"> 
@@ -100,8 +100,6 @@ const ArticlePage = () => {
 
                     </p>
                 </div>
-
-                
                 <VerticalFastNews />
             </div>
 

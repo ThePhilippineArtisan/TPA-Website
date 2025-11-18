@@ -40,7 +40,7 @@ const SecondFacade = () => {
                 <div className = "letterA">
                     <div className = "Large-News-Boxes">
                         <div className = "Large-Left-News-Column">
-                            <Link to = "/Latest-Posts" className = "Category" > PUT HERE ANYTHING LATEST EXCEPT FAST NEWS <span>———{`>`}</span> </Link>  
+                            <Link to = "/Latest" className = "Category" > PUT HERE ANYTHING LATEST EXCEPT FAST NEWS <span>———{`>`}</span> </Link>  
                     
                                 {latestArticle && 
                                 (<Link to = {`/article/${latestArticle.article_id}/${latestArticle.slug_headline}`} 
@@ -137,14 +137,6 @@ const SecondFacade = () => {
 
 
         </div>
-
-
-
-
-
-
-
-
 
             <div className = "Below-Cover-Photo">
                 <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS <span>———{`>`}</span> </Link>

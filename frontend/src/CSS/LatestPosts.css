@@ -1,20 +1,45 @@
-*{
-    margin: 0;
-    padding: 0;
+.Latest-Posts-Page{
+    display: flex;
+    flex-direction: column;
 }
 
-.Latest-Articles{
+.Latest-Articles-Container{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0rem;
+    text-align: center;
+}
+
+.Latest-Article-Two-Part{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Latest-Articles-Date{
     padding: 2rem;
     padding-bottom: 0rem;
     display: flex;
 }
 
-.Latest-Articles h1{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+.Latest-Articles-Date h1{
     color: black;
     text-decoration: none;
 
-    font-size: 2.5rem;
+    font-size: 1.5rem;
+}
+
+.Horizontal-Line-Date{
+    margin: 1rem;
+    height: 1px;
+    width: 80%;
+}
+
+.Vertical-Line-Date{
+    margin-left: 3rem;
+    height: 25rem;
+    width: 1px;
+
 }
 
 .Day-Articles{
@@ -24,7 +49,8 @@
 }
 
 .Three-Article-Column{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     flex-direction: row;
     flex-wrap: wrap;
     
@@ -39,21 +65,22 @@
 
     margin: 0.5rem;
 
-    background-color: #35aeff25;
+    background-color: #84cdfd25;
     padding: 3rem;
 
     border-radius: 20px;
 
-    width: 32rem;
+    width: 24rem;
 }
 
 .Individual-Article:hover{
-    background-color: #ffffff;
-
+    transition: 0.1s ease-in-out;
+    transform: scale(1.01);
+    background-color: #84cdfd50;
 }
 
 .Individual-Article img{
-    width: 32rem;
+    width: 24rem;
 
     aspect-ratio: 16 / 9;
 
@@ -80,13 +107,11 @@
     padding: 1rem;
 }
 
-.Large-News-Headline a{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    color: rgb(0, 0, 0);
+.Large-News-Headline p{
     font-weight: bolder;
     text-decoration: none;
 
-    font-size: 1.25rem;
+    font-size: 1rem;
 
     display: -webkit-box;              
     -webkit-line-clamp: 3;             
@@ -99,8 +124,8 @@
     word-break: keep-all;
 }
 
-.Article-Author-Time a{
+.Article-Author-Time p{
     color: rgb(51, 51, 51);
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: bold;
 }

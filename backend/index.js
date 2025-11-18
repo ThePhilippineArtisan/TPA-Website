@@ -38,11 +38,13 @@ app.use(express.json());
 // Create an article (C)
 
 const slugify = str => str.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "-")
+// make the last part of the headline a url
 
 app.post("/article", async(req, res) => {
-    const client = await pool.connect(); // begin the thing, await for everything to be done first
+    const client = await pool.connect();  // connect to the database
     try {
         const {
+            // values sent from the /create-article-page/
             article_headline,
             article_body,
             article_type,
@@ -54,8 +56,10 @@ app.post("/article", async(req, res) => {
 
         // Create the article
         const newArticle = await client.query(
-            `INSERT INTO article (article_headline, article_body, article_type, slug_headline)
-            VALUES ($1, $2, $3, $4) RETURNING *`, [article_headline, article_body, article_type, slug_headline]
+            `INSERT INTO article 
+            (article_headline, article_body, article_type, slug_headline)
+            VALUES ($1, $2, $3, $4) RETURNING *`, 
+            [article_headline, article_body, article_type, slug_headline]
         );
 
         const article = newArticle.rows[0]
@@ -69,11 +73,14 @@ app.post("/article", async(req, res) => {
             } = credit;
 
             await client.query(
-                `INSERT INTO staff_article(
-                article_id, staff_id, contribution_As, display_name
-                ) VALUES ($1, $2, $3, $4)`, [article.article_id, staff_id, contribution_As, display_name]
+                `INSERT INTO staff_article
+                (article_id, staff_id, contribution_As, display_name) 
+                VALUES ($1, $2, $3, $4)`, 
+                [article.article_id, staff_id, contribution_As, display_name]
             )
         }
+
+        // Add media
 
         res
             .status(201)

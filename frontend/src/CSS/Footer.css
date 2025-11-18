@@ -1,17 +1,12 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
 .Footer{
-    height: 150px;
-    width: 100%;
+    height: 10rem;
     background-color: #0265A9;
-    display: flex;
-    justify-content: space-between;
-
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    
     color: white;
+    font-weight: 900;
+
+    display: flex;
+    justify-content: space-around;
 }
 
 .skeleton{
@@ -34,8 +29,8 @@
 }
 
 .Left-Footer img{
-    height: 100px;
-    padding: 20px;
+    height: 7rem;
+    padding: 1rem;
 }
 
 .Left-Footer img:hover{

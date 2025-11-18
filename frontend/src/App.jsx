@@ -74,7 +74,7 @@ const App = () => {
               />
 
               <Route 
-                path = "/Latest-Posts"
+                path = "/Latest"
                 element = {
                   <Suspense>
                   <>

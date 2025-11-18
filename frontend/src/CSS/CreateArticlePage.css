@@ -127,7 +127,7 @@ select:hover{
     gap: 1rem;
 }
 
-.staff-dialog{
+.Staff-Dialog{
     position: fixed;
     top: 10%;
     left: 35%;
@@ -146,9 +146,29 @@ select:hover{
 }
 
 
-.staff-dialog::backdrop {
+.Staff-Dialog::backdrop {
     background: rgba(0, 0, 0, 0.37);
     backdrop-filter: blur(3px);
+}
+
+.Staff-Dialog-Button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+}
+
+.Staff-Dialog-Button button{
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgb(236, 236, 236);
+}
+
+.Staff-Dialog-Button button:hover{
+    background-color: #79c3ff;
 }
 
 dialog{
@@ -162,20 +182,35 @@ dialog{
     height: 100%;
 }
 
+.Search-Staff{
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.Search-Staff input{
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
 .Staffer-List{
+    display: flex;
+    flex-direction: column;
     padding: 0.75rem;
 }
 
-.Staffer-List:hover{
+.Staff-Item:hover{
     cursor: pointer;
     background: #79c3ff;
-    border-radius: 10px;
+
 }
 
-.staff-item{
-    padding-left: 1rem;
+.Staff-Item{
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 1rem;
 }
 
-#staff-name{
+#Staff-Name{
     padding-left: 1rem;
 }

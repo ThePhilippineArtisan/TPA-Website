@@ -7,81 +7,40 @@ import "../CSS/LatestPosts.css"
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
 
 const LatestPosts = () => {
-    return(
-        <div style = {{backgroundColor: "#9edcff5b"}}>
+    return (
+        <div className="Latest-Posts-Page">
             <CoverPhotoSearch />
-            <h1 style = {{textAlign: 'center', paddingTop: '1rem'}}> ALL POSTS OKAY?? </h1>
-            <div className = "Latest-Articles">
-                <h1> • 06 / 19 / 2025</h1> <hr style = {{margin: "1rem", height: "3px", width: "80%"}}></hr>                
-            </div>
+            <div className = "Latest-Article-Two-Part">
+                <div className = "Latest-Articles-Container">
+                    <div className = "Latest-Articles-Date">
+                        <h1> • 06 / 19 / 2025</h1> <hr className = "Horizontal-Line-Date"></hr>
+                    </div>
 
-            <div className = "Day-Articles">
-                <hr style = {{height: "25rem", marginLeft: "5rem"}}></hr>
-                <div className = "Three-Article-Column">
-                    <div className = "Individual-Article" onClick = "#"> 
-                        <img  loading = "lazy"
-                            src = {Photo2}
-                        />
+                    <div className="Day-Articles">
+                        <hr className = "Vertical-Line-Date"></hr>
+                        <div className="Three-Article-Column">
 
-                        <div className = "Large-News" >
-                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
-                                    
-                                <div className = "Article-Author-Time">
-                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>
+                            <Link to = "/Joseph-Brian-Balut" className = "Individual-Article">
+                                <img loading = "lazy"
+                                    src = {Photo2}
+                                />
+                                <div className = "Large-News" >
+                                    <div className = "Large-News-Headline">
+                                        <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
+
+                                        <div className = "Article-Author-Time">
+                                            <p>Cathlene Torrenueva | September 12, 2025</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </Link>
                         </div>
                     </div>
 
-                    <div className = "Individual-Article" onClick = "#"> 
-                        <img  loading = "lazy"
-                            src = {Photo2}
-                        />
-
-                        <div className = "Large-News" >
-                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
-                                    
-                                <div className = "Article-Author-Time">
-                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className = "Individual-Article" onClick = "#"> 
-                        <img  loading = "lazy"
-                            src = {Photo2}
-                        />
-
-                        <div className = "Large-News" >
-                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
-                                    
-                                <div className = "Article-Author-Time">
-                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className = "Individual-Article" onClick = "#"> 
-                        <img  loading = "lazy"
-                            src = {Photo2}
-                        />
-
-                        <div className = "Large-News" >
-                            <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                                <Link to = "/Joseph-Brian-Balut"> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </Link>
-                                    
-                                <div className = "Article-Author-Time">
-                                    <Link to = "/" >Cathlene Torrenueva | September 12, 2025</Link>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
                 </div>
+            <div className="Latest-Post-Filters">
+                A
+            </div>
             </div>
         </div>
     )

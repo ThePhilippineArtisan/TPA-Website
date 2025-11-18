@@ -17,13 +17,23 @@ import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
 import "../CSS/CreateArticlePage.css"
 
 const CreateArticlePage = () => {
-    const dialogRef = useRef(null)
+    const authorDialogRef = useRef(null)
 
-    const openDialog = () => dialogRef.current.showModal()
-    const closeDialog = () => dialogRef.current.close()
+    const openAuthorDialog = () => authorDialogRef.current.showModal()
+    const closeAuthorDialog = () => authorDialogRef.current.close()
 
-    const [staffList, setStaffList] = useState([]);
+    const mediaProviderDialogRef = useRef(null)
+
+    const openMediaProviderDialog = () => mediaProviderDialogRef.current.showModal()
+    const closeMediaProviderDialog = () => mediaProviderDialogRef.current.close()
+
+    const [staffList, setStaffList] = useState([])
     const [selectedAuthor, setSelectedAuthor] = useState([])
+    const [selectedMediaProvider, setSelectedMediaProvider] = useState([])
+
+    const [headline, setHeadline] = useState("")
+    const [bodyText, setBodyText] = useState("")
+    const [articleType, setArticleType] = useState("")
 
     useEffect(() =>{
         fetch("http://localhost:5000/staff")
@@ -37,6 +47,30 @@ const CreateArticlePage = () => {
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
         )
     }
+
+    const toggleMediaProvider = (id) => {
+        setSelectedMediaProvider((prev) =>
+        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        )
+    }
+
+    const handleCreateArticle = async () => {
+        const staffCredits = selectedAuthor.map((id) => {
+            const staff = staffList.find((s) => s.staff_id === id)
+            return {
+                staff_id: id,
+                contribution_As: "",
+                display_name: staff?.staff_display_name || ""
+            }
+        })
+    }
+
+    const mediaCredits = selectedMediaProvider.map((id) =>{
+        const staff = staffList.find((s) => s.staff_id === id)
+        return{
+        }
+
+    })
 
     return(
         
@@ -91,34 +125,65 @@ const CreateArticlePage = () => {
                     <img 
                         src = {Author}
                         alt = "Select Author/s"
-                        onClick = {openDialog}
+                        onClick = {openAuthorDialog}
                     />
 
-                    <dialog ref = {dialogRef} className = "staff-dialog">
+                    <dialog ref = {authorDialogRef} className = "Staff-Dialog">
                         <div className = "Dialog-Box">
                             <h1> Select Authors </h1>
-                            <div className = "Staffer-Box"> 
+                            <div className = "Staffer-Box">
+                                <div className="Search-Staff">
+                                    <input type = "Search" placeholder = "Search here..." />    
+                                </div> 
                                 <div className = "Staffer-List">
                                     {staffList.map((staff) => (
-                                        <label key = {staff.staff_id} className = "staff-item">
+                                        <label key = {staff.staff_id} className = "Staff-Item">
                                             <input
                                                 type = "checkbox"
                                                 checked = {selectedAuthor.includes(staff.staff_id)}
                                                 onChange = {() => toggleAuthor(staff.staff_id)}
                                             />
-                                            <bold id = "staff-name"> {staff.staff_display_name} </bold>
+                                            <bold id = "Staff-Name"> {staff.staff_display_name} </bold>
                                         </label>
                                     ))}
                                 </div>
                             </div>
                         </div>
-                            <button onClick = {closeDialog}> Done </button>
+
+                        <div className = "Staff-Dialog-Button">
+                            <button onClick = {closeAuthorDialog}> Done </button>
+                        </div>
                     </dialog>
 
                     <img 
                         src = {MediaProvider}
                         alt = "Select Media Provider/s"
+                        onClick = {openMediaProviderDialog}
                     />
+
+                    <dialog ref = {mediaProviderDialogRef} className = "Staff-Dialog">
+                        <div className = "Dialog-Box">
+                            <h1> Select Media Provider </h1>
+                            <div className = "Staffer-Box">
+                               <div className="Search-Staff">
+                                    <input type = "Search" placeholder = "Search here..." />    
+                                </div> 
+                                <div className = "Staffer-List">
+                                    {staffList.map((staff) => (
+                                        <label key = {staff.staff_id} className = "Staff-Item">
+                                            <input 
+                                                type = "checkbox"
+                                                checked = {selectedMediaProvider.includes(staff.staff_id)}
+                                                onChange = {() => toggleMediaProvider(staff.staff_id)}
+                                            />
+                                            <strong id = "Staff-Name"> {staff.staff_display_name} </strong >
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                            <button onClick = {closeMediaProviderDialog}> Done </button>
+                    </dialog>
 
                     <input 
                         id = "file-upload"
