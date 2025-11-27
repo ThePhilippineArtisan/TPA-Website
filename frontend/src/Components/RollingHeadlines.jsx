@@ -10,12 +10,11 @@ const RollingHeadlines = () => {
         
         <div className = "Rolling-Headline"> {/** JUST TO BE APT, MAXIMUM 5 LATEST HEADLINES  */}
 
-            <marquee behavior="scroll" direction="left" scrollamount="5">
+            <marquee behavior="scroll" direction="left" scrollamount="3">
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>

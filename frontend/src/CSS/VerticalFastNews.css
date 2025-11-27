@@ -53,6 +53,11 @@
     font-weight: 700;
 }
 
+.Vertical-Headlines a{
+    text-decoration: none;
+    color: black;
+}
+
 .Vertical-Headlines p{
     text-decoration: none;
     color: black;

@@ -3,8 +3,7 @@ import React, {useState, useTransition} from 'react';
 import KahonKalyo from "/KahonKalyo.png";
 import LampoonCover from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
 import NewsLetterCover from "/Newsletter.png"
-
-import TPACircleLogo from "/favicon.ico"
+import TabulaRasaCover from "/Tabula_Rasa.png";
 
 import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
 import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
@@ -52,8 +51,17 @@ const FirstFacade = () => {
             text4: "In this time when misinformation and disinformation are spreading fast, being informed is your form of resistance.",
             text5: "The Philippine Artisan proudly presents its Newsletter for A.Y. 2024–2025, covering pressing news and compelling features that will voice out truth and expose issues within and beyond our university.",
             text6: "Don’t miss out and get your own copies now!"
-        }
+        },
 
+        {
+            id: 4,
+                header: "TABULA RASA: SINGAW — '23 - '24",
+                src: TabulaRasaCover,
+                backgroundSRC: TabulaRasaCover,
+                text1: "Sa tindi ng masangsang na amoy, ang pagpikit at ang taingang-kawali'y 'di sapat.",
+                text3: "Sa mga panahong puno ng kulimlim at pagbabago, kailangang sa buhay na patuloy ang pag-agos tayo kukuha ng kutya sa mga bosabos.",
+                text5: "Kumuha na ng inyong libreng kopya ng mga koleksyon ng opisyal na grapikong portfolio ng The Philippine Artisan."
+        }
     ]
 
     const navigableSlides = slides.slice(0);

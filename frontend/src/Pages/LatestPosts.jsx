@@ -7,6 +7,7 @@ import "../CSS/LatestPosts.css"
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
 
 const LatestPosts = () => {
+
     return (
         <div className="Latest-Posts-Page">
             <CoverPhotoSearch />
@@ -38,8 +39,10 @@ const LatestPosts = () => {
                     </div>
 
                 </div>
-            <div className="Latest-Post-Filters">
-                A
+            <div className = "Latest-Post-Filters">
+                <div className = "Latest-Post-Filter-Container">
+                    <input type = "checkbox"/> Local News
+                </div> 
             </div>
             </div>
         </div>

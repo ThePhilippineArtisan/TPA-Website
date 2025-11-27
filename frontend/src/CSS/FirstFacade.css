@@ -1,8 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
 .DBFF-Headline{
     display: flex;
     flex-direction: column;
@@ -53,9 +48,6 @@
   }
 }
 
-.Literary-Showcase-First-Facade{
-    margin: 0 auto;
-}
 
 .First-BG-First-Facade{
     position: relative;
@@ -65,26 +57,6 @@
     align-items: center;
 
     z-index: 1;
-}
-
-.Second-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-    background-color: #2a4e66;
-
-    width: 100%;
-    padding-top: 7vh;
-    padding-bottom: 7vh;
-
-    background-image: 
-        url('/Tek2.png'),
-        url('/Tek3.png'),
-        url('/axiom-pattern.png');
-    background-repeat: no-repeat, no-repeat, repeat;
-    background-size: 500px, 300px, auto;
-    
-    background-blend-mode: hard-light;
-    background-position-x: 108%, -7%, 0%;
-    background-position-y: 125%, 100%, 0%;    
 }
 
 .Cards{
@@ -109,7 +81,8 @@
 }
 
 .Card-Images img{    
-    height: 30rem;
+    max-height: 90%;
+    max-width: 90%;
     filter: drop-shadow(15px 10px 10px rgb(49, 49, 49));
     transform: rotate(3deg);
     

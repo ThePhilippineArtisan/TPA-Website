@@ -16,7 +16,7 @@ const VerticalFastNews = () => {
             </div>
         </div>
 
-        <Link to = "/" style = {{fontSize: "1.5rem"}}> LATEST FAST NEWS ———{`>`}</Link>
+        <Link to = "/" style = {{fontSize: "1.5rem"}}> FAST NEWS (JI, ICYMI, ANN) ———{`>`}</Link>
             <div className = "Vertical-Side-News">       
                     <img  loading = "lazy" 
                         src = {JUSTIN}
@@ -36,7 +36,7 @@ const VerticalFastNews = () => {
                     <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
                 </div>
             </div>
-        <Link to = "/" style = {{fontSize: "1.5rem"}}> FAST NEWS ———{`>`}</Link>
+        <Link to = "/" style = {{fontSize: "1.5rem"}}> LOCAL, NATIONAL, SPORTS NEWS ———{`>`}</Link>
             <div className = "Vertical-Side-News">       
                     <img  loading = "lazy" 
                         src = {JUSTIN}

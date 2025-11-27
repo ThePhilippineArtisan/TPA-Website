@@ -7,7 +7,7 @@ import "../CSS/Tabs.css"
 const Tabs = () => {
     return(
     <div className = "Tabs">
-        <Link to = "/Latest"> Latest </Link>
+        <Link to = "/Latest"> Latest Articles </Link>
         <Link to = "#" title = "Poetry, Prose, Pretention Galore! Ang Makata Monday ay ang pang-Literaryong Media Segment ng TPA"> Makata Monday </Link>
         <Link to = "#" title = "Our Teks dive into the world of technology!"> Tek Tuesday </Link>
         <Link to = "#" title = "Editorial Cartoonist and Wankers Wanking for attention"> Wankjob Wednesday </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useRef, useEffect} from "react"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
@@ -17,60 +17,133 @@ import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
 import "../CSS/CreateArticlePage.css"
 
 const CreateArticlePage = () => {
-    const authorDialogRef = useRef(null)
-
-    const openAuthorDialog = () => authorDialogRef.current.showModal()
-    const closeAuthorDialog = () => authorDialogRef.current.close()
-
-    const mediaProviderDialogRef = useRef(null)
-
-    const openMediaProviderDialog = () => mediaProviderDialogRef.current.showModal()
-    const closeMediaProviderDialog = () => mediaProviderDialogRef.current.close()
-
-    const [staffList, setStaffList] = useState([])
-    const [selectedAuthor, setSelectedAuthor] = useState([])
-    const [selectedMediaProvider, setSelectedMediaProvider] = useState([])
 
     const [headline, setHeadline] = useState("")
     const [bodyText, setBodyText] = useState("")
     const [articleType, setArticleType] = useState("")
+    // const [mediaFiles, setMediaFiles] = useState([])
 
-    useEffect(() =>{
-        fetch("http://localhost:5000/staff")
-            .then((res) => res.json())
-            .then((data) => setStaffList(data))
-            .catch((err) => console.error("Failed to fetch staff: ", err))
-    }, []);
+    const [allActiveStaff, setAllActiveStaff] = useState([]) 
+    // array because we're getting multiple staffers 
+    
+    const authorDialogRef = useRef(null)
+    const openAuthorDialog = () => authorDialogRef.current.showModal()
+    const closeAuthorDialog = () => authorDialogRef.current.close()
 
-    const toggleAuthor = (id) => {
-        setSelectedAuthor((prev) =>
-        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-        )
+    const [selectedAuthor, setSelectedAuthor] = useState([])
+    
+    const toggleAuthor = (staffId) => {
+        setSelectedAuthor((prevAuthors) => {
+            const exists = prevAuthors.some(author => author.id === staffId)
+
+            if(exists) // if you deselect, do this
+                return prevAuthors.filter(author => author.id !== staffId)
+            
+            // if not selected, and you want  to select it, do this
+                return [
+                    ...prevAuthors, // add
+                    { id: staffId, contributionType: "writer"}
+                ] // return the latest thing u selected with its id
+        }) 
     }
 
-    const toggleMediaProvider = (id) => {
-        setSelectedMediaProvider((prev) =>
-        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-        )
-    }
-
-    const handleCreateArticle = async () => {
-        const staffCredits = selectedAuthor.map((id) => {
-            const staff = staffList.find((s) => s.staff_id === id)
-            return {
-                staff_id: id,
-                contribution_As: "",
-                display_name: staff?.staff_display_name || ""
+    const contributionType = (staffId, type) => {
+        setSelectedAuthor(prevAuthors => 
+            prevAuthors.map(author => {
+                if (author.id === staffId) {
+                    return { ...author, contributionType: type}
+                }
+                else return author
             }
+            )
+        )
+    }
+    // prev.map(...) goes through each object a in the previous selectedAuthor array.
+    
+    
+    const [staffSearch, setStaffSearch] = useState("")
+
+    const filteredStaffer = allActiveStaff.filter(staff =>
+        staff.staff_display_name
+        .toLowerCase()
+        .includes(staffSearch.toLowerCase())
+    )
+
+    const [selectedMediaProvider, setSelectedMediaProvider] = useState([])
+    
+    const mediaProviderDialogRef = useRef(null)
+    const openMediaProviderDialog = () => mediaProviderDialogRef.current.showModal()
+    const closeMediaProviderDialog = () => mediaProviderDialogRef.current.close()
+
+    const AuthorList = async () => {
+        try{
+        const response = await fetch("http://localhost:5000/active-staff")
+        const activeStaffJSON = await response.json() // when fetching list, put it in json
+        setAllActiveStaff(activeStaffJSON);
+    } catch (error){
+        console.error(error)
+    }}
+
+    const MediaProviderList = async () => {
+        try{
+        const response = await fetch("http://localhost:5000/active-staff")
+        const activeStaffJSON = await response.json() // when fetching list, put it in json
+        setAllActiveStaff(activeStaffJSON);
+    } catch (error){
+        console.error(error)
+    }}    
+
+    const toggleMediaProvider = (staffId) => {
+        setSelectedMediaProvider(prev => {
+            const exists = prev.some(a => a.id === staffId) //.some means finding anything that fits the condition
+            
+            if(exists)
+                return prev.filter(a => a.id !== staffId)
+            return[...prev,
+                {id: staffId}
+            ]
         })
     }
 
-    const mediaCredits = selectedMediaProvider.map((id) =>{
-        const staff = staffList.find((s) => s.staff_id === id)
-        return{
+    const handleSubmit = async () => {
+        if(!headline || !bodyText){ 
+            alert("Hedline and body are required.")
+            return;
         }
 
-    })
+        // payload to be sent to the backend
+        const payload = {
+        article_headline: headline,
+        article_body: bodyText,
+        article_type: articleType,
+        authors: selectedAuthor,
+        media_providers: selectedMediaProvider
+        };
+
+        try {
+            const res = await fetch("http://localhost:5000/article", // take this API
+            {
+            method: "POST",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+
+            console.log("Article saved:", data);
+
+            alert("Article created successfully!");
+
+        } catch (error) {
+            console.error("Error creating article:", error);
+            alert("Failed to create article.");
+        }
+        };
+
+        useEffect(() => {
+            AuthorList();       // fetch once when component loads
+            MediaProviderList(); 
+        }, []);
 
     return(
         
@@ -88,10 +161,9 @@ const CreateArticlePage = () => {
                     <img src = { BULLET }/>  
                     <img src = { NUMBERED }/>  
                     <img src = {EMDASH} />
-
-                        {/** <button> Font Size   */}
                     
-                    <select name = "Article-Type" id = "Article-Type">
+                    <select name = "Article-Type" id = "Article-Type" value = {articleType} onChange = {(e) => setArticleType(e.target.value)}>
+                        
                         <option value = "LOOK"> LOOK </option>
                         <option value = "ICYMI"> ICYMI </option>
                         <option value = "ANNOUNCEMENT"> ANNOUNCEMENT </option>
@@ -112,48 +184,61 @@ const CreateArticlePage = () => {
                         <option value = "ADVISORY"> Features Friday </option>    
                         <option value = "ALERT"> Streaming Saturday </option>
                         <option value = "JUST_IN"> Sports Sunday </option>
+
+                        
                     </select> 
 
-                    <label htmlFor="file-upload">
+                    <label htmlFor = "file-upload">
                         <img 
                             src = {ATTACH} 
                             alt = "Upload" 
-                            style = {{cursor: "pointer" }} 
+                            style = {{cursor: "pointer" }}
                         />
                     </label>
-                
+
+                    <input
+                        id = "file-upload"
+                        type = "file" 
+                        multiple
+                        style = {{display: "none"}}
+                        // onChange = {(e) => setMediaFiles([...e.target.files])}
+                    />
+
                     <img 
                         src = {Author}
                         alt = "Select Author/s"
                         onClick = {openAuthorDialog}
                     />
 
-                    <dialog ref = {authorDialogRef} className = "Staff-Dialog">
+                    <dialog ref = {authorDialogRef} className = "Staff-Dialog"> 
                         <div className = "Dialog-Box">
-                            <h1> Select Authors </h1>
+                            <h1> Select Author/s </h1>
                             <div className = "Staffer-Box">
                                 <div className="Search-Staff">
-                                    <input type = "Search" placeholder = "Search here..." />    
-                                </div> 
+                                <input 
+                                    type = "Search" 
+                                    placeholder = "Search author/s here..."
+                                    onChange = {(e) => setStaffSearch(e.target.value)}
+                                    ></input>
+                                </div>
                                 <div className = "Staffer-List">
-                                    {staffList.map((staff) => (
-                                        <label key = {staff.staff_id} className = "Staff-Item">
-                                            <input
-                                                type = "checkbox"
-                                                checked = {selectedAuthor.includes(staff.staff_id)}
-                                                onChange = {() => toggleAuthor(staff.staff_id)}
-                                            />
-                                            <bold id = "Staff-Name"> {staff.staff_display_name} </bold>
-                                        </label>
-                                    ))}
+                                {filteredStaffer.map((staff) => (
+                                    <label key = {staff.staff_id} className = "Staff-Item">
+                                        <input
+                                            style = {{cursor: "pointer"}}
+                                            type="checkbox"
+                                            checked={selectedAuthor.includes(staff.staff_id)}
+                                            onChange={() => toggleAuthor(staff.staff_id)}
+                                        />
+                                    <div className = "Staff-Name-Container"> <strong id = "Staff-Name">{staff.staff_display_name} </strong> </div>
+                                    </label>
+                                ))}
                                 </div>
                             </div>
                         </div>
-
-                        <div className = "Staff-Dialog-Button">
-                            <button onClick = {closeAuthorDialog}> Done </button>
-                        </div>
+                    <button onClick = {closeAuthorDialog}> Done </button>
                     </dialog>
+
 
                     <img 
                         src = {MediaProvider}
@@ -161,28 +246,56 @@ const CreateArticlePage = () => {
                         onClick = {openMediaProviderDialog}
                     />
 
-                    <dialog ref = {mediaProviderDialogRef} className = "Staff-Dialog">
+                    <dialog ref = {mediaProviderDialogRef} className = "Staff-Dialog"> 
                         <div className = "Dialog-Box">
-                            <h1> Select Media Provider </h1>
+                            <h1> Select Media Provider/s </h1>
                             <div className = "Staffer-Box">
-                               <div className="Search-Staff">
-                                    <input type = "Search" placeholder = "Search here..." />    
-                                </div> 
+                                <div className="Search-Staff">
+                                <input 
+                                    type = "Search" 
+                                    placeholder = "Search author/s here..."
+                                    onChange = {(e) => setStaffSearch(e.target.value)}
+                                    ></input>
+
+                                </div>
                                 <div className = "Staffer-List">
-                                    {staffList.map((staff) => (
-                                        <label key = {staff.staff_id} className = "Staff-Item">
-                                            <input 
-                                                type = "checkbox"
-                                                checked = {selectedMediaProvider.includes(staff.staff_id)}
-                                                onChange = {() => toggleMediaProvider(staff.staff_id)}
-                                            />
-                                            <strong id = "Staff-Name"> {staff.staff_display_name} </strong >
-                                        </label>
-                                    ))}
+                                    {filteredStaffer.map((staff) => {
+                                        
+                                        const selectedAuthorObj = selectedAuthor.find(a => a.id === staff.staff_id);
+
+                                        return (
+                                            <label key={staff.staff_id} className="Staff-Item">
+                                                <input
+                                                    style={{ cursor: "pointer" }}
+                                                    type="checkbox"
+                                                    checked={selectedMediaProvider.some(a => a.id === staff.staff_id)}
+                                                    onChange={() => toggleMediaProvider(staff.staff_id)}
+                                                />
+
+                                                <div className="Staff-Name-Container">
+                                                    <strong id="Staff-Name">{staff.staff_display_name}</strong>
+
+                                                    {selectedAuthorObj && (
+                                                        <select
+                                                            name="Author-Type"
+                                                            value={selectedAuthorObj.contributionType}
+                                                            onChange={(e) =>
+                                                                setContributionType(staff.staff_id, e.target.value)
+                                                            }
+                                                        >
+                                                            <option value="Writer">Writer</option>
+                                                            <option value="Broadcaster">Broadcaster</option>
+                                                        </select>
+                                                    )}
+                                                </div>
+
+                                            </label>
+                                        );
+                                    })}                                
                                 </div>
                             </div>
                         </div>
-                            <button onClick = {closeMediaProviderDialog}> Done </button>
+                    <button onClick = {closeMediaProviderDialog}> Done </button>
                     </dialog>
 
                     <input 
@@ -202,22 +315,31 @@ const CreateArticlePage = () => {
                         placeholder = "Enter your new article headline here. (Follow/Subscribe/Add @AvoirJoseph)"
                         id = "Headline-Text"
                         className = "Headline-Input"
+                        value = {headline}
+                        onChange = {(e) => setHeadline(e.target.value)} // take the value of the thing inside the input, changes setHeadline state
                     />
 
                     <div
-                        contentEditable = {true}
+                        contentEditable
                         suppressContentEditableWarning = {true}
                         id = "Body-Text"
-                        className = "Headline-Input">
+                        className = "Headline-Input"
+                        value = {bodyText}
+                        onInput = {(e) => setBodyText(e.target.innerText)} // take the value to be as setBodyText
+                        >
                         Enter your new article here.
                     </div>
+
                </div>
             </div>
             <div className = "Preview-Section">
                 <h1> Article Preview </h1>
             </div>
+
+            <button onClick = {handleSubmit}>Post</button>
         </div>
     )
 }
+
 
 export default CreateArticlePage;

@@ -1,14 +1,8 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
 .Entire-Page{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
     padding: 2rem;
-    height: 70vh;
     
     background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff3f 100%);
 }
@@ -179,7 +173,7 @@ dialog{
     border: 2px solid black;
     border-radius: 10px;
 
-    height: 100%;
+    padding: 1rem;
 }
 
 .Search-Staff{
@@ -196,7 +190,7 @@ dialog{
 .Staffer-List{
     display: flex;
     flex-direction: column;
-    padding: 0.75rem;
+    justify-content: center;
 }
 
 .Staff-Item:hover{
@@ -206,11 +200,22 @@ dialog{
 }
 
 .Staff-Item{
+    display: flex;
+    flex-direction: row;
     border: 1px solid gray;
     border-radius: 8px;
     padding: 1rem;
+    margin: 0.25rem;
+}
+
+.Staff-Name-Container{
+    display: flex;
+    justify-content: center;
+    width: 90%;
 }
 
 #Staff-Name{
-    padding-left: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,86 +1,94 @@
 // The reason we require instead of import is so that it won't load if it can't import it
 
 const express = require("express");
-    // imports express framework
-
-const app = express();
+const app = express();              
     // lets us define ROUTES/APIs (like app.get('/articles', (req, res) => res.send())
 
-const cors = require("cors");
-    // connects the frontend port (5173 or something) and server port (5000?)
-
-const pool = require("./database")
+const pool = require("./database") 
     // imports the database.js file to establish a connection with the TPADatabase
-    // also lets the ROUTES/API to communicate with the database efficiently
 
-const port = 5000;
-    // just wanna be techie, unneeded really
-
-app.listen(port, () => {
+const port = 5000;    // just wanna be techie, unneeded really
+app.listen(port, () => { // starts the server, confirm with console.log
     console.log("Server initiated, listen on port:", port);
-    // starts the server, confirm with console.log
 }); 
 
-app.use(cors());
+const cors = require("cors"); 
+    // connects the frontend port (5173 or something) and server port (5000?)
+app.use(cors()); 
     // readies CORS so that the frontend can communicate with the backend
-
 app.use(express.json()); 
     // enables server to understand JSON data from requests
 
 
+// =========== ROUTES, REST API (For CRUD using HTTP) for Article Operations ==========
 
-
-
-
-
-// ROUTES, REST API (For CRUD using HTTP) for Article Operations//
+const slugify = str => 
+    str.toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "-") 
+// make the last part of the headline a url for better SEO
 
 // Create an article (C)
-
-const slugify = str => str.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "-")
-// make the last part of the headline a url
-
 app.post("/article", async(req, res) => {
     const client = await pool.connect();  // connect to the database
+    
     try {
-        const {
-            // values sent from the /create-article-page/
-            article_headline,
-            article_body,
-            article_type,
+        // declare values to be used as parameter
+        const { article_headline, 
+            article_body, 
+            article_authors = [],
+            media_providers = [],
+            media_url = []
         } = req.body;
+
+        if(!article_headline || !article_body) {
+            return res.status(400).json({error: "article headline and body is not found."})
+        }
 
         const slug_headline = slugify(article_headline)
 
-        await client.query("BEGIN"); // starts the transaction
+        await client.query("BEGIN"); // starts the transaction (multiple queries)
 
-        // Create the article
-        const newArticle = await client.query(
+        // ============== //
+        // CREATE ARTICLE //
+        // ============== //
+
+        const createArticle = await client.query(
             `INSERT INTO article 
             (article_headline, article_body, article_type, slug_headline)
             VALUES ($1, $2, $3, $4) RETURNING *`, 
             [article_headline, article_body, article_type, slug_headline]
         );
 
-        const article = newArticle.rows[0]
+        const article = createArticle.rows[0]
+        //after creation, take article's id
 
-        // Add contributors
-        for(const credit of staff_credits){ // create object "credit" having traits of "credit"
-            const{
-                staff_id,
-                contribution_As,
-                display_name
-            } = credit;
+        const articleID = article.article_id
 
+        // =================== //
+        // LINK AUTHOR_ARTICLE //
+        // =================== //
+
+        for(const staffID of staff_article){
             await client.query(
-                `INSERT INTO staff_article
-                (article_id, staff_id, contribution_As, display_name) 
-                VALUES ($1, $2, $3, $4)`, 
-                [article.article_id, staff_id, contribution_As, display_name]
+                `INSERT INTO staff_article 
+                (article_id, staff_id, contribution_As)
+                VALUES ($1, $2, $3)`, [articleID, staffID, "writer"]
             )
         }
 
-        // Add media
+        // =================== //
+        // LINK MEDIA Provider_ARTICLE //
+        // =================== //
+
+        for(const staffID of article_media){
+            await client.query(
+                `INSERT INTO article_media 
+                (article_id, staff_id, contribution_As)
+                VALUES ($1, $2, $3)`, [articleID, staffID, "Writer"]
+            )
+        }
 
         res
             .status(201)
@@ -89,99 +97,21 @@ app.post("/article", async(req, res) => {
 
     } catch (error) {
         console.error("Error creating article: ", error.message);
+    } finally {
+        client.release() // releases this particular pool query (total: 10)
     }
 })
 
-// Get latest articles (R)
+// get all ACTIVE STAFF
 
-app.get("/article", async(req, res) => {
-    try { //find a way to only get at most 10 headlines, text, author, first/one image, and graphics responsible 
-        const allArticles = await pool.query("SELECT * FROM article")
-        res.json(allArticles.rows)
-    } catch (error) {
-        console.error(error.message)
-    }
-})
-
-// Get an article (R)
-
-app.get("/article/:id/:slug", async (req, res) => {
+app.get("/active-staff", async(req, res) => {
     try {
-        const { id, slug } = req.params;
-
-        const result = await pool.query(
-            "SELECT * FROM article WHERE article_id = $1", [id]);
+        const allActiveStaff = await pool.query
+            ("SELECT * FROM staff WHERE staff_isactive = true ORDER BY staff_last_name")
+        res.json(allActiveStaff.rows)
         
-        const article = result.rows[0];
-
-        if(!article) {
-            return res.status(404).json({error: "Article not found"});
-        }
-
-        res.json(article)
-
     } catch (error) {
-        console.error(error.message)
-    }
-})
-
-// Update/Edit an article (U)
-
-// Delete an article (D)
-
-
-
-
-
-
-
-// ROUTES, REST API (For CRUD using HTTP) for STAFFER Operations//
-
-// Create staff (C)
-
-app.post("/staff", async(req, res) => {
-    try {
-        console.log(req.body);
-    } catch (error) {
-        console.error(error.message);
-    }
-})
-
-// Get active staff (R)
-
-app.get("/staff", async(req, res) => {
-    try { //find a way to only get at first only the active ones
-        const allStaff = await pool.query("SELECT * FROM staff")
-        res.json(allStaff.rows)
-    } catch (error) {
-        console.error(error.message)
-    }
-})
-
-// Get a staff (R)
-
-app.get("/staff/:id", async (req, res) => {
-    try {
-        console.log(req.params);
-        const { id } = req.params;
-        const staff = await pool.query("SELECT * FROM staff WHERE staff_id = $1", [id]) 
-        res.json(staff.rows[0])
-    } catch (error) {
-        console.error(error.message)
-    }
-})
-
-// Update/Edit a staff (U)
-
-// Delete a staff (D)
-
-app.delete("/staff/:id", async (req, res) => {
-    try {
-        console.log(req.params);
-        const { id } = req.params;
-        const deleteStaff = await pool.query("DELETE FROM staff WHERE staff_id = $1", [id]) 
-        res.json(staff.rows[0])
-    } catch (error) {
-        console.error(error.message)
+        console.error("Error fetching all active staff:", error.message)
+        res.json(500).json({error})
     }
 })

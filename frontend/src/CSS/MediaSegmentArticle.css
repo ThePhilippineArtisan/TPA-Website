@@ -5,7 +5,7 @@
 
 .Media-Segment-Article-Page{
     background-color: whitesmoke;
-    background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff11 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #0092f305 30%, #0099ff00 100%);
 
     display: flex;
     flex-direction: column;
@@ -79,9 +79,12 @@
 }
 
 .Media-Segment-Article-Text{
-    background-color:rgba(215, 234, 250, 0.5);
-    border-radius: 10px;
-    padding: 2rem;
+    padding: 3rem;
+    
+    background-color:rgba(215, 234, 250, 0.25);
+    border-bottom-right-radius: 30px;
+    
+    font-size: 1.25rem;
 }
 
 .Media-Segment-Article-Below-Photo{
