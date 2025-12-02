@@ -6,8 +6,7 @@
 .Latest-Media-Segment-Image::before{
     content: "";
     position: absolute;
-    
-    background-image: url("../Sample-Photos/Bata.jpg");
+    background-image: var(--bgImage);
     
     background-position: center;
     background-size: cover;
@@ -32,7 +31,7 @@
 
 .Latest-Media-Segment-Image img{
     max-height: 10%;
-    max-width: 50%;
+    max-width: 35%;
     object-fit: cover;
 
     filter: opacity(0.96);

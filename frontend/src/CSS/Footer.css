@@ -29,7 +29,7 @@
 }
 
 .Left-Footer img{
-    height: 7rem;
+    height: 100px;
     padding: 1rem;
 }
 
@@ -40,16 +40,16 @@
 }
 
 .Right-Footer{
+    text-align: center;
     padding: 10px;
-    padding-top: 50px;
+    width: 300px;
 
     display: flex;
     flex-direction: column;
 }
 
 .Right-Footer p{
-    padding-bottom: 20px;
-    padding-left: 40px;
+    padding-bottom: 10px;
 }
 
 .Right-Footer-Links{

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect} from "react"
+import { useState, useRef, useEffect} from "react"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
@@ -18,10 +18,59 @@ import "../CSS/CreateArticlePage.css"
 
 const CreateArticlePage = () => {
 
+    const [submitArticle, setSubmitArticle] = useState({
+        articleHeadline: "",
+        articleBody: "",
+        articleType: "",
+        articleAuthors: ["The Philippine Artisan"],
+        articleMediaProviders: ["The Philippine Artisan"],
+        articleFileUpload: [],
+    })
+
+    useEffect(() => {
+        AuthorList();       // fetch once when component loads
+        MediaProviderList(); 
+    }, []);
+
+    const onSubmit = async(e) => {
+        e.preventDefault();
+        
+        if(!headline && !bodyText){ 
+            alert("Hedline or body is required.")
+            return;
+        }
+        const formData = new FormData()
+
+        formData.append("articleHeadline", submitArticle.articleHeadline)
+        formData.append("articleBody", submitArticle.articleBody)
+        formData.append("articleType", submitArticle.articleType)
+
+        formData.append("articleAuthors", JSON.stringify(submitArticle.articleAuthors))
+        formData.append("articleMediaProviders", JSON.stringify(submitArticle.articleMediaProviders))
+        formData.append("articleFileUpload", JSON.stringify(submitArticle.articleFileUpload))
+
+        try {
+            const res = await fetch("http://localhost:5000/article", // take this API
+            {
+            method: "POST",
+            body: formData,
+            });
+
+            const data = await res.json();
+            console.log("Article saved:", data);
+            alert("Article created successfully!");
+            return
+            } catch (error) {
+            console.error("Error creating article:", error);
+            alert("Failed to create article.");
+            }
+            return;
+        };
+
     const [headline, setHeadline] = useState("")
     const [bodyText, setBodyText] = useState("")
     const [articleType, setArticleType] = useState("")
-    // const [mediaFiles, setMediaFiles] = useState([])
+    const [mediaFiles, setMediaFiles] = useState([])
 
     const [allActiveStaff, setAllActiveStaff] = useState([]) 
     // array because we're getting multiple staffers 
@@ -105,53 +154,12 @@ const CreateArticlePage = () => {
         })
     }
 
-    const handleSubmit = async () => {
-        if(!headline || !bodyText){ 
-            alert("Hedline and body are required.")
-            return;
-        }
-
-        // payload to be sent to the backend
-        const payload = {
-        article_headline: headline,
-        article_body: bodyText,
-        article_type: articleType,
-        authors: selectedAuthor,
-        media_providers: selectedMediaProvider
-        };
-
-        try {
-            const res = await fetch("http://localhost:5000/article", // take this API
-            {
-            method: "POST",
-            headers: {"Content-Type": "application/json",},
-            body: JSON.stringify(payload),
-            });
-
-            const data = await res.json();
-
-            console.log("Article saved:", data);
-
-            alert("Article created successfully!");
-
-        } catch (error) {
-            console.error("Error creating article:", error);
-            alert("Failed to create article.");
-        }
-        };
-
-        useEffect(() => {
-            AuthorList();       // fetch once when component loads
-            MediaProviderList(); 
-        }, []);
-
     return(
-        
         <div className = "Entire-Page">
+        <form onSubmit = {onSubmit}>
             <div className = "Editor-Rectangle">
 
                 <div className = "Text-Formatting-Section">
-
                     <img src = { BOLD }/>
                     <img src = { ITALIC }/>   
                     <img src = { HIGHLIGHT }/>
@@ -162,7 +170,7 @@ const CreateArticlePage = () => {
                     <img src = { NUMBERED }/>  
                     <img src = {EMDASH} />
                     
-                    <select name = "Article-Type" id = "Article-Type" value = {articleType} onChange = {(e) => setArticleType(e.target.value)}>
+                    <select name = "Article-Type" id = "Article-Type" value = {setSubmitArticle.articleType} onChange = {(e) => setSubmitArticle({...submitArticle, articleType: e.target.value})}>
                         
                         <option value = "LOOK"> LOOK </option>
                         <option value = "ICYMI"> ICYMI </option>
@@ -194,21 +202,32 @@ const CreateArticlePage = () => {
                             alt = "Upload" 
                             style = {{cursor: "pointer" }}
                         />
+
+                        <input
+                            id = "file-upload"
+                            type = "file" 
+                            // multiple
+                            style = {{display: "none"}}
+
+                            onchange = {(e) => setSubmitArticle({...submitArticle, articleFileUpload: e.target.files})}
+                        />
+
                     </label>
 
-                    <input
-                        id = "file-upload"
-                        type = "file" 
-                        multiple
-                        style = {{display: "none"}}
-                        // onChange = {(e) => setMediaFiles([...e.target.files])}
-                    />
 
                     <img 
                         src = {Author}
                         alt = "Select Author/s"
                         onClick = {openAuthorDialog}
                     />
+
+                    <img 
+                        src = {MediaProvider}
+                        alt = "Select Media Provider/s"
+                        onClick = {openMediaProviderDialog}
+                    />
+
+                </div>
 
                     <dialog ref = {authorDialogRef} className = "Staff-Dialog"> 
                         <div className = "Dialog-Box">
@@ -238,13 +257,6 @@ const CreateArticlePage = () => {
                         </div>
                     <button onClick = {closeAuthorDialog}> Done </button>
                     </dialog>
-
-
-                    <img 
-                        src = {MediaProvider}
-                        alt = "Select Media Provider/s"
-                        onClick = {openMediaProviderDialog}
-                    />
 
                     <dialog ref = {mediaProviderDialogRef} className = "Staff-Dialog"> 
                         <div className = "Dialog-Box">
@@ -280,10 +292,10 @@ const CreateArticlePage = () => {
                                                             name="Author-Type"
                                                             value={selectedAuthorObj.contributionType}
                                                             onChange={(e) =>
-                                                                setContributionType(staff.staff_id, e.target.value)
+                                                                contributionType(staff.staff_id, e.target.value)
                                                             }
                                                         >
-                                                            <option value="Writer">Writer</option>
+                                                            <option value = "Writer">Writer</option>
                                                             <option value="Broadcaster">Broadcaster</option>
                                                         </select>
                                                     )}
@@ -303,9 +315,11 @@ const CreateArticlePage = () => {
                         type = "file" 
                         multiple
                         style = {{ display: "none" }} 
-                        onChange = {(e) => console.log(e.target.files)} 
+                        onChange = {(e) => setSubmitArticle({
+                            ...submitArticle,
+                            articleFileUpload: e.target.files,
+                        })}
                     />
-
 
                 </div>
 
@@ -315,8 +329,8 @@ const CreateArticlePage = () => {
                         placeholder = "Enter your new article headline here. (Follow/Subscribe/Add @AvoirJoseph)"
                         id = "Headline-Text"
                         className = "Headline-Input"
-                        value = {headline}
-                        onChange = {(e) => setHeadline(e.target.value)} // take the value of the thing inside the input, changes setHeadline state
+                        value = {submitArticle.articleHeadline}
+                        onChange = {(e) => setSubmitArticle({...submitArticle, articleHeadline: e.target.value})} // take the value of the thing inside the input, changes setHeadline state
                     />
 
                     <div
@@ -324,22 +338,20 @@ const CreateArticlePage = () => {
                         suppressContentEditableWarning = {true}
                         id = "Body-Text"
                         className = "Headline-Input"
-                        value = {bodyText}
-                        onInput = {(e) => setBodyText(e.target.innerText)} // take the value to be as setBodyText
+                        value = {submitArticle.articleBody}
+                        onInput = {(e) => setSubmitArticle({...submitArticle, articleBody: e.target.innerText})} // take the value to be as setBodyText
                         >
-                        Enter your new article here.
-                    </div>
+                    </div>          
+                </div>
+                
+                <button type = "submit">Post</button>
 
-               </div>
-            </div>
+        </form>
             <div className = "Preview-Section">
                 <h1> Article Preview </h1>
             </div>
-
-            <button onClick = {handleSubmit}>Post</button>
         </div>
-    )
+)
 }
-
 
 export default CreateArticlePage;

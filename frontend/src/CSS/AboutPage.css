@@ -1,8 +1,3 @@
-*{
-    padding: 0;
-    margin: 0;
-}
-
 .First-Part{
     background-color: rgba(0, 7, 17, 0.932);
     background-image: url("/notebook-dark.png");
@@ -43,7 +38,7 @@
 }
 
 .Slide-Image img{
-    width: 80%;
+    width: 70%;
 
     object-fit: cover;
 }

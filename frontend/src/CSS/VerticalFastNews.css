@@ -18,10 +18,12 @@
 
     border-radius: 1.25rem;
     padding: 1rem;
+
+    height: 5rem;
 }
 
 .Vertical-Side-News img{
-    height: 6rem;
+    height: 100%;
     cursor: pointer;
     object-fit: cover;
     aspect-ratio: 5 / 3;

@@ -8,14 +8,16 @@ import { Link } from "react-router-dom";
 const LatestMediaSegment = () => {
     return(
         <div>
-            <div className = "Latest-Media-Segment-Image" id = "imga">
+            <div className = "Latest-Media-Segment-Image" id = "imga"
+                style={{ "--bgImage": `url(${StreamingSat})` }} >
+                
                 <img
                     src = {StreamingSat /** Latest Media Segment Available */}
                 />
 
                 <div className = "Latest-MS-Title">
                     <Link><h1> Bata </h1></Link>
-                    <Link><h3> by Joseph Brian Balut </h3></Link> 
+                    <Link><h3> by Joseph Brian Balut </h3></Link>   
 
                     <div className = "Sample-Text-Container">
                         <hr className = "Vertical-Divider"></hr>

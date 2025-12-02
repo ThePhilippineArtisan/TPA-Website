@@ -47,9 +47,7 @@ const FirstFacade = () => {
             backgroundSRC: NewsLetterCover,
             text1: "The Newsletter for the academic year 2024–2025 has launched its issue, focusing on the university's previous academic year.",
             text2: "This issue features a collection of news articles, significant campus events, and insightful stories relevant within and across the country.",
-            text3: "TUPians, don’t get lost in the noise.",
             text4: "In this time when misinformation and disinformation are spreading fast, being informed is your form of resistance.",
-            text5: "The Philippine Artisan proudly presents its Newsletter for A.Y. 2024–2025, covering pressing news and compelling features that will voice out truth and expose issues within and beyond our university.",
             text6: "Don’t miss out and get your own copies now!"
         },
 

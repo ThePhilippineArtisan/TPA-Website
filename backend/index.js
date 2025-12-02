@@ -29,24 +29,29 @@ const slugify = str =>
         .replace(/\s+/g, "-") 
 // make the last part of the headline a url for better SEO
 
+
+
 // Create an article (C)
 app.post("/article", async(req, res) => {
     const client = await pool.connect();  // connect to the database
     
     try {
         // declare values to be used as parameter
-        const { article_headline, 
-            article_body, 
-            article_authors = [],
-            media_providers = [],
-            media_url = []
+        const { 
+            articleHeadline, 
+            articleBody, 
+            articleType,
+            articleAuthors = "[]",
+            articleMediaProviders = "[]",
+            mediaUrls = "[]"
         } = req.body;
 
-        if(!article_headline || !article_body) {
+        
+
+        if(!articleHeadline && !articleBody) {
             return res.status(400).json({error: "article headline and body is not found."})
         }
-
-        const slug_headline = slugify(article_headline)
+        const slug_headline = slugify(articleHeadline)
 
         await client.query("BEGIN"); // starts the transaction (multiple queries)
 
@@ -58,7 +63,7 @@ app.post("/article", async(req, res) => {
             `INSERT INTO article 
             (article_headline, article_body, article_type, slug_headline)
             VALUES ($1, $2, $3, $4) RETURNING *`, 
-            [article_headline, article_body, article_type, slug_headline]
+            [articleHeadline, articleBody, articleType, slug_headline]
         );
 
         const article = createArticle.rows[0]

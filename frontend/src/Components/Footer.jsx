@@ -19,7 +19,7 @@ const Footer = () => {
                 The 81-year old official student publication of 
                 <br></br>
                 Technological University of the Philippines Manila. 
-                <br></br>                 <br></br>                 <br></br> 
+                <br></br>                 <br></br>                 
                 Serving the academe and the country since 1944.
                 </p>
                 

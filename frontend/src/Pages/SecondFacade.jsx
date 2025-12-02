@@ -38,7 +38,7 @@ const SecondFacade = () => {
 
                                 <img
                                     src = {Photo2}
-                                    style = {{height: "10%", width: "auto"}}
+                                    style = {{width: "85%"}}
                                 />
 
                                 <div className = "Large-News" >
@@ -47,15 +47,6 @@ const SecondFacade = () => {
                                     
                                         <div className = "Article-Author-Time">
                                             <p to = "/" >Cathlene Torrenueva | September 12, 2025</p>  
-                                        </div>
-                                        
-                                        <div className = "Sample-Text-Container">
-                                            <hr className = "Vertical-Divider"></hr>
-                                            <div className = "Sample-Text">
-                                                <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
-                                                Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
-                                                </p>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +64,6 @@ const SecondFacade = () => {
                     <hr className = "Vertical-Divider"></hr>
                     <img  
                         loading = "lazy"  
-                        style = {{height: "17rem", aspectRatio: "16 / 9"}}
                         src = {Photo2}
                     />
                     
@@ -117,7 +107,6 @@ const SecondFacade = () => {
                     
                     <img  
                         loading = "lazy"  
-                        style = {{height: "17rem", aspectRatio: "16 / 9"}}
                         src = {Photo2}
                     />
                     <hr className = "Vertical-Divider"></hr>

@@ -1,27 +1,27 @@
-a{
+a {
     text-decoration: none;
     color: black;
 }
 
-.Second-Facade{
+.Second-Facade {
     background-color: #9edbff20;
     background-image: url('crisp-paper-ruffles.png');
 }
 
-.Cover-Photo-Image-Facade{
+.Cover-Photo-Image-Facade {
     position: relative;
-    overflow:hidden;
+    overflow: hidden;
 
     z-index: 0;
     width: 100%;
     height: 50vh;
 }
 
-.Cover-Photo-Image-Facade::before{
+.Cover-Photo-Image-Facade::before {
     content: "";
     position: absolute;
-    
-    background-image: url('/TPA-Cover.png'); 
+
+    background-image: url('/TPA-Cover.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -32,7 +32,7 @@ a{
 }
 
 
-.SearchBar{
+.SearchBar {
     color: black;
     text-decoration: none;
 
@@ -41,7 +41,7 @@ a{
     background-size: cover;
 
     filter: drop-shadow(2px 5px 7px rgba(0, 0, 0, 0.8));
-    
+
     background-position-x: 99.75%;
     background-position-y: 50%;
     background-size: 3rem;
@@ -59,37 +59,37 @@ a{
     border-radius: 3rem;
 }
 
-.Below-Cover-Photo{    
+.Below-Cover-Photo {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 
-    
+
     margin: 0rem 3rem;
 
 }
 
-.letterA{
+.letterA {
     display: grid;
     grid-template-columns: 5fr 2fr;
 
     padding: 1rem;
-    
+
     overflow: hidden;
 
     gap: 1rem;
 }
 
-.Large-Left-News-Column{
+.Large-Left-News-Column {
     display: flex;
     flex-direction: column;
 }
 
-#Category{
+#Category {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
+
     text-decoration: none;
 }
 
@@ -103,7 +103,7 @@ a{
 
     background-color: rgba(99, 218, 248, 0.322);
     box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.308);
-    
+
     z-index: 1;
     padding: 0.25rem 0rem;
     border-radius: 16px;
@@ -117,7 +117,7 @@ a{
     left: 0;
     width: 100%;
     height: 100%;
-    
+
     background-color: #0265A9;
     transform: translateX(-101%);
     transition: transform 0.3s ease-in-out;
@@ -125,10 +125,11 @@ a{
 }
 
 .Category:hover::before {
-    transform: translateX(0); /* Slide in fully */
+    transform: translateX(0);
+    /* Slide in fully */
 }
 
-.Category{
+.Category {
     display: flex;
     align-self: center;
     justify-content: space-between;
@@ -146,26 +147,26 @@ a{
     color: white;
 }
 
-#Category a:hover{
+#Category a:hover {
     color: white;
 }
 
-#Category-Outside{
+#Category-Outside {
     width: 95%;
     margin: 0% 3%;
 }
 
-.Large-News{
-    padding-bottom: 1rem;
-    
+.Large-News {
+    align-items: center;
+    padding: 0rem 3rem;
 }
 
-.Large-Photo-News{
+.Large-Photo-News {
     display: flex;
     flex-direction: row;
     align-items: center;
     overflow: hidden;
-    
+
     text-decoration: none;
 
     background-color: #84cdfd10;
@@ -176,14 +177,14 @@ a{
     padding-top: 1rem;
 }
 
-.Large-Photo-News:hover{
+.Large-Photo-News:hover {
     transform: scale(1.001);
     background-color: #84cdfd25;
 }
 
-.Large-Photo-News img{
-    width: 55rem;
-    
+.Large-Photo-News img {
+    width: 30%;
+
     border-radius: 20px;
 
     aspect-ratio: 16 / 9;
@@ -192,16 +193,16 @@ a{
     object-position: center;
 
     border: 3px solid black;
-    
-    transition: object-position 0.3s, transform 0.3s ;
+
+    transition: object-position 0.3s, transform 0.3s;
     cursor: pointer;
 }
 
-.Large-Photo-News img:hover{
-    object-position: 90% 90%;    
+.Large-Photo-News img:hover {
+    object-position: 90% 90%;
 }
 
-.Large-News-Headline{
+.Large-News-Headline {
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -210,44 +211,44 @@ a{
     gap: 1rem;
 }
 
-.Large-News-Headline a{
+.Large-News-Headline a {
     color: black;
     font-weight: bolder;
     text-decoration: none;
 
     font-size: 1.5rem;
 
-    display: -webkit-box;              
-    -webkit-line-clamp: 3;             
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-.Large-News-Headline a:hover{
+.Large-News-Headline a:hover {
     color: #0265A9
 }
 
-.Sample-Text p{
+.Sample-Text p {
     font-size: 1rem;
-    color:#414141;
-    
-    display: -webkit-box;              
-    -webkit-line-clamp: 3;             
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    color: #414141;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-.Sample-Text-Container{
+.Sample-Text-Container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -266,7 +267,7 @@ a{
 
 }
 
-.Sample-Text-Container:hover{
+.Sample-Text-Container:hover {
     background-color: rgba(255, 255, 255);
 
     transition: transform 0.2s ease-in-out;
@@ -275,16 +276,16 @@ a{
     cursor: pointer;
 }
 
-.Article-Author-Time p{
+.Article-Author-Time p {
     color: black;
 
     font-size: 1rem;
     font-weight: 500;
-    display: -webkit-box;              
-    -webkit-line-clamp: 1;             
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     white-space: normal;
     overflow-wrap: break-word;
@@ -292,7 +293,7 @@ a{
 }
 
 
-.Bulletin-Board{
+.Bulletin-Board {
     display: flex;
     flex-direction: row;
     filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
@@ -309,11 +310,10 @@ a{
 
 }
 
-.Vertical-Divider{
+.Vertical-Divider {
     background-color: #0265A9;
     height: 2rem;
     width: 0.25rem;
     margin: 0rem 0.25rem;
     border: none;
 }
-
