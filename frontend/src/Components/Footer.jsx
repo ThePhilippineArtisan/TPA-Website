@@ -1,4 +1,4 @@
-import TPALOGO from "../assets/Miniature_Icon_Version/TPACircleLOGO.svg";
+import TPALOGO from "../assets/Miniature_Icon_Version/TPACircleLogo.svg";
 import FBLogo from "../assets/Miniature_Icon_Version/FBLogo.svg"
 import XLogo from "../assets/Miniature_Icon_Version/XLogo.svg"
 import IGLogo from "../assets/Miniature_Icon_Version/IGLogo.svg"
