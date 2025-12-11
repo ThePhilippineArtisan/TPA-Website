@@ -35,7 +35,7 @@ const CreateArticlePage = () => {
     const onSubmit = async(e) => {
         e.preventDefault();
         
-        if(!headline && !bodyText){ 
+        if(!submitArticle.articleHeadline && !submitArticle.articleBody){ 
             alert("Hedline or body is required.")
             return;
         }
@@ -47,7 +47,9 @@ const CreateArticlePage = () => {
 
         formData.append("articleAuthors", JSON.stringify(submitArticle.articleAuthors))
         formData.append("articleMediaProviders", JSON.stringify(submitArticle.articleMediaProviders))
-        formData.append("articleFileUpload", JSON.stringify(submitArticle.articleFileUpload))
+        for (let i = 0; i < submitArticle.articleFileUpload.length; i++) {
+            formData.append("articleFileUpload", submitArticle.articleFileUpload[i])
+        }
 
         try {
             const res = await fetch("http://localhost:5000/article", // take this API
@@ -170,7 +172,7 @@ const CreateArticlePage = () => {
                     <img src = { NUMBERED }/>  
                     <img src = {EMDASH} />
                     
-                    <select name = "Article-Type" id = "Article-Type" value = {setSubmitArticle.articleType} onChange = {(e) => setSubmitArticle({...submitArticle, articleType: e.target.value})}>
+                    <select name = "Article-Type" id = "Article-Type" value = {submitArticle.articleType} onChange = {(e) => setSubmitArticle({...submitArticle, articleType: e.target.value})}>
                         
                         <option value = "LOOK"> LOOK </option>
                         <option value = "ICYMI"> ICYMI </option>
@@ -209,7 +211,7 @@ const CreateArticlePage = () => {
                             // multiple
                             style = {{display: "none"}}
 
-                            onchange = {(e) => setSubmitArticle({...submitArticle, articleFileUpload: e.target.files})}
+                            onChange = {(e) => setSubmitArticle({...submitArticle, articleFileUpload: e.target.files})}
                         />
 
                     </label>
@@ -309,18 +311,6 @@ const CreateArticlePage = () => {
                         </div>
                     <button onClick = {closeMediaProviderDialog}> Done </button>
                     </dialog>
-
-                    <input 
-                        id = "file-upload"
-                        type = "file" 
-                        multiple
-                        style = {{ display: "none" }} 
-                        onChange = {(e) => setSubmitArticle({
-                            ...submitArticle,
-                            articleFileUpload: e.target.files,
-                        })}
-                    />
-
                 </div>
 
                 <div className = "Text-Area">

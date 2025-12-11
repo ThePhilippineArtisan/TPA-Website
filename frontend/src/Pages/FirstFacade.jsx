@@ -136,7 +136,7 @@ const FirstFacade = () => {
                                 onClick = {handlePrev}
                             />
                         </div>
- 
+                            
                         <div className = "DBFF-Headline">
                             
                             <p> {mainSlide.header} </p>
@@ -160,15 +160,13 @@ const FirstFacade = () => {
                             <img src = {mainSlide.src} />
                         </div>
 
-                    <div className = "Slide-Navigation">
-
-                        <img 
-                            src = {NextSlide}
-                            alt = "Next"
-                            onClick = {handleNext}
-                        />
-                        
-                    </div>
+                        <div className="Slide-Navigation">
+                            <img 
+                                src = {NextSlide}
+                                alt = "Previous"
+                                onClick = {handlePrev}
+                            />
+                        </div>
 
                     </div>
                 </div>

@@ -6,11 +6,11 @@
     flex-direction: column;
     justify-content: center;
     align-self: center;
-    margin: 0rem 0.75rem
+    margin: 0rem 0.75rem;
 }
 
 .Media-Segment-Article-Page h1{
-    padding: 1rem 0rem;
+    padding: 3% 0rem;
 }
 
 .Latest-Media-Segment-Image{
@@ -49,27 +49,33 @@
     background-color:rgba(215, 234, 250, 0.055);
     border-bottom-right-radius: 30px;
     
-    padding: 3%;
+    padding: 3% 7%;
     font-size: 1.5rem;
 
 }
 
 .Media-Segment-Article-Below-Photo{
-    display: grid;
-    grid-template-columns: 4fr 10fr;
+    display: flex;
+    flex-direction: column;
     border-radius: 30px;
     border-top: 3px rgb(0, 77, 179) solid;
     border-bottom: 3px rgb(0, 77, 179) solid;
     
+    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.412);
 }
 
 .Author-and-Details{
-    border-right: 3px rgb(0, 77, 179) solid;
+    border-bottom: 3px rgb(0, 77, 179) solid;
+    background-color: rgba(203, 221, 249, 0.143);
+    background-image: url("/notebook-dark.png");
     color: black;
-    font-weight: 500;
+    font-weight: 700;
+    font-size: 1.5rem;
 
-    padding: 5%;
+    padding: 3%;
 }
+
+
 
 .Author-and-Details span{
     color: rgb(0, 77, 179);

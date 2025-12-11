@@ -4,7 +4,6 @@ a {
 }
 
 .Second-Facade {
-    background-color: #9edbff20;
     background-image: url('crisp-paper-ruffles.png');
 }
 
@@ -62,11 +61,8 @@ a {
 .Below-Cover-Photo {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
 
-
-    margin: 0rem 3rem;
-
+    margin: 0rem 1rem;
 }
 
 .letterA {
@@ -80,17 +76,16 @@ a {
     gap: 1rem;
 }
 
+@media (max-width: 1280px) {
+    .letterA{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 .Large-Left-News-Column {
     display: flex;
     flex-direction: column;
-}
-
-#Category {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    text-decoration: none;
 }
 
 .Category {
@@ -101,7 +96,7 @@ a {
     cursor: pointer;
     width: 95%;
 
-    background-color: rgba(99, 218, 248, 0.322);
+    background-color: rgba(99, 218, 248, 0.50);
     box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.308);
 
     z-index: 1;
@@ -145,15 +140,6 @@ a {
 
 .Category:hover {
     color: white;
-}
-
-#Category a:hover {
-    color: white;
-}
-
-#Category-Outside {
-    width: 95%;
-    margin: 0% 3%;
 }
 
 .Large-News {

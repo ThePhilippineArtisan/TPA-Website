@@ -30,8 +30,8 @@ const SecondFacade = () => {
                 <div className = "letterA">
                     <div className = "Large-News-Boxes">
                         <div className = "Large-Left-News-Column">
-                            <Link to = "/Latest" className = "Category" > PUT HERE ANYTHING LATEST EXCEPT FAST NEWS <span>———{`>`}</span> </Link>  
-                    
+                            <Link to = "/Latest" className = "Category" > LATEST NEWS <span>———{`>`}</span> </Link>  
+                                {/**PUT HERE ANYTHING LATEST EXCEPT FAST NEWS */}
                                 <Link to = "/"
                                 className = "Large-Photo-News" 
                                 style = {{flexWrap: "wrap"}}> 
@@ -48,6 +48,16 @@ const SecondFacade = () => {
                                         <div className = "Article-Author-Time">
                                             <p to = "/" >Cathlene Torrenueva | September 12, 2025</p>  
                                         </div>
+
+                                        <div className = "Sample-Text-Container">
+                                            <hr className = "Vertical-Divider"></hr>
+                                            <div className = "Sample-Text">
+                                                <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+                                                    Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+                                                </p>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </Link>
@@ -116,7 +126,7 @@ const SecondFacade = () => {
         </div>
 
             <div className = "Below-Cover-Photo">
-                <Link to = "/Media-Segment-Page" className = "Category" id = "Category"> MEDIA SEGMENTS <span>———{`>`}</span> </Link>
+                <Link to = "/Media-Segment-Page" className = "Category"> MEDIA SEGMENTS <span>———{`>`}</span> </Link>
                 <div style={{border: "3px solid black"}}>
                     <LatestMediaSegment/>
                 </div>            
