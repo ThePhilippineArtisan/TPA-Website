@@ -1,4 +1,9 @@
 body{
     overflow-x: hidden;
     font-family: Inter;
+    cursor: none;
+}
+
+body:hover{
+    cursor: url('/favicon.png'), auto;
 }

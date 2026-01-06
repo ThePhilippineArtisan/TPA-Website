@@ -5,8 +5,7 @@ import Photo1 from "../Sample-Photos/GAD-Kapihan.jpg"
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
 import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
 import OPINION from "../Sample-Photos/OPINION.jpg"
-
-import TPALogoBlack from "../assets/Miniature_Icon_Version/TPALogoBlack.svg"
+import SectionBreaker from "/placeholder-breaker.png"
 
 import "../CSS/SecondFacade.css"
 
@@ -31,43 +30,43 @@ const SecondFacade = () => {
                     <div className = "Large-News-Boxes">
                         <div className = "Large-Left-News-Column">
                             <Link to = "/Latest" className = "Category" > LATEST NEWS <span>———{`>`}</span> </Link>  
+
                                 {/**PUT HERE ANYTHING LATEST EXCEPT FAST NEWS */}
+
                                 <Link to = "/"
-                                className = "Large-Photo-News" 
-                                style = {{flexWrap: "wrap"}}> 
+                                    className = "Large-Photo-News" 
+                                    style = {{flexWrap: "wrap"}}> 
 
-                                <img
-                                    src = {Photo2}
-                                    style = {{width: "85%"}}
-                                />
+                                    <img
+                                        src = {OPINION}
+                                        style = {{width: "80%"}}
+                                    />
 
-                                <div className = "Large-News" >
-                                    <div className = "Large-News-Headline">
-                                        <p><a> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </a> </p>
-                                    
-                                        <div className = "Article-Author-Time">
-                                            <p to = "/" >Cathlene Torrenueva | September 12, 2025</p>  
-                                        </div>
-
-                                        <div className = "Sample-Text-Container">
-                                            <hr className = "Vertical-Divider"></hr>
-                                            <div className = "Sample-Text">
-                                                <p> MGA LARAWAN:  Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
-                                                    Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
-                                                </p>
+                                    <div className = "Large-News" >
+                                        <div className = "Large-News-Headline">
+                                            <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs</p>
+                                        
+                                            <div className = "Article-Author-Time">
+                                                <p to = "/" > Charlie Kirk | September 11, 2025</p>  
                                             </div>
-                                        </div>
 
+                                            <div className = "Sample-Text-Container">
+                                                <hr className = "Vertical-Divider"></hr>
+                                                <div className = "Sample-Text">
+                                                    <p> MGA LARAWAN:  Counting or not counting gang violence? Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+                                                        Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
                             </Link>
                         </div>
                     </div>
 
                 <VerticalFastNews />
-
             </div>
-
             <Link to = "/Photo-Albums" className = "Category"> PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
@@ -121,23 +120,11 @@ const SecondFacade = () => {
                     />
                     <hr className = "Vertical-Divider"></hr>
                 </div>
-
-
-        </div>
-
-            <div className = "Below-Cover-Photo">
-                <Link to = "/Media-Segment-Page" className = "Category"> MEDIA SEGMENTS <span>———{`>`}</span> </Link>
-                <div style={{border: "3px solid black"}}>
+                </div>
+                    <VideoShowcase />
+                <img src = {SectionBreaker} style={{width: "99.5vw"}}/>
                     <LatestMediaSegment/>
-                </div>            
-            </div>
-                
-            <div className = "Below-Cover-Photo">
                     <ListOfMediaSegments />
-            </div>
-
-
-        <VideoShowcase />
 
         </div>
 )}

@@ -1,7 +1,7 @@
 .DBFF-Headline {
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   justify-content: space-evenly;
 
   height: 80dvh;
@@ -10,12 +10,12 @@
 
 .DBFF-Headline p {
   display: flex;
-  justify-content: flex-start;
-
-  font-size: 3rem;
+  
+  font-size: 5rem;
   font-weight: 900;
   color: #ffffff;
   padding: 2rem 0rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 
   opacity: 0;
   transform: translateY(50px);
@@ -24,16 +24,18 @@
 
 .DBFF-Text p {
   padding: 0.5rem 2rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-
-  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 3rem;
 
   flex-wrap: wrap;
 
+  color: rgb(236, 236, 236);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 
   transform: translateY(20px);
   animation: fadeUp 2s ease-out forwards;
+
 }
 
 .DBFF-Text a {
@@ -42,19 +44,12 @@
   text-decoration: none;
 }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
 .First-BG-First-Facade {
   display: flex;
   flex-direction: row;
   justify-content: center;
   z-index: 1;
+  height: 90vh;
 }
 
 .Cards {
@@ -69,27 +64,26 @@
 
   opacity: 0;
   transform: translateX(20px);
+
   animation: fadeLeft 3s ease-out forwards;
   width: 30dvw;
 
   padding: 1rem;
-
 }
 
 .Card-Images img {
   max-height: 30rem;
   max-width: 30dvw;
-  filter: drop-shadow(15px 10px 10px rgb(49, 49, 49));
-  transform: rotate(3deg);
-
+  transform: rotate(-1deg);
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #000000);
+  transition: transform 0.2s ease;
 }
 
 .Card-Images img:hover {
-  transition: 0.2s;
-  transform: scale(1.05);
   cursor: pointer;
 
-  transform: rotate(10deg);
+  transform: rotate(5deg) scale(1.05);
   z-index: 10;
 }
 
@@ -100,6 +94,12 @@
   }
 }
 
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .Slide-Navigation {
   display: flex;
   align-items: center;
@@ -120,64 +120,45 @@
   display: flex;
   justify-content: space-between;
   will-change: transform, opacity;
-  transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
-.SlideWrapper.enter.next {
-  animation: tumbleInRight 0.6s ease forwards;
+.SlideWrapper.next {
+  animation: tumbleInLeft 1s ease forwards;
 }
 
-.SlideWrapper.enter.prev {
-  animation: tumbleInLeft 0.6s ease forwards;
+.SlideWrapper.prev {
+  animation: tumbleInRight 1s ease forwards;
 }
 
-@keyframes tumbleOutRight {
-  0% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
+.SlideWrapper.exit.next {
+  animation: tumbleOutLeft 1s ease forwards;
 }
 
-@keyframes tumbleOutLeft {
-  0% {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.SlideWrapper.exit.prev {
+  animation: tumbleOutRight 1s ease forwards;
+}
 
-  100% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
+
+@keyframes tumbleInLeft {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes tumbleInRight {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
-@keyframes tumbleInLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
+@keyframes tumbleOutLeft {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
 }
+
+@keyframes tumbleOutRight {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
 
 /*
 

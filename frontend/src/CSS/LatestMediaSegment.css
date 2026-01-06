@@ -13,7 +13,7 @@
     background-repeat: no-repeat;
 
     inset: 0;
-    filter: blur(5px);
+    filter: blur(3px);
     z-index: -1;
 }
 
@@ -26,12 +26,13 @@
 
     z-index: 1;
 
-    padding: 2rem;
+    padding: 12rem;
+    box-shadow: inset 0 0 0 7px black;
 }
 
 .Latest-Media-Segment-Image img{
-    max-height: 10%;
-    max-width: 35%;
+    max-height: 35rem;
+    max-width: 45%;
     object-fit: cover;
 
     filter: opacity(0.96);
@@ -55,14 +56,11 @@
 .Latest-MS-Title h1 h3{
     font-weight: 500;
     color: white;
+    
+  text-shadow: 8px 8px 16px rgb(0, 0, 0);
 }
 
-.Latest-MS-Title a{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    text-decoration: none;
-}
-
-.Latest-MS-Title:hover a{
+.Latest-MS-Title h1 h3:hover{
     cursor: pointer;
     color: #74c8ff;
 }
@@ -73,7 +71,7 @@
 }
 
 .Latest-Media-Segment-Image h3{
-    padding: 2rem;
+    padding: 2rem 0rem;
     font-size: 1.25rem;
 }
 

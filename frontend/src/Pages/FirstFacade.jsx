@@ -1,4 +1,4 @@
-import React, {useState, useTransition} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import KahonKalyo from "/KahonKalyo.png";
 import LampoonCover from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
@@ -13,7 +13,6 @@ import SecondBGFirstFacade from '../Components/SecondBGFirstFacade.jsx';
 import "../CSS/FirstFacade.css"
 
 const FirstFacade = () => {
-
     const slides = [
         {
         id: 1, 
@@ -65,111 +64,121 @@ const FirstFacade = () => {
     const navigableSlides = slides.slice(0);
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [isPending, startTransition] = useTransition();
+    const [direction, setDirection] = useState(null); // "next" | "prev"
+    const [phase, setPhase] = useState("idle"); // "idle" | "exit" | "enter"
 
-    const [direction, setDirection] = useState("next");
-
-    const handleSlideChange = (dir) => {
-        setDirection(dir);
-        const slide = document.querySelector(".SlideWrapper");
-
-        slide.classList.add("pending", dir);
-
-        setTimeout(() => {
-            slide.classList.remove("pending", dir);
-
-            setActiveIndex((i) =>
-            dir === "next"
-                ? (i + 1) % slides.length // if dir is next, move on
-                : ((i - 1) % slides.length + slides.length) % slides.length // if dir is prev, move back
-            );
-
-            const newSlide = document.querySelector(".SlideWrapper");
-            newSlide.classList.add("enter", dir);
-
-            setTimeout(() => {
-            newSlide.classList.remove("enter", dir);
-            }, 600); 
-        }, 600); 
+    const handleNext = () => {
+        if (phase !== "idle") return;
+        setDirection("next");
+        setPhase("exit");
     };
 
-    const handleNext = () => handleSlideChange("next");
-    const handlePrev = () => handleSlideChange("prev");
+    const handlePrev = () => {
+        if (phase !== "idle") return;
+        setDirection("prev");
+        setPhase("exit");
+    };
+
+    useEffect(() => {
+    if (phase !== "idle") return;
+
+    const timer = setTimeout(() => {
+        setDirection("next");
+        setPhase("exit");
+    }, 10000);
+
+    return () => clearTimeout(timer);
+    }, [phase, activeIndex]);
+
+
     const mainSlide = slides[activeIndex];
 
     return(
         <div className = "Literary-Showcase-First-Facade">
             <div className="First-BG-First-Facade">
-            {/* Background image with blur */}
-            <div
-                style={{
-                backgroundImage: `url(${mainSlide.backgroundSRC})`,
-                backgroundSize: "35rem",
-                backgroundPosition: "center",
-                filter: "blur(10px)",
-                position: "absolute",
-                inset: 0,
-                zIndex: -2
-                }}
-            />
+                {/* Background image with blur */}
+                <div
+                    style={{
+                    backgroundColor: "rgba(192, 192, 192, 1)",
+                    backgroundImage: `url(${mainSlide.backgroundSRC})`,
+                    backgroundSize: "30rem",
+                    backgroundPosition: "center",
+                    transform: "rotate(3deg)",
+                    filter: "blur(10px)",
+                    position: "absolute",
+                    inset: 0,
+                    zIndex: -2
+                    }}
+                />
 
-            {/* Dark overlay */}
-            <div
-                style={{
-                backgroundColor: "rgba(0, 0, 0, 0.67)", // adjust opacity
-                position: "absolute",
-                inset: 0,
-                zIndex: -1
-                }}
-            />
+                {/* Dark overlay */}
+                
+                <div
+                    style={{
+                    backgroundColor: "rgba(0, 0, 0, 0.67)",
+                    position: "absolute",
+                    height: "105vh",
+                    inset: 0,
+                    zIndex: -1
+                    }}
+                />
 
-                    <div 
-                    className = { `Cards 
-                    SlideWrapper ${direction} 
-                    ${isPending ? "pending" : ""}`}
+                <div
+                    key={activeIndex}
+                    className={`Cards SlideWrapper ${
+                        phase === "exit" ? `exit ${direction}` : ""
+                    } ${
+                        phase === "enter" ? direction : ""
+                    }`}
+                    onAnimationEnd={() => {
+                        if (phase === "exit") {
+                        setActiveIndex((i) =>
+                            direction === "next"
+                            ? (i + 1) % slides.length
+                            : (i - 1 + slides.length) % slides.length
+                        );
+                        setPhase("enter");
+                        } else if (phase === "enter") {
+                        setPhase("idle");
+                        setDirection(null);
+                        }
+                    }}
                     >
-                    
-                        <div className="Slide-Navigation">
-                            <img 
-                                src = {PreviousSlide}
-                                alt = "Previous"
-                                onClick = {handlePrev}
-                            />
+                    <div className="Slide-Navigation">
+                        <img 
+                            src = {PreviousSlide}
+                            alt = "Previous"
+                            onClick = {handlePrev}
+                        />
+                    </div>
+                        
+                    <div className = "DBFF-Headline">
+                        <p> {mainSlide.header} </p>
+                        <div className = "DBFF-Text">
+                            <p> {mainSlide.text1 && <span>{mainSlide.text1} </span>} </p> 
+                            <p> {mainSlide.text2 && <span>{mainSlide.text2} </span>} </p>
+                            <p> {mainSlide.text3 && <span>{mainSlide.text3} </span>} </p>
+                            <p> {mainSlide.text4 && <span>{mainSlide.text4} </span>} </p>
+                            <p> {mainSlide.text5 && <span>{mainSlide.text5} </span>} </p>
+                            <p> {mainSlide.text6 && <span>{mainSlide.text6} </span>} </p>
+                            <p> {mainSlide.text7 && <span>{mainSlide.text7} </span>} </p>
+                            <p> {mainSlide.text8 && <span>{mainSlide.text8} </span>} </p>
                         </div>
-                            
-                        <div className = "DBFF-Headline">
-                            
-                            <p> {mainSlide.header} </p>
-                            
-                            <div className = "DBFF-Text">
-                                 
-                                <p> {mainSlide.text1 && <span>{mainSlide.text1}<br /><br /> </span>} </p> 
-                                <p> {mainSlide.text2 && <span>{mainSlide.text2}<br /><br /> </span>} </p>
-                                <p> {mainSlide.text3 && <span>{mainSlide.text3}<br /><br /> </span>} </p>
-                                <p> {mainSlide.text4 && <span>{mainSlide.text4}<br /><br /> </span>} </p>
-                                
-                                <p> {mainSlide.text5 && <span>{mainSlide.text5}<br /><br /> </span>} </p>
-                                <p> {mainSlide.text6 && <span>{mainSlide.text6}<br /><br /> </span>} </p>
-                                <p> {mainSlide.text7 && <span>{mainSlide.text7}<br /><br /> </span>} </p>
-                                <p> {mainSlide.text8 && <span>{mainSlide.text8}<br /><br /> </span>} </p>
+                    </div>
 
-                            </div>
-                        </div>
+                    <div className = "Card-Images">
+                        <img src = {mainSlide.src} />
+                    </div>
 
-                        <div className = "Card-Images">
-                            <img src = {mainSlide.src} />
-                        </div>
-
-                        <div className="Slide-Navigation">
-                            <img 
-                                src = {NextSlide}
-                                alt = "Previous"
-                                onClick = {handlePrev}
-                            />
-                        </div>
-
+                    <div className="Slide-Navigation">
+                        <img 
+                            src = {NextSlide}
+                            alt = "Previous"
+                            onClick = {handleNext}
+                        />
                     </div>
                 </div>
+            </div>
         </div>
     )
 }

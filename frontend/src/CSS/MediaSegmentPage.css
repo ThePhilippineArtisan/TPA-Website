@@ -6,11 +6,6 @@
 .Below-Media-Segments{
     display: flex;
     flex-direction: column;
-    
-    padding: 2rem 3%;
-    background: linear-gradient(to bottom, hsla(204, 87%, 94%, 0.596) 20%, #f7fcff98 70%, #012d4b7e 100%);
-    
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
 }
 

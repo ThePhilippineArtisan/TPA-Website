@@ -1,10 +1,12 @@
+
+
 a {
     text-decoration: none;
     color: black;
 }
 
 .Second-Facade {
-    background-image: url('crisp-paper-ruffles.png');
+    background-color: rgb(233, 233, 233);
 }
 
 .Cover-Photo-Image-Facade {
@@ -62,12 +64,12 @@ a {
     display: flex;
     flex-direction: column;
 
-    margin: 0rem 1rem;
+    margin: 0rem 4rem;
 }
 
 .letterA {
     display: grid;
-    grid-template-columns: 5fr 2fr;
+    grid-template-columns: 4fr 2fr;
 
     padding: 1rem;
 
@@ -88,13 +90,13 @@ a {
     flex-direction: column;
 }
 
-.Category {
+.Category{
     position: relative;
     display: inline-block;
     background-color: transparent;
     overflow: hidden;
     cursor: pointer;
-    width: 95%;
+    width: 90%;
 
     background-color: rgba(99, 218, 248, 0.50);
     box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.308);
@@ -115,7 +117,7 @@ a {
 
     background-color: #0265A9;
     transform: translateX(-101%);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.420s ease-in-out;
     z-index: -1;
 }
 
@@ -155,17 +157,11 @@ a {
 
     text-decoration: none;
 
-    background-color: #84cdfd10;
     justify-content: center;
 
     border-radius: 1rem;
     gap: 1rem;
     padding-top: 1rem;
-}
-
-.Large-Photo-News:hover {
-    transform: scale(1.001);
-    background-color: #84cdfd25;
 }
 
 .Large-Photo-News img {
@@ -178,7 +174,6 @@ a {
     object-fit: cover;
     object-position: center;
 
-    border: 3px solid black;
 
     transition: object-position 0.3s, transform 0.3s;
     cursor: pointer;
@@ -197,12 +192,13 @@ a {
     gap: 1rem;
 }
 
-.Large-News-Headline a {
+.Large-News-Headline p {
     color: black;
     font-weight: bolder;
     text-decoration: none;
 
     font-size: 1.5rem;
+    line-height: 2rem;
 
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -215,12 +211,14 @@ a {
     word-break: keep-all;
 }
 
-.Large-News-Headline a:hover {
+.Large-News-Headline p:hover {
     color: #0265A9
 }
 
 .Sample-Text p {
     font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 500;
     color: #414141;
 
     display: -webkit-box;
@@ -232,6 +230,10 @@ a {
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
+}
+
+.Sample-Text p:hover{
+    color: #414141;
 }
 
 .Sample-Text-Container {
@@ -258,8 +260,6 @@ a {
 
     transition: transform 0.2s ease-in-out;
     transform: scale(1.01);
-
-    cursor: pointer;
 }
 
 .Article-Author-Time p {
@@ -303,3 +303,4 @@ a {
     margin: 0rem 0.25rem;
     border: none;
 }
+

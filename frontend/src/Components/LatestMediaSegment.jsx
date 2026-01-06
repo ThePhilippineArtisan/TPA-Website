@@ -8,16 +8,16 @@ import { Link } from "react-router-dom";
 const LatestMediaSegment = () => {
     return(
         <div>
-            <div className = "Latest-Media-Segment-Image" id = "imga"
-                style={{ "--bgImage": `url(${StreamingSat})` }} >
+            <div className = "Latest-Media-Segment-Image"
+                style={{ "--bgImage": `url(${StreamingSat})`, width: "90%"}} >
                 
                 <img
                     src = {StreamingSat /** Latest Media Segment Available */}
                 />
 
-                <div className = "Latest-MS-Title">
-                    <Link><h1> Bata </h1></Link>
-                    <Link><h3> by Joseph Brian Balut </h3></Link>   
+                <Link to = "/" className = "Latest-MS-Title">
+                    <h1> Bata </h1>
+                    <h3> by Joseph Brian Balut </h3>
 
                     <div className = "Sample-Text-Container">
                         <hr className = "Vertical-Divider"></hr>
@@ -28,7 +28,7 @@ const LatestMediaSegment = () => {
                         </div>
                     </div>
 
-                </div>
+                </Link>
             </div>
 
         </div>

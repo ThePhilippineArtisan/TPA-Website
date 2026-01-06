@@ -7,14 +7,14 @@ const VerticalFastNews = () => {
     return(
         <div className = "Vertical-Headlines">
             
-            <div style={{padding: "1.5rem", borderRadius: "10px", backgroundColor: "#76b3f827"}}>
-            <Link to = "/" style = {{fontSize: "1.75rem", alignSelf: "center"}}> BULLETIN BOARD  </Link>
+            <div style={{padding: "2rem 0rem"}}>
+                <Link to = "/" style = {{fontSize: "1.5rem"}}> BULLETIN BOARD  </Link>
 
-            <div className = "Bulletin-Board">
-            <hr className = "Vertical-Divider-Side-News" style ={{alignSelf: "center"}}></hr>
-                     <a href = "https://youtube.com/@AvoirJoseph" > Want to join the Philippine Artisan? Click  <span style = {{color: '#0265A9'}}> here </span> to be included in the list of our future applicants! </a>
-            </div>
-        </div>
+                <div className = "Bulletin-Board">
+                    <hr className = "Vertical-Divider-Side-News" style ={{alignSelf: "center"}}></hr>
+                            <a href = "https://youtube.com/@AvoirJoseph" > Want to join the Philippine Artisan? <br></br>Click  <span style = {{color: '#0265A9'}}> here </span> to be included in the list of our future applicants! </a>
+                    </div>
+                </div>
 
             <div className = "Vertical-Fast-News">
                 <Link to = "/" style = {{fontSize: "1.5rem"}} id = "Vertical-Fast-News-Links"> FAST NEWS ———{`>`}</Link>
@@ -38,7 +38,7 @@ const VerticalFastNews = () => {
                         <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
                     </div>
                 </div>
-                <Link to = "/" style = {{fontSize: "1.5rem"}} id = "Vertical-Fast-News-Links"> LOCAL, NATIONAL, SPORTS ———{`>`}</Link>
+                <Link to = "/" style = {{fontSize: "1.35rem"}} id = "Vertical-Fast-News-Links"> LOCAL, NATIONAL, SPORTS  ———{`>`}</Link>
                 <div className = "Vertical-Side-News">       
                         <img  loading = "lazy" 
                             src = {JUSTIN}

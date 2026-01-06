@@ -64,10 +64,10 @@
 
     margin: 0.5rem;
 
-    background-color: #84cdfd25;
     padding: 3rem;
 
     border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
 
     width: 24rem;
 }
@@ -106,14 +106,16 @@
     padding: 1rem;
 }
 
-.Large-News-Headline p{
-    font-weight: bolder;
+.Individual-Article-Texts p{
+    font-weight: bold;
     text-decoration: none;
 
-    font-size: 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    padding: 0.75rem;
 
     display: -webkit-box;              
-    -webkit-line-clamp: 3;             
+    -webkit-line-clamp: 4;             
     -webkit-box-orient: vertical;      
     overflow: hidden;                  
     text-overflow: ellipsis;           
@@ -124,8 +126,9 @@
 }
 
 .Article-Author-Time p{
+    padding: 0.25rem;
     color: rgb(51, 51, 51);
-    font-size: 0.75rem;
+    font-size: 0.25rem;
     font-weight: bold;
 }
 

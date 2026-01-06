@@ -12,23 +12,23 @@ const MediaSegmentArticle = () => {
         <div className = "Media-Segment-Article-Page">
             <div className = "Media-Segment-Article">
                 <div className = "Latest-Media-Segment-Image" id = "imga"
-                    style={{ "--bgImage": `url(${FEATFRIDAY})` }} >
-                    
+                    style={{ "--bgImage": `url(${FEATFRIDAY})`}} >
                     <img
                         src = {FEATFRIDAY} 
                     />
 
                 </div>
-                <h1> The last resort of those drowning in a tide of corruption </h1>
                 
                 <div className = "Media-Segment-Article-Below-Photo">
-                    <div className = "Author-and-Details">
-                        <div>
-                        <h2> <span> Features Friday </span></h2> <br></br>
-                        <p> Written by <span> Joseph Brian Balut </span></p>
-                        <p> Graphics by <span> Joseph Brian Balut </span></p>
-                        <br></br>
-                        <p> Published on <span>  October 12, 2025 10:11 AM </span></p>
+                        <div className = "Author-and-Details">
+                            <div>
+                            <h3> <span> Features Friday: </span> The last resort of those drowning in a tide of corruption </h3> <br></br>
+                            <p> Written by <span> Joseph Brian Balut </span></p>
+                            <p> Graphics by <span> Joseph Brian Balut </span></p>
+                            <br></br>
+                            <p> Published on <span>  October 12, 2025 10:11 AM </span></p>
+
+                            <VerticalFastNews />
                         </div>
                     </div>
 

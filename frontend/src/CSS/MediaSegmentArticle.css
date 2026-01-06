@@ -7,6 +7,7 @@
     justify-content: center;
     align-self: center;
     margin: 0rem 0.75rem;
+    background-image: url("/notebook-dark.png");
 }
 
 .Media-Segment-Article-Page h1{
@@ -22,7 +23,7 @@
     flex-direction: column;
     justify-content: center;
 
-    margin: 1% 5%;
+    margin: 1% 1%;
 }
 
 .Foreground-Photo-Image{
@@ -41,41 +42,36 @@
     object-fit: cover;
 }
 
-.Media-Segment-Article h1{
-    text-align: center;
-}
-
 .Media-Segment-Article-Text{
     background-color:rgba(215, 234, 250, 0.055);
     border-bottom-right-radius: 30px;
     
-    padding: 3% 7%;
-    font-size: 1.5rem;
-
+    padding: 3% 3%;
+    font-size: 1.25rem;
+    line-height: 1.5;
 }
 
 .Media-Segment-Article-Below-Photo{
     display: flex;
-    flex-direction: column;
-    border-radius: 30px;
-    border-top: 3px rgb(0, 77, 179) solid;
+    flex-direction: row;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
     border-bottom: 3px rgb(0, 77, 179) solid;
     
     box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.412);
 }
 
 .Author-and-Details{
+    display: flex;
+    justify-content: center;
     border-bottom: 3px rgb(0, 77, 179) solid;
-    background-color: rgba(203, 221, 249, 0.143);
-    background-image: url("/notebook-dark.png");
     color: black;
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 
-    padding: 3%;
+    width: 200dvw;
+    padding: 5% 2%;
 }
-
-
 
 .Author-and-Details span{
     color: rgb(0, 77, 179);
