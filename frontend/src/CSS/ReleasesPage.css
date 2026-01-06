@@ -1,0 +1,41 @@
+.Releases-Page{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  gap: 3rem;
+
+  padding-bottom: 10rem;
+
+}
+
+.Demo-Page{
+  background-color: rgb(253, 253, 243);
+  color: black
+}
+
+.Releases-Book{
+    filter: drop-shadow(2px 5px 30px rgba(254, 254, 254, 0.55));
+}
+
+.Releases-Title span{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 10vh;
+}
+
+.Releases-Title{
+  width: 80%;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 3fr 10fr;
+}
+
+
+.Releases-Caption p{
+  font-size: 1.5rem;
+  padding: 4.5rem;
+  line-height: 2rem;
+}
+

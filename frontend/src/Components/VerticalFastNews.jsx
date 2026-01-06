@@ -20,9 +20,6 @@ const VerticalFastNews = () => {
                 <Link to = "/" style = {{fontSize: "1.5rem"}} id = "Vertical-Fast-News-Links"> FAST NEWS ———{`>`}</Link>
                 {/** (JI, ICYMI, ANN) */}
                 <div className = "Vertical-Side-News">       
-                        <img  loading = "lazy" 
-                            src = {JUSTIN}
-                        />
                 <hr className = "Vertical-Divider-Side-News"></hr>
                     <div className = "Vertical-Headlines">
                         <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
@@ -30,19 +27,16 @@ const VerticalFastNews = () => {
                 </div>
 
                 <div className = "Vertical-Side-News">       
-                        <img  loading = "lazy" 
-                            src = {JUSTIN}
-                        />
                 <hr className = "Vertical-Divider-Side-News"></hr>      
                     <div className = "Vertical-Headlines">
                         <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
                     </div>
                 </div>
                 <Link to = "/" style = {{fontSize: "1.35rem"}} id = "Vertical-Fast-News-Links"> LOCAL, NATIONAL, SPORTS  ———{`>`}</Link>
-                <div className = "Vertical-Side-News">       
-                        <img  loading = "lazy" 
-                            src = {JUSTIN}
-                        />
+                <div className = "Vertical-Side-News"> 
+                    <img  loading = "lazy" 
+                        src = {JUSTIN}
+                    />      
                     <hr className = "Vertical-Divider-Side-News"></hr>          
                     <div className = "Vertical-Headlines">
                         <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>

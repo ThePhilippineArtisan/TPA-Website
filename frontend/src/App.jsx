@@ -18,6 +18,7 @@ const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
 const MediaSegmentArticle = lazy (() => import('./Pages/MediaSegmentArticle.jsx'));
 const CreateArticlePage = lazy (() => import('./Pages/CreateArticlePage.jsx'));
 const LatestPosts = lazy (() => import('./Pages/LatestPosts.jsx'));
+const ReleasesPage = lazy (() => import('./Pages/ReleasesPage.jsx'));
 
 const App = () => {
   const homeRef = useRef(null);
@@ -132,6 +133,19 @@ const App = () => {
                   <>
                     <NavbarComponent refs = {scrollRefs} />
                     <CreateArticlePage />
+                    <Footer />
+                  </>
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path = "/Releases"
+                element = {
+                  <Suspense>
+                  <>
+                    <NavbarComponent refs = {scrollRefs} />
+                    <ReleasesPage />
                     <Footer />
                   </>
                   </Suspense>

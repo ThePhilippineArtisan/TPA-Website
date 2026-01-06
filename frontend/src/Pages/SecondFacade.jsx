@@ -39,7 +39,7 @@ const SecondFacade = () => {
 
                                     <img
                                         src = {OPINION}
-                                        style = {{width: "80%"}}
+                                        style = {{width: "100%"}}
                                     />
 
                                     <div className = "Large-News" >

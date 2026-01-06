@@ -6,7 +6,7 @@ a {
 }
 
 .Second-Facade {
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(215, 215, 215);
 }
 
 .Cover-Photo-Image-Facade {
@@ -75,7 +75,7 @@ a {
 
     overflow: hidden;
 
-    gap: 1rem;
+    gap: 3rem;
 }
 
 @media (max-width: 1280px) {
@@ -162,10 +162,13 @@ a {
     border-radius: 1rem;
     gap: 1rem;
     padding-top: 1rem;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .Large-Photo-News img {
     width: 30%;
+    opacity: 95%;
 
     border-radius: 20px;
 
@@ -175,12 +178,20 @@ a {
     object-position: center;
 
 
-    transition: object-position 0.3s, transform 0.3s;
+    transition: object-position 0.7s, transform 0.3s;
     cursor: pointer;
 }
 
 .Large-Photo-News img:hover {
+    opacity: 100%;
     object-position: 90% 90%;
+}
+
+.Large-Photo-News:hover{
+    transition: transform 0.5s ease-in-out;
+    transform: scale(1.01);
+    object-position: 90% 90%;
+    box-shadow: 5px 6px 5px 6px rgba(7, 5, 5, 0.068);
 }
 
 .Large-News-Headline {

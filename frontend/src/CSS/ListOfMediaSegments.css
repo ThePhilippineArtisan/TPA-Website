@@ -6,7 +6,7 @@
 .List-of-Media-Segments{
     text-decoration: none;
     padding: 4rem 0rem 3rem;
-    background-color: rgb(2, 4, 25);
+    background-color: black;
 }
 
 #Latest-Weekly-Segments{
@@ -25,7 +25,8 @@
 }
 
 .List-Of-MS-Card{
-    
+    background-color: rgb(9, 11, 27);
+    box-shadow: 0px 10px 12px rgba(255, 255, 255, 0.30);
     text-align: center;
 
     border-radius: 10px;
@@ -45,7 +46,8 @@
 }
 
 .List-Of-MS-Card:hover{
-    background-color: rgb(44, 44, 45);
+    background-color: rgba(252, 252, 252, 0.907);
+    color: black;
     transition: 0.25s;
     transform: scale(1.05);
     z-index: 3;
