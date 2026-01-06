@@ -11,7 +11,7 @@ const ListOfMediaSegments = () => {
                 <div className = "Media-Segment-Card-Wrapper">
                     <h1 id = "Latest-Weekly-Segments"> Latest Weekly Segments </h1>
                     <div className = "Media-Segment-Card">
-                        <Link to = "#" className = "List-Of-MS-Card" id = "Segment">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card" id = "Segment">
                             <p id = "MMSegment"> Makata Monday </p>
                             <img
                                 src = {Photo1}
@@ -21,7 +21,7 @@ const ListOfMediaSegments = () => {
 
                         </Link>
 
-                        <Link to = "#" className = "List-Of-MS-Card">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Tek Tuesday </p>
                             <img
                                 src = {StreamingSat}
@@ -31,7 +31,7 @@ const ListOfMediaSegments = () => {
 
                         </Link>
 
-                        <Link to = "#" className = "List-Of-MS-Card">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Wankjob Wednesday </p>
                             <img
                                 src = {Photo1}
@@ -41,7 +41,7 @@ const ListOfMediaSegments = () => {
 
                         </Link>
 
-                        <Link to = "#" className = "List-Of-MS-Card">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Tala Thursday </p>
                             <img
                                 src = {StreamingSat}
@@ -51,7 +51,7 @@ const ListOfMediaSegments = () => {
 
                         </Link>
 
-                        <Link to = "#" className = "List-Of-MS-Card">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Features Friday </p>
                             <img
                                 src = {Photo1}
@@ -61,7 +61,7 @@ const ListOfMediaSegments = () => {
 
                         </Link>
 
-                        <Link to = "#" className = "List-Of-MS-Card">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Streaming Saturday </p>
                             <img
                                 src = {StreamingSat}
@@ -71,7 +71,7 @@ const ListOfMediaSegments = () => {
 
                         </Link>
 
-                        <Link to = "#" className = "List-Of-MS-Card">
+                        <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Sports Sunday </p>
                             <img
                                 src = {StreamingSat}

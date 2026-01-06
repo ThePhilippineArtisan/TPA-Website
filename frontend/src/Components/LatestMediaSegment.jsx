@@ -12,7 +12,7 @@ const LatestMediaSegment = () => {
                 style={{ "--bgImage": `url(${StreamingSat})`, width: "90%"}} >
                 
 
-                <Link to = "/" className = "Latest-MS-Title">
+                <Link to = "/media-segment/id" className = "Latest-MS-Title">
                 <img
                     src = {Photo1 /** Latest Media Segment Available */}
                 />

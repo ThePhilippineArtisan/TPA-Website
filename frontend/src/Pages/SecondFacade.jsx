@@ -33,7 +33,7 @@ const SecondFacade = () => {
 
                                 {/**PUT HERE ANYTHING LATEST EXCEPT FAST NEWS */}
 
-                                <Link to = "/"
+                                <Link to = "/Joseph-Brian-Balut"
                                     className = "Large-Photo-News" 
                                     style = {{flexWrap: "wrap"}}> 
 
@@ -67,7 +67,7 @@ const SecondFacade = () => {
 
                 <VerticalFastNews />
             </div>
-            <Link to = "/Photo-Albums" className = "Category"> PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
+            <Link to = "/Photo-Albums" className = "Category"> REMOVE THIS COSTLY SYA PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
                     <hr className = "Vertical-Divider"></hr>

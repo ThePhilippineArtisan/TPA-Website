@@ -46,8 +46,8 @@ const NavbarComponent = ({refs}) => {
                 </div>
 
                 <div className="navbar-links">
-                    <Link to = "/" > Home </Link>
-                    <a onClick = {() => handleScroll(refs.newsRef)}> News </a>
+                    <Link to = "#" > Home </Link>
+                    <Link to = "/Create-Article-Page"> News </Link>
                     <Link to = "/Releases"> Releases </Link>
                     <Link to = "/Media-Segment-Page"> Media Segments </Link>
                 </div>
