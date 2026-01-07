@@ -49,6 +49,7 @@
     display: flex;
     gap: 2rem;
     padding: 1rem;
+    text-decoration: none;
 }
 
 .Latest-MS-Title h1{

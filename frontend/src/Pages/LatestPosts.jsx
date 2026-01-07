@@ -29,7 +29,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -43,7 +43,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@ const LatestPosts = () => {
                                     <div className = "Individual-Article-Headline">
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
-                                        <div className = "Article-Author-Time">
+                                        <div className = "Latest-Posts-Article-Author-Time">
                                             <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
                                         </div>
                                     </div>

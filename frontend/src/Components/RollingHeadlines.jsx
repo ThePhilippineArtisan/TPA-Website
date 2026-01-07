@@ -11,23 +11,13 @@ const RollingHeadlines = () => {
                 <img src = {TPALogoBlack}/>
                     <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
                 <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
+                    <Link to = "#" > WE ARE CHARLIE KIRK, WE CARRY THE FLAME - WE FIGHT FOR THE GOSPEL </Link>
                 <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
+                    <Link to = "#" > BAKIT YUNG MGA CATHOLIC UNIS PINAPAYAGAN MAG-CIVILIAN!??? </Link>
                 <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
+                    <Link to = "#" > SHARIA LAW IN NEW YORK: INSHALLAH IN THE FRONT PAGE </Link>
                 <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
-                <img src = {TPALogoBlack}/>
-                    <Link to = "#" > JUST IN: KALBO NG UNIBERSIDAD, NATULUAN NG IPOT SA BUMBUNAN </Link>
+                    <Link to = "#" > HELP ME ACHIEVE 1K SUBSCRIBERS ON YOUTUBE @AVOIRJOSEPH </Link>
                 <img src = {TPALogoBlack}/>
             </marquee>
         </div>

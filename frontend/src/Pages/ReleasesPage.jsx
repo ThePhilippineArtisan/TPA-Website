@@ -1,6 +1,8 @@
 import HTMLFlipbook from "react-pageflip";
 import "../CSS/ReleasesPage.css";
 
+import KALYOBOOKMOCKUP from "../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO BOOK MOCKUP.png"
+
 const ReleasesPage = () => {
 
   const photos = [
@@ -29,6 +31,11 @@ const ReleasesPage = () => {
 
   return (
     <div className="Releases-Page">
+      <div className = "Rectangle" id = "Kalyo2324">
+        <p> KALYO 2023-2024</p>
+        <img src = {KALYOBOOKMOCKUP}/>        
+      </div>
+
       <div
           style={{
           backgroundImage: `url("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-001.png")`,
@@ -46,9 +53,7 @@ const ReleasesPage = () => {
       
       <div
           style={{
-          backgroundColor: "rgba(0, 0, 0, 0.9)",
           position: "absolute",
-          height: "148dvh",
           inset: 0,
           zIndex: -1
           }}

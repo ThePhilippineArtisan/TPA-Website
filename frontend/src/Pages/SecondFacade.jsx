@@ -38,7 +38,7 @@ const SecondFacade = () => {
                                     style = {{flexWrap: "wrap"}}> 
 
                                     <img
-                                        src = {OPINION}
+                                        src = {Photo2}
                                         style = {{width: "100%"}}
                                     />
 
@@ -67,13 +67,13 @@ const SecondFacade = () => {
 
                 <VerticalFastNews />
             </div>
-            <Link to = "/Photo-Albums" className = "Category"> REMOVE THIS COSTLY SYA PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
+            <Link to = "/Photo-Albums" className = "Category"> PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
                     <hr className = "Vertical-Divider"></hr>
                     <img  
                         loading = "lazy"  
-                        src = {Photo2}
+                        src = {OPINION}
                     />
                     
                     <div className = "Large-News" >

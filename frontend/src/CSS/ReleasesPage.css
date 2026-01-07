@@ -5,10 +5,35 @@
   align-items: center;
 
   color: white;
-  gap: 3rem;
+  padding: 5rem;
+  background-color: black;
+}
 
-  padding-bottom: 10rem;
+.Rectangle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(137, 206, 255, 0.601);
 
+  padding: 5rem;
+  border-radius: 5rem;
+}
+
+.Rectangle img:hover{
+  transform: scale(1.05);
+  transition: transform ease-in-out 0.5s 
+}
+
+.Rectangle img{
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+}
+
+.Rectangle p{
+  font-size: 10rem;
+  font-weight: 500;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-shadow: 5px 5px 5px black;
 }
 
 .Demo-Page{
@@ -26,7 +51,7 @@
 }
 
 .Releases-Title{
-  width: 80%;
+  width: 90%;
   display: grid;
   align-items: center;
   grid-template-columns: 3fr 10fr;
