@@ -26,7 +26,7 @@ const NavbarComponent = ({ refs }) => {
     };
 
     return (
-        <div style={{ marginTop: '8.25rem' }}>
+        <div>
             <div className="navbar-box">
                 <div className="tpa-logo">
 

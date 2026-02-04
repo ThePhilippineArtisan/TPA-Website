@@ -1,7 +1,11 @@
+html {
+}
+
 body{
     overflow-x: hidden;
     font-family: Inter;
     cursor: none;
+    scroll-behavior: smooth;
 }
 
 body:hover{

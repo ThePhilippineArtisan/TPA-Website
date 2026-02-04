@@ -47,6 +47,7 @@ const App = () => {
                 path = "/"
                 element = {
                   <>
+
                     <NavbarComponent refs={scrollRefs} />
                     <section ref={homeRef}>
                       <FirstFacade />

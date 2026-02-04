@@ -7,14 +7,15 @@
   top: 0;
   z-index: 11;
 
-  height: 7rem;
+  height: 5rem;
   width: 95%;
   margin: 1% 2%;
-
-  background-color: hsla(0, 0%, 100%, 0.95);
   
+  background-color: hsla(0, 0%, 100%, 0.85);
+  backdrop-filter: blur(5.1px);
+  -webkit-backdrop-filter: blur(5.1px);
   border: 3px solid hsl(204, 98, 34);
-  border-radius: 20px; 
+  border-radius: 16px; 
 }
 
 .navbar-box a{

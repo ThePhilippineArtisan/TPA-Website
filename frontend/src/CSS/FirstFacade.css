@@ -1,16 +1,75 @@
+.Literary-Showcase-First-Facade{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('/stars.png');
+  background-repeat: repeat;
+  
+  animation: moveStars 100s linear infinite;
+
+  background-attachment: fixed; background-size: cover; background-position: center;
+}
+
+
+@keyframes moveStars { 
+  from { 
+    background-position: 0 0;
+  } to { 
+    background-position: 1000px 1000px;
+  } 
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.50;
+  } 
+
+  25%{
+    opacity: 0.75;
+  }
+  
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.75;
+  }
+
+}
+
+.Artisan-Logo-First-Facade{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+}
+
+.Artisan-Logo-First-Facade img{
+  width: 50rem;
+  animation: flicker 3s infinite;
+  transition: transform 0.5s ease-in-out;
+}
+
+.Artisan-Logo-First-Facade img:hover{
+  transform: scale(1.1) rotate(1deg);  
+}
+
 .DBFF-Headline {
   display: flex;
   flex-direction: column;
-
   justify-content: space-evenly;
 
-  height: 80dvh;
-  width: 55dvw;
+  min-height: 100dvh;
+  width: 53dvw;
+  padding-left: 2rem; 
 }
 
 .DBFF-Headline p {
   display: flex;
   
+  font-family: Montserratt Bold, sans-serif;
   font-size: 5rem;
   font-weight: 900;
   color: #ffffff;
@@ -24,10 +83,13 @@
 
 .DBFF-Text p {
   padding: 0.5rem 2rem;
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   font-weight: 500;
   line-height: 3rem;
 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   flex-wrap: wrap;
 
   color: rgb(236, 236, 236);
@@ -35,7 +97,6 @@
 
   transform: translateY(20px);
   animation: fadeUp 2s ease-out forwards;
-
 }
 
 .DBFF-Text a {
@@ -49,12 +110,11 @@
   flex-direction: row;
   justify-content: center;
   z-index: 1;
-  height: 90vh;
 }
 
 .Cards {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .Card-Images {
@@ -66,23 +126,24 @@
   transform: translateX(20px);
 
   animation: fadeLeft 3s ease-out forwards;
-  width: 30dvw;
+  width: 35dvw;
 
   padding: 1rem;
 }
 
 .Card-Images img {
-  max-height: 30rem;
-  max-width: 30dvw;
+  max-height: 40rem;
+  max-width: 35dvw;
   transform: rotate(-1deg);
-  -webkit-filter: drop-shadow(5px 5px 5px #222);
-  filter: drop-shadow(5px 5px 5px #000000);
+
+  -webkit-filter: drop-shadow(0px 10px 0px #222);
+  filter: drop-shadow(0px 15px 5px rgba(0, 103, 165));
   transition: transform 0.2s ease;
 }
 
 .Card-Images img:hover {
   cursor: pointer;
-
+  filter: drop-shadow(15px 20px 15px rgba(0, 103, 165));
   transform: rotate(5deg) scale(1.05);
   z-index: 10;
 }

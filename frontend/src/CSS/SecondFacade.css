@@ -1,12 +1,10 @@
-
-
 a {
     text-decoration: none;
     color: black;
 }
 
 .Second-Facade {
-    background-color: rgb(215, 215, 215);
+    background-color: #E9F1FA;
 }
 
 .Cover-Photo-Image-Facade {
@@ -164,11 +162,13 @@ a {
     padding-top: 1rem;
     padding: 10px;
     margin-bottom: 10px;
+
+    
+    background-color: hsla(0, 0%, 100%, 0.55);
 }
 
 .Large-Photo-News img {
     width: 30%;
-    opacity: 95%;
 
     border-radius: 20px;
 
@@ -183,15 +183,17 @@ a {
 }
 
 .Large-Photo-News img:hover {
-    opacity: 100%;
-    object-position: 90% 90%;
+    object-position: 90% 90%;  
 }
 
 .Large-Photo-News:hover{
     transition: transform 0.5s ease-in-out;
     transform: scale(1.01);
-    object-position: 90% 90%;
     box-shadow: 5px 6px 5px 6px rgba(7, 5, 5, 0.068);
+    background-color: hsla(0, 0%, 100%);
+
+    backdrop-filter: blur(5.1px);
+    -webkit-backdrop-filter: blur(10.1px);
 }
 
 .Large-News-Headline {
@@ -199,7 +201,7 @@ a {
     flex-direction: column;
     text-decoration: none;
 
-    padding: 1rem;
+    padding-bottom: 1rem;
     gap: 1rem;
 }
 
