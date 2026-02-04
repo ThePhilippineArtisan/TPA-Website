@@ -290,17 +290,7 @@ a {
     word-break: keep-all;
 }
 
-
 .Bulletin-Board {
-    display: flex;
-    flex-direction: row;
-    filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
-
-    font-size: 1rem;
-
-    background: white;
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
 .Vertical-Divider {

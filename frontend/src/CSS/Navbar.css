@@ -23,8 +23,10 @@
     color: hsl(204, 98, 34);
     text-decoration: none;
 
-    font-weight: bolder;
+    font-weight: bold;
 
+    text-decoration: none;
+    color: black;
     gap: 3rem;
 }
 

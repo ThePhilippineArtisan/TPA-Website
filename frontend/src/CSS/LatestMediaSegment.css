@@ -8,7 +8,7 @@
     background-repeat: no-repeat;
 
     inset: 0;
-    filter: blur(3px);
+    filter: blur(5px);
     z-index: -1;
 }
 
@@ -21,6 +21,7 @@
     align-items: center;
 
     z-index: 1;
+    margin-top: 7%;
 
     padding: 6rem;
     box-shadow: inset 0 0 0 7px black;

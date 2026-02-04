@@ -9,7 +9,7 @@ const LatestMediaSegment = () => {
     return(
         <div>
             <div className = "Latest-Media-Segment-Image"
-                style={{ "--bgImage": `url(${StreamingSat})`, width: "90%"}} >
+                style={{ "--bgImage": `url(${Photo1})`, width: "90%"}} >
                 
 
                 <Link to = "/media-segment/id" className = "Latest-MS-Title">
