@@ -1,11 +1,8 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
 .Article-Page{
     background-color: whitesmoke;
     background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff11 100%);
+
+    margin-top: 5%;
 }
 
 .skeleton{
@@ -63,12 +60,6 @@
 
 hr{
     border: 1px solid #0265A9;
-}
-
-#hr-below-photos{
-    margin-top: 1rem;
-
-    border: 5px solid #0265A9
 }
 
 .Author-and-Date{
@@ -134,11 +125,10 @@ hr{
 }
 
 .Extra-Photos-Container{
-    margin: 1rem 3rem;
+    margin: 1rem 1rem;
 
     overflow-x: hidden;
-    border: 3px solid black;
-    border-radius: 1.5rem;
+    border-radius: 8px;
 
     background-color: #07273d2c;
     
@@ -151,7 +141,7 @@ hr{
     overflow-y: hidden;
 
     scrollbar-width: auto;
-    scrollbar-color:  #91c4ff #0265A9;
+    scrollbar-color:  #91c4ff #b4ddf9;
     scroll-behavior: smooth;
 
     gap: 0.25rem;
@@ -161,13 +151,12 @@ hr{
     background: #f0f0f0;
     border-radius: 10px;
 
-    background-color: #0077ff57;
     width: 90%;
 }
 
 .Extra-Photos img {
-    height: 7rem;
-    margin: 10px;
+    height: 6rem;
+    margin: 8px;
 
     border-radius: 5px;
     
