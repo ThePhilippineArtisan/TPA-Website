@@ -60,6 +60,7 @@
 
 hr{
     border: 1px solid #0265A9;
+    width: 100%;
 }
 
 .Author-and-Date{
@@ -116,12 +117,32 @@ hr{
 .Photo-Illustration-Layout-Credits{
     display: flex;
     justify-content: center;
-    
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    text-decoration: none;
-    color: black;
-
+    text-align: center;
     font-size: 1rem;
+}
+
+.Extra-Photos-Container-Two {
+  display: flex;
+  justify-content: flex-end;
+  max-height: 34rem;
+
+  overflow-y: auto;
+  overflow-x: hidden; 
+
+  scrollbar-width: auto;
+  scrollbar-color: #91c4ff #b4ddf9;
+  scroll-behavior: smooth;
+
+}
+
+.Extra-Photos-Container-Two img{
+    width: 16rem;
+}
+
+.Extra-Photos-Container-Two .Extra-Photos {
+    flex-direction: column;
+    padding-left: 2rem;
+    overflow-y: auto;
 }
 
 .Extra-Photos-Container{
@@ -166,7 +187,7 @@ hr{
 
 .Below-Small-Photos{
     display: grid;
-    grid-template-columns: 7fr 2fr;
+    grid-template-columns: 4fr 2fr;
     margin: 2% 5%;
 }
 
@@ -174,7 +195,7 @@ hr{
     display: flex;
     justify-content: center;
     align-content: center;
-    max-width:90%;
+    max-width: 90%;
 
 }
 
@@ -183,7 +204,7 @@ hr{
     text-decoration: none;
     color: black;
 
-    font-size: 1.5rem;
+    font-size: 1.75rem;
 
     padding: 2rem 0rem;
 }

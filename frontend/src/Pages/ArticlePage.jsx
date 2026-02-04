@@ -58,7 +58,25 @@ const ArticlePage = () => {
 
             <div className = "Foreground-Photo ">
                 <img src = {currentPhoto} loading = "lazy"/>
-            </div>
+                            
+                    <div className = "Extra-Photos-Container-Two">
+                        
+                        <div className = "Extra-Photos"> 
+                            
+                            {photos.slice(0).map((photo, index) => (
+                                <img
+                                    key = {index}
+                                    src = {photo}
+                                    loading = "lazy"
+                                    onClick = {() => setCurrentPhoto(photo)}
+                                    style = {{ cursor: "pointer" }}
+                                />
+                            ))}
+                            
+                            <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
+                        </div>
+                    </div>
+                </div>
 
             <div className = "Photo-Illustration-Layout-Credits" style = {{textAlign: "center"}}> 
                 Photos by Angela Genio & John Peregrin 
