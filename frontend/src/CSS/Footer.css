@@ -12,7 +12,6 @@
 .Top-Footer{
     display: flex;
     justify-content: space-around;
-
 }
 
 .Bottom-Footer{
@@ -48,7 +47,7 @@
 }
 
 #TPA-Full-Logo{
-    height: 150px;
+    height: 20dvh;
 }
 
 .Right-Footer{
