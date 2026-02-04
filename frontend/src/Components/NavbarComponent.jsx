@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -7,59 +6,57 @@ import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg";
 
 import "../CSS/Navbar.css"
 
-const NavbarComponent = ({refs}) => {
+const NavbarComponent = ({ refs }) => {
 
-        const handleReload = () => {
-                window.location.reload();
-        };
-        const location = useLocation();
-        const navigate = useNavigate();
-        
-        const handleScroll = (ref) => {
-            if (location.pathname === "/") {
-                ref.current.scrollIntoView({behavior: "smooth"});
-            } else {
-                navigate("/");
-                setTimeout(() => {
-                    ref.current.scrollIntoView({behavior: "smooth"});
-                }, 300);}
-            };
+    const handleReload = () => {
+        window.location.reload();
+    };
+    const location = useLocation();
+    const navigate = useNavigate();
 
-        //        const [logoLoaded, setLogoLoaded] = useState(false);
-        //      const [circleLoaded, setCircleLoaded] = useState(false);
+    const handleScroll = (ref) => {
+        if (location.pathname === "/") {
+            ref.current.scrollIntoView({ behavior: "smooth" });
+        } else {
+            navigate("/");
+            setTimeout(() => {
+                ref.current.scrollIntoView({ behavior: "smooth" });
+            }, 300);
+        }
+    };
 
-        return(
-            <div style = {{marginTop: '8.25rem'}}>
-            <div className = "navbar-box">
-                <div className = "tpa-logo">
+    return (
+        <div style={{ marginTop: '8.25rem' }}>
+            <div className="navbar-box">
+                <div className="tpa-logo">
 
-                    <Link to = "/">
+                    <Link to="/">
                         <img
                             // onLoad={() => setLogoLoaded(true)}
-                           //  className={!logoLoaded ? "skeleton" : ""}
-                            loading = "lazy"
-                            id = "tpa-logo"
-                            src = {TPAWhite} 
-                            alt = "The Philippine Artisan Logo" 
-                        />       
+                            //  className={!logoLoaded ? "skeleton" : ""}
+                            loading="lazy"
+                            id="tpa-logo"
+                            src={TPAWhite}
+                            alt="The Philippine Artisan Logo"
+                        />
                     </Link>
                 </div>
 
                 <div className="navbar-links">
-                    <Link to = "#" > Home </Link>
-                    <Link to = "/Create-Article-Page"> News </Link>
-                    <Link to = "/Releases"> Releases </Link>
-                    <Link to = "/Media-Segment-Page"> Media Segments </Link>
+                    <Link to="/" > Home </Link>
+                    <Link to="/Create-Article-Page"> News </Link>
+                    <Link to="/Releases"> Releases </Link>
+                    <Link to="/Media-Segment-Page"> Media Segments </Link>
                 </div>
 
-                    <Link to = "/About" className = "tpa-circle-logo">
-                        <img
-                            src = {TPACircleLogo}
-                        />
-                    </Link>
+                <Link to="/About" className="tpa-circle-logo">
+                    <img
+                        src={TPACircleLogo}
+                    />
+                </Link>
             </div>
-            </div>
-        )
+        </div>
+    )
 }
 
 export default NavbarComponent;

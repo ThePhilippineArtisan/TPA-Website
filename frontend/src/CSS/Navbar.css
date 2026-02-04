@@ -1,42 +1,25 @@
-.skeleton{
-    opacity: .7;
-    animation: skeleton-loading 1s linear infinite alternate;
-}
-
-@keyframes skeleton-loading{
-    0% {
-        background-color: hsl(200, 20%, 70%);
-    }
-
-    100% {
-        background-color: hsl(200, 20%, 90%);
-    }
-}
-
 .navbar-box{
-  top: 0;
-  z-index: 11;
-
-  height: 7rem;
-  width: 96%;
-
-  background-color: rgba(255, 255, 255, 0.95);
-  
-  border-bottom: 3px solid #0265A9;
-  margin: 1% 2%;
-  border-radius: 20px;
-  
-  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position: fixed;
+
+  top: 0;
+  z-index: 11;
+
+  height: 7rem;
+  width: 95%;
+  margin: 1% 2%;
+
+  background-color: hsla(0, 0%, 100%, 0.95);
+  
+  border: 3px solid hsl(204, 98, 34);
+  border-radius: 20px; 
 }
 
 .navbar-box a{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     font-size: 1rem;
-    color: #0265A9;
+    color: hsl(204, 98, 34);
     text-decoration: none;
 
     font-weight: bolder;
