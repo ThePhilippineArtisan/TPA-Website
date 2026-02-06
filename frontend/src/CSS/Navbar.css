@@ -57,8 +57,6 @@
 }
 
 .tpa-circle-logo:hover{
-    cursor:pointer;
-
     transition: 0.2s ease-in-out;
     transform: scale(1.1) ;
 }

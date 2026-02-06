@@ -15,7 +15,6 @@
 }
 
 .Tabs a{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     color: white;
     text-decoration: none;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -37,7 +36,6 @@
 }
 
 .Tabs a:hover{
-    cursor: pointer;
     transform: scale(1.1);
     transition: transform 0.2s ease-in-out;
 }

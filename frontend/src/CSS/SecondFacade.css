@@ -93,7 +93,6 @@ a {
     display: inline-block;
     background-color: transparent;
     overflow: hidden;
-    cursor: pointer;
     width: 90%;
 
     background-color: rgba(99, 218, 248, 0.50);
@@ -178,7 +177,6 @@ a {
 
 
     transition: object-position 0.7s, transform 0.3s;
-    cursor: pointer;
 }
 
 .Large-Photo-News img:hover {

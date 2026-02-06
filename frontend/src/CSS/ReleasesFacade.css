@@ -46,8 +46,6 @@
 .Image-Showcase:hover{
     transition: 0.2s;
     transform: scale(1.03);
-    cursor: pointer;
-
 }
 
 .Image-Showcase img{

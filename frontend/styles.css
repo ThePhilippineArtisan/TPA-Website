@@ -1,13 +1,13 @@
 html {
 }
 
-body{
-    overflow-x: hidden;
-    font-family: Inter;
-    cursor: none;
-    scroll-behavior: smooth;
+body {
+  overflow-x: hidden;
+  font-family: Inter, sans-serif;
+  scroll-behavior: smooth;
+  cursor: url('/favicon.png') 0 0, default;
 }
 
-body:hover{
-    cursor: url('/favicon.png'), auto;
+a, img, button, h1, h2, h3, h4, h5, h6, p, div .clickable {
+  cursor: url('/faviconpointer.png') 0 0, pointer !important;
 }

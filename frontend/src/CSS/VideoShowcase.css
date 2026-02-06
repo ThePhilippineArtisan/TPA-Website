@@ -66,8 +66,7 @@
     border-radius: 5px;
     
     flex-shrink: 0;
-    cursor: pointer;
-
+    
     aspect-ratio: 16 / 9;
     transition: transform 0.1s ease-in-out;
 }

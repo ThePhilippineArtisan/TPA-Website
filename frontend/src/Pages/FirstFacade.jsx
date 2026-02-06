@@ -115,6 +115,7 @@ const FirstFacade = () => {
                 />
             </div>
             <div className="First-BG-First-Facade">
+                
                 {/* Background image with blur 
                 <div
                     style={{
