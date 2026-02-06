@@ -11,25 +11,35 @@ const MediaSegmentArticle = () => {
     return(
         <div className = "Media-Segment-Article-Page">
             <div className = "Media-Segment-Article">
-                <div className = "Latest-Media-Segment-Image" id = "imga"
+                <div className = "Media-Segment-Image Media-Segment-Image"
                     style={{ "--bgImage": `url(${FEATFRIDAY})`}} >
-                    <img
-                        src = {FEATFRIDAY} 
-                    />
-
+                        <img
+                            src = {FEATFRIDAY} 
+                        />
+                        <div className = "Author-and-Details">
+                            <div>
+                                <h2> <span> Features Friday: </span> The last resort of those drowning in a tide of corruption </h2> <br></br>
+                                <p> Written by <span> Joseph Brian Balut </span></p>
+                                <p> Graphics by <span> Joseph Brian Balut </span></p>
+                                <br></br>
+                                <p> Published on <span>  October 12, 2025 10:11 AM </span></p>
+                            </div>
+                        </div>
                 </div>
                 
                 <div className = "Media-Segment-Article-Below-Photo">
-                        <div className = "Author-and-Details">
+                        <div className = "Author-and-Details" style ={{width: "120dvw"}}>
                             <div>
-                            <h3> <span> Features Friday: </span> The last resort of those drowning in a tide of corruption </h3> <br></br>
-                            <p> Written by <span> Joseph Brian Balut </span></p>
-                            <p> Graphics by <span> Joseph Brian Balut </span></p>
-                            <br></br>
-                            <p> Published on <span>  October 12, 2025 10:11 AM </span></p>
-
-                            <VerticalFastNews />
-                        </div>
+                                <h3> <span> PLACEHOLDER FOR </span> Either Title or About the Author/Media Provider </h3> <br></br>
+                                <h5> Written by <span> I could code this so that when it's MM or WW </span></h5>
+                                <h5> Graphics by <span> The other news stories doesn't show up reducing unnecessary page length </span></h5>
+                                <br></br>
+                                <h5> Published on <span>  October 12, 2025 10:11 AM </span></h5> <br></br>
+                                <hr></hr>
+                                <VerticalFastNews />
+                                <hr></hr><br></br>
+                                <h5> <span> Click this link to view the sources, interview, or media used in this article. </span> </h5> 
+                            </div>
                     </div>
 
                     <div className = "Media-Segment-Article-Text">
@@ -39,7 +49,7 @@ const MediaSegmentArticle = () => {
                         There exists a social contract between the government and its people when some rights, except life, liberty, and property, are voluntarily surrendered in exchange for protection, fairness, and benefits. 
                         Once the contract is broken through overreach or corruption of goodwill, the masses must take up arms to reiterate that their government is subservient to the will of the many – that the government is of the people, by the people, and for the people.
                         <br></br><br></br>𝗧𝗵𝗲 𝘀𝘁𝗿𝗮𝘄 𝘁𝗵𝗮𝘁 𝗯𝗿𝗼𝗸𝗲 𝘁𝗵𝗲 𝗰𝗮𝗺𝗲𝗹’𝘀 𝗯𝗮𝗰𝗸<br></br>
-                        The past few weeks of constant exposées after Poncious Pilate uttered “Mahiya naman kayo!” confirming what we already knew, as he washed his hands in the onslaught of the very floodwater his Trillion-peso signatures unleashed. Marcos Jr. is trying his very best to salvage a legacy – finger-pointing himself away from the blood-soaked pavement of his family’s past and present like a wolf in sheep’s clothing as he aligns with the rabbling anger at the Judases who sold their country for a few shekels.<br></br>
+                        The past few weeks of constant exposées after Poncious Pilate uttered Mahiya naman kayo!” confirming what we already knew, as he washed his hands in the onslaught of the very floodwater his Trillion-peso signatures unleashed. Marcos Jr. is trying his very best to salvage a legacy – finger-pointing himself away from the blood-soaked pavement of his family’s past and present like a wolf in sheep’s clothing as he aligns with the rabbling anger at the Judases who sold their country for a few shekels.<br></br>
                         <br></br>When inundated by posts of the luxurious lifestyle of these 'nepo-babies,' a term used to describe the sons and daughters of government officials and contractors living lavishly atop the petty backs of those who fund it, flaunting their family’s ill-gotten wealth, the questionable pomp and dubious pageantry leave a bad taste in the mouth, for however much they spend on clothing and properties with wings, they cannot buy class or delicadeza.
                         <br></br><br></br>𝗣𝘂𝗯𝗹𝗶𝗰 𝘀𝗲𝗻𝘁𝗶𝗺𝗲𝗻𝘁 𝗶𝗻𝘁𝗿𝗼-𝗿𝗲𝘁𝗿𝗼𝘀𝗽𝗲𝗰𝘁𝗶𝗼𝗻<br></br>
                         Inspired by the revolutions of the past, present, and abroad’s justified indignation, the Filipino people woke up to the gravity of their situation as a hundred thousand flocked to the streets. 
@@ -60,7 +70,6 @@ const MediaSegmentArticle = () => {
                         #ThePhilippineArtisan
                         </p>
                     </div>
-
                 </div>
             </div>
 

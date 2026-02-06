@@ -118,9 +118,16 @@ const ArticlePage = () => {
 
                     </p>
                 </div>
-                <VerticalFastNews />
+                <div>
+                    <br></br>
+                    <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
+                    <hr ></hr>                 
+                    <VerticalFastNews />
+                </div>
             </div>
-
+            <div style={{marginLeft: "10%", marginRight: "10%"}}>
+                <hr style={{borderBottom: "2px solid #0265A9"}}></hr>
+            </div>
             <h1 id = "Read-More"> READ MORE </h1>
             
             <div className = "Suggested-Articles">

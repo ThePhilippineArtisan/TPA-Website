@@ -6,40 +6,85 @@
     flex-direction: column;
     justify-content: center;
     align-self: center;
-    margin-top: 6%;
     background-image: url("/notebook-dark.png");
+}
+
+.Media-Segment-Article-Image{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.Media-Segment-Image::before {
+    content: "";
+    position: absolute;
+
+    background: linear-gradient(
+        to right,
+        #ffffff53 0%,
+        #01263ff3 50%,
+        #01233a 100%
+    ),
+
+    var(--bgImage);
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    inset: 0;
+    filter: blur(5px);
+    z-index: -1;
+
+    background-blend-mode: overlay; /* try multiply, screen, or soft-light too */
+}
+
+.Media-Segment-Image {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+    padding: 2rem;
+}
+
+.Media-Segment-Image img{
+    max-height: 55dvh;
+    object-fit: cover;
+
+    filter: opacity(0.96);
+    border-radius: 16px;
+
+    transition: transform 0.1s ease-in-out;
+}
+
+.Media-Segment-Image img:hover{
+    transform: scale(1.05);
+    transition: 0.25s;
+    cursor: pointer;
+    box-shadow: 4px 5px rgba(13, 0, 0, 0.724);   
 }
 
 .Media-Segment-Article-Page h1{
     padding: 3% 0rem;
 }
 
-.Latest-Media-Segment-Image{
-    border: 3px black solid;
+.Media-Segment-Image{
+    height: 100dvh
+}
+
+.Media-Segment-Image img{
+    height: 100dvh;
+    object-fit: cover;
 }
 
 .Media-Segment-Article{
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    margin: 1% 1%;
-}
-
-.Foreground-Photo-Image{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
-
-.Foreground-Photo-Image img{
-    height: 35rem;
-
-    border: 3px black solid;
-    border-radius: 10px;
-
-    object-fit: cover;
 }
 
 .Media-Segment-Article-Text{
@@ -57,7 +102,7 @@
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     border-bottom: 3px rgb(0, 77, 179) solid;
-    
+    margin: 1% 5%;
     box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.412);
 }
 
@@ -68,8 +113,14 @@
     font-weight: 700;
     font-size: 1.25rem;
 
-    width: 175dvw;
-    padding: 5% 2%;
+    background-color: hsla(0, 0%, 100%, 0.75);
+    backdrop-filter: blur(5.1px);
+    -webkit-backdrop-filter: blur(5.1px);
+    border: 3px solid hsl(204, 98, 34);
+    border-radius: 16px; 
+
+    width: 55dvw;
+    padding: 2%;
 }
 
 .Author-and-Details span{

@@ -101,7 +101,7 @@ hr{
     display: flex;
     justify-content: center;
     align-items: center;
-
+    width: 70%;
     padding: 1rem;
 }
 
@@ -189,7 +189,7 @@ hr{
 .Below-Small-Photos{
     display: grid;
     grid-template-columns: 4fr 2fr;
-    margin: 2% 5%;
+    margin: 1% 10%;
 }
 
 .Article-Body{
@@ -201,11 +201,10 @@ hr{
 }
 
 .Article-Body p{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
     text-decoration: none;
     color: black;
 
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 
     padding: 2rem 0rem;
 }
