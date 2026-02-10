@@ -22,7 +22,6 @@ const MediaSegmentArticle = () => {
                                 <p> Written by <span> Joseph Brian Balut </span></p>
                                 <p> Graphics by <span> Joseph Brian Balut </span></p>
                                 <br></br>
-                                <p> Published on <span>  October 12, 2025 10:11 AM </span></p>
                             </div>
                         </div>
                 </div>

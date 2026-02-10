@@ -101,7 +101,7 @@ hr{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    width: 50%;
     padding: 1rem;
 }
 
@@ -125,7 +125,7 @@ hr{
   display: flex;
   justify-content: flex-end;
 
-  max-height: 33rem;
+  max-height: 35rem;
 
   overflow-y: auto;
   overflow-x: hidden; 
@@ -137,7 +137,9 @@ hr{
 }
 
 .Extra-Photos-Container-Two img{
-    width: 16rem;
+    height: 10rem;
+    width: auto;
+    object-fit: cover;
 }
 
 .Extra-Photos-Container-Two .Extra-Photos {
@@ -158,6 +160,7 @@ hr{
 
 .Extra-Photos{
     display: flex;
+    align-items: center;
 
     overflow-x: auto;
     overflow-y: hidden;
@@ -257,7 +260,8 @@ hr{
 
 .Three-News a{
     display: -webkit-box;              
-    -webkit-line-clamp: 1;             
+    -webkit-line-clamp: 1;
+    line-clamp: 1;             
     -webkit-box-orient: vertical;      
     overflow: hidden;                  
     text-overflow: ellipsis;           

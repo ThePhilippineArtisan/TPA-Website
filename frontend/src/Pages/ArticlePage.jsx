@@ -55,28 +55,28 @@ const ArticlePage = () => {
 
             </div>
 
+            <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+                <div className = "Foreground-Photo ">
+                    <img src = {currentPhoto} loading = "lazy"/>                
+                </div>
 
-            <div className = "Foreground-Photo ">
-                <img src = {currentPhoto} loading = "lazy"/>
-                            
-                    <div className = "Extra-Photos-Container-Two">
+                <div className = "Extra-Photos-Container-Two">
+                    <div className = "Extra-Photos"> 
                         
-                        <div className = "Extra-Photos"> 
-                            
-                            {photos.slice(0).map((photo, index) => (
-                                <img
-                                    key = {index}
-                                    src = {photo}
-                                    loading = "lazy"
-                                    onClick = {() => setCurrentPhoto(photo)}
-                                    style = {{ cursor: "pointer" }}
-                                />
-                            ))}
-                            
-                            <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
-                        </div>
+                        {photos.slice(0).map((photo, index) => (
+                            <img
+                                key = {index}
+                                src = {photo}
+                                loading = "lazy"
+                                onClick = {() => setCurrentPhoto(photo)}
+                                style = {{ cursor: "pointer" }}
+                            />
+                        ))}
+                        
+                        <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
                     </div>
                 </div>
+            </div>
 
             <div className = "Photo-Illustration-Layout-Credits" style = {{textAlign: "center"}}> 
                 Photos by Angela Genio & John Peregrin 
@@ -121,6 +121,7 @@ const ArticlePage = () => {
                 <div>
                     <br></br>
                     <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
+                    <br></br>
                     <hr ></hr>                 
                     <VerticalFastNews />
                 </div>

@@ -9,31 +9,46 @@
   background-color: black;
 }
 
-.Rectangle{
+.Releases-Option {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  margin-top: 4rem;
+  height: 50px;
+  width: 1000px;
+
+  border-radius: 100px;
+  
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.Releases-Option::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.Releases-Option-Title{
+  flex: 0 0 auto; /* prevent shrinking and allow horizontal scrolling */
+  display: flex;
+  justify-content: center;
   align-items: center;
-  background-color: rgba(137, 206, 255, 0.601);
 
-  padding: 5rem;
-  border-radius: 5rem;
+  min-width: 75px;
+  
+  margin: 0rem 0rem;
+  padding: 0rem 1rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.Rectangle img:hover{
-  transform: scale(1.05);
-  transition: transform ease-in-out 0.5s 
+.Releases-Option-Title:hover{
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.25);
 }
-
-.Rectangle img{
-  -webkit-filter: drop-shadow(5px 5px 5px #222);
-}
-
-.Rectangle p{
-  font-size: 10rem;
-  font-weight: 500;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  text-shadow: 5px 5px 5px black;
+.Releases-Book-Cover{
+  width: 100%;
 }
 
 .Demo-Page{

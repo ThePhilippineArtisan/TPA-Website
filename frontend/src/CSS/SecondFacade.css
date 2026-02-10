@@ -4,7 +4,16 @@ a {
 }
 
 .Second-Facade {
-    background-color: #E9F1FA;
+    background: linear-gradient(120deg, #fdfdfd, #cef3ff, #fff0f5);
+    animation: gradientShift 15s ease infinite;
+    @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+    }
+    
+    background-image: url("https://www.transparenttextures.com/patterns/crissxcross.png");
+
 }
 
 .Cover-Photo-Image-Facade {
@@ -162,7 +171,9 @@ a {
     padding: 10px;
     margin-bottom: 10px;
 
-    background-color: hsla(0, 0%, 100%, 0.55);
+    background-color: rgba(255, 255, 255, 0.529);
+    backdrop-filter: blur(3.1px);
+    -webkit-backdrop-filter: blur(3.1px);
 }
 
 .Large-Photo-News img {
@@ -189,8 +200,8 @@ a {
     box-shadow: 5px 6px 5px 6px rgba(7, 5, 5, 0.068);
     background-color: hsla(0, 0%, 100%);
 
-    backdrop-filter: blur(5.1px);
-    -webkit-backdrop-filter: blur(10.1px);
+    backdrop-filter: blur(3.1px);
+    -webkit-backdrop-filter: blur(3.1px);
 }
 
 .Large-News-Headline {
