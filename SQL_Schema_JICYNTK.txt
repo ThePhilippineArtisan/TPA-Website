@@ -1,8 +1,6 @@
-DATABASE STUFF YOU SHOULD KNOW ABOUT
+Just In Case You Need To Know (JICYNTK)
 
 Name of Database: TPADatabase
-Password: superuser
-Schema: public
 
 // I did not create a custom schema, just did it in "public" schema because "SET search_path TO TPA_Schema, public" doesn't work in rerouting the search path.
 
