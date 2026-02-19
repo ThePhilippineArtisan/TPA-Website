@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the Philippine Artisan Website project! This guide will help you understand how to use Git and GitHub to contribute to the project effectively.
+Welcome to the Philippine Artisan Website project! This quick github guide will help you understand how to use Git and GitHub to contribute to the project effectively.
 
 ---
 
@@ -33,11 +33,11 @@ We use a **3-branch workflow** to manage code changes:
 
 ### Branch Descriptions:
 
-|     Branch     |     Purpose                        | Who Can Push                    |
-|----------------|------------------------------------|---------------------------------|
-| `main/master`  | Production code - Live application | **Lead Developer Only**         |
-| `prod`         |       Pre-production staging       | **Lead Developer Only**         |
-| `development`  |         Active development         | **Interns (via Pull Requests)** |
+|     Branch     |     Purpose                        | Who Can Push                     |
+|----------------|------------------------------------|----------------------------------|
+| `main/master`  | Production code - Live application | **Lead Developer Only**          |
+| `prod`         |       Pre-production staging       | **Lead Developer Only**          |
+| `development`  |         Active development         | **Unstaged (via Pull Requests)** |
 
 ---
 
@@ -143,13 +143,14 @@ git push origin feature/your-task-name
 3. Wait for code review
 
 4. Main dev will merge your branch into dev/main branch
+
 ```
 
 ## Creating a Pull Request (PR)
 
 ### Step-by-Step:
 
-1. **Go to GitHub**: https://github.com/mozhdeveloper/BAZAARX
+1. **Go to GitHub**: https://github.com/ThePhilippineArtisan/TPA-Website
 
 2. **Click "Pull Requests"** → **"New Pull Request"**
 
@@ -165,8 +166,8 @@ git push origin feature/your-task-name
 - Implemented filter by category
 
 ## Files Changed
-- src/pages/ShopPage.tsx
-- src/components/SearchBar.tsx
+- src/pages/[name-here].jsx
+- src/components/[name-here].jsx
 
 ## Screenshots (if UI changes)
 [Attach screenshots here]
@@ -228,7 +229,7 @@ git push origin branch-name
 git pull origin branch-name
 
 # Discard changes in a file
-git checkout -- filename.tsx
+git checkout -- filename.jsx
 
 # See commit history
 git log --oneline
