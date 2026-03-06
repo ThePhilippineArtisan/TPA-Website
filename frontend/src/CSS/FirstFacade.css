@@ -65,7 +65,7 @@
 }
 
 .Artisan-Logo-First-Facade img:hover{
-  transform: scale(1.1) rotate(1deg);  
+  transform: scale(1.1);  
 }
 
 .DBFF-Headline {
@@ -156,7 +156,7 @@
 .Card-Images img:hover {
   cursor: pointer;
   filter: drop-shadow(15px 20px 15px rgba(0, 103, 165));
-  transform: rotate(5deg) scale(1.05);
+  transform: rotate(3deg) scale(1.1);
   z-index: 10;
 }
 
