@@ -5,7 +5,7 @@ import Kalyo from "../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-
 import LampoonCover from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
 import NewsLetterCover from "/Newsletter.png"
 import TabulaRasaCover from "/Tabula_Rasa.png";
-import ArtisanLogo from "/TPA-LEFT_BLUE.png"
+import ArtisanLogo from "/TPA-LEFT_BLUE-smaller.png"
 
 import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
 import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
