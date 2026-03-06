@@ -18,7 +18,12 @@
   border-radius: 16px; 
 
   box-shadow: 0 0 20px hsl(0, 0%, 0%); 
-  transition: box-shadow 0.3s ease-in-out
+  transition: box-shadow 0.3s ease-in-out;
+  transition: transform 0.5s ease;
+}
+
+.navbar-box.hidden{
+  transform: translateY(-150%);
 }
 
 .navbar-box a{
@@ -42,8 +47,8 @@
 }
 
 #tpa-logo {
-  width: 15rem;
-
+  width: 12rem;
+  margin-left: 1.5rem;
 }
 
 .tpa-circle-logo{

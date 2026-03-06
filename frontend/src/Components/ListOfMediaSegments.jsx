@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
 
-import Photo1 from "../Sample-Photos/Bata.jpg"
-import StreamingSat from "../Sample-Photos/StreamingSat.jpg"
-
 import "../CSS/ListOfMediaSegments.css";
 
 const ListOfMediaSegments = () => {
@@ -14,7 +11,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card" id = "Segment">
                             <p id = "MMSegment"> Makata Monday </p>
                             <img
-                                src = {Photo1}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Bata.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
@@ -24,7 +21,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Tek Tuesday </p>
                             <img
-                                src = {StreamingSat}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
@@ -34,7 +31,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Wankjob Wednesday </p>
                             <img
-                                src = {Photo1}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/StreamingSat.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
@@ -44,7 +41,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Tala Thursday </p>
                             <img
-                                src = {StreamingSat}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Bata.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
@@ -54,7 +51,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Features Friday </p>
                             <img
-                                src = {Photo1}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
@@ -64,7 +61,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Streaming Saturday </p>
                             <img
-                                src = {StreamingSat}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/StreamingSat.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>
@@ -74,7 +71,7 @@ const ListOfMediaSegments = () => {
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
                             <p id = "MMSegment"> Sports Sunday </p>
                             <img
-                                src = {StreamingSat}
+                                src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"}
                                 
                             />
                             <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, culpa? </p>

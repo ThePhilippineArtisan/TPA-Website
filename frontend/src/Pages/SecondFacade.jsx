@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-import Photo1 from "../Sample-Photos/GAD-Kapihan.jpg"
-import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
-import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
-import OPINION from "../Sample-Photos/OPINION.jpg"
 import SectionBreaker from "/placeholder-breaker.png"
 
 import "../CSS/SecondFacade.css"
@@ -38,7 +33,7 @@ const SecondFacade = () => {
                                     style = {{flexWrap: "wrap"}}> 
 
                                     <img
-                                        src = {Photo2}
+                                        src = {'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg'}
                                         style = {{width: "100%"}}
                                     />
 
@@ -73,7 +68,7 @@ const SecondFacade = () => {
                     <hr className = "Vertical-Divider"></hr>
                     <img  
                         loading = "lazy"  
-                        src = {OPINION}
+                        src = {'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/OPINION.jpg'}
                     />
                     
                     <div className = "Large-News" >
@@ -115,8 +110,8 @@ const SecondFacade = () => {
                     </div>
                     
                     <img  
-                        loading = "lazy"  
-                        src = {Photo2}
+                        loading = "lazy"                                          
+                        src = {'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg'}
                     />
                     <hr className = "Vertical-Divider"></hr>
                 </div>

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
 import "../CSS/VerticalFastNews.css"
 
 const VerticalFastNews = () => {
@@ -35,7 +34,7 @@ const VerticalFastNews = () => {
                 <Link to = "/Joseph-Brian-Balut" style = {{fontSize: "1.35rem"}} id = "Vertical-Fast-News-Links"> LOCAL, NATIONAL, SPORTS  ———{`>`}</Link>
                 <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News"> 
                     <img  loading = "lazy" 
-                        src = {JUSTIN}
+                        src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
                     />      
                     <hr className = "Vertical-Divider-Side-News"></hr>          
                     <div className = "Vertical-Headlines">
@@ -45,7 +44,7 @@ const VerticalFastNews = () => {
 
                 <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News">       
                         <img  loading = "lazy" 
-                            src = {JUSTIN}
+                        src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
                         />
                 <hr className = "Vertical-Divider-Side-News"></hr>    
                     <div className = "Vertical-Headlines">
@@ -55,7 +54,7 @@ const VerticalFastNews = () => {
 
                 <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News">       
                     <img  loading = "lazy" 
-                        src = {JUSTIN}
+                        src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
                     />
                 <hr className = "Vertical-Divider-Side-News"></hr>
                     <div className = "Vertical-Headlines">

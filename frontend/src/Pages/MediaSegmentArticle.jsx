@@ -1,7 +1,3 @@
-import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
-import JUSTIN from "../Sample-Photos/JUST-IN.jpg"
-import FEATFRIDAY from "../Sample-Photos/Features_Friday.jpg"
-
 import "../CSS/MediaSegmentArticle.css"
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx"
 import "../CSS/LatestMediaSegment.css"
@@ -12,9 +8,9 @@ const MediaSegmentArticle = () => {
         <div className = "Media-Segment-Article-Page">
             <div className = "Media-Segment-Article">
                 <div className = "Media-Segment-Image Media-Segment-Image"
-                    style={{ "--bgImage": `url(${FEATFRIDAY})`}} >
+                    style={{ "--bgImage": `url(${"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"})`}} >
                         <img
-                            src = {FEATFRIDAY} 
+                            src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"} 
                         />
                         <div className = "Author-and-Details">
                             <div>
