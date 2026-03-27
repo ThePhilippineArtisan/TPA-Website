@@ -12,8 +12,15 @@ const VerticalFastNews = () => {
                 <div className = "Bulletin-Board">
                     <hr className = "Vertical-Divider-Side-News" style ={{alignSelf: "center"}}></hr>
                             <a href = "https://youtube.com/@AvoirJoseph" > Want to join the Philippine Artisan? <br></br>Click  <span style = {{color: '#0265A9'}}> here </span> to be included in the list of our future applicants! </a>
-                    </div>
                 </div>
+
+                <div className = "Bulletin-Board">
+                    <hr className = "Vertical-Divider-Side-News" style ={{alignSelf: "center"}}></hr>
+                            <a href = "https://youtube.com/@AvoirJoseph" > Subscribe to our email newsletter to be kept up to date with the latest updates inside and outside our university!</a>
+                </div>
+
+            </div>
+
 
             <div className = "Vertical-Fast-News">
                 <Link to = "/Joseph-Brian-Balut"style = {{fontSize: "1.5rem"}} id = "Vertical-Fast-News-Links"> FAST NEWS ———{`>`}</Link>

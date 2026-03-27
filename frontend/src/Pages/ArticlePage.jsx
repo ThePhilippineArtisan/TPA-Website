@@ -73,7 +73,7 @@ const ArticlePage = () => {
 
             </div>
 
-            <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+            <div style={{display: "flex",justifyContent: "center"}}>
                 <div className = "Foreground-Photo ">
                     <img src = {currentPhoto} loading = "lazy"/>                
                 </div>
@@ -137,9 +137,8 @@ const ArticlePage = () => {
                     </p>
                 </div>
                 <div>
-                    <br></br>
                     <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
-                    <br></br>
+                    <h4> Word count: 1,234 | 2 minute read </h4>
                     <hr ></hr>                 
                     <VerticalFastNews />
                 </div>

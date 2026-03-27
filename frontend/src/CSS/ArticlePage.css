@@ -67,6 +67,10 @@ hr{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    font-size: 1em;
+    text-decoration: none;
+
 }
 
 .Author{
@@ -74,26 +78,11 @@ hr{
 }
 
 .Author a h3{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    text-decoration: none;
     color: black;
-
-    font-size: 1em;
-    margin-top: 0.5em;
-
-    margin-right: 0.2em;
+    margin-left: 0.5rem;
 }
 
-.Date {
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    text-decoration: none;
-    font-size: 1em;
-    margin-top: 0.5em;
-
-    margin-right: 0.1em;
-
-    display: flex;
-    justify-content: flex-end;
+.Date a h3{
     color: gray;
 }
 
@@ -106,11 +95,9 @@ hr{
 }
 
 .Foreground-Photo img{
-    height: 35rem;
+    height: 48rem;
 
-    border: 3px black solid;
-    border-radius: 10px;
-
+    border-radius: 4px;
     object-fit: cover;
 }
 
@@ -125,7 +112,7 @@ hr{
   display: flex;
   justify-content: flex-end;
 
-  max-height: 35rem;
+  max-height: 48rem;
 
   overflow-y: auto;
   overflow-x: hidden; 
@@ -180,10 +167,13 @@ hr{
 }
 
 .Extra-Photos img {
-    height: 6rem;
+    height: 7rem;
+    width: 14rem;
+    object-fit: cover;
+    
     margin: 8px;
 
-    border-radius: 5px;
+    border-radius: 4px;
     
     flex-shrink: 0;
     cursor: pointer;
