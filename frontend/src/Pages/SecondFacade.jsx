@@ -60,7 +60,7 @@ const SecondFacade = () => {
 
                 <VerticalFastNews />
             </div>
-            <Link to = "/Photo-Albums" className = "Category"> PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
+            <Link to = "/Photo-Albums" className = "Category"> OPINION & EDITORIAL <span>———{`>`}</span></Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
                     <hr className = "Vertical-Divider"></hr>

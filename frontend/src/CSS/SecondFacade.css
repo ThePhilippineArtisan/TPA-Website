@@ -4,15 +4,13 @@ a {
 }
 
 .Second-Facade {
-    background: linear-gradient(120deg, #fdfdfd, #cef3ff, #fff0f5);
+    background: linear-gradient(90deg, #fdfdfd, #cef3ff, #fff0f5);
     animation: gradientShift 15s ease infinite;
     @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
     }
-    
-    background-image: url("https://www.transparenttextures.com/patterns/crissxcross.png");
 
 }
 
@@ -179,19 +177,18 @@ a {
 .Large-Photo-News img {
     width: 30%;
 
-    border-radius: 20px;
-
     aspect-ratio: 16 / 9;
 
     object-fit: cover;
     object-position: center;
 
-
-    transition: object-position 0.7s, transform 0.3s;
+    transition: object-position 1s, transform 1s ease-in-out;
 }
 
-.Large-Photo-News img:hover {
+.Large-Photo-News:hover img{
     object-position: 90% 90%;  
+
+    border-radius: 20px;
 }
 
 .Large-Photo-News:hover{
@@ -223,6 +220,7 @@ a {
 
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -244,6 +242,7 @@ a {
 
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -290,6 +289,7 @@ a {
     font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -297,9 +297,6 @@ a {
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
-}
-
-.Bulletin-Board {
 }
 
 .Vertical-Divider {
