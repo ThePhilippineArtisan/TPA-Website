@@ -163,7 +163,6 @@ a {
 
     justify-content: center;
 
-    border-radius: 1rem;
     gap: 1rem;
     padding-top: 1rem;
     padding: 10px;
@@ -196,6 +195,7 @@ a {
     transform: scale(1.01);
     box-shadow: 5px 6px 5px 6px rgba(7, 5, 5, 0.068);
     background-color: hsla(0, 0%, 100%);
+    border-radius: 1rem;
 
     backdrop-filter: blur(3.1px);
     -webkit-backdrop-filter: blur(3.1px);

@@ -1,6 +1,6 @@
 .Article-Page{
     background-color: whitesmoke;
-    background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff11 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #cae9fdab 50%, #8ed0fc80 100%);
 
     margin-top: 5%;
 }
@@ -67,6 +67,8 @@ hr{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    margin-top: 0.5rem;
 
     font-size: 1em;
     text-decoration: none;

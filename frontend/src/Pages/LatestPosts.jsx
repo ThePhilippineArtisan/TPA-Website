@@ -168,6 +168,10 @@ const LatestPosts = () => {
                             </Link>
                         </div>
                     </div>
+
+                    <div>
+                        <h1>More Articles</h1>
+                    </div>
                 </div>
 
 
