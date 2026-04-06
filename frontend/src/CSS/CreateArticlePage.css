@@ -3,6 +3,7 @@
     grid-template-columns: repeat(2, 1fr);
 
     padding: 2rem;
+    margin-top: 10rem;
     
     background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff3f 100%);
 }
