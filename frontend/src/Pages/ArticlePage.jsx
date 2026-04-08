@@ -1,32 +1,85 @@
-import {useState} from "react"
-import {useParams} from "react-router-dom"
-
-import ARROW from "../assets/Miniature_Icon_Version/arrow.svg"
+import {useEffect, useState} from "react"
+import { useParams } from "react-router-dom"
+import { supabase } from "../supabaseClient.js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
 
 const ArticlePage = () => {
 
+    const { articleId } = useParams(); // get the articleId from the URL parameters
+
+    const [mediaFiles, setMediaFiles] = useState([]);
+
+    useEffect(() => { // run this code when the component mounts/loads
+        const fetchMediaFiles = async () => {
+            let {data, error} = await supabase
+            
+            .from(`article`) // table name
+            .select(`
+                article_id, article_headline, article_body, published_at,
+                article_media( 
+                    media(
+                        media_id, media_url
+                    )
+                )
+                `
+            ).eq("article_id", 1) // column name/s or instead of 1 articleId from  the URL parameters
+            
+            // by including article_media in the select statement, 
+            // we can access the media table and its columns (media_id, media_url) 
+            // through the article_media relationship defined in the database schema (as long as it's a Foreign Key).
+            // This allows us to retrieve the media_url associated with each article in a single query, 
+            // which is more efficient than making separate queries for each article to get its media.
+
+            if (error){
+                console.log("Error fetching media files: ", error)
+            } else {
+                setMediaFiles(data.map(item => item.media_url)) // extract media_url from each item and set it to state
+            }
+        }
+        fetchMediaFiles();
+    }, [])
+
+    {/***
     const photos = [
-        new URL("../Sample-Photos/1.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/2.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/3.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/JUST-IN.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/4.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/5.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/6.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/Multification-Invication.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/7.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/8.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/9.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/GAD-Kapihan.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/10.jpg", import.meta.url).href,
-        new URL("../Sample-Photos/OPINION.jpg", import.meta.url).href,
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/1.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/2.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/3.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/4.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/5.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/6.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/7.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/8.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/9.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/10.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/GAD-Kapihan.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/OPINION.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/StreamingSat.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg",
+        "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Bata.jpg",
+
+        // new URL("../Sample-Photos/1.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/2.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/3.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/JUST-IN.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/4.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/5.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/6.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/Multification-Invication.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/7.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/8.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/9.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/GAD-Kapihan.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/10.jpg", import.meta.url).href,
+        // new URL("../Sample-Photos/OPINION.jpg", import.meta.url).href,
     ]
 
     const [currentPhoto, setCurrentPhoto] = useState(photos[0])
-
+    **/}
+    
     return( 
         <div className = "Article-Page">
             
@@ -40,12 +93,11 @@ const ArticlePage = () => {
                 <br></br> 
                 <hr></hr>
 
-                <div className = "Author-and-Date">
+                <div className = "Author-and-Date">                
                     <div className = "Author">
                         <a><h3> Aldous Paras, </h3> </a>
                         <a><h3> Jim Raguindin, </h3> </a>
                         <a><h3> Laurean Aquino </h3> </a>
-                        <br></br>
                     </div>
 
                     <div className = "Date">
@@ -55,7 +107,7 @@ const ArticlePage = () => {
 
             </div>
 
-            <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+            <div style={{display: "flex",justifyContent: "center"}}>
                 <div className = "Foreground-Photo ">
                     <img src = {currentPhoto} loading = "lazy"/>                
                 </div>
@@ -73,7 +125,7 @@ const ArticlePage = () => {
                             />
                         ))}
                         
-                        <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
+                        {/** <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/> **/}
                     </div>
                 </div>
             </div>
@@ -119,8 +171,9 @@ const ArticlePage = () => {
                     </p>
                 </div>
                 <div>
-                    <br></br>
                     <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
+                    <br></br>
+                    <h4> 1,234 words | 2 minute read </h4>
                     <br></br>
                     <hr ></hr>                 
                     <VerticalFastNews />

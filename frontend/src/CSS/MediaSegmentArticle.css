@@ -113,13 +113,13 @@
     font-weight: 700;
     font-size: 1.25rem;
 
-    background-color: hsla(0, 0%, 100%, 0.75);
+    background-color: hsla(0, 0%, 100%, 0.5);
     backdrop-filter: blur(5.1px);
     -webkit-backdrop-filter: blur(5.1px);
     border: 3px solid hsl(204, 98, 34);
-    border-radius: 16px; 
+    border-radius: 0.5rem; 
 
-    width: 55dvw;
+    width: 40dvw;
     padding: 2%;
 }
 

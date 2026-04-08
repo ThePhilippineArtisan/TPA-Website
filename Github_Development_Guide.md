@@ -48,6 +48,9 @@ We use a **3-branch workflow** to manage code changes:
 ```bash
 git clone https://github.com/ThePhilippineArtisan/TPA-Website.git
 cd TPA-Website
+
+## Always run "npm install" on either the frontend or backend folder
+
 ```
 
 ### 2. Switch to the Active Development Branch
@@ -56,6 +59,7 @@ cd TPA-Website
 git checkout development
 git pull origin development
 ```
+## Always run "npm install" on either the frontend or backend folder after pulling
 
 ### 3. Create Your Feature Branch
 

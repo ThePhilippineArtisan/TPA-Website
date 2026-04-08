@@ -62,8 +62,24 @@ const App = () => {
                 }
               />
 
+              {/*** ARTICLE */}
+
               <Route 
-                path = "/Joseph-Brian-Balut"
+                path = "/article/:articleId"
+                element = {
+                  <Suspense>
+                  <>
+                    <NavbarComponent refs={scrollRefs} />
+                    <ArticlePage />
+                    <Footer />
+                  </>
+                  </Suspense>
+                }
+              />
+
+
+              <Route 
+                path = "/article/Joseph-Brian-Balut"
                 element = {
                   <Suspense>
                   <>
