@@ -24,9 +24,9 @@ const AboutPage = () => {
         const fetchStaff = async () => {
             let {data, error} = await supabase // wait first before declaring the function finished loading/getting data
             .from('staff')
-            .select('staff_first_name, staff_last_name')
-            .eq('staff_isactive', 'TRUE')
-            .neq('staff_first_name', 'The Philippine Artisan')
+            .select('staff_display_name, staff_position, is_editorial_board, staff_picture')
+            .eq('staff_isactive', true)
+            .not('staff_position', 'is', null)
 
             if(error){
                 console.log('Error fetching notes: ', error)
@@ -37,9 +37,6 @@ const AboutPage = () => {
 
         fetchStaff() // call fetchStaffer function before the component loads
     }, []) // since it's an array, we populate array by how many the staffers are, they get one staffer[#] each. 
-
-
-
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState("next")
@@ -197,13 +194,19 @@ const AboutPage = () => {
 
                 <div className = "Editors">
                     <div className = "Editorial-Board">
-                        <div>
-                            <div className = "Editorial-Board-Individual">
-                                <img src = {LAMPOON} />
-                            </div>
-                            <h4> Doortje Igharas </h4>
-                            <h5> Editor-in-Chief </h5>
-                        </div>
+                        {staff
+                            .filter(isEdBoard => isEdBoard.is_editorial_board === true)
+                            .map(isEdBoard => (
+                                <div key = {isEdBoard.staff_display_name}>
+                                    <div className = "Editorial-Board-Individual">
+                                        <img src = {isEdBoard.staff_picture}/>
+                                    </div>
+                                    <div>
+                                        <h4> {isEdBoard.staff_display_name} </h4>
+                                    </div>
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
             </div>
@@ -215,11 +218,12 @@ const AboutPage = () => {
 
                     <div className = "Regular-Staffers">
                         <h1>Senior Staffers</h1>
-                        {staff.map(staff => (
-                            <div key = {staff.staff_first_name}>
-
+                        {staff
+                        .filter(seniorStaffMember => seniorStaffMember.is_editorial_board === false)
+                        .map(seniorStaffMember => (
+                            <div className = "staffer-names-individual" key = {seniorStaffMember.staff_display_name}>
+                                <h4>{seniorStaffMember.staff_display_name}</h4>
                             </div>
-
 
                         ))}
                    </div>
