@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import 'dotenv/config';
 
 // SUPABASE_URL - Supabase URL using our project slug
