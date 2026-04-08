@@ -53,7 +53,7 @@ const NavbarComponent = ({ refs }) => {
         }, []);
 
     return (
-        <div>
+        <div className = "navbar-container">
             <div className="navbar-box">
                 <div className="tpa-logo">
 

@@ -93,12 +93,11 @@ const ArticlePage = () => {
                 <br></br> 
                 <hr></hr>
 
-                <div className = "Author-and-Date">
+                <div className = "Author-and-Date">                
                     <div className = "Author">
                         <a><h3> Aldous Paras, </h3> </a>
                         <a><h3> Jim Raguindin, </h3> </a>
                         <a><h3> Laurean Aquino </h3> </a>
-                        <br></br>
                     </div>
 
                     <div className = "Date">
@@ -108,7 +107,7 @@ const ArticlePage = () => {
 
             </div>
 
-            <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+            <div style={{display: "flex",justifyContent: "center"}}>
                 <div className = "Foreground-Photo ">
                     <img src = {currentPhoto} loading = "lazy"/>                
                 </div>
@@ -172,8 +171,9 @@ const ArticlePage = () => {
                     </p>
                 </div>
                 <div>
-                    <br></br>
                     <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
+                    <br></br>
+                    <h4> 1,234 words | 2 minute read </h4>
                     <br></br>
                     <hr ></hr>                 
                     <VerticalFastNews />

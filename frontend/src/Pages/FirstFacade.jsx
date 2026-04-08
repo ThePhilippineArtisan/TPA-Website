@@ -144,10 +144,15 @@ const FirstFacade = () => {
                 />
                 
                 */}
+                    <div className="Slide-Navigation">
+                        <img 
+                            src = {PreviousSlide}
+                            alt = "Previous"
+                            onClick = {handlePrev}
+                        />
+                    </div>
 
-                <div
-                    key={activeIndex}
-                    className={`Cards SlideWrapper ${
+                <div className={`Cards SlideWrapper ${
                         phase === "exit" ? `exit ${direction}` : ""
                     } ${
                         phase === "enter" ? direction : ""
@@ -166,14 +171,7 @@ const FirstFacade = () => {
                         }
                     }}
                     >
-                    <div className="Slide-Navigation">
-                        <img 
-                            src = {PreviousSlide}
-                            alt = "Previous"
-                            onClick = {handlePrev}
-                        />
-                    </div>
-                        
+
                     <div className = "DBFF-Headline">
                         <p> {mainSlide.header} </p>
                         <div className = "DBFF-Text">
@@ -190,19 +188,21 @@ const FirstFacade = () => {
 
                     <div className = "Card-Images">
                         <img
+                            key={mainSlide.id}
                             loading = "lazy" 
                             src = {mainSlide.src} 
                         /> 
                     </div>
 
+                </div>
                     <div className="Slide-Navigation">
                         <img 
                             src = {NextSlide}
-                            alt = "Previous"
+                            alt = "Next"
                             onClick = {handleNext}
                         />
                     </div>
-                </div>
+
             </div>
         </div>
     )

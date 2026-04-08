@@ -316,7 +316,7 @@ const CreateArticlePage = () => {
                 <div className = "Text-Area">
                     <input
                         type = "text"
-                        placeholder = "Enter your new article headline here. (Follow/Subscribe/Add @AvoirJoseph)"
+                        placeholder = "Enter your new article headline here."
                         id = "Headline-Text"
                         className = "Headline-Input"
                         value = {submitArticle.articleHeadline}

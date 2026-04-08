@@ -25,44 +25,42 @@ const SecondFacade = () => {
                     <div className = "Large-News-Boxes">
                         <div className = "Large-Left-News-Column">
                             <Link to = "/Latest" className = "Category" > LATEST NEWS <span>———{`>`}</span> </Link>  
+                            {/**PUT HERE ANYTHING LATEST EXCEPT FAST NEWS */}
+                            <Link to = "/Joseph-Brian-Balut"
+                                className = "Large-Photo-News" 
+                                style = {{flexWrap: "wrap"}}> 
 
-                                {/**PUT HERE ANYTHING LATEST EXCEPT FAST NEWS */}
+                                <img
+                                    src = {'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg'}
+                                    style = {{width: "100%"}}
+                                />
 
-                                <Link to = "/Joseph-Brian-Balut"
-                                    className = "Large-Photo-News" 
-                                    style = {{flexWrap: "wrap"}}> 
-
-                                    <img
-                                        src = {'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg'}
-                                        style = {{width: "100%"}}
-                                    />
-
-                                    <div className = "Large-News" >
-                                        <div className = "Large-News-Headline">
-                                            <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs</p>
-                                        
-                                            <div className = "Article-Author-Time">
-                                                <p to = "/" > Charlie Kirk | September 11, 2025</p>  
-                                            </div>
-
-                                            <div className = "Sample-Text-Container">
-                                                <hr className = "Vertical-Divider"></hr>
-                                                <div className = "Sample-Text">
-                                                    <p> MGA LARAWAN:  Counting or not counting gang violence? Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
-                                                        Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
-                                                    </p>
-                                                </div>
-                                            </div>
-
+                                <div className = "Large-News" >
+                                    <div className = "Large-News-Headline">
+                                        <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs</p>
+                                    
+                                        <div className = "Article-Author-Time">
+                                            <p to = "/" > Charlie Kirk | September 11, 2025</p>  
                                         </div>
+
+                                        <div className = "Sample-Text-Container">
+                                            <hr className = "Vertical-Divider"></hr>
+                                            <div className = "Sample-Text">
+                                                <p> MGA LARAWAN:  Counting or not counting gang violence? Estudyante mula sa iba't ibang unibersidad na miyembro ng One Taft Alliance ay nagsagawa ng Black Friday Protest sa kahabaan ng Ayala Blvd.,  kahapon, Setyembre 12, 2025.
+                                                    Layunin ng protesta na iparating ang pagkondena ng mga estudyante at kabataan sa nagaganap na korapsyon sa gobyerno at sa mga regresibong patakarang iniimplementa sa iba't-ibang mga unibersidad.
+                                                </p>
+                                            </div>
+                                        </div>
+
                                     </div>
-                            </Link>
+                                </div>
+                        </Link>
                         </div>
                     </div>
 
                 <VerticalFastNews />
             </div>
-            <Link to = "/Photo-Albums" className = "Category"> PHOTO ALBUM REPERTOIRE <span>———{`>`}</span></Link>
+            <Link to = "/Photo-Albums" className = "Category"> OPINION & EDITORIAL <span>———{`>`}</span></Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
                     <hr className = "Vertical-Divider"></hr>
@@ -73,7 +71,7 @@ const SecondFacade = () => {
                     
                     <div className = "Large-News" >
                         <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                            <p><a> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </a></p>
+                            <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
                             <div className = "Article-Author-Time">
                                 <p>Cathlene Torrenueva | September 12, 2025</p>
                             </div>
@@ -94,7 +92,8 @@ const SecondFacade = () => {
                 <div className = "Large-Photo-News" onClick = "#"> 
                     <div className = "Large-News" >
                         <Link to = "/Joseph-Brian-Balut" className = "Large-News-Headline">
-                            <p><a> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </a></p>                            <div className = "Article-Author-Time">
+                            <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
+                            <div className = "Article-Author-Time">
                                 <p>Cathlene Torrenueva | September 12, 2025</p>
                             </div>
 

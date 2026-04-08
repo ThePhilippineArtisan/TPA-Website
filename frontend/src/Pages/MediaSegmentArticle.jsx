@@ -7,7 +7,7 @@ const MediaSegmentArticle = () => {
     return(
         <div className = "Media-Segment-Article-Page">
             <div className = "Media-Segment-Article">
-                <div className = "Media-Segment-Image Media-Segment-Image"
+                <div className = "Media-Segment-Image"
                     style={{ "--bgImage": `url(${"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"})`}} >
                         <img
                             src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"} 
@@ -25,11 +25,13 @@ const MediaSegmentArticle = () => {
                 <div className = "Media-Segment-Article-Below-Photo">
                         <div className = "Author-and-Details" style ={{width: "120dvw"}}>
                             <div>
-                                <h3> <span> PLACEHOLDER FOR </span> Either Title or About the Author/Media Provider </h3> <br></br>
-                                <h5> Written by <span> I could code this so that when it's MM or WW </span></h5>
-                                <h5> Graphics by <span> The other news stories doesn't show up reducing unnecessary page length </span></h5>
+                                
+                                <h3> <span> About the Author </span>  </h3> <br></br>
+                                <h5> This is taken from the bio part of the schema on the staffer table with a <br></br><br></br><span>See More...</span></h5>
                                 <br></br>
-                                <h5> Published on <span>  October 12, 2025 10:11 AM </span></h5> <br></br>
+                                <h5> Published on <span>  October 12, 2025 10:11 AM </span></h5>
+                                <h5> Last Edit on <span>  October 12, 2025 10:11 AM </span></h5> <br></br>
+                                <h5> 1,234 <span>words</span> | 4 <span>min read</span></h5> <br></br>
                                 <hr></hr>
                                 <VerticalFastNews />
                                 <hr></hr><br></br>
