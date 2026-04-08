@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react"
 import { useParams } from "react-router-dom"
-import { supabase } from "../supabaseClient.js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
