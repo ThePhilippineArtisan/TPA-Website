@@ -143,10 +143,11 @@
     border: 5px rgba(4, 113, 255, 0) solid;
     border-radius: 100%;
     width: 15rem;
-    aspect-ratio: 1 / 1;
+    height: 15rem;
+    object-fit: cover;
 }
 
-.Maybe-a-parallax-effect{
+.All-Staffer-About-Page-Section{
     color: white;
     background-color: rgba(4, 48, 0, 0.932);
     background-image: url("/notebook-dark.png");

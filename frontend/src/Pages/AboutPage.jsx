@@ -1,12 +1,14 @@
-import React, {useState, useRef} from "react"
+import React, {useState, useRef, useEffect} from "react"
+import { supabase } from "../supabaseClient.js"
 
 import TPAWTurno from "/TPA-LEFT_BLUE.png"
-import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg";
+import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg"
 
 // import KALYO from 
 // import PHILARTS from 
 // import BROADSHEET from 
-// import NEWSLETTER from 
+// import NEWSLETTER from
+
 import LAMPOON from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
 // import SPORTS
 
@@ -16,6 +18,29 @@ import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
 import "../CSS/AboutPage.css"
 
 const AboutPage = () => {
+    const [staff, setStaff] = useState([]);
+
+    useEffect(() =>{
+        const fetchStaff = async () => {
+            let {data, error} = await supabase // wait first before declaring the function finished loading/getting data
+            .from('staff')
+            .select('staff_first_name, staff_last_name')
+            .eq('staff_isactive', 'TRUE')
+            .neq('staff_first_name', 'The Philippine Artisan')
+
+            if(error){
+                console.log('Error fetching notes: ', error)
+            } else{
+                setStaff(data)
+            }
+        }
+
+        fetchStaff() // call fetchStaffer function before the component loads
+    }, []) // since it's an array, we populate array by how many the staffers are, they get one staffer[#] each. 
+
+
+
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState("next")
 
@@ -114,7 +139,7 @@ const AboutPage = () => {
             </div>
 
             <div className = "Releases-Part">
-                <h1> OUR RELEASES </h1>
+                <h1> OUR LATEST RELEASES </h1>
                 <div className = "Releases-Part-Covers">
                     <div className = "Covers">
                         <img 
@@ -172,42 +197,32 @@ const AboutPage = () => {
 
                 <div className = "Editors">
                     <div className = "Editorial-Board">
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
+                        <div>
+                            <div className = "Editorial-Board-Individual">
+                                <img src = {LAMPOON} />
+                            </div>
+                            <h4> Doortje Igharas </h4>
+                            <h5> Editor-in-Chief </h5>
                         </div>
-
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
-                        </div>
-
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
-                        </div>
-                        
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
-                        </div>
-
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
-                        </div>
-
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
-                        </div>
-
-                        <div className = "Editorial-Board-Individual">
-                            <img src = {LAMPOON} />
-                        </div>
-
                     </div>
                 </div>
             </div>
 
-            <div className = "Maybe-a-parallax-effect">
+            <div className = "All-Staffer-About-Page-Section">
                 <div>
                     MEET TEK!
-                    probably all the teks with their names 
+                    probably all the teks with their names (Tekya Tek something)
+
+                    <div className = "Regular-Staffers">
+                        <h1>Senior Staffers</h1>
+                        {staff.map(staff => (
+                            <div key = {staff.staff_first_name}>
+
+                            </div>
+
+
+                        ))}
+                   </div>
                 </div>
             </div>
 
