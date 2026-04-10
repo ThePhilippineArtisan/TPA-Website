@@ -198,10 +198,12 @@ const AboutPage = () => {
                             .filter(isEdBoard => isEdBoard.is_editorial_board === true)
                             .map(isEdBoard => (
                                 <div key = {isEdBoard.staff_display_name}>
+                                <div style = {{border: "2px whitesmoke solid", borderRadius: "100%"}}>
                                     <div className = "Editorial-Board-Individual">
                                         <img src = {isEdBoard.staff_picture}/>
                                     </div>
-                                    <div>
+                                </div>    
+                                    <div style = {{display: "flex", justifyContent: "center"}}>
                                         <h4> {isEdBoard.staff_display_name} </h4>
                                     </div>
                                 </div>
@@ -218,14 +220,16 @@ const AboutPage = () => {
 
                     <div className = "Regular-Staffers">
                         <h1>Senior Staffers</h1>
-                        {staff
-                        .filter(seniorStaffMember => seniorStaffMember.is_editorial_board === false)
-                        .map(seniorStaffMember => (
-                            <div className = "staffer-names-individual" key = {seniorStaffMember.staff_display_name}>
-                                <h4>{seniorStaffMember.staff_display_name}</h4>
-                            </div>
+                        <div style = {{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", textAlign: "center", justifyContent: "center"}}>
+                            {staff
+                            .filter(seniorStaffMember => seniorStaffMember.is_editorial_board === false)
+                            .map(seniorStaffMember => (
+                                <div className = "staffer-names-individual" key = {seniorStaffMember.staff_display_name}>
+                                    <h4>{seniorStaffMember.staff_display_name}</h4>
+                                </div>
 
-                        ))}
+                            ))}
+                        </div>
                    </div>
                 </div>
             </div>
