@@ -38,6 +38,12 @@ const AboutPage = () => {
         fetchStaff() // call fetchStaffer function before the component loads
     }, []) // since it's an array, we populate array by how many the staffers are, they get one staffer[#] each. 
 
+    const replaceUnderscore = (str) => {
+        if (!str) return "";
+
+        return str.replaceAll("_", " ")
+    }
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState("next")
 
@@ -197,14 +203,15 @@ const AboutPage = () => {
                         {staff
                             .filter(isEdBoard => isEdBoard.is_editorial_board === true)
                             .map(isEdBoard => (
-                                <div key = {isEdBoard.staff_display_name}>
-                                <div style = {{border: "2px whitesmoke solid", borderRadius: "100%"}}>
+                                <div className = "Editorial-Board-Individual-Card" key = {isEdBoard.staff_display_name}>
+                                <div className = "Editorial-Board-Pad-When-Hover" style = {{border: "2px whitesmoke solid", borderRadius: "100%"}}>
                                     <div className = "Editorial-Board-Individual">
                                         <img src = {isEdBoard.staff_picture}/>
                                     </div>
                                 </div>    
-                                    <div style = {{display: "flex", justifyContent: "center"}}>
-                                        <h4> {isEdBoard.staff_display_name} </h4>
+                                    <div style = {{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+                                        <h4> {replaceUnderscore(isEdBoard.staff_display_name)} </h4>
+                                        <h5> {replaceUnderscore(isEdBoard.staff_position)} </h5>
                                     </div>
                                 </div>
                             ))

@@ -114,11 +114,16 @@
     z-index: 5;
 }
 
+.Editors{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 2rem;
+}
+
 .Meet-Our-Editors{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
     padding: 3rem 0rem;
     color: white;
@@ -134,6 +139,14 @@
     gap: 2rem;
 }
 
+.Editorial-Board-Individual-Card:hover{
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+    transform: scale(1.05);
+    z-index: 5;
+
+}
+
 .Editorial-Board-Individual{
     border: 7px rgb(4, 113, 255) solid;
     border-radius: 100%;
@@ -145,6 +158,17 @@
     width: 15rem;
     height: 15rem;
     object-fit: cover;
+}
+
+.Editorial-Board-Individual:hover{
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+    transform: scale(1.1);
+    z-index: 5;
+}
+
+.Editorial-Board-Pad-When-Hover:hover{
+    margin-bottom: 0.75rem;
 }
 
 .All-Staffer-About-Page-Section{
