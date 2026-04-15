@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react"
-import { supabase } from "../supabaseClient.js"
+import { supabase } from "../supabaseClient"
 
 import TPAWTurno from "/TPA-LEFT_BLUE.png"
 import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg"
@@ -24,9 +24,10 @@ const AboutPage = () => {
         const fetchStaff = async () => {
             let {data, error} = await supabase // wait first before declaring the function finished loading/getting data
             .from('staff')
-            .select('staff_display_name, staff_position, is_editorial_board, staff_picture')
+            .select('staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
             .eq('staff_isactive', true)
             .not('staff_position', 'is', null)
+            .order('staff_order', {ascending: true})
 
             if(error){
                 console.log('Error fetching notes: ', error)
@@ -206,12 +207,15 @@ const AboutPage = () => {
                                 <div className = "Editorial-Board-Individual-Card" key = {isEdBoard.staff_display_name}>
                                 <div className = "Editorial-Board-Pad-When-Hover" style = {{border: "2px whitesmoke solid", borderRadius: "100%"}}>
                                     <div className = "Editorial-Board-Individual">
-                                        <img src = {isEdBoard.staff_picture}/>
+                                        <img 
+                                            src = {isEdBoard.staff_picture}
+                                            loading="lazy"
+                                        />
                                     </div>
                                 </div>    
                                     <div style = {{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
-                                        <h4> {replaceUnderscore(isEdBoard.staff_display_name)} </h4>
-                                        <h5> {replaceUnderscore(isEdBoard.staff_position)} </h5>
+                                        <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
+                                        <h5 style={{color: 'whitesmoke'}} > {replaceUnderscore(isEdBoard.staff_position)} </h5>
                                     </div>
                                 </div>
                             ))
@@ -227,12 +231,28 @@ const AboutPage = () => {
 
                     <div className = "Regular-Staffers">
                         <h1>Senior Staffers</h1>
-                        <div style = {{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", textAlign: "center", justifyContent: "center"}}>
+                        <div className = "Regular-Staffers-Whole">
                             {staff
-                            .filter(seniorStaffMember => seniorStaffMember.is_editorial_board === false)
+                            .filter(seniorStaffMember => seniorStaffMember.is_editorial_board === false && seniorStaffMember.staff_order === 12 || seniorStaffMember.staff_order === 13 || seniorStaffMember.staff_order === 14 || seniorStaffMember.staff_order === 15 || seniorStaffMember.staff_order === 16)
                             .map(seniorStaffMember => (
-                                <div className = "staffer-names-individual" key = {seniorStaffMember.staff_display_name}>
-                                    <h4>{seniorStaffMember.staff_display_name}</h4>
+                                <div className = "Staffer-Names-Individual" key = {seniorStaffMember.staff_display_name}>
+                                    <h3>{seniorStaffMember.staff_first_name} <br></br> {seniorStaffMember.staff_last_name}</h3>
+                                    <p> {replaceUnderscore(seniorStaffMember.staff_position)} </p>
+                                </div>
+
+                            ))}
+                        </div>
+                   </div>
+                   
+                    <div className = "Regular-Staffers">
+                        <h1>Junior Staffers</h1>
+                        <div className = "Regular-Staffers-Whole">
+                            {staff
+                            .filter(juniorStaffMember => juniorStaffMember.is_editorial_board === false  && juniorStaffMember.staff_order === 17 || juniorStaffMember.staff_order === 18 || juniorStaffMember.staff_order === 19 || juniorStaffMember.staff_order === 20 || juniorStaffMember.staff_order === 21)
+                            .map(juniorStaffMember => (
+                                <div className = "Staffer-Names-Individual" key = {juniorStaffMember.staff_display_name}>
+                                    <h3>{juniorStaffMember.staff_first_name} <br></br> {juniorStaffMember.staff_last_name}</h3>
+                                    <p> {replaceUnderscore(juniorStaffMember.staff_position)} </p>
                                 </div>
 
                             ))}
