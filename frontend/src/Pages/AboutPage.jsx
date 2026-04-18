@@ -24,7 +24,7 @@ const AboutPage = () => {
         const fetchStaff = async () => {
             let {data, error} = await supabase // wait first before declaring the function finished loading/getting data
             .from('staff')
-            .select('staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
+            .select('staff_first_name, staff_last_name, staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
             .eq('staff_isactive', true)
             .not('staff_position', 'is', null)
             .order('staff_order', {ascending: true})
@@ -213,9 +213,9 @@ const AboutPage = () => {
                                         />
                                     </div>
                                 </div>    
-                                    <div style = {{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+                                    <div style = {{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", lineHeight: "1.1"}} >
                                         <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
-                                        <h5 style={{color: 'whitesmoke'}} > {replaceUnderscore(isEdBoard.staff_position)} </h5>
+                                        <p style={{color: 'whitesmoke', margin:"0.25rem"}} > {replaceUnderscore(isEdBoard.staff_position)} </p>
                                     </div>
                                 </div>
                             ))
