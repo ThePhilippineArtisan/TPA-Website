@@ -30,14 +30,14 @@ const AboutPage = () => {
             .order('staff_order', {ascending: true})
 
             if(error){
-                console.log('Error fetching notes: ', error)
+                console.log('Error fetching staff: ', error)
             } else{
                 setStaff(data)
             }
         }
 
-        fetchStaff() // call fetchStaffer function before the component loads
-    }, []) // since it's an array, we populate array by how many the staffers are, they get one staffer[#] each. 
+        fetchStaff() // everytime you initiate fetchStaff, you call it immediately after before component can be seen
+    }, [])
 
     const replaceUnderscore = (str) => {
         if (!str) return "";
