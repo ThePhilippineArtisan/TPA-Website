@@ -16,7 +16,7 @@ import Author from "../assets/Miniature_Icon_Version/Author.svg"
 import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
 
 import "../CSS/CreateArticlePage.css"
-import SelectionModal from "../Modals/SelectStaffersModal.jsx"
+import StaffModal from "../Modals/SelectStaffersModal.jsx"
 
 const CreateArticlePage = () => {
 
@@ -27,7 +27,7 @@ const CreateArticlePage = () => {
             let {data, error} = await supabase
             .from('staff')
             .select('staff_display_name, staff_position, staff_order')
-            .eq('staff_is_active', true)
+            .eq('staff_isactive', true)
             .order('staff_order', {ascending: true})
 
             if(error){
@@ -60,6 +60,9 @@ const CreateArticlePage = () => {
             // prev is the previous data it has (currently ""), then set ...prev to data (which holds newArticleHeadlineData)
         }
     }
+
+    const [isOpen, setIsOpen] = useState(false);
+
 
 
     return(
@@ -116,11 +119,15 @@ const CreateArticlePage = () => {
 
                         </label>
 
-
                         <img 
                             src = {Author}
                             alt = "Select Author/s"
+                            onClick = {() => 
+                                setIsOpen(true)
+                            }
                         />
+
+                        <StaffModal isOpen={isOpen} onClose={() => setIsOpen(false)} staffers = {staff}></StaffModal>
 
                         <img 
                             src = {MediaProvider}
@@ -147,6 +154,7 @@ const CreateArticlePage = () => {
                         </div>          
                     </div>
                     
+                    <button type = "submit" onClick = {addNewArticle}>Schedule Post</button>
                     <button type = "submit" onClick = {addNewArticle}>Post</button>
 
                     </div>

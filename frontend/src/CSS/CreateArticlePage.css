@@ -112,15 +112,6 @@ select:hover{
     justify-content: center;
 }
 
-.Dialog-Box{
-    display: flex;
-    justify-content: center;
-    align-self: center;
-
-    flex-direction: column;
-
-    gap: 1rem;
-}
 
 .Staff-Dialog{
     position: fixed;
