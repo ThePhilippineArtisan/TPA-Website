@@ -21,6 +21,9 @@ import StaffModal from "../Modals/SelectStaffersModal.jsx"
 const CreateArticlePage = () => {
 
     const [staff, setStaff] = useState([]);
+    const [selectedAuthors, setSelectedAuthors] = useState([])
+    const [selectedMediaProviders, setSelectedMediaProviders] = useState([])
+    
 
     useEffect(() => {
         const fetchStaff = async () => {
@@ -127,11 +130,30 @@ const CreateArticlePage = () => {
                             }
                         />
 
-                        <StaffModal isOpen={isOpen} onClose={() => setIsOpen(false)} staffers = {staff}></StaffModal>
+                        <StaffModal 
+                            isOpen={isOpen} 
+                            onClose={() => setIsOpen(false)} 
+                            staffers = {staff} 
+                            onConfirm = {(selectedStaffers) => {
+                                setSelectedAuthors(selectedStaffers)
+                            }}
+                        />
 
                         <img 
                             src = {MediaProvider}
                             alt = "Select Media Provider/s"
+                            onClick = {() => 
+                                setIsOpen(true)
+                            }
+                        />
+
+                        <StaffModal 
+                            isOpen={isOpen} 
+                            onClose={() => setIsOpen(false)} 
+                            staffers = {staff} 
+                            onConfirm = {(selectedStaffers) => {
+                                setSelectedMediaProviders(selectedStaffers)
+                            }}
                         />
 
                     </div>
