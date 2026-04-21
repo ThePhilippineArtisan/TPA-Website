@@ -19,11 +19,8 @@ import "../CSS/CreateArticlePage.css"
 import StaffModal from "../Modals/SelectStaffersModal.jsx"
 
 const CreateArticlePage = () => {
-
+    // People states
     const [staff, setStaff] = useState([]);
-    const [selectedAuthors, setSelectedAuthors] = useState([])
-    const [selectedMediaProviders, setSelectedMediaProviders] = useState([])
-    
 
     useEffect(() => {
         const fetchStaff = async () => {
@@ -43,30 +40,93 @@ const CreateArticlePage = () => {
         fetchStaff() // everytime you initiate fetchStaff, you call it immediately after before component can be seen
     }, [])
 
-    const [newArticleHeadline, setNewArticleHeadline] = useState("")
+    const [selectedAuthors, setSelectedAuthors] = useState([])
+    const [selectedMediaProviders, setSelectedMediaProviders] = useState([])
+    
+    const [headline, setHeadline] = useState("")
+    const [body, setBody] = useState("")
 
-    const addNewArticle = async () => {
-        const newArticleHeadlineData = {
-            name: newArticleHeadline,
-            isCompleted: false
+    const [mediaImagePhoto, setMediaImagePhoto] = useState([])
+
+    // Modal states
+    const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false)
+    const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
+
+
+    const slugify = str => 
+        str.toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+
+    const addNewArticle = async(isPublishedStatus) => {
+        if(!headline){
+            alert("Please enter a headline before submitting.")
+            return
         }
 
-        let {data, error} = await supabase
+        const generatedSlug = slugify(headline)
+
+        const newArticlePayloads = {
+            article_headline: headline,
+            article_body: body,
+            slug_headline: generatedSlug,
+            is_published: isPublishedStatus
+        }
+
+        let {data: articleData, error: articleError} = await supabase
         .from('article')
-        .insert([newArticleHeadlineData])
+        .insert([newArticlePayloads])
+        .select()
         .single()
 
-        if(error){
-            console.log('Error creating new article headline: ', error)
-        } else{
-            setNewArticleHeadline((prev), {...prev, data}) 
-            // prev is the previous data it has (currently ""), then set ...prev to data (which holds newArticleHeadlineData)
+        if(articleError){
+            console.log('Error creating new article: ', articleError)
+            alert(articleError)
+            return
         }
+
+        // Inserting in article_staff
+        const newArticleId = articleData.article_id
+
+        const authorPayloads = selectedAuthors.map(author => ({
+            article_id: newArticleId,
+            staff_id: author.staff_id,
+            contribution_as: 'Author'
+        }))
+
+        const mediaPayloads = selectedMediaProviders.map(media => ({
+            article_id: newArticleId,
+            staff_id: media.staff_id,
+            contribution_as: 'Media_Provider'
+        }))
+
+        const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
+    
+        if(allStaffPayLoads.length > 0) {
+            let {errror: staffError} = await supabase
+            .from('article_staff')
+            .insert(allStaffPayloads)
+
+            if (staffError) {
+                console.log('Error linking staff: ', staffError)
+                alert(staffError)
+                return
+            }
+        }
+
+        const mediaImagePhotoPayload = selectedMediaProviders.map(image => ({
+            article
+        }))
+
+        alert("Article saved successfully!")
+
+        setHeadline("")
+        setBody("")
+        setSelectedAuthor([])
+        setSelectedMediaProviders([])
+        document.getElementById("Body-Text").innerHTML = ""
     }
-
-    const [isOpen, setIsOpen] = useState(false);
-
-
 
     return(
         <div className = "Entire-Page">
@@ -126,16 +186,19 @@ const CreateArticlePage = () => {
                             src = {Author}
                             alt = "Select Author/s"
                             onClick = {() => 
-                                setIsOpen(true)
+                                setIsAuthorModalOpen(true)
                             }
+
+                            style = {{cursor: "pointer"}}
                         />
 
                         <StaffModal 
-                            isOpen={isOpen} 
-                            onClose={() => setIsOpen(false)} 
+                            isOpen={isAuthorModalOpen} 
+                            onClose={() => setIsAuthorModalOpen(false)} 
                             staffers = {staff} 
                             onConfirm = {(selectedStaffers) => {
                                 setSelectedAuthors(selectedStaffers)
+                                setIsAuthorModalOpen(false)
                             }}
                         />
 
@@ -143,16 +206,19 @@ const CreateArticlePage = () => {
                             src = {MediaProvider}
                             alt = "Select Media Provider/s"
                             onClick = {() => 
-                                setIsOpen(true)
+                                setIsMediaModalOpen(true)
                             }
+
+                            style = {{cursor: "pointer"}}
                         />
 
                         <StaffModal 
-                            isOpen={isOpen} 
-                            onClose={() => setIsOpen(false)} 
+                            isOpen={isMediaModalOpen} 
+                            onClose={() => setIsMediaModalOpen(false)} 
                             staffers = {staff} 
                             onConfirm = {(selectedStaffers) => {
                                 setSelectedMediaProviders(selectedStaffers)
+                                setIsMediaModalOpen(false)
                             }}
                         />
 
@@ -164,6 +230,7 @@ const CreateArticlePage = () => {
                             placeholder = "Enter your new article headline here."
                             id = "Headline-Text"
                             className = "Headline-Input"
+                            value = {headline}
                             onChange={(typing) => setNewArticle(typing.target.value)}
                         />
 
@@ -172,12 +239,14 @@ const CreateArticlePage = () => {
                             suppressContentEditableWarning = {true}
                             id = "Body-Text"
                             className = "Headline-Input"
+                            onChange={(typing) => setBody(typing.currentTarget.innerHTML)}
                             >
                         </div>          
                     </div>
                     
-                    <button type = "submit" onClick = {addNewArticle}>Schedule Post</button>
-                    <button type = "submit" onClick = {addNewArticle}>Post</button>
+                    <button type = "submit" onClick = {() => addNewArticle(false)}>Save as Draft</button>
+                    <button type = "submit" onClick = {() => addNewArticle(true)}>Post</button>
+                    <button type = "submit">Schedule Post</button>
 
                     </div>
 
