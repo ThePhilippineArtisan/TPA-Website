@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect} from "react"
+import { useState, useEffect} from "react"
+import { supabase } from "../supabaseClient"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
@@ -15,333 +16,247 @@ import Author from "../assets/Miniature_Icon_Version/Author.svg"
 import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
 
 import "../CSS/CreateArticlePage.css"
+import StaffModal from "../Modals/SelectStaffersModal.jsx"
 
 const CreateArticlePage = () => {
-
-    const [submitArticle, setSubmitArticle] = useState({
-        articleHeadline: "",
-        articleBody: "",
-        articleType: "",
-        articleAuthors: ["The Philippine Artisan"],
-        articleMediaProviders: ["The Philippine Artisan"],
-        articleFileUpload: [],
-    })
+    // People states
+    const [staff, setStaff] = useState([]);
 
     useEffect(() => {
-        AuthorList();       // fetch once when component loads
-        MediaProviderList(); 
-    }, []);
+        const fetchStaff = async () => {
+            let {data, error} = await supabase
+            .from('staff')
+            .select('staff_display_name, staff_position, staff_order')
+            .eq('staff_isactive', true)
+            .order('staff_order', {ascending: true})
 
-    const onSubmit = async(e) => {
-        e.preventDefault();
-        
-        if(!submitArticle.articleHeadline && !submitArticle.articleBody){ 
-            alert("Hedline or body is required.")
-            return;
-        }
-        const formData = new FormData()
-
-        formData.append("articleHeadline", submitArticle.articleHeadline)
-        formData.append("articleBody", submitArticle.articleBody)
-        formData.append("articleType", submitArticle.articleType)
-
-        formData.append("articleAuthors", JSON.stringify(submitArticle.articleAuthors))
-        formData.append("articleMediaProviders", JSON.stringify(submitArticle.articleMediaProviders))
-        for (let i = 0; i < submitArticle.articleFileUpload.length; i++) {
-            formData.append("articleFileUpload", submitArticle.articleFileUpload[i])
-        }
-
-        try {
-            const res = await fetch("http://localhost:5000/article", // take this API
-            {
-            method: "POST",
-            body: formData,
-            });
-
-            const data = await res.json();
-            console.log("Article saved:", data);
-            alert("Article created successfully!");
-            return
-            } catch (error) {
-            console.error("Error creating article:", error);
-            alert("Failed to create article.");
+            if(error){
+                console.log('Error fetching staffers: ', error)
+            } else{
+                setStaff(data)
             }
-            return;
-        };
+        }
 
+        fetchStaff() // everytime you initiate fetchStaff, you call it immediately after before component can be seen
+    }, [])
+
+    const [selectedAuthors, setSelectedAuthors] = useState([])
+    const [selectedMediaProviders, setSelectedMediaProviders] = useState([])
+    
     const [headline, setHeadline] = useState("")
-    const [bodyText, setBodyText] = useState("")
-    const [articleType, setArticleType] = useState("")
-    const [mediaFiles, setMediaFiles] = useState([])
+    const [body, setBody] = useState("")
 
-    const [allActiveStaff, setAllActiveStaff] = useState([]) 
-    // array because we're getting multiple staffers 
+    const [mediaImagePhoto, setMediaImagePhoto] = useState([])
+
+    // Modal states
+    const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false)
+    const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
+
+
+    const slugify = str => 
+        str.toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+
+    const addNewArticle = async(isPublishedStatus) => {
+        if(!headline){
+            alert("Please enter a headline before submitting.")
+            return
+        }
+
+        const generatedSlug = slugify(headline)
+
+        const newArticlePayloads = {
+            article_headline: headline,
+            article_body: body,
+            slug_headline: generatedSlug,
+            is_published: isPublishedStatus
+        }
+
+        let {data: articleData, error: articleError} = await supabase
+        .from('article')
+        .insert([newArticlePayloads])
+        .select()
+        .single()
+
+        if(articleError){
+            console.log('Error creating new article: ', articleError)
+            alert(articleError)
+            return
+        }
+
+        // Inserting in article_staff
+        const newArticleId = articleData.article_id
+
+        const authorPayloads = selectedAuthors.map(author => ({
+            article_id: newArticleId,
+            staff_id: author.staff_id,
+            contribution_as: 'Author'
+        }))
+
+        const mediaPayloads = selectedMediaProviders.map(media => ({
+            article_id: newArticleId,
+            staff_id: media.staff_id,
+            contribution_as: 'Media_Provider'
+        }))
+
+        const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
     
-    const authorDialogRef = useRef(null)
-    const openAuthorDialog = () => authorDialogRef.current.showModal()
-    const closeAuthorDialog = () => authorDialogRef.current.close()
+        if(allStaffPayLoads.length > 0) {
+            let {errror: staffError} = await supabase
+            .from('article_staff')
+            .insert(allStaffPayloads)
 
-    const [selectedAuthor, setSelectedAuthor] = useState([])
-    
-    const toggleAuthor = (staffId) => {
-        setSelectedAuthor((prevAuthors) => {
-            const exists = prevAuthors.some(author => author.id === staffId)
-
-            if(exists) // if you deselect, do this
-                return prevAuthors.filter(author => author.id !== staffId)
-            
-            // if not selected, and you want  to select it, do this
-                return [
-                    ...prevAuthors, // add
-                    { id: staffId, contributionType: "writer"}
-                ] // return the latest thing u selected with its id
-        }) 
-    }
-
-    const contributionType = (staffId, type) => {
-        setSelectedAuthor(prevAuthors => 
-            prevAuthors.map(author => {
-                if (author.id === staffId) {
-                    return { ...author, contributionType: type}
-                }
-                else return author
+            if (staffError) {
+                console.log('Error linking staff: ', staffError)
+                alert(staffError)
+                return
             }
-            )
-        )
-    }
-    // prev.map(...) goes through each object a in the previous selectedAuthor array.
-    
-    
-    const [staffSearch, setStaffSearch] = useState("")
+        }
 
-    const filteredStaffer = allActiveStaff.filter(staff =>
-        staff.staff_display_name
-        .toLowerCase()
-        .includes(staffSearch.toLowerCase())
-    )
+        const mediaImagePhotoPayload = selectedMediaProviders.map(image => ({
+            article
+        }))
 
-    const [selectedMediaProvider, setSelectedMediaProvider] = useState([])
-    
-    const mediaProviderDialogRef = useRef(null)
-    const openMediaProviderDialog = () => mediaProviderDialogRef.current.showModal()
-    const closeMediaProviderDialog = () => mediaProviderDialogRef.current.close()
+        alert("Article saved successfully!")
 
-    const AuthorList = async () => {
-        try{
-        const response = await fetch("http://localhost:5000/active-staff")
-        const activeStaffJSON = await response.json() // when fetching list, put it in json
-        setAllActiveStaff(activeStaffJSON);
-    } catch (error){
-        console.error(error)
-    }}
-
-    const MediaProviderList = async () => {
-        try{
-        const response = await fetch("http://localhost:5000/active-staff")
-        const activeStaffJSON = await response.json() // when fetching list, put it in json
-        setAllActiveStaff(activeStaffJSON);
-    } catch (error){
-        console.error(error)
-    }}    
-
-    const toggleMediaProvider = (staffId) => {
-        setSelectedMediaProvider(prev => {
-            const exists = prev.some(a => a.id === staffId) //.some means finding anything that fits the condition
-            
-            if(exists)
-                return prev.filter(a => a.id !== staffId)
-            return[...prev,
-                {id: staffId}
-            ]
-        })
+        setHeadline("")
+        setBody("")
+        setSelectedAuthor([])
+        setSelectedMediaProviders([])
+        document.getElementById("Body-Text").innerHTML = ""
     }
 
     return(
         <div className = "Entire-Page">
-        <form onSubmit = {onSubmit}>
-            <div className = "Editor-Rectangle">
+            <>
+                <div className = "Editor-Rectangle">
 
-                <div className = "Text-Formatting-Section">
-                    <img src = { BOLD }/>
-                    <img src = { ITALIC }/>   
-                    <img src = { HIGHLIGHT }/>
-                    <img src = { REFERENCE } />
-                    <img src = { SUBSCRIPT }/>  
-                    <img src = { SUPERSCRIPT }/> 
-                    <img src = { BULLET }/>  
-                    <img src = { NUMBERED }/>  
-                    <img src = {EMDASH} />
-                    
-                    <select name = "Article-Type" id = "Article-Type" value = {submitArticle.articleType} onChange = {(e) => setSubmitArticle({...submitArticle, articleType: e.target.value})}>
+                    <div className = "Text-Formatting-Section">
+                        <img src = { BOLD }/>
+                        <img src = { ITALIC }/>   
+                        <img src = { HIGHLIGHT }/>
+                        <img src = { REFERENCE } />
+                        <img src = { SUBSCRIPT }/>  
+                        <img src = { SUPERSCRIPT }/> 
+                        <img src = { BULLET }/>  
+                        <img src = { NUMBERED }/>  
+                        <img src = {EMDASH} />
                         
-                        <option value = "LOOK"> LOOK </option>
-                        <option value = "ICYMI"> ICYMI </option>
-                        <option value = "ANNOUNCEMENT"> ANNOUNCEMENT </option>
-                        <option value = "ADVISORY"> ADVISORY </option>    
-                        <option value = "ALERT"> ALERT </option>
-                        <option value = "JUST_IN"> JUST IN </option>
-                        <option value = "UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
-                        <option value = "NATIONAL_NEWS"> NATIONAL NEWS</option>
-                        <option value = "INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
-                        <option value = "DEVELOPING_STORY"> DEVELOPING STORY </option>
+                        <select name = "Article-Type" id = "Article-Type">
+                            <option value = "LOOK"> LOOK </option>
+                            <option value = "ICYMI"> ICYMI </option>
+                            <option value = "ANNOUNCEMENT"> ANNOUNCEMENT </option>
+                            <option value = "ADVISORY"> ADVISORY </option>    
+                            <option value = "ALERT"> ALERT </option>
+                            <option value = "JUST_IN"> JUST IN </option>
+                            <option value = "UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
+                            <option value = "NATIONAL_NEWS"> NATIONAL NEWS</option>
+                            <option value = "INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
+                            <option value = "DEVELOPING_STORY"> DEVELOPING STORY </option>
 
-                        <option value = "NULL"> ================== </option>
+                            <option value = "NULL"> ================== </option>
 
-                        <option value = "LOOK"> Makata Mondays </option>
-                        <option value = "LOOK"> Tek Tuesday </option>
-                        <option value = "ICYMI"> Wankjob Wednesday </option>
-                        <option value = "ANNOUNCEMENT"> Tala Thursday</option>
-                        <option value = "ADVISORY"> Features Friday </option>    
-                        <option value = "ALERT"> Streaming Saturday </option>
-                        <option value = "JUST_IN"> Sports Sunday </option>
+                            <option value = "LOOK"> Makata Mondays </option>
+                            <option value = "LOOK"> Tek Tuesday </option>
+                            <option value = "ICYMI"> Wankjob Wednesday </option>
+                            <option value = "ANNOUNCEMENT"> Tala Thursday</option>
+                            <option value = "ADVISORY"> Features Friday </option>    
+                            <option value = "ALERT"> Streaming Saturday </option>
+                            <option value = "JUST_IN"> Sports Sunday </option>
+                        </select> 
 
-                        
-                    </select> 
+                        <label htmlFor = "file-upload">
+                            <img 
+                                src = {ATTACH} 
+                                alt = "Upload" 
+                                style = {{cursor: "pointer" }}
+                            />
 
-                    <label htmlFor = "file-upload">
+                            <input
+                                id = "file-upload"
+                                type = "file" 
+                                style = {{display: "none"}}
+                            />
+
+                        </label>
+
                         <img 
-                            src = {ATTACH} 
-                            alt = "Upload" 
-                            style = {{cursor: "pointer" }}
+                            src = {Author}
+                            alt = "Select Author/s"
+                            onClick = {() => 
+                                setIsAuthorModalOpen(true)
+                            }
+
+                            style = {{cursor: "pointer"}}
                         />
 
+                        <StaffModal 
+                            isOpen={isAuthorModalOpen} 
+                            onClose={() => setIsAuthorModalOpen(false)} 
+                            staffers = {staff} 
+                            onConfirm = {(selectedStaffers) => {
+                                setSelectedAuthors(selectedStaffers)
+                                setIsAuthorModalOpen(false)
+                            }}
+                        />
+
+                        <img 
+                            src = {MediaProvider}
+                            alt = "Select Media Provider/s"
+                            onClick = {() => 
+                                setIsMediaModalOpen(true)
+                            }
+
+                            style = {{cursor: "pointer"}}
+                        />
+
+                        <StaffModal 
+                            isOpen={isMediaModalOpen} 
+                            onClose={() => setIsMediaModalOpen(false)} 
+                            staffers = {staff} 
+                            onConfirm = {(selectedStaffers) => {
+                                setSelectedMediaProviders(selectedStaffers)
+                                setIsMediaModalOpen(false)
+                            }}
+                        />
+
+                    </div>
+
+                    <div className = "Text-Area">
                         <input
-                            id = "file-upload"
-                            type = "file" 
-                            // multiple
-                            style = {{display: "none"}}
-
-                            onChange = {(e) => setSubmitArticle({...submitArticle, articleFileUpload: e.target.files})}
+                            type = "text"
+                            placeholder = "Enter your new article headline here."
+                            id = "Headline-Text"
+                            className = "Headline-Input"
+                            value = {headline}
+                            onChange={(typing) => setNewArticle(typing.target.value)}
                         />
 
-                    </label>
+                        <div
+                            contentEditable
+                            suppressContentEditableWarning = {true}
+                            id = "Body-Text"
+                            className = "Headline-Input"
+                            onChange={(typing) => setBody(typing.currentTarget.innerHTML)}
+                            >
+                        </div>          
+                    </div>
+                    
+                    <button type = "submit" onClick = {() => addNewArticle(false)}>Save as Draft</button>
+                    <button type = "submit" onClick = {() => addNewArticle(true)}>Post</button>
+                    <button type = "submit">Schedule Post</button>
 
+                    </div>
 
-                    <img 
-                        src = {Author}
-                        alt = "Select Author/s"
-                        onClick = {openAuthorDialog}
-                    />
-
-                    <img 
-                        src = {MediaProvider}
-                        alt = "Select Media Provider/s"
-                        onClick = {openMediaProviderDialog}
-                    />
-
-                </div>
-
-                    <dialog ref = {authorDialogRef} className = "Staff-Dialog"> 
-                        <div className = "Dialog-Box">
-                            <h1> Select Author/s </h1>
-                            <div className = "Staffer-Box">
-                                <div className="Search-Staff">
-                                <input 
-                                    type = "Search" 
-                                    placeholder = "Search author/s here..."
-                                    onChange = {(e) => setStaffSearch(e.target.value)}
-                                    ></input>
-                                </div>
-                                <div className = "Staffer-List">
-                                {filteredStaffer.map((staff) => (
-                                    <label key = {staff.staff_id} className = "Staff-Item">
-                                        <input
-                                            style = {{cursor: "pointer"}}
-                                            type="checkbox"
-                                            checked={selectedAuthor.includes(staff.staff_id)}
-                                            onChange={() => toggleAuthor(staff.staff_id)}
-                                        />
-                                    <div className = "Staff-Name-Container"> <strong id = "Staff-Name">{staff.staff_display_name} </strong> </div>
-                                    </label>
-                                ))}
-                                </div>
-                            </div>
-                        </div>
-                    <button onClick = {closeAuthorDialog}> Done </button>
-                    </dialog>
-
-                    <dialog ref = {mediaProviderDialogRef} className = "Staff-Dialog"> 
-                        <div className = "Dialog-Box">
-                            <h1> Select Media Provider/s </h1>
-                            <div className = "Staffer-Box">
-                                <div className="Search-Staff">
-                                <input 
-                                    type = "Search" 
-                                    placeholder = "Search author/s here..."
-                                    onChange = {(e) => setStaffSearch(e.target.value)}
-                                    ></input>
-
-                                </div>
-                                <div className = "Staffer-List">
-                                    {filteredStaffer.map((staff) => {
-                                        
-                                        const selectedAuthorObj = selectedAuthor.find(a => a.id === staff.staff_id);
-
-                                        return (
-                                            <label key={staff.staff_id} className="Staff-Item">
-                                                <input
-                                                    style={{ cursor: "pointer" }}
-                                                    type="checkbox"
-                                                    checked={selectedMediaProvider.some(a => a.id === staff.staff_id)}
-                                                    onChange={() => toggleMediaProvider(staff.staff_id)}
-                                                />
-
-                                                <div className="Staff-Name-Container">
-                                                    <strong id="Staff-Name">{staff.staff_display_name}</strong>
-
-                                                    {selectedAuthorObj && (
-                                                        <select
-                                                            name="Author-Type"
-                                                            value={selectedAuthorObj.contributionType}
-                                                            onChange={(e) =>
-                                                                contributionType(staff.staff_id, e.target.value)
-                                                            }
-                                                        >
-                                                            <option value = "Writer">Writer</option>
-                                                            <option value="Broadcaster">Broadcaster</option>
-                                                        </select>
-                                                    )}
-                                                </div>
-
-                                            </label>
-                                        );
-                                    })}                                
-                                </div>
-                            </div>
-                        </div>
-                    <button onClick = {closeMediaProviderDialog}> Done </button>
-                    </dialog>
-                </div>
-
-                <div className = "Text-Area">
-                    <input
-                        type = "text"
-                        placeholder = "Enter your new article headline here."
-                        id = "Headline-Text"
-                        className = "Headline-Input"
-                        value = {submitArticle.articleHeadline}
-                        onChange = {(e) => setSubmitArticle({...submitArticle, articleHeadline: e.target.value})} // take the value of the thing inside the input, changes setHeadline state
-                    />
-
-                    <div
-                        contentEditable
-                        suppressContentEditableWarning = {true}
-                        id = "Body-Text"
-                        className = "Headline-Input"
-                        value = {submitArticle.articleBody}
-                        onInput = {(e) => setSubmitArticle({...submitArticle, articleBody: e.target.innerText})} // take the value to be as setBodyText
-                        >
-                    </div>          
-                </div>
-                
-                <button type = "submit">Post</button>
-
-        </form>
+                </>
+            
             <div className = "Preview-Section">
                 <h1> Article Preview </h1>
             </div>
         </div>
-)
+    )
 }
 
 export default CreateArticlePage;
