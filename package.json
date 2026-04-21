@@ -18,8 +18,5 @@
     "url": "https://github.com/ThePhilippineArtisan/TPA-Website/issues"
   },
   "homepage": "https://github.com/ThePhilippineArtisan/TPA-Website#readme",
-  "description": "",
-  "dependencies": {
-    "react-router-dom": "^7.6.3"
-  }
+  "description": ""
 }
