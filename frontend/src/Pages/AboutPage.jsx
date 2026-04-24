@@ -1,54 +1,51 @@
-import React, {useState, useRef, useEffect} from "react"
-import { supabase } from "../supabaseClient"
+import React, { useState, useRef, useEffect } from "react";
+import { supabase } from "../supabaseClient";
 
-import TPAWTurno from "/TPA-LEFT_BLUE.png"
-import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg"
+import TPAWTurno from "/TPA-LEFT_BLUE.png";
+import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg";
 
 // import KALYO from 
 // import PHILARTS from 
 // import BROADSHEET from 
 // import NEWSLETTER from
 
-import LAMPOON from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
+import LAMPOON from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png";
 // import SPORTS
 
-import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
-import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
+import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg";
+import NextSlide from "../assets/Miniature_Icon_Version/Next.svg";
 
-import "../CSS/AboutPage.css"
+import "../CSS/AboutPage.css";
 
 const AboutPage = () => {
     const [staff, setStaff] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [direction, setDirection] = useState("next");
+    const slideRef = useRef(null);
 
-    useEffect(() =>{
+    useEffect(() => {
         const fetchStaff = async () => {
-            let {data, error} = await supabase // wait first before declaring the function finished loading/getting data
-            .from('staff')
-            .select('staff_first_name, staff_last_name, staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
-            .eq('staff_isactive', true)
-            .not('staff_position', 'is', null)
-            .order('staff_order', {ascending: true})
+            let { data, error } = await supabase
+                .from('staff')
+                .select('staff_id, staff_first_name, staff_last_name, staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
+                .eq('staff_isactive', true)
+                .not('staff_position', 'is', null)
+                .order('staff_order', { ascending: true });
 
-            if(error){
-                console.log('Error fetching staff: ', error)
-            } else{
-                setStaff(data)
+            if (error) {
+                console.log('Error fetching staff: ', error);
+            } else {
+                setStaff(data);
             }
-        }
+        };
 
-        fetchStaff() // everytime you initiate fetchStaff, you call it immediately after before component can be seen
-    }, [])
+        fetchStaff();
+    }, []);
 
     const replaceUnderscore = (str) => {
         if (!str) return "";
-
-        return str.replaceAll("_", " ")
-    }
-
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [direction, setDirection] = useState("next")
-
-    const slideRef = useRef(null);
+        return str.replaceAll("_", " ");
+    };
 
     const slides = [
         {
@@ -64,7 +61,6 @@ const AboutPage = () => {
             src: TPAWTurno,
             topText: "PREAMBLE",
             li1: "We, the Artisans, imploring the aid of the Eternal Father, in order to build a just publication which shall contribute to the development of the journalistic skills of the students of Technological University of the Philippines Manila, to uphold justice, to promote freedom of expression, to expose the truth accurately and without ambiguity, to immortalize the importance of campus journalism and to develop an atmosphere of brotherhood, unity, workmanship, honesty, and patience, do ordain and promulgate this Constitution",
-
         },
         {
             id: 3,
@@ -80,7 +76,7 @@ const AboutPage = () => {
         },
         {
             id: 5,
-            src: TPACircleLogo, 
+            src: TPACircleLogo,
             topText: "Symbolism of the Clutch",
             li1: "The COLOR BLUE symbolizes the wisdom, peace, and truth",
             li2: "The LEFT FIST symbolizes the publication's ability to inform and educate TUP students through responsible journalism.",
@@ -88,41 +84,45 @@ const AboutPage = () => {
         },
         {
             id: 6,
-            src: TPAWTurno, // Map
+            src: TPAWTurno,
             topText: "WHERE WE'RE LOCATED",
             li1: "The Philippine Artisan Manila's headquarters is located at the Ground Floor, College of Liberal Arts - College of Science building at the Technological University of the Philippines Main Campus, Ayala Boulevard, Ermita, Manila."
         }
-    ]
+    ];
 
     const handleSlideChange = (dir) => {
-        setDirection(dir)
-
+        setDirection(dir);
         setActiveIndex((i) =>
-        dir === "next"
-            ? (i + 1) % slides.length // if dir is next, move on
-            : (i - 1 + slides.length) % slides.length // if dir is prev, move back
-        )
-    }
+            dir === "next"
+                ? (i + 1) % slides.length
+                : (i - 1 + slides.length) % slides.length
+        );
+    };
 
-    const handleNext = () => handleSlideChange("next")
-    const handlePrev = () => handleSlideChange("prev")
+    const handleNext = () => handleSlideChange("next");
+    const handlePrev = () => handleSlideChange("prev");
 
-    const currentSlide = slides[activeIndex]
+    const currentSlide = slides[activeIndex];
 
-    return(
-        <div className = "About-Page">
-            <div className = {`First-Part SlideWrapper ${direction}`} ref = {slideRef}>
+    // Cleanly separate the filtered arrays before the return block
+    const editorialBoard = staff.filter(member => member.is_editorial_board === true);
+    const seniorStaffers = staff.filter(member => !member.is_editorial_board && [12, 13, 14, 15, 16].includes(member.staff_order));
+    const juniorStaffers = staff.filter(member => !member.is_editorial_board && [17, 18, 19, 20, 21].includes(member.staff_order));
+
+    return (
+        <div className="About-Page">
+            <div className={`First-Part SlideWrapper ${direction}`} ref={slideRef}>
                 <div className="Slide-Navigation">
-                    <img 
-                        src = {PreviousSlide}
-                        alt = "Previous"
-                        onClick = {handlePrev}
+                    <img
+                        src={PreviousSlide}
+                        alt="Previous Slide"
+                        onClick={handlePrev}
                     />
                 </div>
-                <div className = "Slide-Image">
-                    <img src = {currentSlide.src} id = "TPAWTurno" />
+                <div className="Slide-Image">
+                    <img src={currentSlide.src} alt={currentSlide.topText} id="TPAWTurno" />
                 </div>
-                <div className = "First-Part-Text">
+                <div className="First-Part-Text">
                     <h1> {currentSlide.topText} </h1>
                     <ul>
                         {currentSlide.li1 && <li>{currentSlide.li1}</li>}
@@ -131,167 +131,134 @@ const AboutPage = () => {
                     </ul>
                 </div>
 
-                <div className = "Slide-Navigation">
-
-                    <img 
-                        src = {NextSlide}
-                        alt = "Next"
-                        onClick = {handleNext}
+                <div className="Slide-Navigation">
+                    <img
+                        src={NextSlide}
+                        alt="Next Slide"
+                        onClick={handleNext}
                     />
-                    
                 </div>
             </div>
 
-            <div className = "Releases-Part">
+            <div className="Releases-Part">
                 <h1> OUR LATEST RELEASES </h1>
-                <div className = "Releases-Part-Covers">
-                    <div className = "Covers">
-                        <img 
-                            src = {LAMPOON}
-                        />
-
-                        KALYO: KAMATAYAN {('24-25')}
+                <div className="Releases-Part-Covers">
+                    <div className="Covers">
+                        <img src={LAMPOON} alt="Kalyo Cover" />
+                        KALYO: KAMATAYAN '24-'25
                     </div>
-                    <div className = "Covers">
-                        <img 
-                            src = {LAMPOON}
-                        />
-
+                    <div className="Covers">
+                        <img src={LAMPOON} alt="PhilArts Cover" />
                         PHILARTS
                     </div>
-                    <div className = "Covers">
-                        <img 
-                            src = {LAMPOON}
-                        />
-
+                    <div className="Covers">
+                        <img src={LAMPOON} alt="Broadsheet Cover" />
                         BROADSHEET
                     </div>
-
-                    <div className = "Covers">
-                        <img 
-                            src = {LAMPOON}
-                        />
-                        
+                    <div className="Covers">
+                        <img src={LAMPOON} alt="Newsletter Cover" />
                         NEWSLETTER
                     </div>
 
-                    <div className = "Releases-Part-Covers">
-
-                        <div className = "Covers">
-                            <img 
-                                src = {LAMPOON}
-                            />
-
+                    <div className="Releases-Part-Covers">
+                        <div className="Covers">
+                            <img src={LAMPOON} alt="Lampoon Cover" />
                             LAMPOON
                         </div>
-                        <div className = "Covers">
-                            <img 
-                                src = {LAMPOON}
-                            />
-
+                        <div className="Covers">
+                            <img src={LAMPOON} alt="Sports Cover" />
                             SPORTS
                         </div>
                     </div>
                 </div>
-            
             </div>
 
-            <div className = "Meet-Our-Editors First-Part-Text">
+            <div className="Meet-Our-Editors First-Part-Text">
                 <h1> MEET OUR EDITORIAL BOARD </h1>
 
-                <div className = "Editors">
-                    <div className = "Editorial-Board">
-                        {staff
-                            .filter(isEdBoard => isEdBoard.is_editorial_board === true)
-                            .map(isEdBoard => (
-                                <div className = "Editorial-Board-Individual-Card" key = {isEdBoard.staff_display_name}>
-                                <div className = "Editorial-Board-Pad-When-Hover" style = {{border: "2px whitesmoke solid", borderRadius: "100%"}}>
-                                    <div className = "Editorial-Board-Individual">
-                                        <img 
-                                            src = {isEdBoard.staff_picture}
+                <div className="Editors">
+                    <div className="Editorial-Board">
+                        {editorialBoard.map(isEdBoard => (
+                            <div className="Editorial-Board-Individual-Card" key={isEdBoard.staff_display_name}>
+                                <div className="Editorial-Board-Pad-When-Hover" style={{ border: "2px whitesmoke solid", borderRadius: "100%" }}>
+                                    <div className="Editorial-Board-Individual">
+                                        <img
+                                            src={isEdBoard.staff_picture}
+                                            alt={isEdBoard.staff_display_name}
                                             loading="lazy"
                                         />
                                     </div>
-                                </div>    
-                                    <div style = {{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", lineHeight: "1.1"}} >
-                                        <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
-                                        <p style={{color: 'whitesmoke', margin:"0.25rem"}} > {replaceUnderscore(isEdBoard.staff_position)} </p>
-                                    </div>
                                 </div>
-                            ))
-                        }
+                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", lineHeight: "1.1" }}>
+                                    <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
+                                    <p style={{ color: 'whitesmoke', margin: "0.25rem" }}> {replaceUnderscore(isEdBoard.staff_position)} </p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            <div className = "All-Staffer-About-Page-Section">
+            <div className="All-Staffer-About-Page-Section">
                 <div>
+                    {seniorStaffers.length > 0 && (
+                        <div className="Regular-Staffers">
+                            <h1>Senior Staffers</h1>
+                            <div className="Regular-Staffers-Whole">
+                                {seniorStaffers.map(seniorStaffMember => (
+                                    <div className="Staffer-Item" key={seniorStaffMember.staff_display_name}>
+                                        <div className="Circle"></div>
+                                        <div className="Staffer-Names-Individual">
+                                            <h3> {seniorStaffMember.staff_display_name}</h3>
+                                            <p> {replaceUnderscore(seniorStaffMember.staff_position)} <span style = {{color: "gray"}}>| Staff ID: {seniorStaffMember.staff_id}</span></p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {juniorStaffers.length > 0 && (
+                        <div className="Regular-Staffers">
+                            <h1>Junior Staffers</h1>
+                            <div className="Regular-Staffers-Whole">
+                                {juniorStaffers.map((juniorStaffMember) => (
+                                    <div className="Staffer-Names-Individual" key={juniorStaffMember.staff_display_name}>
+                                            <h3>
+                                                {juniorStaffMember.staff_display_name}
+                                            </h3>
+                                            <p>{replaceUnderscore(juniorStaffMember.staff_position)} <span style = {{color: "gray"}}>{juniorStaffMember.staff_id}</span></p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
                     MEET TEK!
                     probably all the teks with their names (Tekya Tek something)
 
-                    <div className = "Regular-Staffers">
-                        <h1>Senior Staffers</h1>
-                        <div className = "Regular-Staffers-Whole">
-                            {staff
-                            .filter(seniorStaffMember => seniorStaffMember.is_editorial_board === false && seniorStaffMember.staff_order === 12 || seniorStaffMember.staff_order === 13 || seniorStaffMember.staff_order === 14 || seniorStaffMember.staff_order === 15 || seniorStaffMember.staff_order === 16)
-                            .map(seniorStaffMember => (
-                                <div className = "Staffer-Names-Individual" key = {seniorStaffMember.staff_display_name}>
-                                    <h3>{seniorStaffMember.staff_first_name} <br></br> {seniorStaffMember.staff_last_name}</h3>
-                                    <p> {replaceUnderscore(seniorStaffMember.staff_position)} </p>
-                                </div>
-
-                            ))}
-                        </div>
-                   </div>
-                   
-                    <div className = "Regular-Staffers">
-                        <h1>Junior Staffers</h1>
-                        <div className = "Regular-Staffers-Whole">
-                            {staff
-                            .filter(juniorStaffMember => juniorStaffMember.is_editorial_board === false  && juniorStaffMember.staff_order === 17 || juniorStaffMember.staff_order === 18 || juniorStaffMember.staff_order === 19 || juniorStaffMember.staff_order === 20 || juniorStaffMember.staff_order === 21)
-                            .map(juniorStaffMember => (
-                                <div className = "Staffer-Names-Individual" key = {juniorStaffMember.staff_display_name}>
-                                    <h3>{juniorStaffMember.staff_first_name} <br></br> {juniorStaffMember.staff_last_name}</h3>
-                                    <p> {replaceUnderscore(juniorStaffMember.staff_position)} </p>
-                                </div>
-
-                            ))}
-                        </div>
-                   </div>
-                </div>
             </div>
 
-            <div className = "First-Part" style = {{height: "auto"}}>
-                <div className = "First-Part-Text" id = "Last-Part">
-                    
+            <div className="First-Part" style={{ height: "auto" }}>
+                <div className="First-Part-Text" id="Last-Part">
                     <h1> VISION AND MISSION </h1>
                     <ul>
-                        <li></li> 
                         <li> VISION. To be a student publication that celebrates responsible freedom of expression. The organization envisions itself to be the center of journalism in the TUP community that serves with dignity, integrity and sincerity to be responsible for a standard of excellence.</li>
-                        <li></li>
                         <li> MISSION. To inspire, motivate, and involve every student in the TUP community to create a medium of open communication with the student and the administration in light of true service, transparency, and freedom of expression. </li>
-                        <li></li>
                     </ul>
+                    
                     <h1> BASIC PRINCIPLES AND OBJECTIVES </h1>
                     <ul>
-                        <li></li> 
                         <li> TPA shall serve as an independent publication of the students. Its primary concern is to inform, to educate, and to give opinions about local, sectoral, and national events that are of concern and would benefit the interests of the students. </li>
-                        <li></li> 
                         <li> TPA shall exercise the freedom of the press as stipulated in the 1987 Philippine Constitution, Article 3- Bill of Rights, Section 4, and pursue the corresponding obligations as guaranteed and provided by the Republic Act 7079 otherwise known as The Campus Journalism Act of 1991, and university policies. </li>
-                        <li></li> 
                         <li> TPA shall publish at least two (2) issues (Kalyo: Literary, Duh Filipit Artihan: Lampoon, Broadsheet, Newsletter, PhilArts: Feature, Sports) per academic year in line with community and campus engagement advocacies and agenda in the contemporary. </li>
-                        <li></li>
                         <li> TPA shall not deprive the right of any person, group, or institution to publish their positions or commentaries regarding the articles published in the said paper in conformity with the printing policies of the Editorial Board. </li>
-                        <li></li>
                         <li> The releases of TPA shall be governed by these policies and principles and such by regulations as may be promulgated by the Editorial Board in accordance with the laws of the Republic and the objectives of the University. </li>
-                        <li></li>
-
                     </ul>
-
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default AboutPage;

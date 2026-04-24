@@ -114,12 +114,6 @@
     z-index: 5;
 }
 
-.Editors{
-    display: flex;
-    justify-content: space-evenly;
-    padding: 2rem;
-}
-
 .Meet-Our-Editors{
     display: flex;
     flex-direction: column;
@@ -128,7 +122,6 @@
     padding: 3rem 0rem;
     color: white;
     background-color: rgba(0, 38, 88, 0.932);
-    background-image: url("/notebook-dark.png");
 
 }
 
@@ -136,7 +129,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 .Editorial-Board-Individual-Card:hover{
@@ -172,40 +165,50 @@
 }
 
 .All-Staffer-About-Page-Section{
-    color: white;
-    background-color: rgba(4, 48, 0, 0.932);
-    background-image: url("/notebook-dark.png");
-
+    color: black;
+    background-color: rgb(255, 255, 255);
+    padding: 3rem;
 }
 
 .Regular-Staffers-Whole{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
 
-    gap: 2rem;
-    padding: 2rem;
+    padding: 5rem;
+}
+
+.Staffer-Item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: white;
+}
+
+.Circle{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: blue;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .Staffer-Names-Individual{
-  color: black;
-  background-color: hsla(0, 0%, 100%, 0.55);
-  backdrop-filter: blur(3.1px);
-  -webkit-backdrop-filter: blur(3.1px);
-  border: 3px solid hsl(204, 98, 34);
-  border-radius: 16px; 
+  display: flex;
+  flex-direction: column;
 
-  box-shadow: 0 0 20px hsl(0, 0%, 0%); 
+  color: black;
   transition: box-shadow 0.3s ease-in-out;
   transition: transform 0.5s ease;
   
-  text-align: center;
-  width: 13rem;
-  text-wrap: wrap;
-  padding: 0.25rem;
+  border-bottom: 1px rgba(128, 128, 128, 0.5) solid;
+  padding: 1rem;
+  width: 100%;
 }
 
-.Staffer-Names-Individual:hover{
+.Staffer-Item:hover{
     cursor: pointer;
     transition: 0.5s ease-in-out;
     transform: scale(1.05);

@@ -1,176 +1,87 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useRef, useState, useEffect } from "react";
-import React, { Suspense, lazy } from 'react';
-
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import AnimatedLoader from "./Pages/AnimatedLoader.jsx";
 
-const NavbarComponent = lazy (() => import('./Components/NavbarComponent.jsx'));
-const Footer = lazy (() => import('./Components/Footer.jsx'));
+const NavbarComponent = lazy(() => import('./Components/NavbarComponent.jsx'));
+const Footer = lazy(() => import('./Components/Footer.jsx'));
+const FirstFacade = lazy(() => import('./Pages/FirstFacade.jsx'));
+const SecondFacade = lazy(() => import('./Pages/SecondFacade.jsx'));
+const ArticlePage = lazy(() => import('./Pages/ArticlePage.jsx'));
+const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'));
+const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'));
+const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'));
+const CreateArticlePage = lazy(() => import('./Pages/CreateArticlePage.jsx'));
+const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'));
+const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'));
 
-const FirstFacade = lazy (() => import('./Pages/FirstFacade.jsx'));
-const SecondFacade = lazy (() => import('./Pages/SecondFacade.jsx'));
-const ReleasesFacade = lazy (() => import('./Pages/ReleasesFacade.jsx'));
-const MediaSegmentsFacade = lazy (() => import('./Pages/MediaSegmentsFacade.jsx'));
+const MainLayout = () => {
+  return (
+    <>
+      <NavbarComponent />
+      
+      <Suspense fallback={<AnimatedLoader />}>
+        <main className="main-content">
+          <Outlet />
+        </main>
+      </Suspense>
+      
+      <Footer />
+    </>
+  );
+};
 
-const ArticlePage = lazy (() => import('./Pages/ArticlePage.jsx'));
-const AboutPage = lazy (() => import('./Pages/AboutPage.jsx'));
-const MediaSegmentPage = lazy (() => import('./Pages/MediaSegmentPage.jsx'));
-const MediaSegmentArticle = lazy (() => import('./Pages/MediaSegmentArticle.jsx'));
-const CreateArticlePage = lazy (() => import('./Pages/CreateArticlePage.jsx'));
-const LatestPosts = lazy (() => import('./Pages/LatestPosts.jsx'));
-const ReleasesPage = lazy (() => import('./Pages/ReleasesPage.jsx'));
-
-const App = () => {
-  const homeRef = useRef(null);
-  const releasesRef = useRef(null);
-  const mediaRef = useRef(null);
-  const newsRef = useRef(null);
-
-  const scrollRefs = { homeRef, releasesRef, mediaRef, newsRef };
-
-  // Loading state
-  const [loading, setLoading] = useState(true);
+const HomePage = () => {
+  const location = useLocation();
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000); // 2 seconds
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) return <AnimatedLoader />;
+    if (location.hash) {
+      const elementId = location.hash.substring(1); 
+      const element = document.getElementById(elementId);
+      
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0); 
+    }
+  }, [location]);
 
   return (
+    <>
+      <section id="home">
+        <FirstFacade />
+      </section>
+      
+      <section id="news">
+        <SecondFacade />
+      </section>
+    </>
+  );
+};
+
+const App = () => {
+  return (
     <div className="app-wrapper">
-        <Router>
-          <Suspense>
-            <Routes>
-              <Route
-                path = "/"
-                element = {
-                  <>
+      <Router>
+        <Routes>
+          <Route element={<MainLayout />}>
+            
+            <Route path="/" element={<HomePage />} />
+            
+            <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/latest" element={<LatestPosts />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/releases" element={<ReleasesPage />} />
+            <Route path="/create-article" element={<CreateArticlePage />} />
+            
+            <Route path="/media-segment" element={<MediaSegmentPage />} />
+            <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
 
-                    <NavbarComponent refs={scrollRefs} />
-                    <section ref={homeRef}>
-                      <FirstFacade />
-                    </section>
-
-                    <section ref={newsRef}>
-                      <SecondFacade />
-                    </section>
-                                        
-                    <Footer />
-                  </>
-                }
-              />
-
-              {/*** ARTICLE */}
-
-              <Route 
-                path = "/article/:articleId"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs={scrollRefs} />
-                    <ArticlePage />
-                    <Footer />
-                  </>
-                  </Suspense>
-                }
-              />
-
-
-              <Route 
-                path = "/article/Joseph-Brian-Balut"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs={scrollRefs} />
-                    <ArticlePage />
-                    <Footer />
-                  </>
-                  </Suspense>
-                }
-              />
-
-              <Route 
-                path = "/Latest"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs={scrollRefs} />
-                    <LatestPosts />
-                    <Footer />
-                  </>
-                  </Suspense>
-                }
-              />
-
-              <Route 
-                path = "/Media-Segment-Page"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs={scrollRefs} />
-                    <MediaSegmentPage />
-                    <Footer />
-                  </>
-                  </Suspense>
-                }
-              />
-
-              <Route 
-                path = "/About"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs={scrollRefs} />
-                    <AboutPage />
-                    <Footer/>
-                  </>
-                  </Suspense>
-                }
-              />
-              
-              <Route 
-                path = "/Media-Segment/id"
-                element = {
-                  <Suspense>
-                    <>
-                      <NavbarComponent refs = {scrollRefs} />
-                      <MediaSegmentArticle />
-                      <Footer />
-                    </>
-                  </Suspense>
-                }
-              />
-
-              <Route
-                path = "/Create-Article-Page"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs = {scrollRefs} />
-                    <CreateArticlePage />
-                    <Footer />
-                  </>
-                  </Suspense>
-                }
-              />
-
-              <Route
-                path = "/Releases"
-                element = {
-                  <Suspense>
-                  <>
-                    <NavbarComponent refs = {scrollRefs} />
-                    <ReleasesPage />
-                    <Footer />
-                  </>
-                  </Suspense>
-                }
-              />
-          </Routes>
-        </Suspense>
-        </Router>
+          </Route>
+        </Routes>
+      </Router>
     </div>
   );
 };

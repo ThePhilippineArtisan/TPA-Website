@@ -1,4 +1,3 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,60 +6,37 @@ import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.png";
 
 import "../CSS/Navbar.css"
 
-const NavbarComponent = ({ refs }) => {
+const NavbarComponent = () => {
 
-    const handleReload = () => {
-        window.location.reload();
-    };
-    const location = useLocation();
-    const navigate = useNavigate();
+    useEffect(() => {
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar-box');
 
-    const handleScroll = (ref) => {
-        if (location.pathname === "/") {
-            ref.current.scrollIntoView({ behavior: "smooth" });
-        } else {
-            navigate("/");
-            setTimeout(() => {
-                ref.current.scrollIntoView({ behavior: "smooth" });
-            }, 300);
-        }
-    };
+        const onScroll = () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-        useEffect(() => {
-            let lastScrollTop = 0;
-            const navbar = document.querySelector('.navbar-box');
+            if (currentScroll > lastScrollTop) {
+                navbar?.classList.add('hidden');
+            } else {
+                navbar?.classList.remove('hidden');
+            }
 
-            const onScroll = () => {
-                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        };
 
-                if (currentScroll > lastScrollTop) {
-                    // Scrolling down → hide
-                    navbar?.classList.add('hidden');
-                } else {
-                    // Scrolling up → show
-                    navbar?.classList.remove('hidden');
-                }
+        window.addEventListener('scroll', onScroll);
 
-                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-            };
-
-            window.addEventListener('scroll', onScroll);
-
-            // Cleanup to avoid multiple listeners
-            return () => {
-                window.removeEventListener('scroll', onScroll);
-            };
-        }, []);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    }, []);
 
     return (
-        <div className = "navbar-container">
+        <div className="navbar-container">
             <div className="navbar-box">
                 <div className="tpa-logo">
-
-                    <Link to="/">
+                    <Link to="/#home">
                         <img
-                            // onLoad={() => setLogoLoaded(true)}
-                            //  className={!logoLoaded ? "skeleton" : ""}
                             loading="lazy"
                             id="tpa-logo"
                             src={TPAWhite}
@@ -70,15 +46,16 @@ const NavbarComponent = ({ refs }) => {
                 </div>
 
                 <div className="navbar-links">
-                    <Link to="/" > Home </Link>
-                    <Link to="/Create-Article-Page"> News </Link>
-                    <Link to="/Releases"> Releases </Link>
-                    <Link to="/Media-Segment-Page"> Media Segments </Link>
+                    <Link to="/#home"> Home </Link>
+                    <Link to="/#news"> News </Link> 
+                    <Link to="/releases"> Releases </Link>
+                    <Link to="/media-segment"> Media Segments </Link>
                 </div>
 
-                <Link to="/About" className="tpa-circle-logo">
+                <Link to="/about" className="tpa-circle-logo">
                     <img
                         src={TPACircleLogo}
+                        alt="About The Philippine Artisan"
                     />
                 </Link>
             </div>
