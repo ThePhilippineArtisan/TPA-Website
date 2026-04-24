@@ -14,6 +14,7 @@ const CreateArticlePage = lazy(() => import('./Pages/CreateArticlePage.jsx'));
 const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'));
 const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'));
 const StaffProfilePage = lazy (() => import('./Pages/StaffProfile.jsx'))
+const AdminLogInPage = lazy (() => import('./Pages/AdminPageLogIn.jsx'))
 
 const MainLayout = () => {
   return (
@@ -72,6 +73,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             
             <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot/josephbrianbalut" element={<AdminLogInPage />} />
             <Route path="/latest" element={<LatestPosts />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />

@@ -1,0 +1,21 @@
+.Admin-Log-In-Full-Page{
+    padding: 10rem 2rem;
+    height: 90dvh;
+    background-color: whitesmoke;
+
+    display: flex;
+    justify-content: center;
+}
+
+.Admin-Log-In-Form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 75dvh;
+    width: 50%;
+
+    border: 3px solid gray;
+    border-radius: 2rem;
+}
