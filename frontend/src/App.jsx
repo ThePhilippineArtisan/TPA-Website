@@ -13,6 +13,7 @@ const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx')
 const CreateArticlePage = lazy(() => import('./Pages/CreateArticlePage.jsx'));
 const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'));
 const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'));
+const StaffProfilePage = lazy (() => import('./Pages/StaffProfile.jsx'))
 
 const MainLayout = () => {
   return (
@@ -73,6 +74,7 @@ const App = () => {
             <Route path="/article/:articleId" element={<ArticlePage />} />
             <Route path="/latest" element={<LatestPosts />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
             <Route path="/releases" element={<ReleasesPage />} />
             <Route path="/create-article" element={<CreateArticlePage />} />
             

@@ -192,7 +192,8 @@ hr{
     justify-content: center;
     align-content: center;
     max-width: 90%;
-
+    
+    white-space: pre-wrap;
 }
 
 .Article-Body p{

@@ -1,0 +1,56 @@
+.Staff-Profile-Full-Page{
+    display: flex;
+    justify-content: center;
+
+    padding: 20dvh 0dvh;
+    background-color: #d7d8d2;
+}
+
+.Staff-Profile-Main-Content{
+    display: flex;
+    width: 80%;
+    padding: 5rem;
+    border-radius: 5rem;
+    border: 2px solid rgb(128, 128, 128);
+    background-image: url("/notebook-dark.png");
+    background-color: whitesmoke;
+}
+
+.Staff-Profile-Image-Content{
+    display: flex;
+    flex-direction: column;
+}
+
+.Staff-Profile-Image-Content img{
+    height: 500px;
+    border-radius: 50%;
+    padding-right: 5rem;
+    padding-bottom: 3rem;
+}
+
+.Profile-Image-Container{
+    border-right: 2px solid rgba(128, 128, 128, 0.50)
+}
+
+.Horizontal-Staff-Profile-About{
+    display: flex;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.50)
+}
+
+.Right-Side-Profile-About{
+    display: flex;
+    flex-direction: column;
+    padding-left: 3rem;
+
+    white-space: pre-wrap;
+    width: 60%;
+}
+
+.Profile-Bio-Container{
+    padding-top: 30px;
+    width: 90%;
+}
+
+.Right-Side-Profile-About h1{
+    margin: 0;
+}

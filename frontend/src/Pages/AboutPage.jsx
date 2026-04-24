@@ -1,27 +1,22 @@
-import React, { useState, useRef, useEffect } from "react";
-import { supabase } from "../supabaseClient";
+import React, { useState, useRef, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { supabase } from "../supabaseClient"
 
-import TPAWTurno from "/TPA-LEFT_BLUE.png";
-import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg";
+import TPAWTurno from "/TPA-LEFT_BLUE.png"
+import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg"
 
-// import KALYO from 
-// import PHILARTS from 
-// import BROADSHEET from 
-// import NEWSLETTER from
+import LAMPOON from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
 
-import LAMPOON from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png";
-// import SPORTS
+import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
+import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
 
-import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg";
-import NextSlide from "../assets/Miniature_Icon_Version/Next.svg";
-
-import "../CSS/AboutPage.css";
+import "../CSS/AboutPage.css" 
 
 const AboutPage = () => {
-    const [staff, setStaff] = useState([]);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [direction, setDirection] = useState("next");
-    const slideRef = useRef(null);
+    const [staff, setStaff] = useState([])
+    const [activeIndex, setActiveIndex] = useState(0) 
+    const [direction, setDirection] = useState("next") 
+    const slideRef = useRef(null) 
 
     useEffect(() => {
         const fetchStaff = async () => {
@@ -30,22 +25,28 @@ const AboutPage = () => {
                 .select('staff_id, staff_first_name, staff_last_name, staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
                 .eq('staff_isactive', true)
                 .not('staff_position', 'is', null)
-                .order('staff_order', { ascending: true });
+                .order('staff_order', { ascending: true }) 
 
             if (error) {
-                console.log('Error fetching staff: ', error);
+                console.log('Error fetching staff: ', error) 
             } else {
-                setStaff(data);
+                setStaff(data) 
             }
-        };
+        } 
 
-        fetchStaff();
-    }, []);
+        fetchStaff() 
+    }, []) 
 
     const replaceUnderscore = (str) => {
-        if (!str) return "";
-        return str.replaceAll("_", " ");
-    };
+        if (!str) return "" 
+        return str.replaceAll("_", " ") 
+    }
+
+    const slugify = (name) => 
+        name.toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
 
     const slides = [
         {
@@ -88,26 +89,26 @@ const AboutPage = () => {
             topText: "WHERE WE'RE LOCATED",
             li1: "The Philippine Artisan Manila's headquarters is located at the Ground Floor, College of Liberal Arts - College of Science building at the Technological University of the Philippines Main Campus, Ayala Boulevard, Ermita, Manila."
         }
-    ];
+    ] 
 
     const handleSlideChange = (dir) => {
-        setDirection(dir);
+        setDirection(dir) 
         setActiveIndex((i) =>
             dir === "next"
                 ? (i + 1) % slides.length
                 : (i - 1 + slides.length) % slides.length
-        );
-    };
+        ) 
+    } 
 
-    const handleNext = () => handleSlideChange("next");
-    const handlePrev = () => handleSlideChange("prev");
+    const handleNext = () => handleSlideChange("next") 
+    const handlePrev = () => handleSlideChange("prev") 
 
-    const currentSlide = slides[activeIndex];
+    const currentSlide = slides[activeIndex] 
 
     // Cleanly separate the filtered arrays before the return block
-    const editorialBoard = staff.filter(member => member.is_editorial_board === true);
-    const seniorStaffers = staff.filter(member => !member.is_editorial_board && [12, 13, 14, 15, 16].includes(member.staff_order));
-    const juniorStaffers = staff.filter(member => !member.is_editorial_board && [17, 18, 19, 20, 21].includes(member.staff_order));
+    const editorialBoard = staff.filter(member => member.is_editorial_board === true) 
+    const seniorStaffers = staff.filter(member => !member.is_editorial_board && [12, 13, 14, 15, 16].includes(member.staff_order)) 
+    const juniorStaffers = staff.filter(member => !member.is_editorial_board && [17, 18, 19, 20, 21].includes(member.staff_order)) 
 
     return (
         <div className="About-Page">
@@ -179,7 +180,12 @@ const AboutPage = () => {
                 <div className="Editors">
                     <div className="Editorial-Board">
                         {editorialBoard.map(isEdBoard => (
-                            <div className="Editorial-Board-Individual-Card" key={isEdBoard.staff_display_name}>
+                            <Link 
+                                to={`/staff/${slugify(isEdBoard.staff_display_name)}-${isEdBoard.staff_id}`}
+                                className="Editorial-Board-Individual-Card" 
+                                key={isEdBoard.staff_display_name}
+                                style={{ textDecoration: "none", color: "inherit" }}
+                            >
                                 <div className="Editorial-Board-Pad-When-Hover" style={{ border: "2px whitesmoke solid", borderRadius: "100%" }}>
                                     <div className="Editorial-Board-Individual">
                                         <img
@@ -193,7 +199,7 @@ const AboutPage = () => {
                                     <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
                                     <p style={{ color: 'whitesmoke', margin: "0.25rem" }}> {replaceUnderscore(isEdBoard.staff_position)} </p>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -206,13 +212,18 @@ const AboutPage = () => {
                             <h1>Senior Staffers</h1>
                             <div className="Regular-Staffers-Whole">
                                 {seniorStaffers.map(seniorStaffMember => (
-                                    <div className="Staffer-Item" key={seniorStaffMember.staff_display_name}>
+                                    <Link 
+                                        to={`/staff/${slugify(seniorStaffMember.staff_display_name)}-${seniorStaffMember.staff_id}`}
+                                        className="Staffer-Item" 
+                                        key={seniorStaffMember.staff_display_name}
+                                        style={{ textDecoration: "none", color: "inherit" }}
+                                    >
                                         <div className="Circle"></div>
                                         <div className="Staffer-Names-Individual">
                                             <h3> {seniorStaffMember.staff_display_name}</h3>
-                                            <p> {replaceUnderscore(seniorStaffMember.staff_position)} <span style = {{color: "gray"}}>| Staff ID: {seniorStaffMember.staff_id}</span></p>
+                                            <p> {replaceUnderscore(seniorStaffMember.staff_position)} <span style={{ color: "gray" }}>| Staff ID: {seniorStaffMember.staff_id}</span></p>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -223,12 +234,15 @@ const AboutPage = () => {
                             <h1>Junior Staffers</h1>
                             <div className="Regular-Staffers-Whole">
                                 {juniorStaffers.map((juniorStaffMember) => (
-                                    <div className="Staffer-Names-Individual" key={juniorStaffMember.staff_display_name}>
-                                            <h3>
-                                                {juniorStaffMember.staff_display_name}
-                                            </h3>
-                                            <p>{replaceUnderscore(juniorStaffMember.staff_position)} <span style = {{color: "gray"}}>{juniorStaffMember.staff_id}</span></p>
-                                    </div>
+                                    <Link 
+                                        to={`/staff/${slugify(juniorStaffMember.staff_display_name)}-${juniorStaffMember.staff_id}`}
+                                        className="Staffer-Names-Individual" 
+                                        key={juniorStaffMember.staff_display_name}
+                                        style={{ textDecoration: "none", color: "inherit" }}
+                                    >
+                                        <h3>{juniorStaffMember.staff_display_name}</h3>
+                                        <p>{replaceUnderscore(juniorStaffMember.staff_position)} <span style={{ color: "gray" }}>{juniorStaffMember.staff_id}</span></p>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -258,7 +272,7 @@ const AboutPage = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    ) 
+} 
 
-export default AboutPage;
+export default AboutPage 
