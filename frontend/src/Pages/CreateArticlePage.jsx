@@ -103,8 +103,8 @@ const CreateArticlePage = () => {
 
         const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
     
-        if(allStaffPayLoads.length > 0) {
-            let {errror: staffError} = await supabase
+        if(allStaffPayloads.length > 0) {
+            let {error: staffError} = await supabase
             .from('article_staff')
             .insert(allStaffPayloads)
 
@@ -115,15 +115,11 @@ const CreateArticlePage = () => {
             }
         }
 
-        const mediaImagePhotoPayload = selectedMediaProviders.map(image => ({
-            article
-        }))
-
         alert("Article saved successfully!")
 
         setHeadline("")
         setBody("")
-        setSelectedAuthor([])
+        setSelectedAuthors([])
         setSelectedMediaProviders([])
         document.getElementById("Body-Text").innerHTML = ""
     }
@@ -231,7 +227,7 @@ const CreateArticlePage = () => {
                             id = "Headline-Text"
                             className = "Headline-Input"
                             value = {headline}
-                            onChange={(typing) => setNewArticle(typing.target.value)}
+                            onChange={(typing) => setHeadline(typing.target.value)}
                         />
 
                         <div
@@ -239,7 +235,7 @@ const CreateArticlePage = () => {
                             suppressContentEditableWarning = {true}
                             id = "Body-Text"
                             className = "Headline-Input"
-                            onChange={(typing) => setBody(typing.currentTarget.innerHTML)}
+                            onInput={(typing) => setBody(typing.currentTarget.innerHTML)}
                             >
                         </div>          
                     </div>
