@@ -73,6 +73,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             
             <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/joseph-brian-balut" element={<ArticlePage />} />
             <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot/josephbrianbalut" element={<AdminLogInPage />} />
             <Route path="/latest" element={<LatestPosts />} />
             <Route path="/about" element={<AboutPage />} />
@@ -82,6 +83,7 @@ const App = () => {
             
             <Route path="/media-segment" element={<MediaSegmentPage />} />
             <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
+            <Route path="/media-segment/id" element={<MediaSegmentArticle />} />
 
           </Route>
         </Routes>
