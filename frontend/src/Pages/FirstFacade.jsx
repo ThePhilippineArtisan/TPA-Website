@@ -113,8 +113,8 @@ const FirstFacade = () => {
                     src = {ArtisanLogo}
                     id = "ArtisanLogo"
                 />
-                <RollingHeadlines />
             </div>
+                <RollingHeadlines />
             <div className="First-BG-First-Facade">
                 
                 {/* Background image with blur 

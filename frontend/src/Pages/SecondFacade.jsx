@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 
-import SectionBreaker from "/placeholder-breaker.png"
-
 import "../CSS/SecondFacade.css"
 
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
@@ -114,7 +112,6 @@ const SecondFacade = () => {
                 </div>
                 </div>
                     <VideoShowcase />
-                <img src = {SectionBreaker} style={{width: "99.5vw"}}/>
                     <LatestMediaSegment/>
                     <ListOfMediaSegments />
 

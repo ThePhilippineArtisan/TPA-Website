@@ -14,25 +14,25 @@ const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'));
 const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'));
 const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'));
 const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'));
-const StaffProfilePage = lazy (() => import('./Pages/StaffProfile.jsx'))
+const StaffProfilePage = lazy(() => import('./Pages/StaffProfile.jsx'))
 
 // AdminPortal Folder
-const AdminLogInPage = lazy (() => import('./AdminPortal/AdminPageLogIn.jsx'))
-const AdminPage = lazy (() => import('./AdminPortal/AdminPage.jsx'))
-const AdminDashboard = lazy (() => import('./AdminPortal/AdminDashboard.jsx'))
+const AdminLogInPage = lazy(() => import('./AdminPortal/AdminPageLogIn.jsx'))
+const AdminPage = lazy(() => import('./AdminPortal/AdminPage.jsx'))
+const AdminDashboard = lazy(() => import('./AdminPortal/AdminDashboard.jsx'))
 const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'));
 
 const MainLayout = () => {
   return (
     <>
       <NavbarComponent />
-      
+
       <Suspense fallback={<AnimatedLoader />}>
         <main className="main-content">
           <Outlet />
         </main>
       </Suspense>
-      
+
       <Footer />
     </>
   );
@@ -41,36 +41,129 @@ const MainLayout = () => {
 const HomePage = () => {
   const location = useLocation();
 
-  const smoothScrollTo = (targetY, duration = 800) => {
-    const startY = window.scrollY
-    const difference = targetY - startY
-    let startTime = null
+  useEffect(() => {
+    document.documentElement.classList.add('homepage-snap');
 
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp
-      const progress = timestamp - startTime
-      const percent = Math.min(progress / duration, 1)
-      
-      const ease = percent < 0.5 
-        ? 2 * percent * percent 
-        : -1 + (4 - 2 * percent) * percent
+    let activeSectionIndex = 0;
+    let isScrolling = false;
+    let rafId = null;
 
-      window.scrollTo(0, startY + difference * ease)
+    const getSections = () => {
+      return [
+        document.querySelector('.Artisan-Logo-First-Facade'),
+        document.querySelector('.First-BG-First-Facade'),
+        document.querySelector('#news')
+      ].filter(Boolean);
+    };
 
-      if (progress < duration) {
-        window.requestAnimationFrame(step)
+    const handleWheel = (e) => {
+      if (window.matchMedia('(hover: none)').matches) return;
+
+      const sections = getSections();
+      if (sections.length === 0) return;
+
+      if (Math.abs(e.deltaY) < 10) return;
+
+      if (isScrolling) {
+        e.preventDefault();
+        return;
       }
-    }
 
-    window.requestAnimationFrame(step)
-  }
+      const currentScroll = window.scrollY;
+      const target = sections[activeSectionIndex];
+      if (!target) return;
+
+      const targetY = target.getBoundingClientRect().top + window.scrollY;
+
+      if (e.deltaY > 0) {
+        // Scrolling down
+        if (activeSectionIndex < sections.length - 1) {
+          e.preventDefault();
+          activeSectionIndex++;
+          scrollToSection(activeSectionIndex, sections, 'down');
+        }
+      } else if (e.deltaY < 0) {
+        // Scrolling up
+        if (currentScroll > targetY + 15) {
+          // Allow normal scrolling up when we are below the target top boundary
+          return;
+        }
+
+        if (activeSectionIndex > 0) {
+          e.preventDefault();
+          activeSectionIndex--;
+          scrollToSection(activeSectionIndex, sections, 'up');
+        }
+      }
+    };
+
+    const scrollToSection = (index, sections, direction = 'down') => {
+      const target = sections[index];
+      if (!target) return;
+
+      isScrolling = true;
+
+      const targetY = target.getBoundingClientRect().top + window.scrollY;
+      const startY = window.scrollY;
+      const difference = targetY - startY;
+      const duration = 500; // duration in ms
+      let startTime = null;
+
+      const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+      const animateScroll = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = timestamp - startTime;
+        const percent = Math.min(progress / duration, 1);
+
+        window.scrollTo(0, startY + difference * easeOutQuart(percent));
+
+        if (progress < duration) {
+          rafId = window.requestAnimationFrame(animateScroll);
+        } else {
+          isScrolling = false;
+        }
+      };
+
+      if (rafId) window.cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(animateScroll);
+    };
+
+    const handleScrollUpdate = () => {
+      if (isScrolling) return;
+
+      const sections = getSections();
+      const scrollPos = window.scrollY + window.innerHeight / 2;
+
+      for (let i = 0; i < sections.length; i++) {
+        const target = sections[i];
+        const targetY = target.getBoundingClientRect().top + window.scrollY;
+        const targetHeight = target.offsetHeight;
+
+        if (scrollPos >= targetY && scrollPos < targetY + targetHeight) {
+          activeSectionIndex = i;
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('scroll', handleScrollUpdate);
+
+    return () => {
+      document.documentElement.classList.remove('homepage-snap');
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScrollUpdate);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   return (
     <>
       <section id="home">
         <FirstFacade />
       </section>
-      
+
       <section id="news">
         <SecondFacade />
       </section>
@@ -81,8 +174,8 @@ const HomePage = () => {
 const ProtectedRoute = () => {
   const isAuth = localStorage.getItem("isAuth") === "true"
 
-  if(!isAuth){
-    return <Navigate to = "/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" replace />
+  if (!isAuth) {
+    return <Navigate to="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" replace />
   }
 
   return <Outlet />
@@ -93,34 +186,34 @@ const App = () => {
     <div className="app-wrapper">
       <Router>
         <Routes>
-          <Route element = {<ProtectedRoute />}>
-            <Route element = { <AdminPage />}>
-              <Route path = "/admin/dashboard" element = { <AdminDashboard />} />
-              <Route path = "/admin/create-article" element = {<CreateArticlePage />} />
-              <Route path = "/admin/articles" element = {<div style={{padding: '20px'}}><h1>Manage Articles</h1><p>Manage your articles here.</p></div>} />
-              <Route path = "/admin/staff" element = {<div style={{padding: '20px'}}><h1>Manage Staff</h1><p>Manage your staff profiles here.</p></div>} />
-              <Route path = "/admin/manage-page" element = {<div style={{padding: '20px'}}><h1>Manage Front Page</h1><p>Manage front page components here.</p></div>} />
-              <Route path = "/admin/add-releases" element = {<div style={{padding: '20px'}}><h1>Add Releases</h1><p>Add and manage media releases here.</p></div>} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AdminPage />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/create-article" element={<CreateArticlePage />} />
+              <Route path="/admin/articles" element={<div style={{ padding: '20px' }}><h1>Manage Articles</h1><p>Manage your articles here.</p></div>} />
+              <Route path="/admin/staff" element={<div style={{ padding: '20px' }}><h1>Manage Staff</h1><p>Manage your staff profiles here.</p></div>} />
+              <Route path="/admin/manage-page" element={<div style={{ padding: '20px' }}><h1>Manage Front Page</h1><p>Manage front page components here.</p></div>} />
+              <Route path="/admin/add-releases" element={<div style={{ padding: '20px' }}><h1>Add Releases</h1><p>Add and manage media releases here.</p></div>} />
             </Route>
           </Route>
 
-          <Route element = {<MainLayout />}>
-            
-            <Route path = "/" element={<HomePage />} />
-            
-            <Route path ="/article/:articleId" element={<ArticlePage />} />
-            <Route path = "/joseph-brian-balut" element={<ArticlePage />} />
-            <Route path = "/latest" element={<LatestPosts />} />
-            <Route path = "/about" element={<AboutPage />} />
-            <Route path = "/staff/:staffSlug" element={<StaffProfilePage />} />
-            <Route path = "/releases" element={<ReleasesPage />} />
-            
-            <Route path = "/media-segment" element={<MediaSegmentPage />} />
-            <Route path = "/media-segment/:id" element={<MediaSegmentArticle />} />
-            <Route path = "/media-segment/id" element={<MediaSegmentArticle />} />
+          <Route element={<MainLayout />}>
 
-            
-            <Route path = "/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
+            <Route path="/" element={<HomePage />} />
+
+            <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/joseph-brian-balut" element={<ArticlePage />} />
+            <Route path="/latest" element={<LatestPosts />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
+            <Route path="/releases" element={<ReleasesPage />} />
+
+            <Route path="/media-segment" element={<MediaSegmentPage />} />
+            <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
+            <Route path="/media-segment/id" element={<MediaSegmentArticle />} />
+
+
+            <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
 
           </Route>
         </Routes>

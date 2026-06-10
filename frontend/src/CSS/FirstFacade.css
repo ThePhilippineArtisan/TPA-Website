@@ -3,16 +3,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  height: 200dvh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-
-  scrollbar-width: none;
-}
-
-.Literary-Showcase-First-Facade::-webkit-scrollbar {
-  display: none;
 }
 
 .Artisan-Logo-First-Facade,

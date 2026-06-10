@@ -1,4 +1,11 @@
 .Admin-Page-Layout{
     display: flex;
+    min-height: 100vh;
     background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff3f 100%);
+}
+
+.Display-Main-Content{
+    flex: 1;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
