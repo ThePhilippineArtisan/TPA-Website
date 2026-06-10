@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react"
 import { useParams } from "react-router-dom"
+// import { supabase } from "@supabase/supabase-js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
@@ -40,7 +41,6 @@ const ArticlePage = () => {
         fetchMediaFiles();
     }, [])
 
-    {/***
     const photos = [
         "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/1.jpg",
         "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/2.jpg",
@@ -77,7 +77,6 @@ const ArticlePage = () => {
     ]
 
     const [currentPhoto, setCurrentPhoto] = useState(photos[0])
-    **/}
     
     return( 
         <div className = "Article-Page">
@@ -106,7 +105,7 @@ const ArticlePage = () => {
 
             </div>
 
-            <div style={{display: "flex",justifyContent: "center"}}>
+            <div style={{display: "flex", justifyContent: "center"}}>
                 <div className = "Foreground-Photo ">
                     <img src = {currentPhoto} loading = "lazy"/>                
                 </div>
@@ -146,7 +145,7 @@ const ArticlePage = () => {
                         />
                     ))}
                     
-                    <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
+                    {/** <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/> */} 
                 </div>
 
             </div>

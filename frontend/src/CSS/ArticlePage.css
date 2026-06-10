@@ -133,7 +133,7 @@ hr{
 
 .Extra-Photos-Container-Two .Extra-Photos {
     flex-direction: column;
-    padding-left: 2rem;
+    padding-left: 7rem;
     overflow-y: auto;
 }
 

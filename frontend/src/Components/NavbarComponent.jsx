@@ -46,10 +46,10 @@ const NavbarComponent = () => {
                 </div>
 
                 <div className="navbar-links">
-                    <Link to="/#home"> Home </Link>
-                    <Link to="/#news"> News </Link> 
-                    <Link to="/releases"> Releases </Link>
-                    <Link to="/media-segment"> Media Segments </Link>
+                    <a href= "#home"> Home </a>
+                    <a href= "#news"> News </a> 
+                    <a href= "#releases"> Releases </a>
+                    <a href= "#media-segment"> Media Segments </a>
                 </div>
 
                 <Link to="/about" className="tpa-circle-logo">
