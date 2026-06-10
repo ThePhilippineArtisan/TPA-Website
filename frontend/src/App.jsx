@@ -102,6 +102,7 @@ const HomePage = () => {
       if (!target) return;
 
       isScrolling = true;
+      activeSectionIndex = index;
 
       const targetY = target.getBoundingClientRect().top + window.scrollY;
       const startY = window.scrollY;
