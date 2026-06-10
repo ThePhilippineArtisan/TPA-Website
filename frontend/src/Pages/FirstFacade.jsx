@@ -10,8 +10,7 @@ import ArtisanLogo from "/TPA-LEFT_BLUE-smaller.png"
 import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
 import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
 
-import SecondBGFirstFacade from '../Components/SecondBGFirstFacade.jsx';
-
+import RollingHeadlines from "../Components/RollingHeadlines.jsx";
 import "../CSS/FirstFacade.css"
 
 const FirstFacade = () => {
@@ -112,7 +111,9 @@ const FirstFacade = () => {
             <div className = "Artisan-Logo-First-Facade">
                 <img 
                     src = {ArtisanLogo}
+                    id = "ArtisanLogo"
                 />
+                <RollingHeadlines />
             </div>
             <div className="First-BG-First-Facade">
                 

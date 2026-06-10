@@ -1,4 +1,4 @@
-import TPALOGO from "/TPA-LEFT_BLUE.png";
+import TPALOGO from "/TPA-LEFT_BLUE-smallest.png";
 import FBLogo from "../assets/Miniature_Icon_Version/FBLogo.svg"
 import XLogo from "../assets/Miniature_Icon_Version/XLogo.svg"
 import IGLogo from "../assets/Miniature_Icon_Version/IGLogo.svg"
@@ -25,7 +25,7 @@ const Footer = () => {
                 </div>
                     
                     <img
-                        id = "TPA-Full-Logo"  
+                        id = "TPA-Full-Logo"
                         loading = "lazy"
                         src = {TPALOGO}
                     />

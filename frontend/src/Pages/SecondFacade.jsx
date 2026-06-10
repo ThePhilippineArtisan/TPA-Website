@@ -4,7 +4,6 @@ import SectionBreaker from "/placeholder-breaker.png"
 
 import "../CSS/SecondFacade.css"
 
-import RollingHeadlines from "../Components/RollingHeadlines.jsx";
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
 import Tabs from "../Components/Tabs.jsx";
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
@@ -16,7 +15,6 @@ const SecondFacade = () => {
 
     return(
         <div className = "Second-Facade">
-            <RollingHeadlines />
             <Tabs />
             
             <div className = "Below-Cover-Photo">   

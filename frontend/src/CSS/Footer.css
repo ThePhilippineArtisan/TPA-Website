@@ -1,7 +1,7 @@
 .Footer{
-    background-color: #0265A9;
-    
-    color: white;
+    color: #0265A9;
+    border-top: 8px solid #0265A9;
+    background-color: white;
     font-weight: 600;
 
     display: flex;
@@ -11,7 +11,8 @@
 
 .Top-Footer{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0px 2rem;
 }
 
 .Bottom-Footer{
@@ -50,6 +51,11 @@
     height: 20dvh;
 }
 
+#TPA-Full-Logo:hover{
+    transition: 0.5s;
+    transform: scale(1.2);
+}
+
 .Right-Footer{
     display: flex;
     justify-content: center;
@@ -80,4 +86,3 @@
     transition: 0.2s;
     transform: scale(1.2);
 }
-
