@@ -22,22 +22,94 @@
     0% { background-position: 0% 0%, 100% 100%, 50% 50%; }
     50% { background-position: 100% 0%, 0% 100%, 20% 80%; }
     100% { background-position: 100% 100%, 0% 0%, 80% 20%; }
+}
 
 
+.Admin-Log-In-Form-Container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+
+    width: 100%;
 }
 
 .Admin-Log-In-Form{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    text-align: center;
     align-items: center;
 
-    height: 75dvh;
-    width: 50%;
+    height: 50dvh;
+    width: 30%;
+    padding: 2rem;
 
-    background-color: hsla(0, 0%, 100%, 0.65);
-    backdrop-filter: blur(3.1px);
-    -webkit-backdrop-filter: blur(3.1px);
-    border-radius: 2rem;
-    filter: drop-shadow(8px 10px 8px rgba(0, 102, 165, 0.562));
+    background-color: white;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1.5rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 63, 105, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.Admin-Log-In-Form p{
+    font-size: 1rem;
+    color: gray;
+    font-weight: 700;
+}
+
+.Admin-Mid-Bottom-Part{
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.Admin-Log-In-Form-Inputs p{
+    text-align: start;
+    color: #0066a5;
+    line-height: 4px;
+    font-weight: 700;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.Admin-Log-In-Form-Inputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0.25rem;
+    width: 80%;
+}
+
+.Admin-Log-In-Form-Inputs input{
+    padding: 1rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.Admin-Log-In-Form-Button{
+    border-radius: 1rem;
+    padding: 0.5rem;
+    width: 90%;
+    background-color: #0066a5;
+    color: white;
+}
+
+.Admin-Log-In-Form-Button h2{
+    color: white;
+}
+
+.Admin-Log-In-Form-Button button{
+    border-radius: 16px;
+    width: 100%;
+    border: transparent;
+    background-color: #0066a5;
 }
