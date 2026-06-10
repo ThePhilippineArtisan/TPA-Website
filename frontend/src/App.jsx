@@ -2,19 +2,23 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import AnimatedLoader from "./Pages/AnimatedLoader.jsx";
 
+// Components Folder
 const NavbarComponent = lazy(() => import('./Components/NavbarComponent.jsx'));
 const Footer = lazy(() => import('./Components/Footer.jsx'));
+
 const FirstFacade = lazy(() => import('./Pages/FirstFacade.jsx'));
 const SecondFacade = lazy(() => import('./Pages/SecondFacade.jsx'));
 const ArticlePage = lazy(() => import('./Pages/ArticlePage.jsx'));
 const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'));
 const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'));
 const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'));
-const CreateArticlePage = lazy(() => import('./Pages/CreateArticlePage.jsx'));
 const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'));
 const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'));
 const StaffProfilePage = lazy (() => import('./Pages/StaffProfile.jsx'))
-const AdminLogInPage = lazy (() => import('./Pages/AdminPageLogIn.jsx'))
+
+// AdminPortal Folder
+const AdminLogInPage = lazy (() => import('./AdminPortal/AdminPageLogIn.jsx'))
+const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'));
 
 const MainLayout = () => {
   return (
@@ -72,27 +76,42 @@ const HomePage = () => {
   );
 };
 
+const ProtectedRoute = () => {
+  const isAuth = localStorage.getItem("isAuth") === "true"
+
+  if(!isAuth){
+    return <Navigate to = "/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" replace />
+  }
+
+  return <Outlet />
+}
+
 const App = () => {
   return (
     <div className="app-wrapper">
       <Router>
         <Routes>
-          <Route element={<MainLayout />}>
+          <Route element = {<ProtectedRoute />}>
+            <Route path = "/create-article" element = {<CreateArticlePage />} />
+          </Route>
+
+          <Route element = {<MainLayout />}>
             
-            <Route path="/" element={<HomePage />} />
+            <Route path = "/" element={<HomePage />} />
             
-            <Route path="/article/:articleId" element={<ArticlePage />} />
-            <Route path="/joseph-brian-balut" element={<ArticlePage />} />
-            <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot/josephbrianbalut" element={<AdminLogInPage />} />
-            <Route path="/latest" element={<LatestPosts />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
-            <Route path="/releases" element={<ReleasesPage />} />
-            <Route path="/create-article" element={<CreateArticlePage />} />
+            <Route path ="/article/:articleId" element={<ArticlePage />} />
+            <Route path = "/joseph-brian-balut" element={<ArticlePage />} />
+            <Route path = "/latest" element={<LatestPosts />} />
+            <Route path = "/about" element={<AboutPage />} />
+            <Route path = "/staff/:staffSlug" element={<StaffProfilePage />} />
+            <Route path = "/releases" element={<ReleasesPage />} />
             
-            <Route path="/media-segment" element={<MediaSegmentPage />} />
-            <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
-            <Route path="/media-segment/id" element={<MediaSegmentArticle />} />
+            <Route path = "/media-segment" element={<MediaSegmentPage />} />
+            <Route path = "/media-segment/:id" element={<MediaSegmentArticle />} />
+            <Route path = "/media-segment/id" element={<MediaSegmentArticle />} />
+
+            
+            <Route path = "/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
 
           </Route>
         </Routes>

@@ -1,6 +1,27 @@
-import "../CSS/AdminPageLogIn.css"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import "./AdminPageLogIn.css"
 
 const AdminPageLogIn = () => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("")
+
+    const navigate = useNavigate()
+
+    const handleSubmit = (submitted) => {
+        submitted.preventDefault()
+        setLoading(true);
+        setErrorMsg("")
+
+        setTimeout(() => {
+            if(email === "admin@tpa.com" && password === "admin") // temporary placeholder credentials
+            localStorage.setItem("isAuth", "true")
+            navigate("/admin/dashboard")
+        })
+    }
+
     return(
         <div className = "Admin-Log-In-Full-Page">
             <div className = "Admin-Log-In-Form-Container">

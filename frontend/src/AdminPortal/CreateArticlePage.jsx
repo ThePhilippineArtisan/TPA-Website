@@ -15,8 +15,8 @@ import ATTACH from "../assets/Miniature_Icon_Version/Attach-File.svg"
 import Author from "../assets/Miniature_Icon_Version/Author.svg"
 import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
 
-import "../CSS/CreateArticlePage.css"
-import StaffModal from "../Modals/SelectStaffersModal.jsx"
+import "../AdminPortal/CreateArticlePage.css"
+import StaffModal from "./Modals/SelectStaffersModal.jsx"
 
 const CreateArticlePage = () => {
     // People states
