@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import TPAWhite from "../assets/Miniature_Icon_Version/TPA-Blue.png";
 import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.png";
@@ -7,6 +7,8 @@ import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.png";
 import "../CSS/Navbar.css"
 
 const NavbarComponent = () => {
+
+    const location = useLocation();
 
     useEffect(() => {
         let lastScrollTop = 0;
@@ -31,11 +33,52 @@ const NavbarComponent = () => {
         };
     }, []);
 
+    const smoothScrollTo= (targetY, duration = 800) => {
+        const startY = window.scrollY
+        const difference = targetY - startY
+        let startTime = null
+
+        const step = (timestamp) => {
+            if(!startTime)
+                startTime = timestamp
+            const progress = timestamp - startTime
+            const percent = Math.min(progress / duration, 1)
+
+            const ease = percent < 0.5 ? 2 * percent * percent : -1 + (4 - 2 * percent) * percent // how smooth imma blow my ish 
+
+            window.scrollTo(0, startY + difference * ease)
+
+            if(progress < duration){
+                window.requestAnimationFrame(step)
+            }
+        }
+
+        window.requestAnimationFrame(step)
+    }
+
+
+    const handleNavClick = (e, targetHash) => {
+        if (location.pathname === "/") {
+            e.preventDefault()
+
+            const elementId = targetHash.substring(1)
+            const element = document.getElementById(elementId)
+            if (element) {
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY
+                
+                const offsetPosition = elementPosition
+                
+                smoothScrollTo(offsetPosition, 800)
+                window.history.pushState(null, "", targetHash)
+            }
+        }
+    }
+
     return (
         <div className="navbar-container">
             <div className="navbar-box">
                 <div className="tpa-logo">
-                    <Link to="/#home">
+                    <Link to="/#home" onClick={(e) => handleNavClick(e, "#home")}>
                         <img
                             loading="lazy"
                             id="tpa-logo"
@@ -46,10 +89,10 @@ const NavbarComponent = () => {
                 </div>
 
                 <div className="navbar-links">
-                    <a href= "#home"> Home </a>
-                    <a href= "#news"> News </a> 
-                    <a href= "#releases"> Releases </a>
-                    <a href= "#media-segment"> Media Segments </a>
+                    <Link to = "/#home" onClick={(e) => handleNavClick(e, "#home")}> Home </Link>
+                    <Link to = "/#news" onClick={(e) => handleNavClick(e, "#news")}> News </Link> 
+                    <Link to = "/releases"> Releases </Link>
+                    <Link to= "/media-segment"> Media Segments </Link>
                 </div>
 
                 <Link to="/about" className="tpa-circle-logo">

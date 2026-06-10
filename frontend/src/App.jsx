@@ -35,20 +35,29 @@ const MainLayout = () => {
 const HomePage = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    if (location.hash) {
-      const elementId = location.hash.substring(1); 
-      const element = document.getElementById(elementId);
+  const smoothScrollTo = (targetY, duration = 800) => {
+    const startY = window.scrollY
+    const difference = targetY - startY
+    let startTime = null
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const progress = timestamp - startTime
+      const percent = Math.min(progress / duration, 1)
       
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+      const ease = percent < 0.5 
+        ? 2 * percent * percent 
+        : -1 + (4 - 2 * percent) * percent
+
+      window.scrollTo(0, startY + difference * ease)
+
+      if (progress < duration) {
+        window.requestAnimationFrame(step)
       }
-    } else {
-      window.scrollTo(0, 0); 
     }
-  }, [location]);
+
+    window.requestAnimationFrame(step)
+  }
 
   return (
     <>
