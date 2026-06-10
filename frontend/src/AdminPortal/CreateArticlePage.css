@@ -2,17 +2,16 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
+    margin: 5rem 0rem;
     padding: 2rem;
-    margin-top: 10rem;
     
-    background: linear-gradient(to bottom, #ffffff 0%, #0092f32a 30%, #0099ff3f 100%);
+    
 }
 
 .Editor-Rectangle{
     display: flex;
     flex-direction: column;
-
-    margin: 1rem;
+    height: auto;
 }
 
 .Text-Formatting-Section{

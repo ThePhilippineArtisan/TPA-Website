@@ -16,40 +16,55 @@ const AdminPageLogIn = () => {
         setErrorMsg("")
 
         setTimeout(() => {
-            if(email === "admin@tpa.com" && password === "admin") // temporary placeholder credentials
+            if(email === "admin@tpa.com" && password === "admin") {// temporary placeholder credentials
             localStorage.setItem("isAuth", "true")
             navigate("/admin/dashboard")
-        })
+        } else {
+            setErrorMsg("Invalid Credentials.")
+            setLoading(false)
+        }
+    })
     }
 
     return(
         <div className = "Admin-Log-In-Full-Page">
             <div className = "Admin-Log-In-Form-Container">
-                <div className = "Admin-Log-In-Form">
+                <form onSubmit = {handleSubmit} className = "Admin-Log-In-Form">
                     <div>
                         <h1> Admin Portal </h1>
                         <p> Sign-in using your provided credentials to explore the dashboard</p>
                     </div>
+                    {errorMsg && <div className = "Admin-Login-Error" style={{ color: '#ff4d4d', marginTop: '10px', fontSize: '0.9rem', textAlign: 'center' }}>{errorMsg}</div>}
                     <div className = "Admin-Mid-Bottom-Part">
                         <div className = "Admin-Log-In-Form-Inputs">
                             <div>
                                 <p> EMAIL ADDRESS </p>
                                 <input
+                                    type = "email"
                                     placeholder = "credentials@gmail.com"
+                                    value = { email }
+                                    onChange = {(e) => setEmail(e.target.value)}
+                                    required
                                 />
                             </div>
                             <div>
                                 <p> PASSWORD </p>
                                 <input
-                                    placeholder="••••••••" 
+                                    type = "password"
+                                    placeholder = "••••••••" 
+                                    value = {password}
+                                    onChange = {(e) => setPassword(e.target.value)}
+                                    required
                                 />
                             </div>
                         </div>
                     </div>
                     <div className = "Admin-Log-In-Form-Button">
-                        <button> <h2>Log-In</h2></button>
+                        <button type = "submit" disabled = {loading}> 
+                            <h2> {loading ? "Logging in..." : "Log-In"} </h2>
+                        </button>
                     </div>
-                </div>    
+                </form>    
             </div>
         </div>
     )

@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState} from "react"
 
-import "../CSS/SelectStaffersModal.css"
+import "../Modals/SelectStaffersModal.css"
 
 const SelectStaffersModal = ({isOpen, onClose, staffers, onConfirm}) => {
     const dialogRef = useRef(null)

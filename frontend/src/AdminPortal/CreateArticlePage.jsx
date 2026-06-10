@@ -126,7 +126,6 @@ const CreateArticlePage = () => {
 
     return(
         <div className = "Entire-Page">
-            <>
                 <div className = "Editor-Rectangle">
 
                     <div className = "Text-Formatting-Section">
@@ -246,11 +245,11 @@ const CreateArticlePage = () => {
 
                     </div>
 
-                </>
+                    <div className = "Preview-Section">
+                        <h1> Article Preview </h1>
+                    </div>
+
             
-            <div className = "Preview-Section">
-                <h1> Article Preview </h1>
-            </div>
         </div>
     )
 }

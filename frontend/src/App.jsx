@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, Navigate } from 'react-router-dom';
 import AnimatedLoader from "./Pages/AnimatedLoader.jsx";
 
 // Components Folder
@@ -18,6 +18,8 @@ const StaffProfilePage = lazy (() => import('./Pages/StaffProfile.jsx'))
 
 // AdminPortal Folder
 const AdminLogInPage = lazy (() => import('./AdminPortal/AdminPageLogIn.jsx'))
+const AdminPage = lazy (() => import('./AdminPortal/AdminPage.jsx'))
+const AdminDashboard = lazy (() => import('./AdminPortal/AdminDashboard.jsx'))
 const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'));
 
 const MainLayout = () => {
@@ -92,7 +94,14 @@ const App = () => {
       <Router>
         <Routes>
           <Route element = {<ProtectedRoute />}>
-            <Route path = "/create-article" element = {<CreateArticlePage />} />
+            <Route element = { <AdminPage />}>
+              <Route path = "/admin/dashboard" element = { <AdminDashboard />} />
+              <Route path = "/admin/create-article" element = {<CreateArticlePage />} />
+              <Route path = "/admin/articles" element = {<div style={{padding: '20px'}}><h1>Manage Articles</h1><p>Manage your articles here.</p></div>} />
+              <Route path = "/admin/staff" element = {<div style={{padding: '20px'}}><h1>Manage Staff</h1><p>Manage your staff profiles here.</p></div>} />
+              <Route path = "/admin/manage-page" element = {<div style={{padding: '20px'}}><h1>Manage Front Page</h1><p>Manage front page components here.</p></div>} />
+              <Route path = "/admin/add-releases" element = {<div style={{padding: '20px'}}><h1>Add Releases</h1><p>Add and manage media releases here.</p></div>} />
+            </Route>
           </Route>
 
           <Route element = {<MainLayout />}>

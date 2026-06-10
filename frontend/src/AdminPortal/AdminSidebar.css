@@ -1,0 +1,93 @@
+.admin-sidebar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    position: sticky;
+    top: 0;
+
+    height: 97dvh;
+    width: 25rem;
+
+    margin-top: 12px;
+    border-right: 5px solid #0265A9;
+    border-top: 3px solid #0265A9;
+    border-bottom: 3px solid #0265A9;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+
+    background-color: white;
+}
+
+.sidebar-top{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 1rem;
+}
+
+.brand-name{
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.sidebar-header button{
+    background-color: transparent;
+    border: transparent;
+    font-size: 2rem;
+    color: gray;
+    font-weight: 900;
+}
+
+.sidebar-header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+
+}
+
+.sidebar-menu{
+    display: flex;
+    flex-direction: column;
+    padding: 0rem 1.5rem;
+    gap: 1rem;
+}
+
+.menu-item{
+    padding: 2rem 1rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    border-radius: 1rem;
+
+    text-decoration: none;
+    color: rgb(49, 49, 49);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.menu-item:hover{
+    color: #0265A9;
+    cursor: pointer;
+}
+
+.sidebar-footer{
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    border-radius: 1rem;
+
+    text-decoration: none;
+    color: rgb(49, 49, 49);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.sidebar-footer button{
+    background-color: #0265A9;
+    border: transparent;
+    font-size: 1rem;
+    color: white;
+    font-weight: 900;
+
+    width: 100%;
+    padding: 1.25rem 0rem;
+    border-bottom-right-radius: 1rem;
+}
