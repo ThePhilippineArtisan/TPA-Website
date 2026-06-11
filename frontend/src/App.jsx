@@ -21,6 +21,8 @@ const AdminLogInPage = lazy(() => import('./AdminPortal/AdminPageLogIn.jsx'))
 const AdminPage = lazy(() => import('./AdminPortal/AdminPage.jsx'))
 const AdminDashboard = lazy(() => import('./AdminPortal/AdminDashboard.jsx'))
 const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'));
+const ManageArticlesPage = lazy(() => import('./AdminPortal/ManageArticles.jsx'));
+const ManageStaffPage = lazy(() => import('./AdminPortal/ManageStaff.jsx'));
 
 const MainLayout = () => {
   return (
@@ -95,8 +97,8 @@ const App = () => {
             <Route element={<AdminPage />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/create-article" element={<CreateArticlePage />} />
-              <Route path="/admin/articles" element={<div style={{ padding: '20px' }}><h1>Manage Articles</h1><p>Manage your articles here.</p></div>} />
-              <Route path="/admin/staff" element={<div style={{ padding: '20px' }}><h1>Manage Staff</h1><p>Manage your staff profiles here.</p></div>} />
+              <Route path="/admin/articles" element={<ManageArticlesPage/>}  />
+              <Route path="/admin/staff" element={<ManageStaffPage/>}  />
               <Route path="/admin/manage-page" element={<div style={{ padding: '20px' }}><h1>Manage Front Page</h1><p>Manage front page components here.</p></div>} />
               <Route path="/admin/add-releases" element={<div style={{ padding: '20px' }}><h1>Add Releases</h1><p>Add and manage media releases here.</p></div>} />
             </Route>

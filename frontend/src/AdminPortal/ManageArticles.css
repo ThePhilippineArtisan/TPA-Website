@@ -1,0 +1,15 @@
+.Manage-Articles-Page{
+    height: 87%;
+    width: 100%;
+    padding: 3rem;
+}
+
+.Manage-Articles-Page-Header{
+    display: flex;
+    flex-direction: column;
+}
+
+.Manage-Articles-Page-Header p{
+    color: gray;
+    font-weight: 300;
+}

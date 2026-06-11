@@ -3,7 +3,7 @@ import "./AdminDashboard.css"
 const AdminDashboard = () => {
     return(
         <div className = "Admin-Dashboard">
-            <div className = "Admin-Dashboard-Title">
+            <div className = "Admin-Dashboard-Header">
                 <h1> Welcome to the Admin Dashboard!</h1>
                 <p> Check the website's stats, nerd crap, and everything in between. </p>
             </div>

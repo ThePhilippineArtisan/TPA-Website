@@ -4,12 +4,12 @@
     padding: 3rem;
 }
 
-.Admin-Dashboard-Title{
+.Admin-Dashboard-Header{
     display: flex;
     flex-direction: column;
 }
 
-.Admin-Dashboard-Title p{
+.Admin-Dashboard-Header p{
     color: gray;
     font-weight: 300;
 }
@@ -42,7 +42,7 @@
 
 .Admin-Dashboard-Bottom-BTN{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
@@ -50,7 +50,7 @@
 }
 
 .Admin-Dashboard-Superlative-Container{
-    width: 60%;
+    width: 50%;
 }
 
 .Admin-Dashboard-Mosts{

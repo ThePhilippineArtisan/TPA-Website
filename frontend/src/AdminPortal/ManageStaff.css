@@ -1,0 +1,66 @@
+.Manage-Staff-Page{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 90%;
+    width: 100%;
+    padding: 2rem;
+    margin-top: 1rem;
+    box-sizing: border-box;
+}
+
+.Manage-Staff-Page-Header{
+    display: flex;
+    flex-direction: column;
+}
+
+.Manage-Staff-Page-Header p{
+    color: gray;
+    font-weight: 300;
+}
+
+.Manage-Staff-Grid-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.Manage-Staff-Table{
+    width: 90%;
+    height: 75dvh;
+    border: 2px solid gray;
+
+    background-color: white;
+
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+}
+
+.Manage-Staff-Grid-Columns{
+    display: flex;
+
+    height: 60px;
+    
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+
+    border-bottom: 1px solid blue;
+    
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+.Manage-Staff-Grid-Column{
+    width: 20rem;
+
+    padding: 0rem 1rem;
+    text-align: center;
+
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    
+    flex: 0 0 auto;   
+    min-width: max-content;
+    white-space: nowrap;
+}
