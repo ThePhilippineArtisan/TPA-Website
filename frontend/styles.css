@@ -15,11 +15,5 @@ html, body{
 }
 
 html.homepage-snap {
-  scroll-behavior: auto !important;
-}
-
-@media (hover: none) {
-  html.homepage-snap {
-    scroll-snap-type: y mandatory;
-  }
+  scroll-snap-type: y mandatory;
 }

@@ -42,119 +42,24 @@ const HomePage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    document.documentElement.classList.add('homepage-snap');
-
-    let activeSectionIndex = 0;
-    let isScrolling = false;
-    let rafId = null;
-
-    const getSections = () => {
-      return [
-        document.querySelector('.Artisan-Logo-First-Facade'),
-        document.querySelector('.First-BG-First-Facade')
-      ].filter(Boolean);
-    };
-
-    const handleWheel = (e) => {
-      if (window.matchMedia('(hover: none)').matches) return;
-
-      const sections = getSections();
-      if (sections.length === 0) return;
-
-      if (Math.abs(e.deltaY) < 10) return;
-
-      if (isScrolling) {
-        e.preventDefault();
-        return;
-      }
-
+    const handleScroll = () => {
       const currentScroll = window.scrollY;
-      const target = sections[activeSectionIndex];
-      if (!target) return;
+      const cardsTop = window.innerHeight;
 
-      const targetY = target.getBoundingClientRect().top + window.scrollY;
-
-      if (e.deltaY > 0) {
-        // Scrolling down
-        if (activeSectionIndex < sections.length - 1) {
-          e.preventDefault();
-          activeSectionIndex++;
-          scrollToSection(activeSectionIndex, sections, 'down');
-        }
-      } else if (e.deltaY < 0) {
-        // Scrolling up
-        if (currentScroll > targetY + 2) {
-          // Allow normal scrolling up when we are below the target top boundary
-          return;
-        }
-
-        if (activeSectionIndex > 0) {
-          e.preventDefault();
-          activeSectionIndex--;
-          scrollToSection(activeSectionIndex, sections, 'up');
-        }
+      if (currentScroll > cardsTop + 10) {
+        document.documentElement.classList.remove('homepage-snap');
+      } else {
+        document.documentElement.classList.add('homepage-snap');
       }
     };
 
-    const scrollToSection = (index, sections, direction = 'down') => {
-      const target = sections[index];
-      if (!target) return;
+    handleScroll();
 
-      isScrolling = true;
-      activeSectionIndex = index;
-
-      const targetY = target.getBoundingClientRect().top + window.scrollY;
-      const startY = window.scrollY;
-      const difference = targetY - startY;
-      const duration = 500; // duration in ms
-      let startTime = null;
-
-      const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
-
-      const animateScroll = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-        const progress = timestamp - startTime;
-        const percent = Math.min(progress / duration, 1);
-
-        window.scrollTo(0, startY + difference * easeOutQuart(percent));
-
-        if (progress < duration) {
-          rafId = window.requestAnimationFrame(animateScroll);
-        } else {
-          isScrolling = false;
-        }
-      };
-
-      if (rafId) window.cancelAnimationFrame(rafId);
-      rafId = window.requestAnimationFrame(animateScroll);
-    };
-
-    const handleScrollUpdate = () => {
-      if (isScrolling) return;
-
-      const sections = getSections();
-      const scrollPos = window.scrollY + window.innerHeight / 2;
-
-      for (let i = 0; i < sections.length; i++) {
-        const target = sections[i];
-        const targetY = target.getBoundingClientRect().top + window.scrollY;
-        const targetHeight = target.offsetHeight;
-
-        if (scrollPos >= targetY && scrollPos < targetY + targetHeight) {
-          activeSectionIndex = i;
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('scroll', handleScrollUpdate);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       document.documentElement.classList.remove('homepage-snap');
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('scroll', handleScrollUpdate);
-      if (rafId) window.cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
