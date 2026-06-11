@@ -11,19 +11,19 @@ const AdminDashboard = () => {
             <div className = "Admin-Dashboard-BTN">
                 <div className = "Admin-Dashboard-BTN-Stats">
                     <p> 6,967,420 </p>
-                    <h3> Total Website visits </h3>
+                    <h3> Website visits </h3>
                 </div>
                 <div className = "Admin-Dashboard-BTN-Stats">
-                    <p> 6,967,420 </p>
+                    <p> 6,967 </p>
                     <h3> Website visits for the past 30 days </h3>
                 </div>
                 <div className = "Admin-Dashboard-BTN-Stats">
-                    <p> 1.2 minutes </p>
-                    <h3> Average Article Retention </h3>
+                    <p> 23.26 GB / 100 GB </p>
+                    <h3> Cloudflare R2 Image storage </h3>
                 </div>
                 <div className = "Admin-Dashboard-BTN-Stats">
-                    <p> 28 revolutions </p>
-                    <h3> Vodoo Statistics for Revolut </h3>
+                    <p> $123.67 </p>
+                    <h3> Cloudflare monthly bill </h3>
                 </div>
             </div>
             
