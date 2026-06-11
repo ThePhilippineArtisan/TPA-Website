@@ -151,7 +151,7 @@ const ArticlePage = () => {
             </div>
 
             <div className = "Below-Small-Photos">
-                <div className = "Article-Body">
+                <div className = "Article-Body"> {/**dangerouslySetInnerHTML={{ __html: article.article_body }}  */}
                     <p>
                     TUP Manila held the final day of its 120th Commencement Exercises on August 7, 2025, at the Theatre at Solaire, recognizing the graduates from the College of Liberal Arts (CLA) and the College of Science (COS) in the morning session. <br></br>
                     <br></br>    A total of 770 graduates from CLA and COS were recognized during the morning ceremony. Among them was Jelena Anne Inovio from the College of Liberal Arts, who was awarded as the sole summa cum laude of the batch. In her speech, she emphasized that true success is not about being the best alone, but about helping others have the chance to be their best too.
