@@ -51,8 +51,7 @@ const HomePage = () => {
     const getSections = () => {
       return [
         document.querySelector('.Artisan-Logo-First-Facade'),
-        document.querySelector('.First-BG-First-Facade'),
-        document.querySelector('#news')
+        document.querySelector('.First-BG-First-Facade')
       ].filter(Boolean);
     };
 
@@ -84,7 +83,7 @@ const HomePage = () => {
         }
       } else if (e.deltaY < 0) {
         // Scrolling up
-        if (currentScroll > targetY + 15) {
+        if (currentScroll > targetY + 2) {
           // Allow normal scrolling up when we are below the target top boundary
           return;
         }
