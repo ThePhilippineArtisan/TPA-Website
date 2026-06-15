@@ -103,6 +103,7 @@
   color: #ffffff;
   padding: 2rem 0rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: -1px;
 
   opacity: 0;
   transform: translateY(50px);
@@ -127,8 +128,10 @@
   animation: fadeUp 2s ease-out forwards;
 }
 
-.DBFF-Text a {
-  color: #0099ff;
+.DBFF-Text p {
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
   cursor: pointer;
   text-decoration: none;
 }
@@ -215,7 +218,7 @@
   
   transform: rotate(-1deg) translate(-10px, 15px);
 
-  filter: blur(20px) saturate(1.5);
+  filter: blur(10px) saturate(1.5);
   opacity: 0.8;
   transition: all 0.2s ease;
 }

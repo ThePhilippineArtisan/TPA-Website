@@ -151,7 +151,7 @@ const FirstFacade = () => {
                     <div className = "DBFF-Headline">
                         <p> {mainSlide.header} </p>
                         <div className = "DBFF-Text">
-                            <p> <i> {mainSlide.text1 && <span>{mainSlide.text1} </span>}</i> </p>
+                            <p style = {{fontSize: "1.5rem"}}> <i> {mainSlide.text1 && <span>{mainSlide.text1} </span>}</i> </p> <br></br>
                             <p> {mainSlide.text2 && <span>{mainSlide.text2} </span>} </p>
                             <p> {mainSlide.text3 && <span>{mainSlide.text3} </span>} </p>
                             <p> {mainSlide.text4 && <span>{mainSlide.text4} </span>} </p>
