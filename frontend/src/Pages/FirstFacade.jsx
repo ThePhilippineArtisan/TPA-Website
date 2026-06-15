@@ -79,7 +79,18 @@ const FirstFacade = () => {
                 />
             </div>
                 <RollingHeadlines />
-            <div className="First-BG-First-Facade">
+            <div className = "First-BG-First-Facade">
+                <div 
+                style = {{
+                    backgroundImage: `url(${mainSlide.backgroundSRC})`,
+                    filter: "blur(3px)",
+                    position: "absolute",
+                    inset: 0,
+                    zIndex: -2,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+                ></div>
                 
                 {/* Background image with blur 
                 <div
@@ -151,7 +162,7 @@ const FirstFacade = () => {
                         </div>
                     </div>
 
-                    <div className = "Card-Images">
+                    <div className = "Card-Images" style={{ "--cover-img": `url(${mainSlide.image_url})` }}>
                         <img
                             key = {mainSlide.id}
                             loading = "lazy" 
