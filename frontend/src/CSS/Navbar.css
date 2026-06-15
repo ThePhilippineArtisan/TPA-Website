@@ -27,14 +27,14 @@
 }
 
 .navbar-box a{
-    font-size: 1rem;
+    font-size: 2rem;
     color: hsl(204, 98, 34);
     text-decoration: none;
 
-    font-weight: bold;
+    font-weight: 900;
 
     text-decoration: none;
-    color: black;
+    color: rgb(29, 29, 29);
     gap: 3rem;
 }
 

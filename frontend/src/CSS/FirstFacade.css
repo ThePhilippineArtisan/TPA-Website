@@ -78,10 +78,22 @@
   animation: flicker 3s infinite;
   transition: transform 0.5s ease-in-out;
   z-index: 2;
+
+  
+  filter: drop-shadow(2px 0px 0px #000000)
+          drop-shadow(-2px 0px 0px #000000)
+          drop-shadow(0px 2px 0px #000000)
+          drop-shadow(0px -2px 0px #000000);
 }
 
 .Artisan-Logo-First-Facade img:hover {
   transform: scale(1.1);
+}
+
+.Artisan-Logo-First-Facade p{
+  font-size: 2rem;
+  color: white;
+  font-weight: 800;
 }
 
 .DBFF-Headline {
@@ -163,7 +175,7 @@
   left: 0;
   width: 100%;
   height: 125px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #003f69);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #003f69cc);
   pointer-events: none;
   z-index: 5;
 }
@@ -197,6 +209,11 @@
 
   transition: transform 0.2s ease;
   z-index: 2;
+  
+  filter: drop-shadow(2px 0px 0px #000000)
+          drop-shadow(-2px 0px 0px #000000)
+          drop-shadow(0px 2px 0px #000000)
+          drop-shadow(0px -2px 0px #000000);
 }
 
 .Card-Images::after {
@@ -218,7 +235,7 @@
   
   transform: rotate(-1deg) translate(-10px, 15px);
 
-  filter: blur(10px) saturate(1.5);
+  filter: blur(8px) saturate(1.5);
   opacity: 0.8;
   transition: all 0.2s ease;
 }
