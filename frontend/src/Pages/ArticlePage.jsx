@@ -109,7 +109,8 @@ const ArticlePage = () => {
                 <div className = "Foreground-Photo ">
                     <img src = {currentPhoto} loading = "lazy"/>                
                 </div>
-
+                
+{/** 
                 <div className = "Extra-Photos-Container-Two">
                     <div className = "Extra-Photos"> 
                         
@@ -123,9 +124,10 @@ const ArticlePage = () => {
                             />
                         ))}
                         
-                        {/** <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/> **/}
+                        {/** <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
                     </div>
                 </div>
+*/}
             </div>
 
             <div className = "Photo-Illustration-Layout-Credits" style = {{textAlign: "center"}}> 
@@ -172,6 +174,8 @@ const ArticlePage = () => {
                     <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
                     <br></br>
                     <h4> 1,234 words | 2 minute read </h4>
+                    <br></br>
+                    <h4> Want to request full-quality images? <span style = {{color: "#0265A9"}}> Click here. </span> </h4>
                     <br></br>
                     <hr ></hr>                 
                     <VerticalFastNews />

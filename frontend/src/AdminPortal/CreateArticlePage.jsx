@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
+import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
@@ -68,12 +69,6 @@ const CreateArticlePage = () => {
         }
         addNewArticle(true);
     };
-
-    const slugify = str =>
-        str.toLowerCase()
-            .replace(/[^\w\s]/g, "")
-            .trim()
-            .replace(/\s+/g, "-")
 
     // const wordCounter = bodystr =>
 

@@ -7,9 +7,24 @@ import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
 import RollingHeadlines from "../Components/RollingHeadlines.jsx";
 import "../CSS/FirstFacade.css"
 
+let cachedSlides = null
+
+const preloadImages = (slidesArray) => {
+    slidesArray.forEach((slide) => { // for each slide, do this arrow function
+        if(slide.image_url){
+            const img = new Image()
+            img.src = slide.image_url
+        }
+        if(slide.backgroundSRC){
+            const img = new Image()
+            img.src = slide.backgroundSRC
+        }
+    }) 
+}
+
 const FirstFacade = () => {
 
-    const [slides, setSlides] = useState([])
+    const [slides, setSlides] = useState(cachedSlides || [])
     const artisanLogo = slides.find(logo => logo.order === 999);
 
 

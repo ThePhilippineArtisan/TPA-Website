@@ -18,10 +18,13 @@ html.homepage-snap {
   scroll-snap-type: y mandatory;
 }
 
-h1, h2, h3, h4, h5{
+/**
+img{
 
-  filter: drop-shadow(0.5px 0px 0px #000000)
-          drop-shadow(-0.5px 0px 0px #000000)
-          drop-shadow(0px 0.5px 0px #000000)
-          drop-shadow(0px -0.5px 0px #000000);  
+  filter: drop-shadow(0.25px 0px 0px #000000)
+          drop-shadow(-0.25px 0px 0px #000000)
+          drop-shadow(0px 0.25px 0px #000000)
+          drop-shadow(0px -0.25px 0px #000000);  
 }
+
+**/

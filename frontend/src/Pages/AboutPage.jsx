@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { supabase } from "../supabaseClient"
+import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 
 import TPAWTurno from "/TPA-LEFT_BLUE.png"
 import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg"
@@ -36,17 +37,6 @@ const AboutPage = () => {
 
         fetchStaff() 
     }, []) 
-
-    const replaceUnderscore = (str) => {
-        if (!str) return "" 
-        return str.replaceAll("_", " ") 
-    }
-
-    const slugify = (name) => 
-        name.toLowerCase()
-        .replace(/[^\w\s]/g, "")
-        .trim()
-        .replace(/\s+/g, "-")
 
     const slides = [
         {

@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
+import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 
 import "./ManageStaff.css"
 
 const ManageStaff = () => {
     const [staff, setStaff] = useState([])
-
-    const replaceUnderscore = (str) => {
-        if (!str) return "" 
-        return str.replaceAll("_", " ") 
-    }
 
     useEffect(() => {
         const fetchStaff = async () => {

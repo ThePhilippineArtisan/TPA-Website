@@ -2,6 +2,7 @@
 import React, { useEffect, useState} from "react"
 import { useParams } from "react-router-dom"
 import { supabase } from "../supabaseClient"
+import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 
 import "../CSS/StaffProfile.css"
 
@@ -45,11 +46,6 @@ const StaffProfile = () => {
         if (!staffDetails) {
             return <div style={{ color: "white", textAlign: "center", marginTop: "5rem" }}>Staff member not found.</div>;
         }
-
-    const replaceUnderscore = (str) => {
-        if (!str) return "" 
-        return str.replaceAll("_", " ") 
-    }
     
     return(
         <div className = "Staff-Profile-Full-Page">
