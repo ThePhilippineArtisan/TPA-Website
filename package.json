@@ -18,5 +18,9 @@
     "url": "https://github.com/ThePhilippineArtisan/TPA-Website/issues"
   },
   "homepage": "https://github.com/ThePhilippineArtisan/TPA-Website#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1075.0",
+    "@aws-sdk/s3-request-presigner": "^3.1075.0"
+  }
 }
