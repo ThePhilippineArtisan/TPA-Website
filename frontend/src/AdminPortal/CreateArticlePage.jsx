@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
+import { compressImageUtils } from "../utils/imageUtils.js"
+import { formatDateReadable, formatRelativeTime } from "../utils/dateUtils"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
@@ -54,6 +56,44 @@ const CreateArticlePage = () => {
 
     // container for photo/s, initially empty array
     const [mediaImagePhoto, setMediaImagePhoto] = useState([])
+
+    // calls imageUtils.js = 
+    const handleFileChange = async (e) => {
+        const files = Array.from(e.target.files) 
+        
+        try{ // Compress all selected images
+            const compressedResults = await Promise.all(
+                files.map(async (file) => {
+                    const compressedBlob = await compressImageUtils(file)
+                    const previewUrl = URL.createObjectURL(compressedBlob)
+                    return {
+                        file: compressedBlob,
+                        name: file.name.replace(/\.[^/.]+$/, "") + ".webp",
+                        preview: previewUrl
+                    }
+                })
+            )
+            // add recent image into the array of mediaImagePhoto
+            setMediaImagePhoto(prev => [...prev, ...compressedResults])
+        } catch (error) {
+            console.error("Image compression error: ", error)
+            alert("Error compressing images: " + error.message)
+        }
+    }
+
+    const handleRemoveImage = (indexToRemove) => {
+        setMediaImagePhoto(prev => {
+            return prev.filter((imgObj, idx) => {
+                if(idx === indexToRemove){
+                    if(imgObj.preview){
+                        URL.revokeObjectURL(imgObj.preview)
+                    }
+                    return false
+                }
+                return true
+            })
+        })
+    }
 
     // Modal states for authors and media providers
     const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false)
@@ -147,6 +187,14 @@ const CreateArticlePage = () => {
         setSelectedMediaProviders([])
         setScheduledTime("")
         setShowDatePicker(false)
+
+        mediaImagePhoto.forEach(imgObj => {
+            if(imgObj.preview){
+                URL.revokeObjectURL(imgObj.preview) 
+            }
+        })
+        setMediaImagePhoto([])
+
         document.getElementById("Body-Text").innerHTML = ""
     }
 
@@ -196,9 +244,12 @@ const CreateArticlePage = () => {
                         />
 
                         <input
-                            id="file-upload"
-                            type="file"
-                            style={{ display: "none" }}
+                            id = "file-upload"
+                            type = "file"
+                            accept = "image/*"
+                            multiple
+                            style = {{ display: "none" }}
+                            onChange = {handleFileChange}
                         />
 
                     </label>
@@ -244,6 +295,21 @@ const CreateArticlePage = () => {
                     />
 
                 </div>
+
+                {/** List of Images with Remove Option through handleRemoveImage's index */}
+                {mediaImagePhoto.length > 0 && (
+                    <div className = "Selected-Images-List">
+                        <h4> Selected Images ({mediaImagePhoto.length}): </h4>
+                        <div className = "Selected-Images-Grid">
+                            {mediaImagePhoto.map((imgObj, idx) => (
+                                <div key = {idx} className = "Selected-Image-Item">
+                                    <span> {imgObj.name} </span>
+                                    <button type = "button" onClick = {() => handleRemoveImage(idx)}> Remove</button>
+                                </div>
+                            ))}
+                        </div> 
+                    </div>
+                )}
 
                 <div className="Text-Area">
                     <input

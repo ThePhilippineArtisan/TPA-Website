@@ -19,7 +19,7 @@ export const replaceUnderscore = (str) => {
  *
 */
 
-export const slugify = (str) => {s
+export const slugify = (str) => {
     if(!str)
         return ""
     return str

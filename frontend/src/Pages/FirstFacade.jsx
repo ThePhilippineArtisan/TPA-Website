@@ -98,7 +98,7 @@ const FirstFacade = () => {
                 <div 
                 style = {{
                     backgroundImage: `url(${mainSlide.backgroundSRC})`,
-                    filter: "blur(3px)",
+                    filter: "blur(5px)",
                     position: "absolute",
                     inset: 0,
                     zIndex: -2,

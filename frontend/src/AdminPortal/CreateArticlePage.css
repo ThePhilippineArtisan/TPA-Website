@@ -209,3 +209,74 @@ dialog{
     justify-content: center;
     align-items: center;
 }
+
+
+/* Selected images list styling in the editor */
+.Selected-Images-List {
+    margin: 1rem;
+    padding: 1.2rem;
+    border: 3px solid #000000;
+    border-radius: 15px;
+    background: #fcfcfc;
+    box-shadow: 4px 4px 0px #000000;
+    font-family: 'Inter', sans-serif;
+}
+
+.Selected-Images-List h4 {
+    margin: 0 0 0.8rem 0;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.Selected-Images-Grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.Selected-Image-Item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+    box-shadow: 2px 2px 0px #000000;
+}
+
+.Selected-Image-Item span {
+    font-family: monospace;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 75%;
+}
+
+.Selected-Image-Item button {
+    background: #ff5e5e;
+    color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 800;
+    box-shadow: 2px 2px 0px #000000;
+    transition: all 0.1s ease;
+}
+
+.Selected-Image-Item button:hover {
+    background: #ff3b3b;
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px #000000;
+}
+
+.Selected-Image-Item button:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #000000;
+}
