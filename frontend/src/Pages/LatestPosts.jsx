@@ -44,7 +44,7 @@ const LatestPosts = () => {
                                         <p> LOOK: TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </p>
 
                                         <div className = "Latest-Posts-Article-Author-Time">
-                                            <p>Cathlene Torrenueva </p><p> September 12, 2025</p>
+                                            <bold><p>Cathlene Torrenueva </p> </bold> <p> September 12, 2025</p>
                                         </div>
                                     </div>
                                 </div>
@@ -175,11 +175,12 @@ const LatestPosts = () => {
                 </div>
 
 
-            <div className = "Latest-Post-Filters">
-                <div className = "Latest-Post-Filter-Container">
-                    
+            <div className = "Latest-Post-Filters-Container">
+                <div className = "Latest-Post-Filter">
+
                     <br></br><h3>Short-Form News</h3><br></br> 
-                    <div style = {{border: "1px gray solid", borderRadius: "5px", padding: "0rem 1rem"}}>                    
+                    <hr></hr>
+                    <div>       
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>Just In</p></div>
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>In Case You Missed It!</p></div>
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>Announcement</p></div>
@@ -190,7 +191,8 @@ const LatestPosts = () => {
                     </div>
                     
                     <br></br><h3>Long-Form News</h3><br></br>
-                    <div style = {{border: "1px gray solid", borderRadius: "5px", padding: "0rem 1rem"}}>       
+                    <hr></hr>
+                    <div>        
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>University News</p></div>
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>Local News</p></div>
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>University News</p></div>
@@ -200,7 +202,8 @@ const LatestPosts = () => {
                     </div>
 
                     <br></br><h3>Look, In Photos, Highlights</h3><br></br> 
-                    <div style = {{border: "1px gray solid", borderRadius: "5px", padding: "0rem 1rem"}}>       
+                    <hr></hr>
+                    <div>       
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>Look</p></div>
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>In Photos</p></div>
                     <div className = "Individual-Filters"><input type = "checkbox"/><p>Highlights</p></div>
