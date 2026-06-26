@@ -20,7 +20,7 @@ const SecondFacade = () => {
                 <div className = "letterA">
                     <div className = "Large-News-Boxes">
                         <div className = "Large-Left-News-Column">
-                            <Link to = "/Latest" className = "Category" > LATEST NEWS <span>———{`>`}</span> </Link>  
+                            <Link to = "/Latest" className = "Category" > LATEST NEWS <span>⟶</span> </Link>  
                             {/**PUT HERE ANYTHING LATEST EXCEPT FAST NEWS */}
                             <Link to = "/Joseph-Brian-Balut"
                                 className = "Large-Photo-News" 
@@ -56,7 +56,7 @@ const SecondFacade = () => {
 
                 <VerticalFastNews />
             </div>
-            <Link to = "/Photo-Albums" className = "Category"> OPINION & EDITORIAL <span>———{`>`}</span></Link>
+            <Link to = "/Photo-Albums" className = "Category"> OPINION & EDITORIAL <span>⟶</span></Link>
 
                 <div className = "Large-Photo-News" onClick = "#"> 
                     <hr className = "Vertical-Divider"></hr>

@@ -5,7 +5,7 @@ const VideoShowcase = () => {
 
     return(
         <div className = "Video-Showcase">
-            <a href = "https://www.youtube.com/@tek_artisanmnl" target = "_blank"> TUNE IN WITH TEK ———{`>`} </a>
+            <a href = "https://www.youtube.com/@tek_artisanmnl" target = "_blank"> TUNE IN WITH TEK ⟶ </a>
             <div className = "Thumbnail-Container">
                 <div className = "Thumbnail-Videos">
                     <a href = "https://youtube.com/@tek_artisanmnl" target = "_blank">
