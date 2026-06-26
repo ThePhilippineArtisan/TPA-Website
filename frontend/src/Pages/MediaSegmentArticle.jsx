@@ -2,24 +2,30 @@ import "../CSS/MediaSegmentArticle.css"
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx"
 import "../CSS/LatestMediaSegment.css"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
+import { Link } from "react-router-dom";
 
 const MediaSegmentArticle = () => {
     return(
         <div className = "Media-Segment-Article-Page">
             <div className = "Media-Segment-Article">
-                <div className = "Media-Segment-Image"
-                    style={{ "--bgImage": `url(${"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"})`}} >
+
+                <div className = "Media-Segment-Image">
+                    {/** style={{ "--bgImage": `url(${"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"})`}}  */}
+                        <div className = "Author-and-Details">
+                            <div>
+                                <span id = "Week-Segment"> Features Friday </span>
+                                <h1> The last resort of those drowning in a tide of corruption </h1>
+                                <div style = {{display: "flex", justifyContent: "space-between"}}>
+                                    <p> Written by <Link to = "#"> Joseph Brian Balut </Link> </p>
+                                    <p> Graphics by <Link to = "#"> Joseph Brian Balut </Link> </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
                         <img
                             src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"} 
                         />
-                        <div className = "Author-and-Details">
-                            <div>
-                                <h2> <span> Features Friday: </span> The last resort of those drowning in a tide of corruption </h2> <br></br>
-                                <p> Written by <span> Joseph Brian Balut </span></p>
-                                <p> Graphics by <span> Joseph Brian Balut </span></p>
-                                <br></br>
-                            </div>
-                        </div>
                 </div>
                 
                 <div className = "Media-Segment-Article-Below-Photo">

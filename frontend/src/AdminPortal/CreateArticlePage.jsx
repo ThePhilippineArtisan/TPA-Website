@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
-import { compressImageUtils } from "../utils/imageUtils.js"
+import { compressImage } from "../utils/imageUtils.js"
 import { formatDateReadable, formatRelativeTime } from "../utils/dateUtils"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
@@ -64,7 +64,7 @@ const CreateArticlePage = () => {
         try{ // Compress all selected images
             const compressedResults = await Promise.all(
                 files.map(async (file) => {
-                    const compressedBlob = await compressImageUtils(file)
+                    const compressedBlob = await compressImage(file)
                     const previewUrl = URL.createObjectURL(compressedBlob)
                     return {
                         file: compressedBlob,

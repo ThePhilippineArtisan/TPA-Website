@@ -11,15 +11,14 @@
   width: 95%;
   margin: 2% 2%;
   
-  background-color: hsla(0, 0%, 100%, 0.65);
-  backdrop-filter: blur(3.1px);
-  -webkit-backdrop-filter: blur(3.1px);
-  border: 3px solid hsl(204, 98, 34);
-  border-radius: 16px; 
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
 
-  box-shadow: 0 0 20px hsl(0, 0%, 0%); 
-  transition: box-shadow 0.3s ease-in-out;
-  transition: transform 0.5s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); 
+  transition: var(--transition-smooth);
 }
 
 .navbar-box.hidden{
@@ -27,15 +26,47 @@
 }
 
 .navbar-box a{
-    font-size: 2rem;
-    color: hsl(204, 98, 34);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--text-dark);
     text-decoration: none;
 
-    font-weight: 900;
+    font-weight: 700;
 
     text-decoration: none;
     color: rgb(29, 29, 29);
     gap: 3rem;
+}
+
+.navbar-box a{
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 700;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: var(--transition-smooth);
+}
+
+.navbar-box a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-blue);
+    transition: var(--transition-smooth);
+    transform: translateX(-50%);
+}
+
+.navbar-box a:hover {
+    color: var(--primary-blue);
+}
+
+.navbar-box a:hover::after {
+    width: 80%;
 }
 
 .navbar-links{
@@ -47,7 +78,7 @@
 }
 
 #tpa-logo {
-  width: 12rem;
+  max-width: 12rem;
   margin-left: 1.5rem;
 }
 

@@ -109,7 +109,7 @@
 .DBFF-Headline p {
   display: flex;
 
-  font-family: Montserratt Bold, sans-serif;
+  font-family: var(--font-display);
   font-size: 5rem;
   font-weight: 900;
   color: #ffffff;
@@ -308,48 +308,48 @@
 
 @keyframes tumbleInLeft {
   from {
-    transform: translateX(100%);
+    transform: translateX(50px) scale(0.96);
     opacity: 0;
   }
 
   to {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
 }
 
 @keyframes tumbleInRight {
   from {
-    transform: translateX(-100%);
+    transform: translateX(-50px) scale(0.96);
     opacity: 0;
   }
 
   to {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
 }
 
 @keyframes tumbleOutLeft {
   from {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
 
   to {
-    transform: translateX(-100%);
+    transform: translateX(-50px) scale(0.96);
     opacity: 0;
   }
 }
 
 @keyframes tumbleOutRight {
   from {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
 
   to {
-    transform: translateX(100%);
+    transform: translateX(50px) scale(0.96)s;
     opacity: 0;
   }
 }

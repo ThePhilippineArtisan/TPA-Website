@@ -16,7 +16,7 @@ const VerticalFastNews = () => {
 
                 <div className = "Vertical-Side-News">
                     <hr className = "Vertical-Divider-Side-News" style ={{alignSelf: "center"}}></hr>
-                    <a href = "https://youtube.com/@AvoirJoseph" > Subscribe to our email newsletter to be kept up to date with the latest updates inside and outside our university!</a>
+                    <a href = "https://youtube.com/@AvoirJoseph" > Subscribe to our email newsletter for updates inside and outside our university!</a>
                 </div>
 
             </div>
@@ -63,15 +63,7 @@ const VerticalFastNews = () => {
                             </div>
                     </Link>
 
-                    <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News">       
-                        <img  loading = "lazy" 
-                            src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
-                        />
-                        <hr className = "Vertical-Divider-Side-News"></hr>
-                            <div className = "Vertical-Headlines">
-                                <p> ICYMI: Protesters cross Pasig River resemble River Styx for Marcos Admin through Ayala Bridge</p>
-                            </div>
-                    </Link>
+
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ const ListOfMediaSegments = () => {
                     <h1 id = "Latest-Weekly-Segments"> Latest Weekly Segments </h1>
                     <div className = "Media-Segment-Card">
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card" id = "Segment">
-                            <p id = "MMSegment"> Makata Monday </p>
+                            <div className = "Segment-Container"><p> Makata Monday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Bata.jpg"}
                                 
@@ -19,7 +19,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Tek Tuesday </p>
+                            <div className = "Segment-Container"> <p> Tek Tuesday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"}
                                 
@@ -29,7 +29,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Wankjob Wednesday </p>
+                            <div className = "Segment-Container"> <p> Wankjob Wednesday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/StreamingSat.jpg"}
                                 
@@ -39,7 +39,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Tala Thursday </p>
+                            <div className = "Segment-Container"> <p> Tala Thursday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Bata.jpg"}
                                 
@@ -49,7 +49,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Features Friday </p>
+                            <div className = "Segment-Container"> <p> Features Friday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"}
                                 
@@ -59,7 +59,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Streaming Saturday </p>
+                            <div className = "Segment-Container"> <p> Streaming Saturday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/StreamingSat.jpg"}
                                 
@@ -69,7 +69,7 @@ const ListOfMediaSegments = () => {
                         </Link>
 
                         <Link to = "/media-segment/id" className = "List-Of-MS-Card">
-                            <p id = "MMSegment"> Sports Sunday </p>
+                            <div className = "Segment-Container"> <p> Sports Sunday </p> </div>
                             <img
                                 src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"}
                                 

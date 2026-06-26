@@ -1,9 +1,37 @@
+/** Standardize color palette */
+
+:root{
+  --primary-blue: #0265A9;
+  --primary-blue-hover: #014c80;
+  --secondary-navy: #0d2238;
+  --bg-dark: #03080f;
+  --bg-light: #f5f9fc;
+  --text-dark: #121824;
+  --text-muted: #64748b;
+  --border-color: rgba(2, 101, 169, 0.2);
+  --glass-bg: hsla(0, 0%, 100%, 0.75);
+  --glass-border: hsla(204, 98%, 34%, 0.3);
+
+  /** Typography */
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+
+  --container-max-width: 1600px;
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /** Transitions, hover stuff */
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 body {
   overflow-x: hidden;
-  font-family: Inter, sans-serif;
+  font-family: var(--font-sans);
   cursor: url('/favicon.png') 0 0, default;
   margin: 0;
-
 }
 
 a, img, button, h1, h2, h3, h4, h5, h6, p, div .clickable {

@@ -1,6 +1,6 @@
 .Footer{
-    color: #0265A9;
-    border-top: 8px solid #0265A9;
+    color: var(--primary-blue);
+    border: 15px solid var(--primary-blue);
     background-color: white;
     font-weight: 600;
 

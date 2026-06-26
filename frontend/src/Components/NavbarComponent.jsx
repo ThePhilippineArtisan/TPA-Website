@@ -92,13 +92,14 @@ const NavbarComponent = () => {
                     <Link to = "/#home" onClick={(e) => handleNavClick(e, "#home")}> Home </Link>
                     <Link to = "/#news" onClick={(e) => handleNavClick(e, "#news")}> News </Link> 
                     <Link to = "/releases"> Releases </Link>
-                    <Link to= "/media-segment"> Media Segments </Link>
+                    <Link to = "/media-segment"> Media Segments </Link>
                 </div>
 
-                <Link to="/about" className="tpa-circle-logo">
+                <Link to = "/about" className = "tpa-circle-logo">
                     <img
-                        src={TPACircleLogo}
-                        alt="About The Philippine Artisan"
+                        src = {TPACircleLogo}
+                        alt = "About The Philippine Artisan"
+                        style = {{left: "10%"}}
                     />
                 </Link>
             </div>

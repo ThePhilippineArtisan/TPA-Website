@@ -7,28 +7,25 @@
     background-size: cover;
     background-repeat: no-repeat;
 
+    width: 99.20vw;
     inset: 0;
-    filter: blur(5px);
+    filter: brightness(0.3) blur(2px);
+
     z-index: -1;
 }
 
 .Latest-Media-Segment-Image{
     position: relative;
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-around;
     align-items: center;
 
+    padding: 2rem 0rem;
     z-index: 1;
-    padding-top: 7%;
-
-    padding: 6rem;
 }
 
 .Latest-Media-Segment-Image img{
-    max-height: 25%;
-    max-width: 35%;
+    max-height: 30%;
+    max-width: 30%;
     object-fit: cover;
 
     filter: opacity(0.96);
@@ -46,25 +43,29 @@
 
 .Latest-MS-Title{
     display: flex;
+    justify-content: center;
     gap: 2rem;
-    padding: 1rem;
+    align-items: center;
     text-decoration: none;
 }
 
-.Latest-MS-Title h1{
-    font-size: 150%;
+.Latest-MS-Title h2{
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 5rem;
+    text-decoration: underline;
 }
 
 .Latest-MS-Title h1 h3{
-    font-weight: 500;
     color: white;
+    font-weight: 500;
     
   text-shadow: 8px 8px 16px rgb(0, 0, 0);
 }
 
-.Latest-MS-Title h1 h3:hover{
+.Latest-MS-Title h2 h3:hover{
     cursor: pointer;
-    color: #74c8ff;
+    color: var(--primary-blue-hover);
 }
 
 .Latest-Media-Segment-Image a{
@@ -75,6 +76,19 @@
 .Latest-Media-Segment-Image h3{
     padding: 2rem 0rem;
     font-size: 45%;
+}
+
+.Segment-Container{
+    width: auto;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    border-radius: var(--radius-md);
+    background-color: var(--primary-blue);
+
+    display: inline-block;
+    align-self: flex-start;
 }
 
 .Media-SegmentSample-Text p{

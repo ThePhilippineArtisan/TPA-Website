@@ -14,7 +14,8 @@ const LatestMediaSegment = () => {
                         src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Bata.jpg" /** Latest Media Segment Available */}
                     />
                     <div className = "Media-Segment-Title-Author">
-                        <h1> Ibalik nyo si Tatay Digong </h1>
+                        <div className = "Segment-Container"> <p> Makata Monday </p></div>
+                        <h2> Ibalik nyo si Tatay Digong </h2>
                         <h3> by Atty. Jimmy Bondoc </h3>
                     </div>
                 </Link>

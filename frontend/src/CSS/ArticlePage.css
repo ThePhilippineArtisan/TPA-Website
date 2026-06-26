@@ -21,26 +21,27 @@
 .Article-Headline{
     display: flex;
     flex-direction: column;
-    flex-direction: wrap;
-    align-content: center;
-    justify-content: center;
+    
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem 1rem;
+    box-sizing: border-box;
+}
 
-    margin-left: 20%;
-    margin-right: 20%;
-
-    padding: 2rem 0rem;
+#Headline{
+    padding-bottom: 0rem; 
 }
 
 .Article-Headline h1{
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    font-family:  var(--font-serif); /* font retrieved from google in index.html */
     text-decoration: none;
-    color: black;
+    color: var(--text-dark);
 
-    font-size: 3rem;
-    padding-bottom: 1rem;
-
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    font-weight: 700;
 }
-
 
 .Simple-Tag{
     font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
@@ -67,11 +68,8 @@ hr{
     flex-direction: row;
     justify-content: space-between;
 
-    margin-top: 0.5rem;
-
     font-size: 1em;
     text-decoration: none;
-
 }
 
 .Author{
@@ -79,12 +77,12 @@ hr{
 }
 
 .Author a h3{
-    color: black;
+    color: var(--text-dark);
     margin-left: 0.5rem;
 }
 
 .Date a h3{
-    color: gray;
+    color: var(--text-muted);
 }
 
 .Foreground-Photo{
@@ -96,10 +94,17 @@ hr{
 }
 
 .Foreground-Photo img{
-    height: 48rem;
+    max-height: 48rem;
+    max-width: 50rem;
 
     border-radius: 4px;
     object-fit: cover;
+}
+
+@media (max-width: 900px){
+    .Foreground-Photo img{
+        max-width: 25rem;
+    }
 }
 
 .Photo-Illustration-Layout-Credits{
@@ -108,6 +113,8 @@ hr{
     text-align: center;
     font-size: 1rem;
 }
+
+/**
 
 .Extra-Photos-Container-Two {
   display: flex;
@@ -130,6 +137,8 @@ hr{
     object-fit: cover;
 }
 
+**/
+
 .Extra-Photos-Container-Two .Extra-Photos {
     flex-direction: column;
     padding-left: 7rem;
@@ -137,11 +146,14 @@ hr{
 }
 
 .Extra-Photos-Container{
-    margin: 1rem 1rem;
+    margin: auto;
 
     overflow-x: hidden;
+    border-right: 10px solid transparent;
     border-radius: 8px;
 
+    max-width: 1920px;
+    
     background-color: #07273d2c;
     
 }
@@ -168,8 +180,8 @@ hr{
 }
 
 .Extra-Photos img {
-    height: 7rem;
-    width: 14rem;
+    height: 10rem;
+    width: 25rem;
     object-fit: cover;
     
     margin: 8px;
@@ -180,28 +192,57 @@ hr{
     cursor: pointer;
 }
 
-.Below-Small-Photos{
+@media (max-width: 900px){
+    .Extra-Photos img {
+        height: 7rem;
+    }
+}
+
+.Below-Small-Photos {
     display: grid;
-    grid-template-columns: 4fr 2fr;
-    margin: 1% 10%;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 3rem;
+    max-width: 1440px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+    .Below-Small-Photos {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
 }
 
 .Article-Body{
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    max-width: 90%;
+    display: block;
+    width: 100%;
     
     white-space: pre-wrap;
 }
 
 .Article-Body p{
-    text-decoration: none;
-    color: black;
+    text-decoration: none;    
+    color: var(--text-dark);
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    line-height: 1.85;
+    max-width: 72ch;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
 
-    font-size: 1.5rem;
 
-    padding: 2rem 0rem;
+.Article-Body p:first-of-type::first-letter {
+    font-family: var(--font-serif);
+    float: left;
+    font-size: 5rem;
+    line-height: 3rem;
+    padding-top: 0.8rem;
+    padding-right: 0.6rem;
+    font-weight: bold;
+    color: var(--primary-blue);
 }
 
 #Read-More{

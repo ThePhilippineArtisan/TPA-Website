@@ -88,7 +88,6 @@ const ArticlePage = () => {
                 
                 <h1 id = "Headline" > TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h1>
 
-                <br></br> 
                 <hr></hr>
 
                 <div className = "Author-and-Date">                
@@ -99,7 +98,7 @@ const ArticlePage = () => {
                     </div>
 
                     <div className = "Date">
-                        <a> <h3>June 19, 2025 </h3> </a>
+                        <a> <h3> June 19, 2025 </h3> </a>
                     </div>
                 </div>
 
@@ -131,7 +130,7 @@ const ArticlePage = () => {
             </div>
 
             <div className = "Photo-Illustration-Layout-Credits" style = {{textAlign: "center"}}> 
-                Photos by Angela Genio & John Peregrin 
+                Photos by Your Mom and I
             </div>
                     
             <div className = "Extra-Photos-Container">
@@ -172,11 +171,8 @@ const ArticlePage = () => {
                 </div>
                 <div>
                     <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
-                    <br></br>
                     <h4> 1,234 words | 2 minute read </h4>
-                    <br></br>
                     <h4> Want to request full-quality images? <span style = {{color: "#0265A9"}}> Click here. </span> </h4>
-                    <br></br>
                     <hr ></hr>                 
                     <VerticalFastNews />
                 </div>
