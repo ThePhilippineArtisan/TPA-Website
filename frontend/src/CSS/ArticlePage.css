@@ -1,8 +1,7 @@
 .Article-Page{
-    background-color: whitesmoke;
-    background: linear-gradient(to bottom, #ffffff 0%, #cae9fdab 50%, #8ed0fc80 100%);
+    background: linear-gradient(to bottom, rgba(61, 93, 142, 0.1) 0%, #cae9fdab 50%, #8ed0fc80 100%);
 
-    margin-top: 7%;
+    padding-top: 7%;
 }
 
 .skeleton{
