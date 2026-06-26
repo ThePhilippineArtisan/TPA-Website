@@ -1,4 +1,4 @@
-.Media-Segment-Article-Page{
+.Media-Segment-Article-Page {
     background-color: #d7d8d2;
     background: linear-gradient(to bottom, #ffffff 0%, #0092f310 30%, #0099ff1a 100%);
 
@@ -9,15 +9,15 @@
     background-image: url("/notebook-dark.png");
 }
 
-.Media-Segment-Article-Image{
+.Media-Segment-Article-Image {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-
 .Media-Segment-Image {
+    height: auto;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -27,53 +27,66 @@
 
     background-color: rgba(255, 255, 255, 0);
     z-index: 1;
-
+    min-height: 100dvh;
 }
 
 
-.Media-Segment-Image img{
-    max-height: 55dvh;
+.Media-Segment-Image img {
+    width: 40dvw;
+    max-width: 600px;
+    max-height: 50dvh;
+    border-radius: var(--radius-md);
     object-fit: cover;
 
     transition: transform 0.3s ease-in-out;
 }
 
-.Media-Segment-Image img:hover{
+.Media-Segment-Image img:hover {
     transition: 0.25s;
     cursor: pointer;
 }
 
+@media (max-width: 1439px) {
+    .Media-Segment-Image {
+        transform: scale(0.8);
+    }
+}
 
-.Media-Segment-Article-Page h1{
+@media (max-width: 768px) {
+    .Media-Segment-Image {
+        transform: scale(0.9);
+        padding-top: 2rem;
+    }
+}
+
+@media (max-width: 425px) {
+    .Media-Segment-Image {
+        transform: scale(0.7);
+    }
+}
+
+.Media-Segment-Article-Page h1 {
     padding: 3% 0rem;
 }
 
-.Media-Segment-Image{
-    height: 100dvh
-}
-
-.Media-Segment-Image img{
-    height: 100dvh;
-    object-fit: cover;
-}
-
-.Media-Segment-Article{
+.Media-Segment-Article {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-bottom: 3rem;
 }
 
-.Media-Segment-Article-Text{
-    background-color:rgba(215, 234, 250, 0.055);
+.Media-Segment-Article-Text {
+    background-color: rgba(215, 234, 250, 0.055);
     border-bottom-right-radius: 30px;
-    
+
     padding: 3% 3%;
     font-size: 1.25rem;
     line-height: 1.5;
 }
 
-.Media-Segment-Article-Text p{
-    text-decoration: none;    
+.Media-Segment-Article-Text p {
+    text-decoration: none;
     color: var(--text-dark);
     font-family: var(--font-sans);
     font-size: 1.35rem;
@@ -94,7 +107,7 @@
 }
 
 
-.Media-Segment-Article-Below-Photo{
+.Media-Segment-Article-Below-Photo {
     display: flex;
     flex-direction: row;
     border-bottom-left-radius: 30px;
@@ -105,24 +118,31 @@
     max-width: var(--container-max-width)
 }
 
-.Author-and-Details{
+.Author-and-Details {
     display: flex;
     justify-content: center;
     color: black;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1rem;
+    font-family: var(--font-sans);
 
-    background-color: hsla(0, 0%, 100%, 0.5);
-    backdrop-filter: blur(5.1px);
-    -webkit-backdrop-filter: blur(5.1px);
+    background-color: transparent;
     border: 3px solid hsl(204, 98, 34);
-    border-radius: 0.5rem; 
+    border-radius: 0.5rem;
 
     width: 40dvw;
     padding: 2%;
 }
 
-#Week-Segment{
+
+@media (max-width: 1221px) {
+    .Author-and-Details {
+        width: 100%;
+        transform: scale(0.9);
+    }
+}
+
+#Week-Segment {
     width: auto;
     padding: 0.5rem;
     font-size: 1.25rem;
@@ -137,23 +157,50 @@
     letter-spacing: 1.5px;
 }
 
-.Author-and-Details span{
+.Author-and-Details span {
     color: var(--primary-blue);
 }
 
-.Author-and-Details p{
+#Muted-Text a {
+    display: flex;
+    flex-wrap: wrap;
     color: var(--text-muted);
     font-size: 1.25rem;
     font-weight: 400;
+    padding-right: 4px;
 }
 
-.Author-and-Details a{
+.Author-and-Details a {
     color: var(--secondary-navy);
 }
 
-.Author-and-Details h1{
+.Author-and-Details h1 {
     font-family: var(--font-serif);
     font-size: clamp(3rem, 6vw, 4.25rem);
     font-weight: 700;
     line-height: 1.2;
+}
+
+/* Hide VerticalFastNews and stack details below photo on smaller screens */
+@media (max-width: 1024px) {
+    .Sidebar-Fast-News-Section {
+        display: none;
+    }
+    
+    .Media-Segment-Article-Below-Photo {
+        flex-direction: column;
+        width: 100%;
+        font-size: 0.75rem;
+    }
+    
+    .Author-and-Details {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    .Media-Segment-Image img {
+        width: 100% !important;
+        max-width: 100%;
+        height: auto;
+    }
 }
