@@ -41,7 +41,7 @@ export const formatRelativeTime = (dateInput) => {
     if(!dateInput) return ""
     const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput
 
-    if(isNan(date.getTime())) return ""
+    if(isNaN(date.getTime())) return ""
 
     const now = new Date()
     const diffMs = now.getTime() - date.getTime()

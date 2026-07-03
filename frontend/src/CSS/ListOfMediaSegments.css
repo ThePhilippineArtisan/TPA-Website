@@ -108,8 +108,10 @@
     font-weight: 900;
     color: black;
 
-    display: -webkit-box;              
-    -webkit-line-clamp: 3;             
+    display: -webkit-box;
+    line-clamp: 3;           
+    -webkit-line-clamp: 3;         
+    box-orient: vertical;    
     -webkit-box-orient: vertical;      
     overflow: hidden;                  
     text-overflow: ellipsis;           
