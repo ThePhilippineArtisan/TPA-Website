@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
 import { useParams } from "react-router-dom"
-// import { supabase } from "@supabase/supabase-js"
+import { supabase } from "@supabase/supabase-js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
@@ -9,7 +9,23 @@ const ArticlePage = () => {
 
     const { articleId } = useParams(); // get the articleId from the URL parameters
 
-    const [mediaFiles, setMediaFiles] = useState([]);
+    const [articleDetails, setArticleDetails] = useState(null)
+
+    useEffect(() => {
+        const fetchArticleDetails = async () => {
+            let { data, error } = await supabase
+            .from('articles')
+            .select('*')
+            .eq('article_id', articleId)
+            .limit(4);
+
+            if (error)
+                throw error;
+
+            setArticleDetails
+        }
+    })
+
 
     useEffect(() => { // run this code when the component mounts/loads
         const fetchMediaFiles = async () => {
@@ -86,7 +102,7 @@ const ArticlePage = () => {
                     <h4>  LOOK, NEWS, 120th Commencement Exercise, Graduation, Batch Hiraya </h4>  
                 </div>
                 
-                <h1 id = "Headline" > TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h1>
+                <h1> TUP Manila concludes 120th commencement exercises with graduates from CLA, COS, and graduate programs </h1>
 
                 <hr></hr>
 
@@ -170,8 +186,8 @@ const ArticlePage = () => {
                     </p>
                 </div>
                 <div>
-                    <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4>
-                    <h4> 1,234 words | 2 minute read </h4>
+                    <h4> <span style = {{color: "#0265A9"}}> Click this link to view the sources, interview, or media used in this article. </span> </h4><br></br>
+                    <h4> 1,234 words | 2 minute read </h4><br></br>
                     <h4> Want to request full-quality images? <span style = {{color: "#0265A9"}}> Click here. </span> </h4>
                     <hr ></hr>                 
                     <VerticalFastNews />

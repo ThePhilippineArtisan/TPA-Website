@@ -1,4 +1,4 @@
-.Releases-Page{
+.Releases-Page-Container{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,48 +6,67 @@
 
   color: white;
   padding: 5rem;
-  background-color: black;
+  background-color: var(--bg-dark);
+}
+
+.Releases-Page{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  max-width: var(--container-max-width);
+  background-color: var(--bg-dark);
+}
+
+.List-of-Releases-Covers{
+  margin-bottom: 3rem;
 }
 
 .Releases-Option {
   display: flex;
   flex-direction: row;
-  overflow-x: auto;
-  overflow-y: hidden;
+  justify-content: center;
   white-space: nowrap;
 
   margin-top: 4rem;
-  height: 50px;
-  width: 1000px;
+  height: 70px;
+  width: 80vw;
 
   border-radius: 100px;
   
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
-}
 
-.Releases-Option::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  
+  filter: drop-shadow(2px 5px 10px rgba(95, 178, 255, 0.55));
 }
 
 .Releases-Option-Title{
-  flex: 0 0 auto; /* prevent shrinking and allow horizontal scrolling */
+  font-family: var(--font-sans);
+  padding: 1rem;
+  margin: 1rem;
+  border: 3px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background-color: var(--primary-blue);
+
   display: flex;
   justify-content: center;
   align-items: center;
-
-  min-width: 75px;
-  
-  margin: 0rem 0rem;
-  padding: 0rem 1rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .Releases-Option-Title:hover{
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: var(--primary-blue-hover);
+  border: 3px solid var(--primary-blue-hover);
+  cursor: pointer;
 }
-.Releases-Book-Cover{
+
+.Releases-Book-Container{
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+
   width: 100%;
 }
 
@@ -56,26 +75,60 @@
   color: black
 }
 
+.Releases-Book-Button-Container{
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+}
 .Releases-Book{
-    filter: drop-shadow(2px 5px 30px rgba(254, 254, 254, 0.55));
+  filter: drop-shadow(2px 5px 30px rgba(254, 254, 254, 0.55));
+}
+
+.Releases-Book-Button{
+  display: flex;
 }
 
 .Releases-Title span{
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 10vh;
+  width: 100%;
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: 5rem;
 }
 
 .Releases-Title{
-  width: 90%;
-  display: grid;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  grid-template-columns: 3fr 10fr;
 }
 
+.Releases-Title-Type{
+  height: 50%;
+}
+
+.Releases-Title-Type span{
+  font-size: 5rem;
+  line-height: 1rem;
+  margin: 1rem 0rem;
+}
+
+.Releases-Title-Type p{
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  color: var(--hr-color);
+  margin: 2rem 0rem;
+}
+
+.Releases-Caption{
+  text-align: center;
+}
 
 .Releases-Caption p{
-  font-size: 1.5rem;
-  padding: 4.5rem;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
   line-height: 2rem;
 }
-

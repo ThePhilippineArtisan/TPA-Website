@@ -29,18 +29,15 @@
     box-sizing: border-box;
 }
 
-#Headline{
-    padding-bottom: 0rem; 
-}
-
 .Article-Headline h1{
-    font-family:  var(--font-serif); /* font retrieved from google in index.html */
+    font-family:  var(--font-serif);
     text-decoration: none;
     color: var(--text-dark);
 
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-size: clamp(1.25rem, 4vw, 3rem);
     line-height: 1.1;
     font-weight: 700;
+
 }
 
 .Simple-Tag{
@@ -49,9 +46,9 @@
     
     font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 
-    color: #0265A9;
+    color: var(--hr-color);
 
     display: flex;
     justify-content: flex-end;
@@ -59,7 +56,7 @@
 }
 
 hr{
-    border: 1px solid #0265A9;
+    border: 1px solid var(--hr-color);
     width: 100%;
 }
 
@@ -68,7 +65,7 @@ hr{
     flex-direction: row;
     justify-content: space-between;
 
-    font-size: 1em;
+    font-size: 0.75rem;
     text-decoration: none;
 }
 
@@ -78,7 +75,6 @@ hr{
 
 .Author a h3{
     color: var(--text-dark);
-    margin-left: 0.5rem;
 }
 
 .Date a h3{
@@ -94,10 +90,10 @@ hr{
 }
 
 .Foreground-Photo img{
-    max-height: 48rem;
-    max-width: 50rem;
+    max-height: 38rem;
+    max-width: 40rem;
 
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     object-fit: cover;
 }
 
@@ -112,6 +108,7 @@ hr{
     justify-content: center;
     text-align: center;
     font-size: 1rem;
+    padding: 1rem;
 }
 
 /**
@@ -141,7 +138,7 @@ hr{
 
 .Extra-Photos-Container-Two .Extra-Photos {
     flex-direction: column;
-    padding-left: 7rem;
+    padding: 7rem;
     overflow-y: auto;
 }
 
@@ -150,9 +147,9 @@ hr{
 
     overflow-x: hidden;
     border-right: 10px solid transparent;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
 
-    max-width: 1920px;
+    max-width: 1680px;
     
     background-color: #07273d2c;
     
@@ -165,8 +162,9 @@ hr{
     overflow-x: auto;
     overflow-y: hidden;
 
-    scrollbar-width: auto;
-    scrollbar-color:  #91c4ff #b4ddf9;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-blue) rgba(255, 255, 255, 0.05);
     scroll-behavior: smooth;
 
     gap: 0.25rem;
@@ -249,14 +247,12 @@ hr{
     display: flex;
     justify-content: center;
 
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
+    font-family:  var(--font-sans);
     color: black;
-    text-decoration: none;
     font-weight: bold;
     font-size: 2rem;
     
-    padding-bottom: 1rem;
-    padding-left: 3rem;
+    padding: 1rem;
 }
 
 .Suggested-Articles{
