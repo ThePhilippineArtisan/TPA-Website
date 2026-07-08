@@ -23,7 +23,7 @@ export async function onRequestPost(context){
             region: 'auto',
             endpoint: env.R2_ENDPOINT,
             credentials: {
-                accessKeyId: env.R2_ACCCESS_KEY_ID,
+                accessKeyId: env.R2_ACCESS_KEY_ID,
                 secretAccessKey: env.R2_SECRET_ACCESS_KEY,
             },
         })
@@ -49,7 +49,7 @@ export async function onRequestPost(context){
 
         // 6. Return response
         return new Response(
-            JSON.stringift({ presignedUrl, publicUrl, key}),
+            JSON.stringify({ presignedUrl, publicUrl, key}),
             {
                 status: 200,
                 headers: {

@@ -52,7 +52,7 @@ const CreateArticlePage = () => {
     // container for headline and body, initially empty string
     const [headline, setHeadline] = useState("")
     const [body, setBody] = useState("")
-    const [articleType, setArticleType] = useState("")
+    const [articleType, setArticleType] = useState("LOOK")
 
     // container for photo/s, initially empty array
     const [mediaImagePhoto, setMediaImagePhoto] = useState([])
@@ -124,7 +124,7 @@ const CreateArticlePage = () => {
         const newArticlePayloads = {
             article_headline: headline,
             article_body: body,
-            article_type: articleType,
+            article_type: articleType || null,
             slug_headline: generatedSlug,
             is_published: isPublishedStatus,
             published_at: scheduledTime ? new Date(scheduledTime).toISOString() : new Date().toISOString(),
@@ -144,7 +144,7 @@ const CreateArticlePage = () => {
             .single()
 
         if (articleError) {
-            console.log('Error creating new article: ', articleError)
+            console.log('Error creating new article: ', articleError.message || articleError)
             alert(articleError)
             return
         }
@@ -173,7 +173,85 @@ const CreateArticlePage = () => {
 
             if (staffError) {
                 console.log('Error linking staff: ', staffError)
-                alert(staffError)
+                alert(staffError.message || staffError)
+                return
+            }
+        }
+
+        // Collect and upload images to Cloudflare R2
+
+        const articleMediaPayloads = []
+        
+        // default to the first one in the array, ?.staff_id optional chaining
+        const mediaContributorId = selectedMediaProviders[0]?.staff_id || null 
+
+        for (let idx = 0; idx < mediaImagePhoto.length; idx++){
+            const imgObj = mediaImagePhoto[idx]
+
+            try {
+                // Get presigned URL from Cloudflare Pages Function, asking permission
+                const presignRes = await fetch('/api/media/presign', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: imgObj.name,
+                        contentType: imgObj.file.type,
+                        folder: `articles/${generatedSlug}`
+                    })
+                })
+
+                if(!presignRes.ok){
+                    const errData = await presignRes.json()
+                    throw new Error(errData.error || 'Failed to get presigned URL')
+                }
+
+                const { presignedUrl, publicUrl } = await presignRes.json()
+
+                // Upload directly to Cloudflare R2 via presigned PUT URL once allowed
+                const uploadRes = await fetch(presignedUrl, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': imgObj.file.type },
+                    body: imgObj.file
+                })
+
+                if(!uploadRes.ok) {
+                    throw new Error(`Upload to R2 failed with status ${uploadRes.status}`)
+                }
+
+                // Save image metadata in media table
+                const { data: mediaRow, error: mediaInsertError } = await supabase
+                    .from('media')
+                    .insert([{
+                        media_url: publicUrl
+                    }])
+                    .select()
+                    .single()
+
+                    if(mediaInsertError)
+                        throw mediaInsertError
+
+                    // Collect bridging record for article_media
+                    articleMediaPayloads.push({
+                        article_id: newArticleId, // add this to article_media
+                        media_id: mediaRow.media_id,
+                        media_order: idx + 1
+                    })
+            } catch(err){
+                console.error(`Error uploading image "${imgObj.name}": `, err)
+                alert(`Error uploding image "${imgObj.name}": ` + err.message)
+                return
+            }
+        }
+
+        // save bridging records in article_media
+        if(articleMediaPayloads.length > 0) {
+            const { error: amError } = await supabase
+                .from('article_media')
+                .insert(articleMediaPayloads)
+
+            if(amError) {
+                console.error('Error linking article media: ', amError)
+                alert(amError.message)
                 return
             }
         }
