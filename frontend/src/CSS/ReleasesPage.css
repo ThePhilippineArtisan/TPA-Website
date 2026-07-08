@@ -5,8 +5,9 @@
   align-items: center;
 
   color: white;
-  padding: 5rem;
+  padding: 4rem;
   background-color: var(--bg-dark);
+  height: auto;
 }
 
 .Releases-Page{
@@ -20,7 +21,10 @@
 }
 
 .List-of-Releases-Covers{
-  margin-bottom: 3rem;
+  margin: 3rem 0rem;
+  max-width: var(--container-max-width)
+
+  
 }
 
 .Releases-Option {
@@ -52,6 +56,7 @@
 
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -72,24 +77,134 @@
 
 .Demo-Page{
   background-color: rgb(253, 253, 243);
-  color: black
+  color: black;
+  filter: drop-shadow(2px 0px 0px #00000040)
+          drop-shadow(-2px 0px 0px #00000040)
+          drop-shadow(0px 2px 0px #00000040)
+          drop-shadow(0px -2px 0px #00000040);
 }
 
 .Releases-Book-Button-Container{
-  position: absolute;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 
+  padding: 3rem 0rem;
   width: 100%;
 }
+
 .Releases-Book{
-  filter: drop-shadow(2px 5px 30px rgba(254, 254, 254, 0.55));
+  filter: drop-shadow(2px 5px 20px rgba(254, 254, 254, 0.35));
 }
 
 .Releases-Book-Button{
   display: flex;
+  justify-content: space-around;
+  height: 40px;
+  width: 300px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+
+  border-radius: 100rem;
+  border: 1px solid var(--bg-light);
+  background-color: var(--bg-dark);
+}
+
+.Releases-Book-Button p{
+  text-align: center;
+  margin: 0;
+}
+
+.Releases-Book-Button-Counter{
+  border-radius: 100rem;
+  font-size: 1rem;
+  padding: 0.30rem 0.75rem;
+  padding-top: 0.5rem;
+  background-color: var(--text-muted);
+  color: white;
+
+  font-weight: 900;
+  
+}
+
+.Releases-Book-Button button{
+  background-color: transparent;
+  border: transparent;
+  color: var(--bg-light);
+
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: var(--font-sans);
+}
+
+.Releases-Book-Button button:hover{
+  background-color: var(--primary-blue-hover);
+  color: var(--bg-light);
+  border-radius: var(--radius-md);
+  filter: drop-shadow(2px 5px 20px var(--primary-blue-hover));
+  transition: all 0.2s ease;
+}
+
+.Releases-Book-And-Title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  border: 1px solid var(--primary-blue);
+  padding: 1rem;
+  background-color: var(--secondary-navy);
+  border-radius: var(--radius-lg);
+}
+
+.Releases-Book-And-Title p{
+  font-weight: 900;
+}
+
+.Releases-Book-And-Title-Container{
+  display: flex;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  
+  gap: 2rem;
+  padding: 1rem 3rem;
+
+
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(10px);
+
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-blue) rgba(255, 255, 255, 0.05);
+  scroll-behavior: smooth;
+}
+
+.Releases-Book-And-Title:hover{
+  transition: all 0.2s ease;
+  transform: scale(1.05);
+  filter: drop-shadow(2px 5px 10px rgba(95, 178, 255, 0.55));
+
+}
+
+.Releases-Book-Image img{
+  max-height: 17rem;
+  filter: drop-shadow(2px 0px 0px #000000)
+          drop-shadow(-2px 0px 0px #000000)
+          drop-shadow(0px 2px 0px #000000)
+          drop-shadow(0px -2px 0px #000000);
+
+}
+
+
+.Releases-Book-And-Title:hover img{
+  transition: all 0.2s ease;
+  transform: rotate(2deg) scale(1.05);
+  filter: drop-shadow(2px 5px 10px rgba(95, 178, 255, 0.55));
 }
 
 .Releases-Title span{
@@ -107,24 +222,32 @@
 }
 
 .Releases-Title-Type{
-  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .Releases-Title-Type span{
+  text-align: center;
   font-size: 5rem;
-  line-height: 1rem;
+  line-height: 3rem;
+  letter-spacing: -0.005ch;
   margin: 1rem 0rem;
+  padding: 1rem 0rem;
 }
 
 .Releases-Title-Type p{
   font-size: 1rem;
+  font-weight: 700;
   font-family: var(--font-sans);
   color: var(--hr-color);
-  margin: 2rem 0rem;
 }
 
 .Releases-Caption{
   text-align: center;
+  max-width: var(--container-max-width)
 }
 
 .Releases-Caption p{

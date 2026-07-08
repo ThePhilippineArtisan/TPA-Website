@@ -1,11 +1,16 @@
+import { useEffect, useRef } from "react";
+import { supabase } from "../supabaseClient"
+
 import HTMLFlipbook from "react-pageflip";
 import "../CSS/ReleasesPage.css";
 
+
+
 import KALYOBOOKMOCKUP from "../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO BOOK MOCKUP.png"
 
-import { useEffect, useRef } from "react";
-
 const ReleasesPage = () => {
+
+  
 
   const photos = [
     new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-001.png", import.meta.url).href,
@@ -61,8 +66,12 @@ const ReleasesPage = () => {
           <div className = "Releases-Title-Type">
               <p> The Official Literary Folio of The Philippine Artisan </p>
             <span>
-              KALYO: ? '24 - '25 <hr style = {{width: "80%"}}></hr>
+              KALYO: ? '24 - '25
             </span>
+             <hr style = {{width: "80%", margin: "1rem 0rem"}}></hr>
+            <div>
+              <p> Click here for the full soft copy of this release </p>
+            </div>
           </div>
           <div className="Releases-Caption">
             <p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium id quas labore dolore assumenda delectus ipsa vero culpa ex eveniet. Dicta tempora qui, expedita quod mollitia architecto doloremque reiciendis eos? 
@@ -76,7 +85,7 @@ const ReleasesPage = () => {
               className="Releases-Book"
               width={500}
               height={600}
-              maxShadowOpacity={0.75}
+              maxShadowOpacity={0.5}
               drawShadow={true}
               showCover={true}
               size="fixed"
@@ -96,7 +105,9 @@ const ReleasesPage = () => {
             </HTMLFlipbook>
             <div className = "Releases-Book-Button">
               <button> Previous </button>
-              <p> 1 of 10 </p>
+              <div className = "Releases-Book-Button-Counter">
+                <p> 1 of 10 </p>
+              </div>
               <button> Next </button>
             </div>
           </div>
@@ -104,7 +115,71 @@ const ReleasesPage = () => {
 
         <div className = "List-Of-Releases-Container">
             <div className = "List-Of-Releases">
+              <div>
+                <h1> AY 2025 - 2026 RELEASES</h1>
+                <div className = "Releases-Book-And-Title-Container">
+                  <div className = "Releases-Book-And-Title">
+                      <span className = "Releases-Option-Title"> <b>Kalyo</b>Kamatayan </span>
+                    <div className = "Releases-Book-Image">
+                      <img 
+                        src = {KALYOBOOKMOCKUP}
+                      />
+                    </div>
+                  </div>
 
+                  <div className = "Releases-Book-And-Title">
+                      <span className = "Releases-Option-Title"> <b>PhilArts</b>Status Quo </span>
+                    <div className = "Releases-Book-Image">
+                      <img 
+                        src = {KALYOBOOKMOCKUP}
+                      />
+                    </div>
+                  </div>
+
+                  <div className = "Releases-Book-And-Title">
+                      <span className = "Releases-Option-Title"> <b>Broadsheet</b>'25 - '26 </span>
+                    <div className = "Releases-Book-Image">
+                      <img 
+                        src = {KALYOBOOKMOCKUP}
+                      />
+                    </div>
+                  </div>
+
+                  <div className = "Releases-Book-And-Title">
+                      <span className = "Releases-Option-Title"> <b>Newsletter</b> '25 - '26 1st Batch </span>
+                    <div className = "Releases-Book-Image">
+                      <img 
+                        src = {KALYOBOOKMOCKUP}
+                      />
+                    </div>
+                  </div>
+
+                  <div className = "Releases-Book-And-Title">
+                      <span className = "Releases-Option-Title"> 
+                        <b>Newsletter</b>
+                        '25 - '26 2nd Batch 
+                      </span>
+                    <div className = "Releases-Book-Image">
+                      <img 
+                        src = {KALYOBOOKMOCKUP}
+                      />
+                    </div>
+                  </div>
+
+                  <div className = "Releases-Book-And-Title">
+                      <span className = "Releases-Option-Title">
+                        <b>Tabula Rasa</b>
+                        Does this have titles?
+                      </span>
+                    <div className = "Releases-Book-Image">
+                      <img 
+                        src = {KALYOBOOKMOCKUP}
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
             <div className = "Releases-Filter">
 
