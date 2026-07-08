@@ -110,7 +110,14 @@ const CreateArticlePage = () => {
         addNewArticle(true);
     };
 
-    // const wordCounter = bodystr =>
+    const countWords = (htmlString) => {
+        if (!htmlString) return 0
+
+        const cleanText = htmlString.replace(/<\/?[^>]+(>|$)/g, " ")
+
+        const words = cleanText.trim().split(/\s+/)
+        return words[0] === "" ? 0 : words.length
+    }
 
     // multiple consecutive supabase inserts and updates
     const addNewArticle = async (isPublishedStatus) => {
@@ -129,7 +136,7 @@ const CreateArticlePage = () => {
             is_published: isPublishedStatus,
             published_at: scheduledTime ? new Date(scheduledTime).toISOString() : new Date().toISOString(),
             // published_by: figure it out
-            // word_count
+            word_count: countWords(body)
             // tag 1
             // tag 2
             // tag 3
@@ -303,7 +310,7 @@ const CreateArticlePage = () => {
                         <option value="INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
                         <option value="DEVELOPING_STORY"> DEVELOPING STORY </option>
 
-                        <option value="NULL"> ================== </option>
+                        <option value="NULL"> None </option>
 
                         <option value="MAKATA_MONDAYS"> Makata Mondays </option>
                         <option value="TEK_TUESDAY"> Tek Tuesday </option>
@@ -389,6 +396,36 @@ const CreateArticlePage = () => {
                     </div>
                 )}
 
+                {selectedAuthors.length > 0 || selectedMediaProviders.length > 0 && (
+                    <div className="Selected-Staffers" style = {{padding: "1rem"}}>
+                        <div className="Selected-Authors">
+                            {selectedAuthors.length > 0 && (
+                                <>
+                                    <p>Selected Writer:</p>
+                                    {selectedAuthors.map((authorObj, idx) => (
+                                        <div key={idx} className="Selected-Author"> 
+                                            <span>{authorObj.staff_display_name}</span>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                        
+                        <div className="Selected-Media-Providers">
+                            {selectedMediaProviders.length > 0 && (
+                                <>
+                                    <p>Selected Media Provider:</p>
+                                    {selectedMediaProviders.map((mediaObj, idx) => (
+                                        <div key={idx} className="Selected-Media-Provider"> 
+                                            <p>{mediaObj.staff_display_name}</p>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                    </div>
+                )}
+                
                 <div className="Text-Area">
                     <input
                         type="text"
@@ -407,25 +444,37 @@ const CreateArticlePage = () => {
                         onInput={(typing) => setBody(typing.currentTarget.innerHTML)}
                     >
                     </div>
+
+                    <div>
+                        <p> Tag 1: </p>
+                        <p> Tag 2: </p>
+                        <p> Tag 3: </p>
+                    </div>
+
+                    <div>
+                        <p> Word Count: {countWords(body)}</p>
+                    </div>
+                    
                 </div>
 
-                <button type="submit" onClick={() => addNewArticle(false)}> Save as Draft </button>
-                <button type="submit" onClick={() => addNewArticle(true)}> Post </button>
-                <button type="button" onClick={() => setShowDatePicker(true)}> Schedule Post </button>
+                <div className = "Button-Container">
+                    <button type="submit" onClick={() => addNewArticle(false)}> Save as Draft </button>
+                    <button type="submit" onClick={() => addNewArticle(true)}> Post </button>
+                    <button type="button" onClick={() => setShowDatePicker(true)}> Schedule Post </button>
 
-                {showDatePicker && (
-                    <div className="Schedule-Picker-Modal">
-                        <input
-                            type="datetime-local"
-                            value={scheduledTime}
-                            onChange={(e) => setScheduledTime(e.target.value)}
-                        />
+                    {showDatePicker && (
+                        <div className="Schedule-Picker-Modal">
+                            <input
+                                type="datetime-local"
+                                value={scheduledTime}
+                                onChange={(e) => setScheduledTime(e.target.value)}
+                            />
 
-                        <button onClick={handleConfirmSchedule}> Confirm Schedule </button>
-                        <button onClick={() => setShowDatePicker(false)}> Cancel </button>
-                    </div>
-                )}
-
+                            <button onClick={handleConfirmSchedule}> Confirm Schedule </button>
+                            <button onClick={() => setShowDatePicker(false)}> Cancel </button>
+                        </div>
+                    )}
+                </div>
 
             </div>
 

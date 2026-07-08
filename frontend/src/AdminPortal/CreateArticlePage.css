@@ -11,17 +11,23 @@
 .Editor-Rectangle{
     display: flex;
     flex-direction: column;
-    height: auto;
+    justify-content: space-evenly;
+
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--muted-background);
+    background-color: white;
+    padding: 3rem;
+
 }
 
 .Text-Formatting-Section{
     display: flex;
     justify-content: space-around;
     padding: 1rem;
-
-    border: 3px solid black;
-    background-color: white;
-    border-radius: 30px;
+    margin: 1rem 0rem;
+    border: 3px solid var(--border-color);
+    background-color: var(--muted-background);
+    border-radius: var(--radius-lg);
 }
 
 .Text-Formatting-Section img{
@@ -42,7 +48,7 @@
 .Text-Formatting-Section img:hover{
     cursor: pointer;
     background-color: rgb(195, 222, 247);
-    border-radius: 7rem;
+    border-radius: var(--radius-lg);
 }
 
 select{
@@ -54,8 +60,14 @@ select:hover{
 }
 
 #Article-Type{
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     margin: 5px;
+}
+
+.Selected-Staffers{
+    background-color: var(--glass-bg);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--border-color);
 }
 
 .Text-Area{
@@ -63,6 +75,9 @@ select:hover{
     flex-direction: column;
     align-items: center;
 
+}
+
+.Text-Area textarea{
     padding: 1rem;
 }
 
@@ -75,8 +90,8 @@ select:hover{
     width: 100%;
     font-size: 1rem;
 
-    border: 3px solid rgb(70, 70, 70);
-    border-radius: 10px;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-md);
 
     padding: 15px;
     margin: 1rem 0rem;
@@ -90,8 +105,8 @@ select:hover{
     width: 100%;
     font-size: 1rem;
 
-    border: 3px solid rgb(70, 70, 70);
-    border-radius: 10px;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-md);
 
     padding: 10px;
     margin: 1rem 0rem;
@@ -121,7 +136,7 @@ select:hover{
 
     max-width: 35rem;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     background: #fff;
     color: #111;
@@ -146,7 +161,7 @@ select:hover{
 .Staff-Dialog-Button button{
     border: none;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     background-color: rgb(236, 236, 236);
 }
@@ -161,7 +176,7 @@ dialog{
 
 .Staffer-Box{
     border: 2px solid black;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
 
     padding: 1rem;
 }
@@ -173,7 +188,7 @@ dialog{
 }
 
 .Search-Staff input{
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     padding: 0.5rem;
 }
 
@@ -193,7 +208,7 @@ dialog{
     display: flex;
     flex-direction: row;
     border: 1px solid gray;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 1rem;
     margin: 0.25rem;
 }
@@ -215,8 +230,8 @@ dialog{
 .Selected-Images-List {
     margin: 1rem;
     padding: 1.2rem;
-    border: 3px solid #000000;
-    border-radius: 15px;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-md);
     background: #fcfcfc;
     box-shadow: 4px 4px 0px #000000;
     font-family: 'Inter', sans-serif;
@@ -241,8 +256,8 @@ dialog{
     justify-content: space-between;
     align-items: center;
     background: #ffffff;
-    border: 2px solid #000000;
-    border-radius: 8px;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 0.6rem 0.8rem;
     font-size: 0.85rem;
     box-shadow: 2px 2px 0px #000000;
@@ -260,8 +275,8 @@ dialog{
 .Selected-Image-Item button {
     background: #ff5e5e;
     color: #ffffff;
-    border: 2px solid #000000;
-    border-radius: 6px;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-sm);
     padding: 0.25rem 0.6rem;
     cursor: pointer;
     font-size: 0.75rem;
@@ -279,4 +294,31 @@ dialog{
 .Selected-Image-Item button:active {
     transform: translate(1px, 1px);
     box-shadow: 1px 1px 0px #000000;
+}
+
+.Button-Container{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    border: 2px dashed var(--glass-border);
+    border-radius: var(--radius-sm);
+}
+
+.Button-Container button{
+    flex: 1;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+}
+
+.Button-Container button:hover{
+    background-color: var(--primary-blue-hover);
+    cursor: pointer;
+    color: white;
 }

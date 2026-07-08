@@ -8,7 +8,10 @@
   --bg-light: #f5f9fc;
   --text-dark: #121824;
   --text-muted: #64748b;
+
   --border-color: rgba(2, 101, 169, 0.2);
+  
+  --muted-background: #f8fafc;
   --glass-bg: hsla(0, 0%, 100%, 0.75);
   --glass-border: hsla(204, 98%, 34%, 0.3);
 

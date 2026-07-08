@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
 import { useParams } from "react-router-dom"
-import { supabase } from "@supabase/supabase-js"
+import { supabase } from "../supabaseClient.js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
@@ -14,7 +14,7 @@ const ArticlePage = () => {
     useEffect(() => {
         const fetchArticleDetails = async () => {
             let { data, error } = await supabase
-            .from('articles')
+            .from('article')
             .select('*')
             .eq('article_id', articleId)
             .limit(4);
