@@ -57,6 +57,12 @@ const CreateArticlePage = () => {
     // container for photo/s, initially empty array
     const [mediaImagePhoto, setMediaImagePhoto] = useState([])
 
+    const [tag1, setTag1] = useState("")
+    const [tag2, setTag2] = useState("")
+    const [tag3, setTag3] = useState("")
+
+    const [articleSource, setArticleSource] = useState("")
+
     // calls imageUtils.js = 
     const handleFileChange = async (e) => {
         const files = Array.from(e.target.files) 
@@ -136,10 +142,11 @@ const CreateArticlePage = () => {
             is_published: isPublishedStatus,
             published_at: scheduledTime ? new Date(scheduledTime).toISOString() : new Date().toISOString(),
             // published_by: figure it out
-            word_count: countWords(body)
-            // tag 1
-            // tag 2
-            // tag 3
+            word_count: countWords(body),
+            article_tag1: tag1,
+            article_tag2: tag2,
+            article_tag3: tag3,
+            article_source: articleSource,
             // edit_history: probably just json
         }
 
@@ -272,6 +279,9 @@ const CreateArticlePage = () => {
         setSelectedMediaProviders([])
         setScheduledTime("")
         setShowDatePicker(false)
+        setTag1("")
+        setTag2("")
+        setTag3("")
 
         mediaImagePhoto.forEach(imgObj => {
             if(imgObj.preview){
@@ -444,17 +454,48 @@ const CreateArticlePage = () => {
                         onInput={(typing) => setBody(typing.currentTarget.innerHTML)}
                     >
                     </div>
-
-                    <div>
-                        <p> Tag 1: </p>
-                        <p> Tag 2: </p>
-                        <p> Tag 3: </p>
+                    <div className = "Article-Tags-Container">
+                        <div>    
+                            <p> Tag 1: 
+                                <input
+                                    value = {tag1}
+                                    onChange = {(typing) => setTag1(typing.target.value)}
+                                    className = "Article-Tags"
+                                />
+                            </p>
+                        </div>
+                        <div>
+                            <p> Tag 2: 
+                                <input
+                                    value = {tag2}
+                                    onChange = {(typing) => setTag2(typing.target.value)}
+                                    className = "Article-Tags"
+                                />
+                            </p>
+                        </div>
+                        <div>
+                            <p> Tag 3: 
+                                <input
+                                    value = {tag3}
+                                    onChange = {(typing) => setTag3(typing.target.value)}
+                                    className = "Article-Tags"
+                                />
+                            </p>
+                        </div>
                     </div>
 
-                    <div>
-                        <p> Word Count: {countWords(body)}</p>
+                    <div className = "Word-Count-And-Sources">
+                        <div className = "Word-Count">
+                            <p> Word Count: <span> {countWords(body)} </span></p>
+                        </div>
+                        <div>
+                            <input 
+                                className = "Article-Tags"
+                                placeholder = "Sources"
+                                onChange = {(typing) => setArticleSource(typing.target.value)}
+                            />
+                        </div>
                     </div>
-                    
                 </div>
 
                 <div className = "Button-Container">
