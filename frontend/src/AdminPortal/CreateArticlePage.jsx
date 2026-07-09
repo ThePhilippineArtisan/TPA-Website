@@ -159,7 +159,7 @@ const CreateArticlePage = () => {
 
         if (articleError) {
             console.log('Error creating new article: ', articleError.message || articleError)
-            alert(articleError)
+            alert(articleError.message || json.stringify(articleError))
             return
         }
 
@@ -392,7 +392,8 @@ const CreateArticlePage = () => {
                 </div>
 
                 {/** List of Images with Remove Option through handleRemoveImage's index */}
-                {mediaImagePhoto.length > 0 && (
+                
+                {(mediaImagePhoto.length > 0) && (
                     <div className = "Selected-Images-List">
                         <h4> Selected Images ({mediaImagePhoto.length}): </h4>
                         <div className = "Selected-Images-Grid">
@@ -406,8 +407,9 @@ const CreateArticlePage = () => {
                     </div>
                 )}
 
-                {selectedAuthors.length > 0 || selectedMediaProviders.length > 0 && (
+                {(selectedAuthors.length > 0 || selectedMediaProviders.length > 0) && (
                     <div className="Selected-Staffers" style = {{padding: "1rem"}}>
+
                         <div className="Selected-Authors">
                             {selectedAuthors.length > 0 && (
                                 <>

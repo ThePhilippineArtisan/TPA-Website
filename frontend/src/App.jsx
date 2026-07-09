@@ -8,7 +8,8 @@ const Footer = lazy(() => import('./Components/Footer.jsx'));
 
 const FirstFacade = lazy(() => import('./Pages/FirstFacade.jsx'));
 const SecondFacade = lazy(() => import('./Pages/SecondFacade.jsx'));
-const ArticlePage = lazy(() => import('./Pages/ArticlePage.jsx'));
+const ArticlePage = lazy(() => import('./Pages/ArticlePage.jsx'))
+const PlaceholderArticlePage = lazy(() => import('./Pages/PlaceholderArticlePage.jsx'));
 const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'));
 const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'));
 const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'));
@@ -109,7 +110,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
 
             <Route path="/article/:articleId" element={<ArticlePage />} />
-            <Route path="/joseph-brian-balut" element={<ArticlePage />} />
+            <Route path="/joseph-brian-balut" element={<PlaceholderArticlePage />} />
             <Route path="/latest" element={<LatestPosts />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
