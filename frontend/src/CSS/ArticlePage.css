@@ -35,8 +35,9 @@
     color: var(--text-dark);
 
     font-size: clamp(1.25rem, 4vw, 3rem);
-    line-height: 1.1;
+    line-height: 1;
     font-weight: 700;
+    margin: 1rem 0rem;
 
 }
 
@@ -46,7 +47,6 @@
     
     font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 0.25rem;
 
     color: var(--hr-color);
 
@@ -55,9 +55,14 @@
 
 }
 
+.Simple-Tag h4{
+    margin: 0;
+}
+
 hr{
     border: 1px solid var(--hr-color);
     width: 100%;
+    margin: 0.5rem 0rem;
 }
 
 .Author-and-Date{
@@ -75,10 +80,12 @@ hr{
 
 .Author a h3{
     color: var(--text-dark);
+    margin: 0;
 }
 
 .Date a h3{
     color: var(--text-muted);
+    margin: 0;
 }
 
 .Foreground-Photo{
@@ -93,7 +100,7 @@ hr{
     max-height: 38rem;
     max-width: 40rem;
 
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     object-fit: cover;
 }
 
@@ -108,7 +115,7 @@ hr{
     justify-content: center;
     text-align: center;
     font-size: 1rem;
-    padding: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 /**
@@ -220,7 +227,7 @@ hr{
     white-space: pre-wrap;
 }
 
-.Article-Body p{
+.Article-Body > * {
     text-decoration: none;    
     color: var(--text-dark);
     font-family: var(--font-sans);
@@ -229,10 +236,10 @@ hr{
     max-width: 72ch;
     margin: 0 auto;
     padding: 1rem 0;
+    box-sizing: border-box;
 }
 
-
-.Article-Body p:first-of-type::first-letter {
+.Article-Body > :first-child::first-letter {
     font-family: var(--font-serif);
     float: left;
     font-size: 5rem;

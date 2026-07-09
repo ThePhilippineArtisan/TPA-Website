@@ -282,6 +282,7 @@ const CreateArticlePage = () => {
         setTag1("")
         setTag2("")
         setTag3("")
+        setArticleSource("")
 
         mediaImagePhoto.forEach(imgObj => {
             if(imgObj.preview){
@@ -392,7 +393,7 @@ const CreateArticlePage = () => {
                 </div>
 
                 {/** List of Images with Remove Option through handleRemoveImage's index */}
-                
+
                 {(mediaImagePhoto.length > 0) && (
                     <div className = "Selected-Images-List">
                         <h4> Selected Images ({mediaImagePhoto.length}): </h4>

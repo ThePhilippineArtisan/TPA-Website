@@ -85,7 +85,7 @@
     line-height: 1.5;
 }
 
-.Media-Segment-Article-Text p {
+.Media-Segment-Article-Text > * {
     text-decoration: none;
     color: var(--text-dark);
     font-family: var(--font-sans);
@@ -93,9 +93,10 @@
     line-height: 1.85;
     margin: 0 auto;
     padding: 1rem 0;
+    box-sizing: border-box;
 }
 
-.Media-Segment-Article-Text p:first-of-type::first-letter {
+.Media-Segment-Article-Text > :first-child::first-letter {
     font-family: var(--font-serif);
     float: left;
     font-size: 5rem;
