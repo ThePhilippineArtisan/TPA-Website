@@ -157,16 +157,16 @@ const MediaSegmentArticle = () => {
 
     const authors = articleDetails.article_staff
         ? articleDetails.article_staff
-              .filter(as => as.contribution_as === "Author")
-              .map(as => as.staff)
-              .filter(Boolean)
+            .filter(as => as.contribution_as === "Author")
+            .map(as => as.staff)
+            .filter(Boolean)
         : [];
 
     const mediaProviders = articleDetails.article_staff
         ? articleDetails.article_staff
-              .filter(as => as.contribution_as === "Media_Provider")
-              .map(as => as.staff)
-              .filter(Boolean)
+            .filter(as => as.contribution_as === "Media_Provider")
+            .map(as => as.staff)
+            .filter(Boolean)
         : [];
 
     const firstAuthor = authors[0];
@@ -183,35 +183,36 @@ const MediaSegmentArticle = () => {
                             <span id="Week-Segment"> {getMediaSegmentLabel(articleDetails.article_type)} </span>
                             <h1> {articleDetails.article_headline} </h1>
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <p id="Muted-Text"> 
+                                <p id="Muted-Text">
                                     Written by {" "}
                                     {authors.length > 0 ? (
                                         authors.map((auth, idx) => (
-                                            <span key = {auth.staff_id}>
-                                                <Link to = {`/staff/${auth.staff_id}`}>
+                                            <span key={auth.staff_id}>
+                                                <Link to={`/staff/${auth.staff_id}`}>
                                                     {auth.staff_display_name}
-                                                {idx < authors.length - 1 ? ", " : ""}
+                                                    {idx < authors.length - 1 ? ", " : ""}
                                                 </Link>
                                             </span>
                                         ))
-                                    ) : ( 
+                                    ) : (
                                         "TPA Staff"
                                     )}
                                 </p>
                                 {mediaProviders.length > 0 && (
-                                    <p id = "Muted-Text">
-                                    {mediaProviders.length > 0 ? (
-                                        mediaProviders.map((med, idx) => (
-                                            <span key = {med.staff_id}>
-                                                <Link to = {`/staff/${med.staff_id}`}>
-                                                    {med.staff_display_name}
-                                                {idx < mediaProviders.length - 1 ? ", " : ""}
-                                                </Link>
-                                            </span>
-                                        ))
-                                    ) : ( 
-                                        "TPA Staff"
-                                    )}
+                                    <p id="Muted-Text">
+                                        Photo by {" "}
+                                        {mediaProviders.length > 0 ? (
+                                            mediaProviders.map((med, idx) => (
+                                                <span key={med.staff_id}>
+                                                    <Link to={`/staff/${med.staff_id}`}>
+                                                        {med.staff_display_name}
+                                                        {idx < mediaProviders.length - 1 ? ", " : ""}
+                                                    </Link>
+                                                </span>
+                                            ))
+                                        ) : (
+                                            "TPA Staff"
+                                        )}
                                     </p>
                                 )}
                             </div>
@@ -219,29 +220,58 @@ const MediaSegmentArticle = () => {
                     </div>
 
                     <img
-                        src = {currentPhoto}
-                        alt = {articleDetails.article_headline}
+                        src={currentPhoto}
+                        alt={articleDetails.article_headline}
                     />
                 </div>
 
                 <div className="Media-Segment-Article-Below-Photo">
                     <div className="Author-and-Details">
                         <div>
-                            <h3> <span> {authors.length > 1 ? "About the Author" : "About the Author"} </span>  </h3>
-                            {authors.length > 0 ? (
-                                authors.map((auth, idx) => (
-                                    <div key={auth.staff_id} style={{ marginBottom: idx < authors.length - 1 ? "1.5rem" : "0" }}>
-                                        {authors.length > 1 && (
-                                            <h4 style={{ color: "#0265A9", fontWeight: "bold", marginBottom: "0.25rem" }}>
-                                                {auth.staff_display_name}
-                                            </h4>
-                                        )}
-                                        <h5>{auth.staff_bio || "No bio available."}</h5>
-                                    </div>
-                                ))
-                            ) : (
-                                <h5>No bio available.</h5>
+                            {authors.length > 0 && (
+                                <div style={{ marginBottom: "1.5rem" }}>
+                                    <h3>
+                                        <span>
+                                            {authors.length === 1
+                                                ? `About ${authors[0].staff_display_name}`
+                                                : "About the Authors"}
+                                        </span>
+                                    </h3>
+                                    {authors.map((auth, idx) => (
+                                        <div key={auth.staff_id} style={{ marginBottom: idx < authors.length - 1 ? "1.5rem" : "0" }}>
+                                            {authors.length > 1 && (
+                                                <h4 style={{ color: "#0265A9", fontWeight: "bold", marginBottom: "0.25rem" }}>
+                                                    {auth.staff_display_name}
+                                                </h4>
+                                            )}
+                                            <h5>{auth.staff_bio || "No bio available."}</h5>
+                                        </div>
+                                    ))}
+                                </div>
                             )}
+
+                            {mediaProviders.length > 0 && (
+                                <div style={{ marginBottom: "1.5rem" }}>
+                                    <h3>
+                                        <span>
+                                            {mediaProviders.length === 1
+                                                ? `About ${mediaProviders[0].staff_display_name}`
+                                                : "About the Photojournalists"}
+                                        </span>
+                                    </h3>
+                                    {mediaProviders.map((auth, idx) => (
+                                        <div key={auth.staff_id} style={{ marginBottom: idx < mediaProviders.length - 1 ? "1.5rem" : "0" }}>
+                                            {mediaProviders.length > 1 && (
+                                                <h4 style={{ color: "#0265A9", fontWeight: "bold", marginBottom: "0.25rem" }}>
+                                                    {auth.staff_display_name}
+                                                </h4>
+                                            )}
+                                            <h5>{auth.staff_bio || "No bio available."}</h5>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
                             <h5> Published on <span> {formatDateReadable(articleDetails.published_at)} </span></h5>
 
                             <h5> {articleDetails.word_count || 0} <span>words</span> | {Math.ceil((articleDetails.word_count || 0) / 200)} <span>min read</span></h5>
@@ -249,7 +279,7 @@ const MediaSegmentArticle = () => {
                             {articleDetails.article_source && (
                                 <h5>
                                     <span>
-                                        Click this link to view the <a target="_blank" href={articleDetails.article_source} rel="noreferrer" style={{color: '#0265A9', textDecoration: 'underline'}}>sources</a>, interview, or media used in this article.
+                                        Click this link to view the <a target="_blank" href={articleDetails.article_source} rel="noreferrer" style={{ color: '#0265A9', textDecoration: 'underline' }}>sources</a>, interview, or media used in this article.
                                     </span>
                                 </h5>
                             )}
