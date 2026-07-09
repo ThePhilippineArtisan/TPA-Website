@@ -1,8 +1,9 @@
 export const isMediaSegment = (type) => {
+    if (!type) return false
     const segments = [
         "MAKATA_MONDAYS",
-        "TEK_TUESDAYS",
-        "WANKJOB_WEDNESDAYS",
+        "TEK_TUESDAY",
+        "WANKJOB_WEDNESDAY",
         "TALA_THURSDAY",
         "FEATURES_FRIDAY",
         "STREAMING_SATURDAY",
@@ -15,9 +16,9 @@ export const getMediaSegmentLabel = (type) => {
     if(!type)
         return ""
     const mapping = {
-        "MAKATA_MONDAYS" : "Makata Monday",
-        "TEK_TUESDAYS" : "Tek Tuesday",
-        "WANKJOB_WEDNESDAYS" : "Wankjob Wednesday",
+        "MAKATA_MONDAYS" : "Makata Mondays",
+        "TEK_TUESDAY" : "Tek Tuesday",
+        "WANKJOB_WEDNESDAY" : "Wankjob Wednesday",
         "TALA_THURSDAY" : "Tala Thursday",
         "FEATURES_FRIDAY" : "Features Friday",
         "STREAMING_SATURDAY" : "Streaming Saturday",

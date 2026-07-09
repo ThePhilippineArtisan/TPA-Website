@@ -107,15 +107,6 @@ const CreateArticlePage = () => {
     const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
 
     const [scheduledTime, setScheduledTime] = useState("")
-    const [showDatePicker, setShowDatePicker] = useState(false)
-
-    const handleConfirmSchedule = () => {
-        if (!scheduledTime) {
-            alert("Please select a date and time to schedule the post.");
-            return;
-        }
-        addNewArticle(true);
-    };
 
     const countWords = (htmlString) => {
         if (!htmlString) return 0
@@ -141,7 +132,7 @@ const CreateArticlePage = () => {
             article_type: articleType || null,
             slug_headline: generatedSlug,
             is_published: isPublishedStatus,
-            published_at: scheduledTime ? new Date(scheduledTime).toISOString() : new Date().toISOString(),
+            published_at: scheduledTime ? new Date(scheduledTime).toISOString() : undefined,
             // published_by: figure it out
             word_count: countWords(body),
             article_tag1: tag1,
@@ -200,17 +191,28 @@ const CreateArticlePage = () => {
         // default to the first one in the array, ?.staff_id optional chaining
         const mediaContributorId = selectedMediaProviders[0]?.staff_id || null 
 
-        for (let idx = 0; idx < mediaImagePhoto.length; idx++){
+        // Extract the publication year (default to current year if parsing fails or is empty)
+        let pubYear = new Date().getFullYear();
+        if (scheduledTime) {
+            try {
+                pubYear = new Date(scheduledTime).getFullYear();
+            } catch (e) {
+                console.error("Error parsing scheduledTime year:", e);
+            }
+        }
+
+        for (let idx = 0; idx < mediaImagePhoto.length; idx++) {
             const imgObj = mediaImagePhoto[idx]
 
             try {
-                let targetBucket = "article-photos"
-                let uploadFolder = `articles/${generatedSlug}`
+                // Use a single bucket (article-photos) to simplify CORS and public URLs,
+                // but organize files by year and type.
+                const targetBucket = "article-photos"
+                let uploadFolder = `articles/${pubYear}/${generatedSlug}`
 
-                if(isMediaSegment(articleType)){
-                    targetBucket = "media-segments"
+                if (isMediaSegment(articleType)) {
                     const folderName = articleType.toLowerCase().replace(/_/g, "-")
-                    uploadFolder = `${folderName}/${generatedSlug}`
+                    uploadFolder = `media-segments/${pubYear}/${folderName}/${generatedSlug}`
                 }
 
                 // Get presigned URL from Cloudflare Pages Function, asking permission
@@ -225,7 +227,7 @@ const CreateArticlePage = () => {
                     })
                 })
 
-                if(!presignRes.ok){
+                if (!presignRes.ok) {
                     const errData = await presignRes.json()
                     throw new Error(errData.error || 'Failed to get presigned URL')
                 }
@@ -239,7 +241,7 @@ const CreateArticlePage = () => {
                     body: imgObj.file
                 })
 
-                if(!uploadRes.ok) {
+                if (!uploadRes.ok) {
                     throw new Error(`Upload to R2 failed with status ${uploadRes.status}`)
                 }
 
@@ -252,16 +254,16 @@ const CreateArticlePage = () => {
                     .select()
                     .single()
 
-                    if(mediaInsertError)
-                        throw mediaInsertError
+                if (mediaInsertError)
+                    throw mediaInsertError
 
-                    // Collect bridging record for article_media
-                    articleMediaPayloads.push({
-                        article_id: newArticleId, // add this to article_media
-                        media_id: mediaRow.media_id,
-                        media_order: idx + 1
-                    })
-            } catch(err){
+                // Collect bridging record for article_media
+                articleMediaPayloads.push({
+                    article_id: newArticleId, // add this to article_media
+                    media_id: mediaRow.media_id,
+                    media_order: idx + 1
+                })
+            } catch (err) {
                 console.error(`Error uploading image "${imgObj.name}": `, err)
                 alert(`Error uploding image "${imgObj.name}": ` + err.message)
                 return
@@ -281,7 +283,18 @@ const CreateArticlePage = () => {
             }
         }
 
-        alert("Article saved successfully!")
+        const articlePath = isMediaSegment(articleType) 
+            ? `/media-segment/${generatedSlug}` 
+            : `/article/${generatedSlug}`
+        const fullUrl = `${window.location.origin}${articlePath}`
+
+        try {
+            await navigator.clipboard.writeText(fullUrl)
+            alert(`Article saved successfully!\nThe article link has been copied to your clipboard:\n${fullUrl}`)
+        } catch (clipErr) {
+            console.error("Failed to copy to clipboard:", clipErr)
+            alert(`Article saved successfully!\nLink: ${fullUrl}`)
+        }
 
         // reset states to null/empty arrays
         setHeadline("")
@@ -289,7 +302,6 @@ const CreateArticlePage = () => {
         setSelectedAuthors([])
         setSelectedMediaProviders([])
         setScheduledTime("")
-        setShowDatePicker(false)
         setTag1("")
         setTag2("")
         setTag3("")
@@ -502,33 +514,36 @@ const CreateArticlePage = () => {
                         <div className = "Word-Count">
                             <p> Word Count: <span> {countWords(body)} </span></p>
                         </div>
-                        <div>
-                            <input 
-                                className = "Article-Tags"
-                                placeholder = "Sources"
-                                onChange = {(typing) => setArticleSource(typing.target.value)}
-                            />
+
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <label htmlFor="publish-datetime" style={{ fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-sans)', color: 'black' }}>
+                                    PUBLISH DATE & TIME (OPTIONAL):
+                                </label>
+                                <input
+                                    id="publish-datetime"
+                                    type="datetime-local"
+                                    value={scheduledTime}
+                                    onChange={(e) => setScheduledTime(e.target.value)}
+                                    style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
+                                />
+                            </div>
+
+                            <div>
+                                <input 
+                                    className = "Article-Tags"
+                                    placeholder = "Sources"
+                                    value = {articleSource}
+                                    onChange = {(typing) => setArticleSource(typing.target.value)}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div className = "Button-Container">
+                <div className="Button-Container">
                     <button type="submit" onClick={() => addNewArticle(false)}> Save as Draft </button>
                     <button type="submit" onClick={() => addNewArticle(true)}> Post </button>
-                    <button type="button" onClick={() => setShowDatePicker(true)}> Schedule Post </button>
-
-                    {showDatePicker && (
-                        <div className="Schedule-Picker-Modal">
-                            <input
-                                type="datetime-local"
-                                value={scheduledTime}
-                                onChange={(e) => setScheduledTime(e.target.value)}
-                            />
-
-                            <button onClick={handleConfirmSchedule}> Confirm Schedule </button>
-                            <button onClick={() => setShowDatePicker(false)}> Cancel </button>
-                        </div>
-                    )}
                 </div>
 
             </div>
