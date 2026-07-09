@@ -108,6 +108,7 @@ const CreateArticlePage = () => {
 
     const [scheduledTime, setScheduledTime] = useState("")
     const [isUploading, setIsUploading] = useState(false)
+    const [publishedUrl, setPublishedUrl] = useState("")
 
     const countWords = (htmlString) => {
         if (!htmlString) return 0
@@ -294,11 +295,11 @@ const CreateArticlePage = () => {
 
         try {
             await navigator.clipboard.writeText(fullUrl)
-            alert(`Article saved successfully!\nThe article link has been copied to your clipboard:\n${fullUrl}`)
         } catch (clipErr) {
-            console.error("Failed to copy to clipboard:", clipErr)
-            alert(`Article saved successfully!\nLink: ${fullUrl}`)
+            console.warn("Failed to copy automatically to clipboard:", clipErr)
         }
+
+        setPublishedUrl(fullUrl)
 
         // reset states to null/empty arrays
         setHeadline("")
@@ -331,6 +332,40 @@ const CreateArticlePage = () => {
     return (
         <div className="Entire-Page">
             <div className="Editor-Rectangle">
+                {publishedUrl && (
+                    <div className="Success-Banner">
+                        <div className="Success-Banner-Content">
+                            <span className="Success-Icon">🎉</span>
+                            <div className="Success-Text-Details">
+                                <strong>Success! Article uploaded successfully.</strong>
+                                <p>You can view your article or copy the link below:</p>
+                            </div>
+                            <button className="Dismiss-Banner" onClick={() => setPublishedUrl("")}>✕</button>
+                        </div>
+                        <div className="Success-Banner-Url-Row">
+                            <input 
+                                type="text" 
+                                readOnly 
+                                value={publishedUrl} 
+                                onClick={(e) => e.target.select()}
+                                className="Success-Url-Input"
+                            />
+                            <button 
+                                onClick={async () => {
+                                    try {
+                                        await navigator.clipboard.writeText(publishedUrl)
+                                        alert("Link copied to clipboard!")
+                                    } catch (err) {
+                                        alert("Could not copy automatically. Please copy the text manually from the box.")
+                                    }
+                                }}
+                                className="Success-Copy-Button"
+                            >
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 <div className="Text-Formatting-Section">
                     <img src={BOLD} />

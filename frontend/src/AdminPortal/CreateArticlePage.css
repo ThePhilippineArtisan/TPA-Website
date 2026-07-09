@@ -368,3 +368,95 @@ dialog{
     box-shadow: none !important;
     transform: none !important;
 }
+
+.Success-Banner {
+    background-color: #e6f7ed;
+    border: 3px solid #2e7d32;
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: 4px 4px 0px #2e7d32;
+}
+
+.Success-Banner-Content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.Success-Text-Details {
+    flex-grow: 1;
+    font-family: var(--font-sans);
+    color: #1b5e20;
+    font-size: 0.9rem;
+}
+
+.Success-Text-Details strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.Success-Text-Details p {
+    margin: 0;
+}
+
+.Success-Icon {
+    font-size: 1.5rem;
+}
+
+.Dismiss-Banner {
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #2e7d32;
+    padding: 0.2rem;
+    transition: opacity 0.2s;
+}
+
+.Dismiss-Banner:hover {
+    opacity: 0.7;
+}
+
+.Success-Banner-Url-Row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.Success-Url-Input {
+    flex-grow: 1;
+    padding: 0.6rem;
+    border: 3px solid #2e7d32;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    font-size: 0.85rem;
+    background-color: #ffffff;
+    color: #333333;
+    outline: none;
+}
+
+.Success-Copy-Button {
+    background-color: #2e7d32;
+    color: #ffffff;
+    border: 3px solid #2e7d32;
+    border-radius: var(--radius-sm);
+    padding: 0 1.2rem;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.1s ease;
+}
+
+.Success-Copy-Button:hover {
+    background-color: #1b5e20;
+    border-color: #1b5e20;
+}
