@@ -360,3 +360,11 @@ dialog{
     cursor: pointer;
     color: white;
 }
+
+.Button-Container button:disabled {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+}

@@ -107,6 +107,7 @@ const CreateArticlePage = () => {
     const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
 
     const [scheduledTime, setScheduledTime] = useState("")
+    const [isUploading, setIsUploading] = useState(false)
 
     const countWords = (htmlString) => {
         if (!htmlString) return 0
@@ -124,36 +125,39 @@ const CreateArticlePage = () => {
             return
         }
 
-        const generatedSlug = slugify(headline)
+        setIsUploading(true)
 
-        const newArticlePayloads = {
-            article_headline: headline,
-            article_body: body,
-            article_type: articleType || null,
-            slug_headline: generatedSlug,
-            is_published: isPublishedStatus,
-            published_at: scheduledTime ? new Date(scheduledTime).toISOString() : undefined,
-            // published_by: figure it out
-            word_count: countWords(body),
-            article_tag1: tag1,
-            article_tag2: tag2,
-            article_tag3: tag3,
-            article_source: articleSource,
-            // edit_history: probably just json
-        }
+        try {
+            const generatedSlug = slugify(headline)
 
-        // send single row all the article payloads at once
-        let { data: articleData, error: articleError } = await supabase
-            .from('article')
-            .insert([newArticlePayloads])
-            .select()
-            .single()
+            const newArticlePayloads = {
+                article_headline: headline,
+                article_body: body,
+                article_type: articleType || null,
+                slug_headline: generatedSlug,
+                is_published: isPublishedStatus,
+                published_at: scheduledTime ? new Date(scheduledTime).toISOString() : undefined,
+                // published_by: figure it out
+                word_count: countWords(body),
+                article_tag1: tag1,
+                article_tag2: tag2,
+                article_tag3: tag3,
+                article_source: articleSource,
+                // edit_history: probably just json
+            }
 
-        if (articleError) {
-            console.log('Error creating new article: ', articleError.message || articleError)
-            alert(articleError.message || json.stringify(articleError))
-            return
-        }
+            // send single row all the article payloads at once
+            let { data: articleData, error: articleError } = await supabase
+                .from('article')
+                .insert([newArticlePayloads])
+                .select()
+                .single()
+
+            if (articleError) {
+                console.log('Error creating new article: ', articleError.message || articleError)
+                alert(articleError.message || JSON.stringify(articleError))
+                return
+            }
 
         // Inserting in article_staff for credits
         const newArticleId = articleData.article_id
@@ -284,8 +288,8 @@ const CreateArticlePage = () => {
         }
 
         const articlePath = isMediaSegment(articleType) 
-            ? `/media-segment/${generatedSlug}` 
-            : `/article/${generatedSlug}`
+            ? `/media-segment/${newArticleId}/${generatedSlug}` 
+            : `/article/${newArticleId}/${generatedSlug}`
         const fullUrl = `${window.location.origin}${articlePath}`
 
         try {
@@ -314,8 +318,15 @@ const CreateArticlePage = () => {
         })
         setMediaImagePhoto([])
 
-        document.getElementById("Body-Text").innerHTML = ""
+        const bodyDiv = document.getElementById("Body-Text")
+        if (bodyDiv) bodyDiv.innerHTML = ""
+    } catch (err) {
+        console.error("Error creating article:", err)
+        alert(err.message || err)
+    } finally {
+        setIsUploading(false)
     }
+}
 
     return (
         <div className="Entire-Page">
@@ -542,8 +553,12 @@ const CreateArticlePage = () => {
                 </div>
 
                 <div className="Button-Container">
-                    <button type="submit" onClick={() => addNewArticle(false)}> Save as Draft </button>
-                    <button type="submit" onClick={() => addNewArticle(true)}> Post </button>
+                    <button type="submit" onClick={() => addNewArticle(false)} disabled={isUploading}>
+                        {isUploading ? "Saving Draft..." : "Save as Draft"}
+                    </button>
+                    <button type="submit" onClick={() => addNewArticle(true)} disabled={isUploading}>
+                        {isUploading ? "Posting..." : "Post"}
+                    </button>
                 </div>
 
             </div>

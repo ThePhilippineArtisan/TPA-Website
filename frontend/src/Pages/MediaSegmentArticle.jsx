@@ -61,7 +61,7 @@ const MediaSegmentArticle = () => {
 
                 // If not a media segment, redirect to the normal article page
                 if (!isMediaSegment(articleData.article_type)) {
-                    navigate(`/article/${id}`, { replace: true });
+                    navigate(`/article/${articleData.article_id}/${articleData.slug_headline}`, { replace: true });
                     return;
                 }
 

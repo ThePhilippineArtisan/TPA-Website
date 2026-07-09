@@ -99,8 +99,8 @@ const App = () => {
             <Route element={<AdminPage />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/create-article" element={<CreateArticlePage />} />
-              <Route path="/admin/articles" element={<ManageArticlesPage/>}  />
-              <Route path="/admin/staff" element={<ManageStaffPage/>}  />
+              <Route path="/admin/articles" element={<ManageArticlesPage />} />
+              <Route path="/admin/staff" element={<ManageStaffPage />} />
               <Route path="/admin/manage-page" element={<div style={{ padding: '20px' }}><h1>Manage Front Page</h1><p>Manage front page components here.</p></div>} />
               <Route path="/admin/add-releases" element={<div style={{ padding: '20px' }}><h1>Add Releases</h1><p>Add and manage media releases here.</p></div>} />
             </Route>
@@ -110,7 +110,8 @@ const App = () => {
 
             <Route path="/" element={<HomePage />} />
 
-            <Route path="/article/:articleId" element={<ArticlePage />} />
+             <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/article/:articleId/:slug" element={<ArticlePage />} />
             <Route path="/joseph-brian-balut" element={<PlaceholderArticlePage />} />
             <Route path="/latest" element={<LatestPosts />} />
             <Route path="/about" element={<AboutPage />} />
@@ -119,6 +120,7 @@ const App = () => {
 
             <Route path="/media-segment" element={<MediaSegmentPage />} />
             <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
+            <Route path="/media-segment/:id/:slug" element={<MediaSegmentArticle />} />
             <Route path="/media-segment/id" element={<PlaceholderMediaSegmentArticle />} />
 
 

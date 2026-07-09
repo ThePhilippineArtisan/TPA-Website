@@ -59,8 +59,8 @@ const ArticlePage = () => {
                     return
                 }
 
-                if(isMediaSegment(articleData.article_type)){
-                    navigate(`/media-segment/${articleId}`, { replace: true})
+                if (isMediaSegment(articleData.article_type)) {
+                    navigate(`/media-segment/${articleData.article_id}/${articleData.slug_headline}`, { replace: true })
                     return
                 }
 

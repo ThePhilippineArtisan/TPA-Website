@@ -24,7 +24,7 @@ export const slugify = (str) => {
         return ""
     return str
         .toLowerCase()
-        .replace(/[^\w\s]/g, "")
+        .replace(/[^\w\s-]/g, "")
         .trim()
-        .replace(/\s+/g, "-")
+        .replace(/[-\s]+/g, "-")
 }
