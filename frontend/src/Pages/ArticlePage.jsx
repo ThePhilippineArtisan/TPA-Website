@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { supabase } from "../supabaseClient.js"
 import { formatDateReadable } from "../utils/dateUtils.js"
+import { isMediaSegment } from "../utils/articleUtils.js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
@@ -10,6 +11,7 @@ import AnimatedLoader from "./AnimatedLoader.jsx";
 const ArticlePage = () => {
 
     const { articleId } = useParams(); // get the articleId from the URL parameters
+    const navigate = useNavigate()
 
     const [articleDetails, setArticleDetails] = useState(null)
     const [mediaUrls, setMediaUrls] = useState([])
@@ -56,6 +58,12 @@ const ArticlePage = () => {
                     setError("Article not found.")
                     return
                 }
+
+                if(isMediaSegment(articleData.article_type)){
+                    navigate(`/media-segment/${articleId}`, { replace: true})
+                    return
+                }
+
                 // Fetch the related staff contributions separately to bypass lack of FK relations in PostgreSQL
                 let staffContributions = [];
                 try {

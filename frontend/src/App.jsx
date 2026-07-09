@@ -10,6 +10,7 @@ const FirstFacade = lazy(() => import('./Pages/FirstFacade.jsx'));
 const SecondFacade = lazy(() => import('./Pages/SecondFacade.jsx'));
 const ArticlePage = lazy(() => import('./Pages/ArticlePage.jsx'))
 const PlaceholderArticlePage = lazy(() => import('./Pages/PlaceholderArticlePage.jsx'));
+const PlaceholderMediaSegmentArticle = lazy(() => import('./Pages/PlaceholderMediaSegmentArticle.jsx'));
 const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'));
 const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'));
 const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'));
@@ -118,7 +119,7 @@ const App = () => {
 
             <Route path="/media-segment" element={<MediaSegmentPage />} />
             <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
-            <Route path="/media-segment/id" element={<MediaSegmentArticle />} />
+            <Route path="/media-segment/id" element={<PlaceholderMediaSegmentArticle />} />
 
 
             <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
