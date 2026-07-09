@@ -66,9 +66,9 @@ const CreateArticlePage = () => {
 
     // calls imageUtils.js = 
     const handleFileChange = async (e) => {
-        const files = Array.from(e.target.files) 
-        
-        try{ // Compress all selected images
+        const files = Array.from(e.target.files)
+
+        try { // Compress all selected images
             const compressedResults = await Promise.all(
                 files.map(async (file) => {
                     const compressedBlob = await compressImage(file)
@@ -91,8 +91,8 @@ const CreateArticlePage = () => {
     const handleRemoveImage = (indexToRemove) => {
         setMediaImagePhoto(prev => {
             return prev.filter((imgObj, idx) => {
-                if(idx === indexToRemove){
-                    if(imgObj.preview){
+                if (idx === indexToRemove) {
+                    if (imgObj.preview) {
                         URL.revokeObjectURL(imgObj.preview)
                     }
                     return false
@@ -160,174 +160,174 @@ const CreateArticlePage = () => {
                 return
             }
 
-        // Inserting in article_staff for credits
-        const newArticleId = articleData.article_id
+            // Inserting in article_staff for credits
+            const newArticleId = articleData.article_id
 
-        const authorPayloads = selectedAuthors.map(author => ({
-            article_id: newArticleId,
-            staff_id: author.staff_id,
-            contribution_as: 'Author'
-        }))
+            const authorPayloads = selectedAuthors.map(author => ({
+                article_id: newArticleId,
+                staff_id: author.staff_id,
+                contribution_as: 'Author'
+            }))
 
-        const mediaPayloads = selectedMediaProviders.map(media => ({
-            article_id: newArticleId,
-            staff_id: media.staff_id,
-            contribution_as: 'Media_Provider'
-        }))
+            const mediaPayloads = selectedMediaProviders.map(media => ({
+                article_id: newArticleId,
+                staff_id: media.staff_id,
+                contribution_as: 'Media_Provider'
+            }))
 
-        const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
+            const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
 
-        if (allStaffPayloads.length > 0) {
-            let { error: staffError } = await supabase
-                .from('article_staff')
-                .insert(allStaffPayloads)
+            if (allStaffPayloads.length > 0) {
+                let { error: staffError } = await supabase
+                    .from('article_staff')
+                    .insert(allStaffPayloads)
 
-            if (staffError) {
-                console.log('Error linking staff: ', staffError)
-                alert(staffError.message || staffError)
-                return
-            }
-        }
-
-        // Collect and upload images to Cloudflare R2
-
-        const articleMediaPayloads = []
-        
-        // default to the first one in the array, ?.staff_id optional chaining
-        const mediaContributorId = selectedMediaProviders[0]?.staff_id || null 
-
-        // Extract the publication year (default to current year if parsing fails or is empty)
-        let pubYear = new Date().getFullYear();
-        if (scheduledTime) {
-            try {
-                pubYear = new Date(scheduledTime).getFullYear();
-            } catch (e) {
-                console.error("Error parsing scheduledTime year:", e);
-            }
-        }
-
-        for (let idx = 0; idx < mediaImagePhoto.length; idx++) {
-            const imgObj = mediaImagePhoto[idx]
-
-            try {
-                // Use a single bucket (article-photos) to simplify CORS and public URLs,
-                // but organize files by year and type.
-                const targetBucket = "article-photos"
-                let uploadFolder = `articles/${pubYear}/${generatedSlug}`
-
-                if (isMediaSegment(articleType)) {
-                    const folderName = articleType.toLowerCase().replace(/_/g, "-")
-                    uploadFolder = `media-segments/${pubYear}/${folderName}/${generatedSlug}`
+                if (staffError) {
+                    console.log('Error linking staff: ', staffError)
+                    alert(staffError.message || staffError)
+                    return
                 }
+            }
 
-                // Get presigned URL from Cloudflare Pages Function, asking permission
-                const presignRes = await fetch('/api/media/presign', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        filename: imgObj.name,
-                        contentType: imgObj.file.type,
-                        folder: uploadFolder,
-                        bucket: targetBucket
+            // Collect and upload images to Cloudflare R2
+
+            const articleMediaPayloads = []
+
+            // default to the first one in the array, ?.staff_id optional chaining
+            const mediaContributorId = selectedMediaProviders[0]?.staff_id || null
+
+            // Extract the publication year (default to current year if parsing fails or is empty)
+            let pubYear = new Date().getFullYear();
+            if (scheduledTime) {
+                try {
+                    pubYear = new Date(scheduledTime).getFullYear();
+                } catch (e) {
+                    console.error("Error parsing scheduledTime year:", e);
+                }
+            }
+
+            for (let idx = 0; idx < mediaImagePhoto.length; idx++) {
+                const imgObj = mediaImagePhoto[idx]
+
+                try {
+                    // Use a single bucket (article-photos) to simplify CORS and public URLs,
+                    // but organize files by year and type.
+                    const targetBucket = "article-photos"
+                    let uploadFolder = `articles/${pubYear}/${generatedSlug}`
+
+                    if (isMediaSegment(articleType)) {
+                        const folderName = articleType.toLowerCase().replace(/_/g, "-")
+                        uploadFolder = `media-segments/${pubYear}/${folderName}/${generatedSlug}`
+                    }
+
+                    // Get presigned URL from Cloudflare Pages Function, asking permission
+                    const presignRes = await fetch('/api/media/presign', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            filename: imgObj.name,
+                            contentType: imgObj.file.type,
+                            folder: uploadFolder,
+                            bucket: targetBucket
+                        })
                     })
-                })
 
-                if (!presignRes.ok) {
-                    const errData = await presignRes.json()
-                    throw new Error(errData.error || 'Failed to get presigned URL')
+                    if (!presignRes.ok) {
+                        const errData = await presignRes.json()
+                        throw new Error(errData.error || 'Failed to get presigned URL')
+                    }
+
+                    const { presignedUrl, publicUrl } = await presignRes.json()
+
+                    // Upload directly to Cloudflare R2 via presigned PUT URL once allowed
+                    const uploadRes = await fetch(presignedUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': imgObj.file.type },
+                        body: imgObj.file
+                    })
+
+                    if (!uploadRes.ok) {
+                        throw new Error(`Upload to R2 failed with status ${uploadRes.status}`)
+                    }
+
+                    // Save image metadata in media table
+                    const { data: mediaRow, error: mediaInsertError } = await supabase
+                        .from('media')
+                        .insert([{
+                            media_url: publicUrl
+                        }])
+                        .select()
+                        .single()
+
+                    if (mediaInsertError)
+                        throw mediaInsertError
+
+                    // Collect bridging record for article_media
+                    articleMediaPayloads.push({
+                        article_id: newArticleId, // add this to article_media
+                        media_id: mediaRow.media_id,
+                        media_order: idx + 1
+                    })
+                } catch (err) {
+                    console.error(`Error uploading image "${imgObj.name}": `, err)
+                    alert(`Error uploding image "${imgObj.name}": ` + err.message)
+                    return
                 }
+            }
 
-                const { presignedUrl, publicUrl } = await presignRes.json()
+            // save bridging records in article_media
+            if (articleMediaPayloads.length > 0) {
+                const { error: amError } = await supabase
+                    .from('article_media')
+                    .insert(articleMediaPayloads)
 
-                // Upload directly to Cloudflare R2 via presigned PUT URL once allowed
-                const uploadRes = await fetch(presignedUrl, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': imgObj.file.type },
-                    body: imgObj.file
-                })
-
-                if (!uploadRes.ok) {
-                    throw new Error(`Upload to R2 failed with status ${uploadRes.status}`)
+                if (amError) {
+                    console.error('Error linking article media: ', amError)
+                    alert(amError.message)
+                    return
                 }
-
-                // Save image metadata in media table
-                const { data: mediaRow, error: mediaInsertError } = await supabase
-                    .from('media')
-                    .insert([{
-                        media_url: publicUrl
-                    }])
-                    .select()
-                    .single()
-
-                if (mediaInsertError)
-                    throw mediaInsertError
-
-                // Collect bridging record for article_media
-                articleMediaPayloads.push({
-                    article_id: newArticleId, // add this to article_media
-                    media_id: mediaRow.media_id,
-                    media_order: idx + 1
-                })
-            } catch (err) {
-                console.error(`Error uploading image "${imgObj.name}": `, err)
-                alert(`Error uploding image "${imgObj.name}": ` + err.message)
-                return
             }
-        }
 
-        // save bridging records in article_media
-        if(articleMediaPayloads.length > 0) {
-            const { error: amError } = await supabase
-                .from('article_media')
-                .insert(articleMediaPayloads)
+            const articlePath = isMediaSegment(articleType)
+                ? `/media-segment/${newArticleId}/${generatedSlug}`
+                : `/article/${newArticleId}/${generatedSlug}`
+            const fullUrl = `${window.location.origin}${articlePath}`
 
-            if(amError) {
-                console.error('Error linking article media: ', amError)
-                alert(amError.message)
-                return
+            try {
+                await navigator.clipboard.writeText(fullUrl)
+            } catch (clipErr) {
+                console.warn("Failed to copy automatically to clipboard:", clipErr)
             }
+
+            setPublishedUrl(fullUrl)
+
+            // reset states to null/empty arrays
+            setHeadline("")
+            setBody("")
+            setSelectedAuthors([])
+            setSelectedMediaProviders([])
+            setScheduledTime("")
+            setTag1("")
+            setTag2("")
+            setTag3("")
+            setArticleSource("")
+
+            mediaImagePhoto.forEach(imgObj => {
+                if (imgObj.preview) {
+                    URL.revokeObjectURL(imgObj.preview)
+                }
+            })
+            setMediaImagePhoto([])
+
+            const bodyDiv = document.getElementById("Body-Text")
+            if (bodyDiv) bodyDiv.innerHTML = ""
+        } catch (err) {
+            console.error("Error creating article:", err)
+            alert(err.message || err)
+        } finally {
+            setIsUploading(false)
         }
-
-        const articlePath = isMediaSegment(articleType) 
-            ? `/media-segment/${newArticleId}/${generatedSlug}` 
-            : `/article/${newArticleId}/${generatedSlug}`
-        const fullUrl = `${window.location.origin}${articlePath}`
-
-        try {
-            await navigator.clipboard.writeText(fullUrl)
-        } catch (clipErr) {
-            console.warn("Failed to copy automatically to clipboard:", clipErr)
-        }
-
-        setPublishedUrl(fullUrl)
-
-        // reset states to null/empty arrays
-        setHeadline("")
-        setBody("")
-        setSelectedAuthors([])
-        setSelectedMediaProviders([])
-        setScheduledTime("")
-        setTag1("")
-        setTag2("")
-        setTag3("")
-        setArticleSource("")
-
-        mediaImagePhoto.forEach(imgObj => {
-            if(imgObj.preview){
-                URL.revokeObjectURL(imgObj.preview) 
-            }
-        })
-        setMediaImagePhoto([])
-
-        const bodyDiv = document.getElementById("Body-Text")
-        if (bodyDiv) bodyDiv.innerHTML = ""
-    } catch (err) {
-        console.error("Error creating article:", err)
-        alert(err.message || err)
-    } finally {
-        setIsUploading(false)
     }
-}
 
     return (
         <div className="Entire-Page">
@@ -335,7 +335,6 @@ const CreateArticlePage = () => {
                 {publishedUrl && (
                     <div className="Success-Banner">
                         <div className="Success-Banner-Content">
-                            <span className="Success-Icon">🎉</span>
                             <div className="Success-Text-Details">
                                 <strong>Success! Article uploaded successfully.</strong>
                                 <p>You can view your article or copy the link below:</p>
@@ -343,14 +342,14 @@ const CreateArticlePage = () => {
                             <button className="Dismiss-Banner" onClick={() => setPublishedUrl("")}>✕</button>
                         </div>
                         <div className="Success-Banner-Url-Row">
-                            <input 
-                                type="text" 
-                                readOnly 
-                                value={publishedUrl} 
+                            <input
+                                type="text"
+                                readOnly
+                                value={publishedUrl}
                                 onClick={(e) => e.target.select()}
                                 className="Success-Url-Input"
                             />
-                            <button 
+                            <button
                                 onClick={async () => {
                                     try {
                                         await navigator.clipboard.writeText(publishedUrl)
@@ -409,12 +408,12 @@ const CreateArticlePage = () => {
                         />
 
                         <input
-                            id = "file-upload"
-                            type = "file"
-                            accept = "image/*"
+                            id="file-upload"
+                            type="file"
+                            accept="image/*"
                             multiple
-                            style = {{ display: "none" }}
-                            onChange = {handleFileChange}
+                            style={{ display: "none" }}
+                            onChange={handleFileChange}
                         />
 
                     </label>
@@ -464,41 +463,41 @@ const CreateArticlePage = () => {
                 {/** List of Images with Remove Option through handleRemoveImage's index */}
 
                 {(mediaImagePhoto.length > 0) && (
-                    <div className = "Selected-Images-List">
+                    <div className="Selected-Images-List">
                         <h4> Selected Images ({mediaImagePhoto.length}): </h4>
-                        <div className = "Selected-Images-Grid">
+                        <div className="Selected-Images-Grid">
                             {mediaImagePhoto.map((imgObj, idx) => (
-                                <div key = {idx} className = "Selected-Image-Item">
+                                <div key={idx} className="Selected-Image-Item">
                                     <span> {imgObj.name} </span>
-                                    <button type = "button" onClick = {() => handleRemoveImage(idx)}> Remove</button>
+                                    <button type="button" onClick={() => handleRemoveImage(idx)}> Remove</button>
                                 </div>
                             ))}
-                        </div> 
+                        </div>
                     </div>
                 )}
 
                 {(selectedAuthors.length > 0 || selectedMediaProviders.length > 0) && (
-                    <div className="Selected-Staffers" style = {{padding: "1rem"}}>
+                    <div className="Selected-Staffers" style={{ padding: "1rem" }}>
 
                         <div className="Selected-Authors">
                             {selectedAuthors.length > 0 && (
                                 <>
                                     <p>Selected Writer:</p>
                                     {selectedAuthors.map((authorObj, idx) => (
-                                        <div key={idx} className="Selected-Author"> 
+                                        <div key={idx} className="Selected-Author">
                                             <span>{authorObj.staff_display_name}</span>
                                         </div>
                                     ))}
                                 </>
                             )}
                         </div>
-                        
+
                         <div className="Selected-Media-Providers">
                             {selectedMediaProviders.length > 0 && (
                                 <>
                                     <p>Selected Media Provider:</p>
                                     {selectedMediaProviders.map((mediaObj, idx) => (
-                                        <div key={idx} className="Selected-Media-Provider"> 
+                                        <div key={idx} className="Selected-Media-Provider">
                                             <p>{mediaObj.staff_display_name}</p>
                                         </div>
                                     ))}
@@ -507,7 +506,7 @@ const CreateArticlePage = () => {
                         </div>
                     </div>
                 )}
-                
+
                 <div className="Text-Area">
                     <input
                         type="text"
@@ -526,38 +525,38 @@ const CreateArticlePage = () => {
                         onInput={(typing) => setBody(typing.currentTarget.innerHTML)}
                     >
                     </div>
-                    <div className = "Article-Tags-Container">
-                        <div>    
-                            <p> Tag 1: 
+                    <div className="Article-Tags-Container">
+                        <div>
+                            <p> Tag 1:
                                 <input
-                                    value = {tag1}
-                                    onChange = {(typing) => setTag1(typing.target.value)}
-                                    className = "Article-Tags"
+                                    value={tag1}
+                                    onChange={(typing) => setTag1(typing.target.value)}
+                                    className="Article-Tags"
                                 />
                             </p>
                         </div>
                         <div>
-                            <p> Tag 2: 
+                            <p> Tag 2:
                                 <input
-                                    value = {tag2}
-                                    onChange = {(typing) => setTag2(typing.target.value)}
-                                    className = "Article-Tags"
+                                    value={tag2}
+                                    onChange={(typing) => setTag2(typing.target.value)}
+                                    className="Article-Tags"
                                 />
                             </p>
                         </div>
                         <div>
-                            <p> Tag 3: 
+                            <p> Tag 3:
                                 <input
-                                    value = {tag3}
-                                    onChange = {(typing) => setTag3(typing.target.value)}
-                                    className = "Article-Tags"
+                                    value={tag3}
+                                    onChange={(typing) => setTag3(typing.target.value)}
+                                    className="Article-Tags"
                                 />
                             </p>
                         </div>
                     </div>
 
-                    <div className = "Word-Count-And-Sources">
-                        <div className = "Word-Count">
+                    <div className="Word-Count-And-Sources">
+                        <div className="Word-Count">
                             <p> Word Count: <span> {countWords(body)} </span></p>
                         </div>
 
@@ -576,11 +575,11 @@ const CreateArticlePage = () => {
                             </div>
 
                             <div>
-                                <input 
-                                    className = "Article-Tags"
-                                    placeholder = "Sources"
-                                    value = {articleSource}
-                                    onChange = {(typing) => setArticleSource(typing.target.value)}
+                                <input
+                                    className="Article-Tags"
+                                    placeholder="Sources"
+                                    value={articleSource}
+                                    onChange={(typing) => setArticleSource(typing.target.value)}
                                 />
                             </div>
                         </div>
