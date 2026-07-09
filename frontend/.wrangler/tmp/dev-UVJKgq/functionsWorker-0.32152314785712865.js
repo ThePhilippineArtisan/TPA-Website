@@ -28511,7 +28511,7 @@ var init_dist_es12 = __esm({
 async function onRequestPost(context) {
   try {
     const { request, env } = context;
-    const { filename, contentType, folder } = await request.json();
+    const { filename, contentType, folder, bucket } = await request.json();
     if (!filename || !contentType) {
       return new Response(
         JSON.stringify({ error: "filename and contentType are required" }),
@@ -28527,9 +28527,9 @@ async function onRequestPost(context) {
       }
     });
     const key = folder ? `${folder}/${filename}` : filename;
+    const targetBucket = bucket || env.R2_BUCKET_NAME;
     const command = new PutObjectCommand({
-      //the import earlier
-      Bucket: env.R2_BUCKET_NAME,
+      Bucket: targetBucket,
       Key: key,
       ContentType: contentType
     });
@@ -28539,7 +28539,9 @@ async function onRequestPost(context) {
       { expiresIn: 300 }
       // 300 seconds
     );
-    const publicUrl = `${env.R2_PUBLIC_URL}/${key}`;
+    const envKey = `R2_PUBLIC_URL_${targetBucket.toUpperCase().replace(/[^A-Z0-9_]/g, "_")}`;
+    const publicUrlPrefix = env[envKey] || env.R2_PUBLIC_URL;
+    const publicUrl = `${publicUrlPrefix}/${key}`;
     return new Response(
       JSON.stringify({ presignedUrl, publicUrl, key }),
       {

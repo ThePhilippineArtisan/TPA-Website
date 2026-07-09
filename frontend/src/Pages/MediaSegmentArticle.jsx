@@ -227,7 +227,7 @@ const MediaSegmentArticle = () => {
                 <div className="Media-Segment-Article-Below-Photo">
                     <div className="Author-and-Details">
                         <div>
-                            <h3> <span> {authors.length > 1 ? "About the Author" : "About the Author"} </span>  </h3> <br></br>
+                            <h3> <span> {authors.length > 1 ? "About the Author" : "About the Author"} </span>  </h3>
                             {authors.length > 0 ? (
                                 authors.map((auth, idx) => (
                                     <div key={auth.staff_id} style={{ marginBottom: idx < authors.length - 1 ? "1.5rem" : "0" }}>
@@ -242,12 +242,10 @@ const MediaSegmentArticle = () => {
                             ) : (
                                 <h5>No bio available.</h5>
                             )}
-                            <br></br>
                             <h5> Published on <span> {formatDateReadable(articleDetails.published_at)} </span></h5>
 
-                            <h5> {articleDetails.word_count || 0} <span>words</span> | {Math.ceil((articleDetails.word_count || 0) / 200)} <span>min read</span></h5> <br></br>
+                            <h5> {articleDetails.word_count || 0} <span>words</span> | {Math.ceil((articleDetails.word_count || 0) / 200)} <span>min read</span></h5>
                             <h5> <span> Click this link to view the sources, interview, or media used in this article. </span> </h5>
-                            <br></br>
                             {articleDetails.article_source && (
                                 <h5>
                                     <span>
@@ -258,8 +256,6 @@ const MediaSegmentArticle = () => {
                             <div className="Sidebar-Fast-News-Section">
                                 <hr></hr>
                                 <VerticalFastNews />
-                                <hr></hr>
-                                <br></br>
                             </div>
                         </div>
                     </div>

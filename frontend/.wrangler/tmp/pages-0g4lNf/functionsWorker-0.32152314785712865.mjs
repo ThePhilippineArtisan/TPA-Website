@@ -26941,7 +26941,7 @@ var init_dist_es12 = __esm({
 async function onRequestPost(context) {
   try {
     const { request, env } = context;
-    const { filename, contentType, folder } = await request.json();
+    const { filename, contentType, folder, bucket } = await request.json();
     if (!filename || !contentType) {
       return new Response(
         JSON.stringify({ error: "filename and contentType are required" }),
@@ -26957,9 +26957,9 @@ async function onRequestPost(context) {
       }
     });
     const key = folder ? `${folder}/${filename}` : filename;
+    const targetBucket = bucket || env.R2_BUCKET_NAME;
     const command = new PutObjectCommand({
-      //the import earlier
-      Bucket: env.R2_BUCKET_NAME,
+      Bucket: targetBucket,
       Key: key,
       ContentType: contentType
     });
@@ -26969,7 +26969,9 @@ async function onRequestPost(context) {
       { expiresIn: 300 }
       // 300 seconds
     );
-    const publicUrl = `${env.R2_PUBLIC_URL}/${key}`;
+    const envKey = `R2_PUBLIC_URL_${targetBucket.toUpperCase().replace(/[^A-Z0-9_]/g, "_")}`;
+    const publicUrlPrefix = env[envKey] || env.R2_PUBLIC_URL;
+    const publicUrl = `${publicUrlPrefix}/${key}`;
     return new Response(
       JSON.stringify({ presignedUrl, publicUrl, key }),
       {
@@ -27034,10 +27036,10 @@ var init_functionsRoutes_0_02699167877381814 = __esm({
   }
 });
 
-// ../.wrangler/tmp/bundle-iRAcHR/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-3bHyXc/middleware-loader.entry.ts
 init_functionsRoutes_0_02699167877381814();
 
-// ../.wrangler/tmp/bundle-iRAcHR/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-3bHyXc/middleware-insertion-facade.js
 init_functionsRoutes_0_02699167877381814();
 
 // ../node_modules/wrangler/templates/pages-template-worker.ts
@@ -27533,7 +27535,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-iRAcHR/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-3bHyXc/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -27566,7 +27568,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-iRAcHR/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-3bHyXc/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

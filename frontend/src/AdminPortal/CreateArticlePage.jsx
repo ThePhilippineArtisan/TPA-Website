@@ -3,6 +3,7 @@ import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 import { compressImage } from "../utils/imageUtils.js"
 import { formatDateReadable, formatRelativeTime } from "../utils/dateUtils"
+import { isMediaSegment } from "../utils/articleUtils"
 
 import BOLD from "../assets/Miniature_Icon_Version/Bold.svg"
 import ITALIC from "../assets/Miniature_Icon_Version/Italic.svg"
@@ -203,6 +204,15 @@ const CreateArticlePage = () => {
             const imgObj = mediaImagePhoto[idx]
 
             try {
+                let targetBucket = "article-photos"
+                let uploadFolder = `articles/${generatedSlug}`
+
+                if(isMediaSegment(articleType)){
+                    targetBucket = "media-segments"
+                    const folderName = articleType.toLowerCase().replace(/_/g, "-")
+                    uploadFolder = `${folderName}/${generatedSlug}`
+                }
+
                 // Get presigned URL from Cloudflare Pages Function, asking permission
                 const presignRes = await fetch('/api/media/presign', {
                     method: 'POST',
@@ -210,7 +220,8 @@ const CreateArticlePage = () => {
                     body: JSON.stringify({
                         filename: imgObj.name,
                         contentType: imgObj.file.type,
-                        folder: `articles/${generatedSlug}`
+                        folder: uploadFolder,
+                        bucket: targetBucket
                     })
                 })
 

@@ -9,7 +9,7 @@ export async function onRequestPost(context){
 
         // 1. Parse JSON body
 
-        const { filename, contentType, folder } = await request.json()
+        const { filename, contentType, folder, bucket } = await request.json()
 
         if(!filename || !contentType) {
             return new Response(
@@ -18,7 +18,7 @@ export async function onRequestPost(context){
             )
         }
 
-        // 2. Initiate R2/S3 Client, the env.R2_ENDPOINT taken from .env or variables in cloudflare deployment
+        // 2. Initiate R2/S3 Client
         const r2Client = new S3Client({
             region: 'auto',
             endpoint: env.R2_ENDPOINT,
@@ -31,13 +31,14 @@ export async function onRequestPost(context){
         // 3. Define file path & Key
         const key = folder ? `${folder}/${filename}` : filename
 
-        const command = new PutObjectCommand({ //the import earlier
-            Bucket: env.R2_BUCKET_NAME,
+        const targetBucket = bucket || env.R2_BUCKET_NAME
+        const command = new PutObjectCommand({ 
+            Bucket: targetBucket,
             Key: key,
             ContentType: contentType,
         })
 
-        // 4. Generate Presigned URL for Supabase
+        // 4. Generate Presigned URL for Cloudflare R2
         const presignedUrl = await getSignedUrl(
             r2Client, 
             command, 
@@ -45,7 +46,9 @@ export async function onRequestPost(context){
         )
         
         // 5. construct public access url 
-        const publicUrl = `${env.R2_PUBLIC_URL}/${key}`
+        const envKey = `R2_PUBLIC_URL_${targetBucket.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}`
+        const publicUrlPrefix = env[envKey] || env.R2_PUBLIC_URL
+        const publicUrl = `${publicUrlPrefix}/${key}`
 
         // 6. Return response
         return new Response(
