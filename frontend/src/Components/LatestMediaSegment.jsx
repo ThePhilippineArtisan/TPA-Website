@@ -23,12 +23,6 @@ const LatestMediaSegment = () => {
                             media(
                                 media_url
                             )
-                        ),
-                        article_staff(
-                            contribution_as,
-                            staff(
-                                staff_display_name
-                            )
                         )
                     `)
                     .in("article_type", [
@@ -45,8 +39,61 @@ const LatestMediaSegment = () => {
                     .limit(1)
                     .maybeSingle();
 
-                if (!error && data) {
-                    setLatestSegment(data);
+                if (error) {
+                    console.error("Supabase error fetching latest media segment:", error);
+                    return;
+                }
+
+                if (data) {
+                    let staffContributions = [];
+                    try {
+                        const { data: staffData, error: staffError } = await supabase
+                            .from("article_staff")
+                            .select(`
+                                contribution_as,
+                                staff (
+                                    staff_id,
+                                    staff_display_name
+                                )
+                            `)
+                            .eq("article_id", data.article_id);
+
+                        if (staffError) {
+                            if (staffError.code === "PGRST200" || staffError.message?.includes("relationship")) {
+                                console.warn("No FK relationship between article_staff and staff. Fetching manually...");
+                                const { data: rawStaffRel, error: rawStaffRelErr } = await supabase
+                                    .from("article_staff")
+                                    .select("contribution_as, staff_id")
+                                    .eq("article_id", data.article_id);
+
+                                if (!rawStaffRelErr && rawStaffRel && rawStaffRel.length > 0) {
+                                    const staffIds = rawStaffRel.map(r => r.staff_id).filter(Boolean);
+                                    const { data: staffRows, error: staffRowsErr } = await supabase
+                                        .from("staff")
+                                        .select("staff_id, staff_display_name")
+                                        .in("staff_id", staffIds);
+
+                                    if (!staffRowsErr && staffRows) {
+                                        staffContributions = rawStaffRel.map(rel => ({
+                                            contribution_as: rel.contribution_as,
+                                            staff: staffRows.find(s => s.staff_id === rel.staff_id)
+                                        })).filter(c => c.staff);
+                                    }
+                                }
+                            } else {
+                                throw staffError;
+                            }
+                        } else {
+                            staffContributions = staffData || [];
+                        }
+                    } catch (staffErr) {
+                        console.error("Non-blocking error fetching staff contributors:", staffErr);
+                    }
+
+                    setLatestSegment({
+                        ...data,
+                        article_staff: staffContributions
+                    });
                 }
             } catch (err) {
                 console.error("Error fetching latest media segment:", err);
