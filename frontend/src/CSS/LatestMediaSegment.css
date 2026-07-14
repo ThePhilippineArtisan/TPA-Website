@@ -1,8 +1,8 @@
-.Latest-Media-Segment-Image::before{
+.Latest-Media-Segment-Image::before {
     content: "";
     position: absolute;
     background-image: var(--bgImage);
-    
+
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -14,7 +14,7 @@
     z-index: -1;
 }
 
-.Latest-Media-Segment-Image{
+.Latest-Media-Segment-Image {
     position: relative;
     display: flex;
     align-items: center;
@@ -23,7 +23,7 @@
     z-index: 1;
 }
 
-.Latest-Media-Segment-Image img{
+.Latest-Media-Segment-Image img {
     max-height: 30%;
     max-width: 30%;
     object-fit: cover;
@@ -34,14 +34,14 @@
     transition: transform 0.1s ease-in-out;
 }
 
-.Latest-Media-Segment-Image img:hover{
+.Latest-Media-Segment-Image img:hover {
     transform: scale(1.05);
     transition: 0.25s;
     cursor: pointer;
-    box-shadow: 4px 5px rgba(13, 0, 0, 0.724);   
+    box-shadow: 4px 5px rgba(13, 0, 0, 0.724);
 }
 
-.Latest-MS-Title{
+.Latest-MS-Title {
     display: flex;
     justify-content: center;
     gap: 2rem;
@@ -49,36 +49,36 @@
     text-decoration: none;
 }
 
-.Latest-MS-Title h2{
+.Latest-MS-Title h2 {
     font-family: var(--font-serif);
     font-weight: 700;
     font-size: 5rem;
     text-decoration: underline;
 }
 
-.Latest-MS-Title h3{
+.Latest-MS-Title h3 {
     color: white;
     font-weight: 500;
-    
-  text-shadow: 8px 8px 16px rgb(0, 0, 0);
+
+    text-shadow: 8px 8px 16px rgb(0, 0, 0);
 }
 
-.Latest-MS-Title h3:hover{
+.Latest-MS-Title h3:hover {
     cursor: pointer;
     color: var(--primary-blue-hover);
 }
 
-.Latest-Media-Segment-Image a{
+.Latest-Media-Segment-Image a {
     font-size: 3rem;
     color: white;
 }
 
-.Latest-Media-Segment-Image h3{
+.Latest-Media-Segment-Image h3 {
     padding: 2rem 0rem;
     font-size: 45%;
 }
 
-.Segment-Container{
+.Segment-Container {
     width: auto;
     padding: 0.5rem;
     font-size: 1.25rem;
@@ -91,22 +91,23 @@
     align-self: flex-start;
 }
 
-.Media-SegmentSample-Text p{
+.Media-SegmentSample-Text p {
     font-size: 30%;
-    color:#414141;
-    
-    display: -webkit-box;              
-    -webkit-line-clamp: 3;             
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    color: #414141;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-.Media-Segment-Title-Author{
+.Media-Segment-Title-Author {
     max-width: 50%;
     display: flex;
     flex-direction: column;
@@ -114,7 +115,12 @@
     text-shadow: #414141;
 }
 
-.Sample-Text-Container{
+.Media-Segment-Title-Author h2 {
+    font-size: 4rem;
+    line-height: 1.2;
+}
+
+.Sample-Text-Container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -131,7 +137,7 @@
     padding: 1rem;
 }
 
-.Sample-Text-Container:hover{
+.Sample-Text-Container:hover {
     background-color: rgba(255, 255, 255);
 
     transition: transform 0.2s ease-in-out;
@@ -140,22 +146,23 @@
     cursor: pointer;
 }
 
-.Sample-Text p{
+.Sample-Text p {
     text-decoration: none;
-    color:#414141;
-    
-    display: -webkit-box;              
-    -webkit-line-clamp: 3;             
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    color: #414141;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-.Vertical-Divider{
+.Vertical-Divider {
     background-color: #0265A9;
     height: 2rem;
     width: 0.25rem;

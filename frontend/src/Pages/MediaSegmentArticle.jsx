@@ -244,7 +244,7 @@ const MediaSegmentArticle = () => {
                                                     {auth.staff_display_name}
                                                 </h4>
                                             )}
-                                            <h5>{auth.staff_bio || "No bio available."}</h5>
+                                            <h5 className="Staff-Bio-Text">{auth.staff_bio || "No bio available."}</h5>
                                         </div>
                                     ))}
                                 </div>
@@ -266,7 +266,7 @@ const MediaSegmentArticle = () => {
                                                     {auth.staff_display_name}
                                                 </h4>
                                             )}
-                                            <h5>{auth.staff_bio || "No bio available."}</h5>
+                                            <h5 className="Staff-Bio-Text">{auth.staff_bio || "No bio available."}</h5>
                                         </div>
                                     ))}
                                 </div>

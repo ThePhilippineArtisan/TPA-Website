@@ -79,7 +79,6 @@ const ArticlePage = () => {
                         .eq("article_id", articleData.article_id);
 
                     if (staffError) {
-                        // Resilient fallback if foreign key constraint is missing on article_staff -> staff
                         if (staffError.code === "PGRST200" || staffError.message?.includes("relationship")) {
                             console.warn("No FK relationship between article_staff and staff. Fetching manually...");
                             const { data: rawStaffRel, error: rawStaffRelErr } = await supabase
