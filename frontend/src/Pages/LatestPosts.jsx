@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient.js"
-import { getMediaSegmentLabel, isMediaSegment } from "../utils/articleUtils.js"
+import { isMediaSegment } from "../utils/articleUtils.js"
 import React, { useState, useEffect } from "react"
 
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
@@ -187,7 +187,7 @@ const LatestPosts = () => {
                     articles: []
                 }
             }
-            groups[key].articles.push(articles) // data structure stack, add
+            groups[key].articles.push(article) // data structure stack, add
         })
 
         
@@ -248,8 +248,8 @@ const LatestPosts = () => {
             const typeMatch = criteria.type && article.article_type === criteria.type
             const tagMatch = criteria.tag && (
                 (article.article_tag1 && article.article_tag1.toLowerCase().includes(criteria.tag)) ||
-                (article.article_tag2 && article.article_tag1.toLowerCase().includes(criteria.tag)) ||
-                (article.article_tag3 && article.article_tag1.toLowerCase().includes(criteria.tag))
+                (article.article_tag2 && article.article_tag2.toLowerCase().includes(criteria.tag)) ||
+                (article.article_tag3 && article.article_tag3.toLowerCase().includes(criteria.tag))
             )
             return typeMatch || tagMatch
         })
@@ -282,7 +282,7 @@ const LatestPosts = () => {
                                         <hr className = "Vertical-Line-Date" />
                                         <div className = "Three-Article-Column">
                                             {week.articles.map((article) => {
-                                                const firstMedia = article.article_media?.[0]?.media?.media_url
+                                                const firstMedia = article.article_media?.[0]?.media?.media_url || Photo2
                                                 const authorsStr = getAuthorsString(article)
                                                 const formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
                                                     month: "long",
