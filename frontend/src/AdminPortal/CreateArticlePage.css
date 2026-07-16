@@ -64,6 +64,17 @@ select:hover{
     margin: 5px;
 }
 
+select, select::picker(select) {
+  appearance: base-select;
+  max-width: 100ch;
+}
+
+select::picker(select) {
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 5px;
+}
+
 .Selected-Staffers{
     background-color: var(--glass-bg);
     border-radius: var(--radius-lg);
@@ -142,10 +153,16 @@ select:hover{
     margin: 1rem;
 }
 
+.Word-Count{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
 .Word-Count-And-Sources{
     display: flex;
     justify-content: space-between;
-    
+    width: 100%;
 }
 
 .Article-Tags{

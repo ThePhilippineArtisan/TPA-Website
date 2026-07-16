@@ -573,15 +573,16 @@ const CreateArticlePage = () => {
                                     style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
                                 />
                             </div>
+                        </div>
 
-                            <div>
-                                <input
-                                    className="Article-Tags"
-                                    placeholder="Sources"
-                                    value={articleSource}
-                                    onChange={(typing) => setArticleSource(typing.target.value)}
-                                />
-                            </div>
+                        <div>
+                            <input
+                                className="Article-Tags"
+                                placeholder="Sources"
+                                value={articleSource}
+                                onChange={(typing) => setArticleSource(typing.target.value)}
+                                style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
+                            />
                         </div>
                     </div>
                 </div>

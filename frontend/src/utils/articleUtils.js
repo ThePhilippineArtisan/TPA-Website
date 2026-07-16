@@ -7,7 +7,9 @@ export const isMediaSegment = (type) => {
         "TALA_THURSDAY",
         "FEATURES_FRIDAY",
         "STREAMING_SATURDAY",
-        "SPORTS_SUNDAY"
+        "SPORTS_SUNDAY",
+        "OPINION",
+        "EDITORIAL"
     ]
     return segments.includes(type.toUpperCase())
 }
@@ -22,7 +24,10 @@ export const getMediaSegmentLabel = (type) => {
         "TALA_THURSDAY" : "Tala Thursday",
         "FEATURES_FRIDAY" : "Features Friday",
         "STREAMING_SATURDAY" : "Streaming Saturday",
-        "SPORTS_SUNDAY" : "Sports Sunday"
+        "SPORTS_SUNDAY" : "Sports Sunday",
+
+        "OPINION" : "Opinion",
+        "EDITORIAL" : "Editorial"
     }
     return mapping[type.toUpperCase()] || type
 }
