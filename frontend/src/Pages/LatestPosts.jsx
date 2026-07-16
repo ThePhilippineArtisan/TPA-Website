@@ -48,7 +48,7 @@ const LatestPosts = () => {
 
                 if (articlesData && articlesData.length > 0) {
                     const articleIds = articlesData.map(a => a.article_id);
-                    
+
                     let staffContributions = [];
                     try {
                         // 2. Fetch staff contributions
@@ -74,7 +74,7 @@ const LatestPosts = () => {
 
                                 if (!rawStaffRelErr && rawStaffRel && rawStaffRel.length > 0) {
                                     const staffIds = [...new Set(rawStaffRel.map(r => r.staff_id).filter(Boolean))];
-                                    
+
                                     // Fetch staff details manually
                                     const { data: staffRows, error: staffRowsErr } = await supabase
                                         .from("staff")
@@ -106,7 +106,7 @@ const LatestPosts = () => {
                             sc => sc.article_id === article.article_id
                         );
                         return {
-                            ...article, 
+                            ...article,
                             article_staff: contributions
                         };
                     });
@@ -126,7 +126,7 @@ const LatestPosts = () => {
     }, []);
 
     const getAuthorsString = (article) => {
-        if(!article.article_staff || article.article_staff.length === 0)
+        if (!article.article_staff || article.article_staff.length === 0)
             return "The Philippine Artisan Staff"
         const authors = article.article_staff
             .filter(articlestaff => articlestaff.contribution_as === "Author")
@@ -135,8 +135,18 @@ const LatestPosts = () => {
         return authors.length > 0 ? authors.join(", ") : "TPA Staff"
     }
 
+    const getMedProvString = (article) => {
+        if (!article.article_staff || article.article_staff.length === 0)
+            return "The Philippine Artisan Staff"
+        const MedProvs = article.article_staff
+            .filter(articlestaff => articlestaff.contribution_as === "Media_Provider")
+            .map(articlestaff => articlestaff.staff?.staff_display_name)
+            .filter(Boolean)
+        return MedProvs.length > 0 ? MedProvs.join(", ") : "TPA Staff"
+    }
+
     const formatWeekInterval = (start, end) => {
-        const startMonth = String(start.getMonth() + 1).padStart(2, '0') 
+        const startMonth = String(start.getMonth() + 1).padStart(2, '0')
         // + 1 because Jan = 0; padStart(2,  0) so it's '03' instead of just '3'
         const startDay = String(start.getDate()).padStart(2, '0')
         const startYear = start.getFullYear()
@@ -147,7 +157,7 @@ const LatestPosts = () => {
 
         // return as string formatted 1 week interval
         // like this: • 07 / 13-19 / 2026
-        if(startYear !== endYear){
+        if (startYear !== endYear) {
             return `• ${startMonth}/${startDay}/${startYear} - ${endMonth}/${endDay}/${endYear}`;
         }
         if (startMonth !== endMonth) {
@@ -155,16 +165,16 @@ const LatestPosts = () => {
         }
         return `• ${startMonth} / ${startDay}-${endDay} / ${startYear}`;
     };
-    
-    const groupArticlesByWeek = (articlesList) => {
-        const groups = {} // initiate map using timestamps
 
-        articlesList.forEach(article =>{
-            if(!article.published_at) 
+    const groupArticlesByWeek = (articlesList) => {
+        const groups = {} // initMedProvs.join(", "tamps
+
+        articlesList.forEach(article => {
+            if (!article.published_at)
                 return // skip
             const date = new Date(article.published_at)
 
-            if(isNaN(date.getTime())) 
+            if (isNaN(date.getTime()))
                 return // skip
 
             // Sunday = 0, Saturday is 6
@@ -179,7 +189,7 @@ const LatestPosts = () => {
             end.setHours(23, 59, 59, 999)
 
             const key = start.getTime()
-            if(!groups[key]){
+            if (!groups[key]) {
                 groups[key] = {
                     start,
                     end,
@@ -190,7 +200,7 @@ const LatestPosts = () => {
             groups[key].articles.push(article) // data structure stack, add
         })
 
-        
+
         // Sort groups by start date descending
         return Object.keys(groups)
             .sort((a, b) => b - a) // timestamps, descending order
@@ -226,11 +236,11 @@ const LatestPosts = () => {
 
     const renderCheckbox = (filterName) => {
         return (
-            <div className = "Individual-Filters" key = {filterName}>
+            <div className="Individual-Filters" key={filterName}>
                 <input
-                    type = "checkbox"
-                    checked = {selectedFilters.includes(filterName)}
-                    onChange = {() => handleFilterChange(filterName)}
+                    type="checkbox"
+                    checked={selectedFilters.includes(filterName)}
+                    onChange={() => handleFilterChange(filterName)}
                 />
                 <p> {filterName} </p>
             </div>
@@ -238,11 +248,11 @@ const LatestPosts = () => {
     }
 
     const filteredArticles = articles.filter(article => {
-        if(selectedFilters.length === 0)
+        if (selectedFilters.length === 0)
             return true
         return selectedFilters.some(filterName => {
             const criteria = filterMap[filterName]
-            if(!criteria)
+            if (!criteria)
                 return false
 
             const typeMatch = criteria.type && article.article_type === criteria.type
@@ -261,57 +271,69 @@ const LatestPosts = () => {
         <div className="Latest-Posts-Page">
             <CoverPhotoSearch />
             <Tabs />
-            <div className = "Latest-Article-Two-Part">
-                <div className = "Latest-Articles-Container">
+            <div className="Latest-Article-Two-Part">
+                <div className="Latest-Articles-Container">
                     {loading ? (
                         <div style={{ color: "black", padding: "5rem", minHeight: "40dvh" }}>
                             <h3>Loading articles...</h3>
                         </div>
-                        ) : groupedWeeks.length === 0 ? (
-                            <div style={{ color: "black", padding: "5rem", minHeight: "40dvh" }}>
-                                <h3>No articles found.</h3>
-                            </div>
-                        ) : (
-                            groupedWeeks.slice(0, visibleWeeks).map((week, weekIdx) => (
-                                <React.Fragment key = {weekIdx}>
-                                    <div className="Latest-Articles-Date">
-                                        <h1>{week.label}</h1>
-                                        <hr className="Horizontal-Line-Date" />
-                                    </div>
-                                    <div className = "Day-Articles">
-                                        <hr className = "Vertical-Line-Date" />
-                                        <div className = "Three-Article-Column">
-                                            {week.articles.map((article) => {
-                                                const firstMedia = article.article_media?.[0]?.media?.media_url || Photo2
-                                                const authorsStr = getAuthorsString(article)
-                                                const formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
-                                                    month: "long",
-                                                    day: "numeric",
-                                                    year: "numeric"
-                                                })
-                                                const detailLink = isMediaSegment(article.article_type) // use util
+                    ) : groupedWeeks.length === 0 ? (
+                        <div style={{ color: "black", padding: "5rem", minHeight: "40dvh" }}>
+                            <h3>No articles found.</h3>
+                        </div>
+                    ) : (
+                        groupedWeeks.slice(0, visibleWeeks).map((week, weekIdx) => (
+                            <React.Fragment key={weekIdx}>
+                                <div className="Latest-Articles-Date">
+                                    <h1>{week.label}</h1>
+                                    <hr className="Horizontal-Line-Date" />
+                                </div>
+                                <div className="Day-Articles">
+                                    <hr className="Vertical-Line-Date" />
+                                    <div className="Three-Article-Column">
+                                        {week.articles.map((article) => {
+                                            const firstMedia = article.article_media?.[0]?.media?.media_url || Photo2
+                                            const staffList = article.article_staff || [];
+                                            const authorsCount = staffList.filter(s => s.contribution_as === "Author" && s.staff?.staff_display_name).length;
+                                            const medProvsCount = staffList.filter(s => s.contribution_as === "Media_Provider" && s.staff?.staff_display_name).length;
+
+                                            const authorsStr = getAuthorsString(article)
+                                            const medProvsStr = getMedProvString(article)
+                                            const authorMediaDisplay = (authorsCount > 1 || medProvsCount > 1)
+                                                ? "TPA Staffers"
+                                                : (authorsStr === medProvsStr ? authorsStr : `${authorsStr} & ${medProvsStr}`);
+
+                                            const formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
+                                                month: "long",
+                                                day: "numeric",
+                                                year: "numeric"
+                                            })
+
+                                            const detailLink = isMediaSegment(article.article_type) // use util
                                                 ? `/media-segment/${article.article_id}/${article.slug_headline}`
                                                 : `/article/${article.article_id}/${article.slug_headline}`
 
-                                                return(
-                                                    <Link to = {detailLink} className = "Individual-Article" key = {article.article_id}>
-                                                        <img loading = "lazy" src = {firstMedia} alt = {article.article_headline} />
-                                                        <div className = "Individual-Article-Texts">
-                                                            <div className = "Individual-Article-Headline">
-                                                                <p> {article.article_headline} </p>
-                                                                <div className = "Latest-Posts-Article-Author-Time">
-                                                                    <p> {authorsStr} </p>
-                                                                    <p> {formattedDate} </p>
+                                            return (
+                                                <Link to={detailLink} className="Individual-Article" key={article.article_id}>
+                                                    <img loading="lazy" src={firstMedia} alt={article.article_headline} />
+                                                    <div className="Individual-Article-Texts">
+                                                        <div className="Individual-Article-Headline">
+                                                            <p> {article.article_headline} </p>
+                                                            <div className="Latest-Posts-Article-Author-Time">
+                                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                                    <p style={{ fontSize: "0.8rem", color: "var(--text-dark)", margin: "0", padding: "0" }}> {formattedDate} </p>
+                                                                    <p> {authorMediaDisplay}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </Link>
-                                                )
-                                            })}
-                                        </div>
+                                                    </div>
+                                                </Link>
+                                            )
+                                        })}
                                     </div>
-                                </React.Fragment>
-                            ))
+                                </div>
+                            </React.Fragment>
+                        ))
                     )}
 
                     {visibleWeeks < groupedWeeks.length && (
@@ -324,28 +346,28 @@ const LatestPosts = () => {
                 </div>
 
 
-            <div className = "Latest-Post-Filters-Container">
-                <div className = "Latest-Post-Filter">
+                <div className="Latest-Post-Filters-Container">
+                    <div className="Latest-Post-Filter">
 
-                    <br></br><h3>Short-Form News</h3><br></br> 
-                    <hr></hr>
+                        <br></br><h3>Short-Form News</h3><br></br>
+                        <hr></hr>
                         <div>
                             {["Just In", "In Case You Missed It!", "Announcement", "Advisory", "Alert", "Walang Pasok"].map(renderCheckbox)}
                         </div>
-                    
-                    <br></br><h3>Long-Form News</h3><br></br>
-                    <hr></hr>
-                        <div>        
+
+                        <br></br><h3>Long-Form News</h3><br></br>
+                        <hr></hr>
+                        <div>
                             {["University News", "Local News", "National News", "International News", "Developing Story"].map(renderCheckbox)}
                         </div>
 
-                    <br></br><h3>Look, In Photos, Highlights</h3><br></br> 
-                    <hr></hr>
-                    <div>       
-                        {["Look", "In Photos", "Highlights"].map(renderCheckbox)}
+                        <br></br><h3>Look, In Photos, Highlights</h3><br></br>
+                        <hr></hr>
+                        <div>
+                            {["Look", "In Photos", "Highlights"].map(renderCheckbox)}
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     )

@@ -1,45 +1,50 @@
-.Latest-Posts-Page{
+.Latest-Posts-Page {
     display: flex;
     flex-direction: column;
 }
 
-.Latest-Articles-Container{
+.Latest-Articles-Container {
     display: flex;
     flex-direction: column;
+    align-content: center;
     text-align: center;
 
+    width: 100%;
+    padding: 2rem;
     max-width: var(--container-max-width);
 }
 
-.Latest-Article-Two-Part{
-    display: flex;
+.Latest-Article-Two-Part {
+    display: grid;
+    grid-template-columns: 8fr 2fr;
     justify-content: center;
+    flex-wrap: wrap-reverse;
 }
 
-.Latest-Articles-Date{
+.Latest-Articles-Date {
     padding: 2rem;
     padding-bottom: 0rem;
     display: flex;
 }
 
-.Latest-Articles-Date h1{
+.Latest-Articles-Date h1 {
     color: black;
     text-decoration: none;
 
     font-size: 1.5rem;
 }
 
-.Horizontal-Line-Date{
+.Horizontal-Line-Date {
     margin: 1rem;
     height: 1px;
     width: 80%;
 }
 
-.Horizontal-Line-Date .Vertical-Line-Date h1 hr{
+.Horizontal-Line-Date .Vertical-Line-Date h1 hr {
     color: var(--primary-blue);
 }
 
-.Vertical-Line-Date{
+.Vertical-Line-Date {
     margin-left: 3rem;
     width: 1px;
     background-color: var(--border-color);
@@ -47,23 +52,23 @@
     border: none;
 }
 
-.Day-Articles{
+.Day-Articles {
     display: flex;
 
     margin: 1% 0%;
 }
 
-.Three-Article-Column{
+.Three-Article-Column {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     flex-direction: row;
     flex-wrap: wrap;
-    
+
     padding: 0rem 3rem;
     gap: 2rem;
 }
 
-.Individual-Article{
+.Individual-Article {
     display: flex;
     flex-direction: column;
 
@@ -73,31 +78,31 @@
     width: 24rem;
 }
 
-.Individual-Article:hover{
+.Individual-Article:hover {
     transition: 0.1s ease-in-out;
     transform: scale(1.01);
     background-color: #84cdfd25;
 }
 
-.Individual-Article img{
+.Individual-Article img {
     max-width: 100%;
 
     aspect-ratio: 16 / 9;
 
     object-fit: cover;
     object-position: center;
-    
+
     border-top-left-radius: var(--radius-md);
     border-top-right-radius: var(--radius-md);
-    transition: object-position 0.3s, transform 0.3s ;
+    transition: object-position 0.3s, transform 0.3s;
     cursor: pointer;
 }
 
-.Individual-Article:hover img{
-    object-position: 90% 90%;    
+.Individual-Article:hover img {
+    object-position: 90% 90%;
 }
 
-.Individual-Article-Texts p{
+.Individual-Article-Texts p {
     font-weight: bold;
     text-decoration: none;
 
@@ -105,30 +110,30 @@
     line-height: 1.5rem;
     padding: 0.75rem;
 
-    display: -webkit-box;              
+    display: -webkit-box;
     -webkit-line-clamp: 4;
-    line-clamp: 4;             
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-.Individual-Article-Headline p{
+.Individual-Article-Headline p {
     font-family: var(--font-serif);
     font-size: 1rem;
 }
 
-.Latest-Posts-Article-Author-Time{
+.Latest-Posts-Article-Author-Time {
     display: flex;
     justify-content: space-around;
-    
+
 }
 
-.Latest-Posts-Article-Author-Time p{
+.Latest-Posts-Article-Author-Time p {
     font-family: var(--font-sans);
     padding: 0.25rem;
     color: rgb(51, 51, 51);
@@ -136,29 +141,30 @@
     font-weight: bold;
 }
 
-.Latest-Post-Filter{
+.Latest-Post-Filter {
     font-size: 1rem;
     padding: 1rem;
 }
 
-.Latest-Post-Filters-Container{
-    max-width: 20%;
+.Latest-Post-Filters-Container {
+    max-width: 100%;
     color: var(--primary-blue);
     padding: 1rem;
-    margin: 1rem 0rem;
+    margin: 2rem;
     background-color: white;
     border-radius: var(--radius-md);
+
     border: 3px solid var(--border-color);
 }
 
-.Individual-Filters{
+.Individual-Filters {
     display: flex;
     flex-direction: row;
     text-align: center;
 
 }
 
-.Individual-Filters p{
+.Individual-Filters p {
     padding: 0.5rem;
 
 }
@@ -185,11 +191,11 @@
 }
 
 .Load-More-Button:hover {
-    background-color: #0b7bb8; /* Slightly darker shade of blue */
+    background-color: #0b7bb8;
+    /* Slightly darker shade of blue */
     transform: translateY(-2px);
 }
 
 .Load-More-Button:active {
     transform: translateY(0);
 }
-
