@@ -275,7 +275,7 @@ const MediaSegmentArticle = () => {
                             <h5> Published on <span> {formatDateReadable(articleDetails.published_at)} </span></h5>
 
                             <h5> {articleDetails.word_count || 0} <span>words</span> | {Math.ceil((articleDetails.word_count || 0) / 200)} <span>min read</span></h5>
-                            <h5> <span> Click this link to view the sources, interview, or media used in this article. </span> </h5>
+
                             {articleDetails.article_source && (
                                 <h5>
                                     <span>

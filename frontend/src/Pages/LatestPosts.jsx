@@ -222,7 +222,9 @@ const LatestPosts = () => {
         "Developing Story": { type: "DEVELOPING_STORY" },
         "Look": { type: "LOOK" },
         "In Photos": { type: "IN_PHOTOS", tag: "in photos" },
-        "Highlights": { type: "HIGHLIGHTS", tag: "highlights" }
+        "Highlights": { type: "HIGHLIGHTS", tag: "highlights" },
+        "Editorial": { type: "EDITORIAL", tag: "editorial" },
+        "Opinion": { type: "OPINION", tag: "opinion" },
     }
 
     const handleFilterChange = (filterName => {
