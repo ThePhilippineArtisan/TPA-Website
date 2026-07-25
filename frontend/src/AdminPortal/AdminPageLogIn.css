@@ -1,6 +1,5 @@
 .Admin-Log-In-Full-Page{
-    padding: 10rem 2rem;
-    height: 90dvh;
+    height: 100dvh;
     
     display: flex;
     justify-content: center;
@@ -44,7 +43,7 @@
 
     height: 50dvh;
     width: 30%;
-    padding: 2rem;
+    padding: 0.5rem;
 
     background-color: white;
     backdrop-filter: blur(12px);
@@ -59,8 +58,8 @@
 
 .Admin-Log-In-Form p{
     font-size: 1rem;
-    color: gray;
-    font-weight: 700;
+    color: var(--text-muted);
+    font-weight: 600;
 }
 
 .Admin-Mid-Bottom-Part{
@@ -74,7 +73,7 @@
     text-align: start;
     color: #0066a5;
     line-height: 4px;
-    font-weight: 700;
+    font-weight: 800;
     padding: 0.5rem;
     font-size: 1rem;
 }
@@ -85,11 +84,13 @@
     justify-content: center;
     border-radius: 0.25rem;
     width: 80%;
+
+    border-color: var(--text-muted);
 }
 
 .Admin-Log-In-Form-Inputs input{
-    padding: 1rem;
-    border-radius: 0.75rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
     width: 100%;
     font-size: 1rem;
     box-sizing: border-box;
@@ -97,10 +98,14 @@
 
 .Admin-Log-In-Form-Button{
     border-radius: 1rem;
-    padding: 0.5rem;
-    width: 90%;
-    background-color: #0066a5;
+    padding: 0.25rem;
+    width: 50%;
+    background-color: var(--primary-blue);
     color: white;
+}
+
+.Admin-Log-In-Form-Button button:hover{
+    background-color: var(--primary-blue-hover)
 }
 
 .Admin-Log-In-Form-Button h2{
