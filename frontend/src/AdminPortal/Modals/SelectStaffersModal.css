@@ -4,8 +4,6 @@
     left: 30%;
 
     background-color: white;
-    border: 3px black solid;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,11 +12,12 @@
     height: 70%;
     width: 35rem;
     
-    border: none;
-    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 2rem 1rem;
-    color: #111;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    color: var(--text-dark);
+    font-family: var(--font-sans);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     animation: fadeIn 0.25s ease-out;
 }
 
@@ -32,21 +31,29 @@
 }
 
 .Staffer-Item{
-    border-bottom: 1px solid gray;
-    border-radius: 10px;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     width: 30rem;
-    padding: 0.5rem 1rem;
-    margin: 1.25rem 0rem;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0rem;
     cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.Staffer-Item:hover{
+    background-color: var(--bg-light);
+    border-color: var(--primary-blue);
 }
 
 .Staffer-Item p{
     padding-right: 1rem;
-    font-size: 1.25rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
 }

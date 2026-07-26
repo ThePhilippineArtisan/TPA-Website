@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    line-height: 0px;
+    align-items: center;
 }
 
 .Admin-Dashboard-Header p{
@@ -17,10 +17,15 @@
 }
 
 .Create-Article-Button button{
-    padding: 0.75rem;
+    padding: 0.75rem 1.25rem;
     background-color: var(--primary-blue);
     border-radius: var(--radius-md);
-    border: transparent;
+    border: none;
+    transition: var(--transition-smooth);
+}
+
+.Create-Article-Button button:hover{
+    background-color: var(--primary-blue-hover);
 }
 
 .Create-Article-Button a{
@@ -46,34 +51,36 @@
 
     font-family: var(--font-sans);
 
-    padding: 0.5rem;
+    padding: 0.75rem;
     width: 12dvw;
     background-color: white;
     backdrop-filter: blur(3.1px);
     -webkit-backdrop-filter: blur(3.1px);
 
     border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
     box-shadow: 0 0 10px hsla(207, 15%, 12%, 0.089); 
+    transition: var(--transition-smooth);
 }
 
 .Admin-Dashboard-BTN-Stats:hover{
-    transition: var(--transition-smooth);
-    box-shadow: 0 0 10px hsl(204, 100%, 25%); 
+    box-shadow: 0 4px 15px rgba(2, 101, 169, 0.2); 
+    border-color: var(--primary-blue);
 }
 
 .Admin-Dashboard-BTN-Stats p{
     display: flex;
     justify-content: center;
-    color: #0265A9;
+    color: var(--primary-blue);
     font-size: 1rem;
-    line-height: 12px;
+    line-height: 1.25rem;
     font-weight: 700;
-
 }
 
 .Admin-Dashboard-BTN-Stats h2{
     font-size: 1rem;
     margin: 0.25rem;
+    color: var(--text-dark);
 }
 
 .Admin-Dashboard-Bottom-BTN{
@@ -92,13 +99,13 @@
 
     width: 100%;
     max-width: 1100px;
-    padding: 2rem;
+    padding: 2rem 0;
 }
 
 .AD-Mosts-Full-Card, .Admin-Dashboard-Quick-Actions{
     border-radius: var(--radius-lg);
 
-    border: 2px solid var(--glass-border);
+    border: 1px solid var(--glass-border);
     background-color: white;
     box-shadow: 0 0 10px hsla(207, 15%, 12%, 0.089); 
 
@@ -107,18 +114,17 @@
     height: auto;
     width: 100%;
     max-width: var(--container-max-width);
-
 }
 
 .AD-Mosts-Full-Card a{
     text-decoration: none;
-    color: var(--bg-dark);
+    color: var(--text-dark);
 }
 
 .AD-BTN-Side-Card{
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1rem 0;
     width: 350px;
 }
 
@@ -127,9 +133,8 @@
     justify-content: space-between;
     flex-direction: column;
     width: auto;
-    padding: 1rem;
+    padding: 0.5rem 0;
     gap: 1rem;
-
 }
 
 .Individual-Card-Container{
@@ -142,27 +147,26 @@
     border-radius: var(--radius-md);
     background-color: white;
     padding: 1rem;
+    transition: var(--transition-smooth);
+}
+
+.Individual-Card-Container:hover{
+    border-color: var(--primary-blue);
+    box-shadow: 0 4px 15px rgba(2, 101, 169, 0.15);
 }
 
 .Admin-Dashboard-Mosts span{
     padding: 0.25rem 0.5rem;
-    border: gray;
     background-color: var(--primary-blue);
     color: white;
-    border-radius: var(--radius-md);    
+    border-radius: var(--radius-sm);    
 }
 
 .Admin-Dashboard-Mosts p{
     font-size: 0.925rem;
-    line-height: 16px;
+    line-height: 1.25rem;
     font-weight: 600;
-    color: hsl(204, 100%, 28%);
-}
-
-
-.Admin-Dashboard-Mosts:hover{
-    color: black;
-    cursor: pointer;
+    color: var(--text-dark);
 }
 
 .Individual-Cards-Mosts{
@@ -183,51 +187,52 @@
     margin: 1rem 0rem;
 }
 
-
 .Admin-Quick-Actions{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     width: auto;
     padding: 1rem;
-    margin: 0.75rem;
+    margin: 0.75rem 0;
 
     backdrop-filter: blur(3.1px);
     -webkit-backdrop-filter: blur(3.1px);
 
     box-shadow: 0 0 10px hsla(207, 15%, 12%, 0.089); 
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
 
     background-color: white;
+    transition: var(--transition-smooth);
 }
 
 .Admin-Quick-Actions span{
     padding: 0.25rem;
-    border: gray;
     background-color: var(--primary-blue);
     color: white;
     border-radius: var(--radius-sm);
-    
 }
 
 .Admin-Quick-Actions p{
     font-size: 0.925rem;
-    line-height: 12px;
+    line-height: 1.25rem;
     font-weight: 600;
-    color: hsl(204, 100%, 28%);
+    color: var(--text-dark);
+    margin: 0;
 }
 
 .Admin-Quick-Actions:hover{
-    color: #0265A9;
+    color: var(--primary-blue);
     cursor: pointer;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border);
-    
+    border-color: var(--primary-blue);
+    box-shadow: 0 4px 15px rgba(2, 101, 169, 0.15);
 }
 
 .Tags-Container {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .Tag-Pill {
@@ -236,8 +241,8 @@
     font-size: 0.82rem;
     font-weight: 700;
     padding: 0.4rem 0.75rem;
-    border-radius: 0.6rem;
-    border: 1px solid rgba(2, 101, 169, 0.15);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
 }
 
 .Tag-Count {

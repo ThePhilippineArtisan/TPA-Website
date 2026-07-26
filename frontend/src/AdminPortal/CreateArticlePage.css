@@ -127,8 +127,8 @@ select::picker(select) {
 
     font-weight: bold;
 
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    color: black;
+    font-family: var(--font-sans);
+    color: var(--text-dark);
     text-decoration: none;
 }
 

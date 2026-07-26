@@ -11,10 +11,10 @@
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(2, 101, 169, 0.15);
-    border-radius: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     box-shadow: 0 10px 30px rgba(2, 101, 169, 0.08);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: var(--transition-smooth);
     z-index: 100;
     box-sizing: border-box;
 }
@@ -44,12 +44,12 @@
 }
 
 .brand-badge {
-    background: linear-gradient(135deg, #0265A9 0%, #004272 100%);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-hover) 100%);
     color: white;
     font-weight: 900;
     font-size: 0.85rem;
     padding: 0.4rem 0.6rem;
-    border-radius: 0.6rem;
+    border-radius: var(--radius-sm);
     letter-spacing: 0.5px;
     box-shadow: 0 4px 10px rgba(2, 101, 169, 0.3);
 }
@@ -57,30 +57,31 @@
 .brand-name {
     font-size: 1.15rem;
     font-weight: 800;
-    color: #0f172a;
+    color: var(--text-dark);
+    font-family: var(--font-sans);
     letter-spacing: -0.3px;
     white-space: nowrap;
 }
 
 .toggle-btn {
-    background: #f1f5f9;
+    background: var(--bg-light);
     border: none;
     font-size: 1rem;
-    color: #64748b;
+    color: var(--text-muted);
     font-weight: 700;
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: 0.6rem;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-smooth);
 }
 
 .toggle-btn:hover {
-    background: #e2e8f0;
-    color: #0265A9;
+    background: var(--muted-background);
+    color: var(--primary-blue);
 }
 
 .sidebar-menu {
@@ -95,12 +96,13 @@
     align-items: center;
     gap: 0.85rem;
     padding: 0.85rem 1rem;
-    border-radius: 0.85rem;
+    border-radius: var(--radius-md);
     text-decoration: none;
-    color: #475569;
+    color: var(--text-muted);
     font-weight: 600;
     font-size: 0.95rem;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: var(--font-sans);
+    transition: var(--transition-smooth);
     white-space: nowrap;
 }
 
@@ -108,21 +110,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #64748b;
+    color: var(--text-muted);
     transition: color 0.2s ease;
 }
 
 .menu-item:hover {
-    background-color: #f0f7fc;
-    color: #0265A9;
+    background-color: var(--bg-light);
+    color: var(--primary-blue);
 }
 
 .menu-item:hover .menu-icon {
-    color: #0265A9;
+    color: var(--primary-blue);
 }
 
 .menu-item.active {
-    background: linear-gradient(135deg, #0265A9 0%, #004b7f 100%);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-hover) 100%);
     color: white;
     font-weight: 700;
     box-shadow: 0 4px 15px rgba(2, 101, 169, 0.35);
@@ -144,7 +146,7 @@
 
 .sidebar-footer {
     padding: 0.75rem;
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
+    border-top: 1px solid var(--border-color);
 }
 
 .logout-btn {
@@ -159,9 +161,9 @@
     color: #dc2626;
     font-weight: 700;
     font-size: 0.95rem;
-    border-radius: 0.85rem;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-smooth);
 }
 
 .logout-btn .menu-icon {
@@ -182,7 +184,7 @@
     padding: 0.85rem 1.25rem;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(2, 101, 169, 0.15);
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
     z-index: 101;
@@ -197,20 +199,21 @@
 .brand-dot {
     width: 0.75rem;
     height: 0.75rem;
-    background-color: #0265A9;
+    background-color: var(--primary-blue);
     border-radius: 50%;
 }
 
 .brand-title {
     font-weight: 800;
     font-size: 1.1rem;
-    color: #0f172a;
+    color: var(--text-dark);
+    font-family: var(--font-sans);
 }
 
 .mobile-hamburger-btn {
     background: transparent;
     border: none;
-    color: #0f172a;
+    color: var(--text-dark);
     cursor: pointer;
     display: flex;
     align-items: center;

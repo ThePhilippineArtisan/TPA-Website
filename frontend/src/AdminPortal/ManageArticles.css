@@ -2,6 +2,7 @@
     height: 87%;
     width: 100%;
     padding: 3rem;
+    font-family: var(--font-sans);
 }
 
 .Manage-Articles-Page-Header{
@@ -10,6 +11,6 @@
 }
 
 .Manage-Articles-Page-Header p{
-    color: gray;
+    color: var(--text-muted);
     font-weight: 300;
 }
