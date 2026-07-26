@@ -1,5 +1,6 @@
 import { supabase } from "../supabaseClient.js"
 import React, { useState, useEffect} from "react"
+import { Link } from "react-router-dom"
 
 import "./AdminDashboard.css"
 
@@ -92,84 +93,117 @@ const AdminDashboard = () => {
     return(
         <div className = "Admin-Dashboard">
             <div className = "Admin-Dashboard-Header">
-                <h1> Welcome to the Admin Dashboard!</h1>
-                <p> Check the website's stats, nerd crap, and everything in between. </p>
+                <div>
+                    <h1> Welcome to the Admin Dashboard!</h1>
+                    <br/>
+                    <p> Check the website's stats, nerd crap, and everything in between. </p>
+                </div>
+                <div className = "Create-Article-Button">
+                    <button>
+                        <Link to = "/admin/create-article"> + Create Article </Link>
+                    </button>
+                </div>
             </div>
 
             <div className = "Admin-Dashboard-BTN">
                 <div className = "Admin-Dashboard-BTN-Stats">
-                    <h3> { loading ? "..." : stats.totalArticles }</h3>
+                    <h2> { loading ? "..." : stats.totalArticles }</h2>
                     <p> Total Articles </p>
                     
                 </div>
 
                 <div className = "Admin-Dashboard-BTN-Stats">
-                    <h3> { loading ? "..." : stats.totalStaff}</h3>
+                    <h2> { loading ? "..." : stats.totalStaff}</h2>
                     <p> Total Staff </p>
                 </div>
 
                 <div className = "Admin-Dashboard-BTN-Stats">
-                    <h3> { loading ? "..." : stats.totalReleases }</h3>
+                    <h2> { loading ? "..." : stats.totalReleases }</h2>
                     <p> Total Releases </p>
                 </div>
 
                 <div className = "Admin-Dashboard-BTN-Stats">
                     <p> 23.26 GB / 100 GB </p>
-                    <h3> Cloudflare R2 Image storage </h3>
+                    <h2> Cloudflare R2 Image storage </h2>
                 </div>
                 <div className = "Admin-Dashboard-BTN-Stats">
                     <p> $123.67 </p>
-                    <h3> Cloudflare monthly bill </h3>
+                    <h2> Cloudflare monthly bill </h2>
                 </div>
             </div>
-            
-            <hr></hr>
+            <div style = {{display: "flex", justifyContent: "center", width: "95%"}}>
             <div className = "Admin-Dashboard-Bottom-BTN">
                 <div className = "Admin-Dashboard-Superlative-Container">
-                   <div>
-                        <h2> Most recent posts </h2>
-                        <div className = "Admin-Dashboard-Mosts">
-                            <div>
-                                <p> Nuremberg: Death Toll at Auschwitz climbs... </p>
-                                <p id = "Author-Media-Provider-Name"> Jombag, Jombagin, Jombaggerists</p>
+                   <div className = "AD-Mosts-Full-Card">
+                        <Link to = "/admin/articles"><h2> Recent Articles </h2> </Link>
+                        {loading ? ( 
+                            <div> Loading recent articles... </div> 
+                        ) : recentArticles.length === 0 ? ( <div> No articles found. </div>
+                        ) : (
+                            <div className = "Admin-Dashboard-Mosts">
+                                {recentArticles.map(art => (
+                                    <div className = "Individual-Card-Container" style = {{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                        <div key = {art.article_id} className = "Individual-Cards-Mosts" style = {{display: "flex", flexDirection: "column", lineHeight: "4px"}}>
+                                            <p> {art.article_headline} </p>
+                                            <p id = "Author-Media-Provider-Name">
+                                                {art.published_at ? new Date(art.published_at).toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"}) : "Draft"}
+                                            </p>
+                                        </div>
+                                        <div style = {{textAlign: "right", justifyContent: "space-around", display: "flex", flexDirection: "column"}}>
+                                            <p> <span> {art.article_type || "ARTICLE"} </span></p>
+                                            <p>  6,000,000 visits </p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                            <div>
-                                <p> <span> Makata Mondays </span></p>
-                                <p>  6,000,000 visits </p>
-                            </div>
-                        </div>
+                        )}
                     </div>
- 
-                    <div >
-                        <h2> Most popular tags </h2>
-                        <p className = "Admin-Dashboard-Mosts"> • Dog-fighting rink</p>
-                        <p className = "Admin-Dashboard-Mosts"> • Gawad Tek </p>
-                        <p className = "Admin-Dashboard-Mosts"> • Earthquake Drill </p>
-                    </div>
-                    
                 </div>
 
-                <div className = "Admin-Dashboard-Quick-Actions">
-                    <h2> Quick Actions </h2>
-                    <div className = "Admin-Quick-Actions">
-                        <p> Create an Article </p>
+                <div></div>
+
+                <div className = "AD-BTN-Side-Card">
+                    <div className = "AD-Mosts-Full-Card">
+                        <h2> Most popular tags </h2>
+                        {loading ? ( <div> Loading tags... </div>) : popularTags.length === 0 ? (
+                            <div> No tags to display. </div>
+                        ) : (
+
+                        <div className="Tags-Container">
+                            {popularTags.map((tag, idx) => (
+                                <span key={idx} className="Tag-Pill">
+                                    #{tag.name} <span className="Tag-Count">({tag.count})</span>
+                                </span>
+                            ))}
+                        </div>
+                        )}
+                            
                     </div>
-                    <div className = "Admin-Quick-Actions">
-                        <p> Configure Website Showcase Slides </p>
+
+                    <div className = "Admin-Dashboard-Quick-Actions">
+                        <h2> Quick Actions </h2>
+                        <div className = "Admin-Quick-Actions">
+                            <p> Create an Article </p>
+                        </div>
+                        <div className = "Admin-Quick-Actions">
+                            <p> Configure Website Showcase Slides </p>
+                        </div>
+                        <div className = "Admin-Quick-Actions">
+                            <p> Add New Releases </p>
+                        </div>
+                        <div className = "Admin-Quick-Actions">
+                            <p> Add New Staff </p>
+                        </div>
+                        <div className = "Admin-Quick-Actions">
+                            <p> Add New YouTube Video Embed </p>
+                        </div>
+                        <div className = "Admin-Quick-Actions">
+                            <p> Coming Soon... </p>
+                        </div>            
                     </div>
-                    <div className = "Admin-Quick-Actions">
-                        <p> Add New Releases </p>
-                    </div>
-                    <div className = "Admin-Quick-Actions">
-                        <p> Add New Staff </p>
-                    </div>
-                    <div className = "Admin-Quick-Actions">
-                        <p> Add New YouTube Video Embed </p>
-                    </div>
-                    <div className = "Admin-Quick-Actions">
-                        <p> Coming Soon... </p>
-                    </div>
-                </div>
+
+                </div>        
+            </div>
             </div>
         </div>
     )

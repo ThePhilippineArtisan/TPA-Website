@@ -1,12 +1,11 @@
 .Admin-Page-Layout{
     display: flex;
-    min-height: 100dvh;    
     background: linear-gradient(135deg, #f8fafc 0%, #edf5fa 50%, #e1eff8 100%);
 
 }
 
 .Display-Main-Content{
     flex: 1;
-    min-height: 100vh;
-    box-sizing: border-box;    font-family: var(--font-sans)
+    box-sizing: border-box;    
+    font-family: var(--font-sans)
 }
