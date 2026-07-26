@@ -398,6 +398,8 @@ const CreateArticlePage = () => {
                         <option value="FEATURES_FRIDAY"> Features Friday </option>
                         <option value="STREAMING_SATURDAY"> Streaming Saturday </option>
                         <option value="SPORTS_SUNDAY"> Sports Sunday </option>
+                        <option value="OPINION"> OPINION </option>
+                        <option value="EDITORIAL"> EDITORIAL </option>
                     </select>
 
                     <label htmlFor="file-upload">
