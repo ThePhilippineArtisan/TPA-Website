@@ -11,4 +11,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
   </StrictMode>,
-)
+)
+
+// LMAO WHAT UP LOSER WHY U HERE - BALOOOOOOT
