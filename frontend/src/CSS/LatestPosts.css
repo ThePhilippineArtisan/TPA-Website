@@ -199,3 +199,13 @@
 .Load-More-Button:active {
     transform: translateY(0);
 }
+
+.Article-Type-Indicator{
+    background-color: var(--hr-color);
+    font-weight: 900;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    color: white;
+
+    width: auto;
+}

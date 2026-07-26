@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient.js"
-import { isMediaSegment } from "../utils/articleUtils.js"
+import { isMediaSegment, getMediaSegmentLabel } from "../utils/articleUtils.js"
 import React, { useState, useEffect } from "react"
 
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
@@ -319,6 +319,11 @@ const LatestPosts = () => {
                                                 <Link to={detailLink} className="Individual-Article" key={article.article_id}>
                                                     <img loading="lazy" src={firstMedia} alt={article.article_headline} />
                                                     <div className="Individual-Article-Texts">
+                                                        {article.article_type && (
+                                                            <div className = "Article-Type-Indicator">
+                                                                { getMediaSegmentLabel(article.article_type)}
+                                                            </div>
+                                                        )}
                                                         <div className="Individual-Article-Headline">
                                                             <p> {article.article_headline} </p>
                                                             <div className="Latest-Posts-Article-Author-Time">
