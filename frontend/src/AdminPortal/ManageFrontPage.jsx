@@ -206,7 +206,7 @@ const ManageFrontPage = () => {
             <p> Add, edit, or configure the order of the slides here.</p>
             <div className="Manage-Front-Page">
                 <div className="Add-Front-Page-Slide-Container">
-                    <h3> {editingId ? `Edit Facade Slide (ID: ${editingId})` : "Add Front Page Slide"} </h3>
+                    <h4> {editingId ? `Edit Facade Slide (ID: ${editingId})` : "Add Front Page Slide"} </h4>
                     <hr />
                     <div className="Front-Page-Fields-Container">
                         <form onSubmit={handleSubmitSlide}>
@@ -399,7 +399,7 @@ const ManageFrontPage = () => {
                 </div>
 
                 <div className="Existing-Front-Page-Slide-Container">
-                    <h3> Existing Facade Slides ({slides.length})</h3>
+                    <h4> Existing Facade Slides ({slides.length})</h4>
                     <hr />
                     <div>
                         {loading ? (

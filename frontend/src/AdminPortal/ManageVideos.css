@@ -1,0 +1,32 @@
+.Manage-Videos-Container{
+    font-family: var(--font-sans);
+    padding: 1rem;
+}
+
+.Manage-Videos-Two-Grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+    padding: 2rem;
+
+    width: 100%;
+}
+
+.Add-Manage-Video-Container, .Existing-Manage-Video-Container{
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    width: 80%;
+    
+    background-color: white;
+    backdrop-filter: blur(3.1px);
+    -webkit-backdrop-filter: blur(3.1px);
+    max-width: var(--container-max-width);
+
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 10px hsla(207, 15%, 12%, 0.089); 
+}
+
+.Existing-Manage-Video-Container{
+    max-height: 1000px;
+    overflow-y: scroll;
+}

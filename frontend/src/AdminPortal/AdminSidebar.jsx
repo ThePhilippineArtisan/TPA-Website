@@ -21,7 +21,11 @@ const menuItems = [
     },
     {
         path: "/admin/manage-page",
-        label: "Front Page",
+        label: "Manage Front Page",
+    },
+    {
+        path: "/admin/manage-videos",
+        label: "Manage Videos",
     },
     {
         path: "/admin/add-releases",
@@ -86,7 +90,6 @@ const AdminSidebar = () => {
                                     onClick={() => setMobileOpen(false)}
                                     title={isCollapsed ? item.label : ""}
                                 >
-                                    <span className="menu-icon">{item.icon}</span>
                                     {!isCollapsed && <span className="label">{item.label}</span>}
                                 </Link>
                             )

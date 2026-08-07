@@ -1,19 +1,19 @@
 .Manage-Front-Page-Container{
     font-family: var(--font-sans);
-    padding: 16px;
+    padding: 1rem;
 }
 
 .Manage-Front-Page{
     display: grid;
     grid-template-columns: 1fr 1fr;
     flex-wrap: wrap;
-    padding: 32px;
+    padding: 2rem;
 
     width: 100%;
 }
 
 .Add-Front-Page-Slide-Container, .Existing-Front-Page-Slide-Container{
-    padding: 32px;
+    padding: 2rem;
     border: 1px solid var(--border-color);
     width: 80%;
     
@@ -28,7 +28,7 @@
 
 .Existing-Front-Page-Slide-Container{
     max-height: 1000px;
-    overflow-x: scroll;
+    overflow-y: scroll;
 }
 
 .Front-Page-Fields-Container{
