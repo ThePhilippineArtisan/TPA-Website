@@ -55,19 +55,6 @@
     transition: var(--transition-smooth);
 }
 
-.Admin-Log-In-Form p{
-    font-size: 1rem;
-    color: var(--text-muted);
-    font-weight: 600;
-}
-
-.Admin-Mid-Bottom-Part{
-    display: flex;
-    justify-content: center;
-
-    width: 100%;
-}
-
 .Admin-Log-In-Form-Inputs p{
     text-align: start;
     color: var(--primary-blue);
@@ -95,6 +82,47 @@
     font-size: 1rem;
     box-sizing: border-box;
     font-family: var(--font-sans);
+}
+
+
+.Admin-Log-In-Form p{
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.Admin-Mid-Bottom-Part{
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.Admin-Log-In-Form-Inputs p{
+    text-align: start;
+    color: #0066a5;
+    line-height: 4px;
+    font-weight: 800;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.Admin-Log-In-Form-Inputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0.25rem;
+    width: 80%;
+
+    border-color: var(--text-muted);
+}
+
+.Admin-Log-In-Form-Inputs input{
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
 .Admin-Log-In-Form-Button{

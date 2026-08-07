@@ -144,7 +144,7 @@ const AdminDashboard = () => {
                                 {recentArticles.map(art => (
                                     <div className = "Individual-Card-Container" style = {{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                                         <div key = {art.article_id} className = "Individual-Cards-Mosts" style = {{display: "flex", flexDirection: "column", lineHeight: "4px"}}>
-                                            <p> {art.article_headline} </p>
+                                            <p style = {{color: "var(--text-dark)"}}> {art.article_headline} </p>
                                             <p id = "Author-Media-Provider-Name">
                                                 {art.published_at ? new Date(art.published_at).toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"}) : "Draft"}
                                             </p>
