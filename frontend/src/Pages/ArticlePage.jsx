@@ -9,7 +9,7 @@ import "../CSS/ArticlePage.css"
 import AnimatedLoader from "./AnimatedLoader.jsx";
 
 const ArticlePage = () => {
-
+    const hasBody = Boolean(articleDetails?.article_body && articleDetails?.article_body.trim() !== "")
     const { articleId, slug } = useParams(); // get the articleId and slug from the URL parameters
     const navigate = useNavigate()
 
@@ -278,17 +278,24 @@ const ArticlePage = () => {
             )}
 
 
-            <div className="Below-Small-Photos">
-                <div className="Article-Body" dangerouslySetInnerHTML={{ __html: articleDetails.article_body }} />
+            <div className="Below-Small-Photos"
+                style = {!hasBody ? { gridTemplateColumns: "1fr", width: "100%"} : {}}
+            >
+                {hasBody && (
+                <div 
+                    className="Article-Body" 
+                    dangerouslySetInnerHTML={{ __html: articleDetails.article_body }} 
+                />
+            )}
 
-                <div>
+                <div style = {!hasBody ? { width: "100%"} : {}}>
                     <h4> <span style={{ color: "#0265A9" }}>
                         Click this link to view the <a target="_blank" href={articleDetails.article_source} >sources</a>, interview, or media used in this article.
                     </span> </h4>
                     <h4> {articleDetails.word_count || 0} words | {Math.ceil((articleDetails.word_count || 0) / 200)} minute read </h4>
                     <h4> Want to request full-quality images? <span style={{ color: "#0265A9" }}> <a target="_blank"> Click here.</a></span> </h4>
                     <hr ></hr>
-                    <VerticalFastNews />
+                    <VerticalFastNews isHorizontal = {!hasBody}/>
                 </div>
             </div>
             <div style={{ marginLeft: "10%", marginRight: "10%" }}>

@@ -29,6 +29,16 @@
     color: #0265A9;
 }
 
+.horizontal-mode .Vertical-Fast-News {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+.horizontal-mode .Vertical-Fast-News-Links {
+    flex: 1;
+    min-width: 280px;
+}
+
 @media (max-width: 1280px) {
     .Vertical-Fast-News{
         display: flex;

@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 import "../CSS/VerticalFastNews.css"
 
-const VerticalFastNews = () => {
+const VerticalFastNews = ({ isHorizontal = false }) => {
     return(
-        <div className = "Vertical-Headlines">
+        <div className = {`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
             
             <div style={{padding: "2rem 0rem"}}>
                 <Link to = "/Joseph-Brian-Balut" style = {{fontSize: "1.5rem"}}> BULLETIN BOARD  </Link>
