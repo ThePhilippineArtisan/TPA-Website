@@ -20,6 +20,8 @@ const MediaSegmentArticle = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const hasBody = Boolean(articleDetails?.article_body && articleDetails?.article_body.trim() !== "")
+
     useEffect(() => {
         const fetchArticleDetails = async () => {
             if (!id) return;
@@ -240,8 +242,12 @@ const MediaSegmentArticle = () => {
                     />
                 </div>
 
-                <div className="Media-Segment-Article-Below-Photo">
-                    <div className="Author-and-Details">
+
+                <div 
+                    className="Media-Segment-Article-Below-Photo"
+                    style={!hasBody ? { flexDirection: "column", width: "90%", margin: "0 auto" } : {}}
+                >
+                    <div className="Author-and-Details" style = {!hasBody ? {width: "100%", boxSizing: "border-box"}: {}}>
                         <div>
                             {authors.length > 0 && (
                                 <div style={{ marginBottom: "1.5rem" }}>
@@ -300,12 +306,14 @@ const MediaSegmentArticle = () => {
                             )}
                             <div className="Sidebar-Fast-News-Section">
                                 <hr></hr>
-                                <VerticalFastNews />
+                                <VerticalFastNews isHorizontal = {!hasBody} />
                             </div>
                         </div>
                     </div>
+                    {hasBody && (
+                        <div className="Media-Segment-Article-Text" dangerouslySetInnerHTML={{ __html: articleDetails.article_body }} />
+                    )}
 
-                    <div className="Media-Segment-Article-Text" dangerouslySetInnerHTML={{ __html: articleDetails.article_body }} />
                 </div>
             </div>
 
