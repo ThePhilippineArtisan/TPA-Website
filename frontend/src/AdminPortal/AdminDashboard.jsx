@@ -1,6 +1,7 @@
 import { supabase } from "../supabaseClient.js"
 import React, { useState, useEffect} from "react"
 import { Link } from "react-router-dom"
+import { getArticleUrl } from "../utils/articleUtils.js"
 
 import "./AdminDashboard.css"
 
@@ -142,18 +143,19 @@ const AdminDashboard = () => {
                         ) : (
                             <div className = "Admin-Dashboard-Mosts">
                                 {recentArticles.map(art => (
-                                    <div className = "Individual-Card-Container" style = {{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                                        <div key = {art.article_id} className = "Individual-Cards-Mosts" style = {{display: "flex", flexDirection: "column", lineHeight: "4px"}}>
-                                            <p style = {{color: "var(--text-dark)"}}> {art.article_headline} </p>
-                                            <p id = "Author-Media-Provider-Name">
-                                                {art.published_at ? new Date(art.published_at).toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"}) : "Draft"}
-                                            </p>
+                                    <Link key={art.article_id} to={getArticleUrl(art)} target="_blank" rel="noreferrer" style={{ textDecoration: "none", color: "inherit" }} className="Individual-Card-Container">
+                                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                                            <div className="Individual-Cards-Mosts" style={{ display: "flex", flexDirection: "column", lineHeight: "1.2" }}>
+                                                <p style={{ color: "var(--text-dark)", fontWeight: "bold", margin: "0 0 4px 0" }}> {art.article_headline} </p>
+                                                <p id="Author-Media-Provider-Name" style={{ fontSize: "0.75rem", color: "#666", margin: 0 }}>
+                                                    {art.published_at ? new Date(art.published_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Draft"}
+                                                </p>
+                                            </div>
+                                            <div style={{ textAlign: "right", justifyContent: "space-around", display: "flex", flexDirection: "column", minWidth: "100px" }}>
+                                                <p style={{ margin: 0 }}> <span> {art.article_type || "ARTICLE"} </span></p>
+                                            </div>
                                         </div>
-                                        <div style = {{textAlign: "right", justifyContent: "space-around", display: "flex", flexDirection: "column"}}>
-                                            <p> <span> {art.article_type || "ARTICLE"} </span></p>
-                                            <p>  6,000,000 visits </p>
-                                        </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         )}

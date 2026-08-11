@@ -31,3 +31,21 @@ export const getMediaSegmentLabel = (type) => {
     }
     return mapping[type.toUpperCase()] || type
 }
+
+export const getArticleUrl = (article) => {
+    if (!article) return "/";
+    const id = article.article_id || article.id;
+    const slug = article.slug_headline || article.slug;
+    const isSegment = isMediaSegment(article.article_type);
+    
+    const prefix = isSegment ? "/media-segment" : "/article";
+    
+    if (id && slug) {
+        return `${prefix}/${id}/${slug}`;
+    } else if (id) {
+        return `${prefix}/${id}`;
+    } else if (slug) {
+        return `${prefix}/${slug}`;
+    }
+    return prefix;
+};

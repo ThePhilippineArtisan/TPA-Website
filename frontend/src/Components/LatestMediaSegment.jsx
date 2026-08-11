@@ -78,7 +78,7 @@ const LatestMediaSegment = () => {
                                     if (!staffRowsErr && staffRows) {
                                         staffContributions = rawStaffRel.map(rel => ({
                                             contribution_as: rel.contribution_as,
-                                            use_pseudonym: rel.use_pseudonym
+                                            use_pseudonym: rel.use_pseudonym,
                                             staff: staffRows.find(s => s.staff_id === rel.staff_id)
                                         })).filter(c => c.staff);
                                     }
@@ -144,7 +144,7 @@ const LatestMediaSegment = () => {
             <div className="Latest-Media-Segment-Image"
                 style={{ "--bgImage": `url(${firstMedia})`, width: "90%" }} >
                 
-                <Link to={`/media-segment/${latestSegment.slug_headline || latestSegment.article_id}`} className="Latest-MS-Title">
+                <Link to = {getArticleUrl(latestSegment)} className="Latest-MS-Title">
                     <img
                         src={firstMedia}
                         alt={latestSegment.article_headline}

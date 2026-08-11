@@ -127,7 +127,11 @@ const ManageArticles = () => {
                                 <tr key = {article.article_id}>
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_id} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_type} </td>
-                                    <td className = "Manage-Staff-Grid-Row" title = {article.article_headline}> {article.article_headline} </td>
+                                    <td className="Manage-Staff-Grid-Row" title={article.article_headline}>
+                                        <Link to={getArticleUrl(article)} target="_blank" rel="noreferrer" style={{ color: "var(--primary-blue)", fontWeight: "600", textDecoration: "underline" }}>
+                                            {article.article_headline}
+                                        </Link>
+                                    </td>
                                     <td className = "Manage-Staff-Grid-Row"> {getAuthorsString(article)} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {getMedProvsString(article)} </td>
                                     <td className = "Manage-Staff-Grid-Row"> 

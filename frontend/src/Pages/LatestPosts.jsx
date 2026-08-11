@@ -320,9 +320,7 @@ const LatestPosts = () => {
                                                 year: "numeric"
                                             })
 
-                                            const detailLink = isMediaSegment(article.article_type) // use util
-                                                ? `/media-segment/${article.article_id}/${article.slug_headline}`
-                                                : `/article/${article.article_id}/${article.slug_headline}`
+                                            const detailLink = getArticleUrl(article)
 
                                             return (
                                                 <Link to={detailLink} className="Individual-Article" key={article.article_id}>

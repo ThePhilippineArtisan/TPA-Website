@@ -10,7 +10,7 @@ import AnimatedLoader from "./AnimatedLoader.jsx";
 
 const ArticlePage = () => {
 
-    const { articleId } = useParams(); // get the articleId from the URL parameters
+    const { articleId, slug } = useParams(); // get the articleId and slug from the URL parameters
     const navigate = useNavigate()
 
     const [articleDetails, setArticleDetails] = useState(null)
@@ -64,6 +64,10 @@ const ArticlePage = () => {
                     return
                 }
 
+                if (slug !== articleData.slug_headline) {
+                    navigate(`/article/${articleData.article_id}/${articleData.slug_headline}`, { replace: true })
+                }
+                
                 // Fetch the related staff contributions separately to bypass lack of FK relations in PostgreSQL
                 let staffContributions = [];
                 try {

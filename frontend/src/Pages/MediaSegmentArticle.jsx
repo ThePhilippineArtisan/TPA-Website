@@ -65,6 +65,10 @@ const MediaSegmentArticle = () => {
                     return;
                 }
 
+                if (slug !== articleData.slug_headline) {
+                    navigate(`/media-segment/${articleData.article_id}/${articleData.slug_headline}`, { replace: true });
+                }
+                
                 // Fetch staff contributions
                 let staffContributions = [];
                 try {
