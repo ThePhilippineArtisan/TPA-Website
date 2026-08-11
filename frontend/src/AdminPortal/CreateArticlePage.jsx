@@ -32,7 +32,7 @@ const CreateArticlePage = () => {
         const fetchStaff = async () => {
             let { data, error } = await supabase
                 .from('staff')
-                .select('staff_id, staff_display_name, staff_position, staff_order')
+                .select('staff_id, staff_display_name, staff_pseudonym, staff_position, staff_order')
                 .eq('staff_isactive', true)
                 .order('staff_order', { ascending: true })
 
@@ -166,13 +166,15 @@ const CreateArticlePage = () => {
             const authorPayloads = selectedAuthors.map(author => ({
                 article_id: newArticleId,
                 staff_id: author.staff_id,
-                contribution_as: 'Author'
+                contribution_as: 'Author',
+                use_pseudonym: !!author.use_pseudonym
             }))
 
             const mediaPayloads = selectedMediaProviders.map(media => ({
                 article_id: newArticleId,
                 staff_id: media.staff_id,
-                contribution_as: 'Media_Provider'
+                contribution_as: 'Media_Provider',
+                use_pseudonym: !!media.use_pseudonym
             }))
 
             const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
@@ -480,32 +482,141 @@ const CreateArticlePage = () => {
 
                 {(selectedAuthors.length > 0 || selectedMediaProviders.length > 0) && (
                     <div className="Selected-Staffers" style={{ padding: "1rem" }}>
+                        {selectedAuthors.length > 0 && (
+                            <div className="Selected-Authors">
+                                <p style={{ fontWeight: "800", textTransform: "uppercase", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
+                                    Selected Writer(s):
+                                </p>
+                                {selectedAuthors.map((authorObj, idx) => {
+                                    const hasPseudonym = Boolean(authorObj.staff_pseudonym)
+                                    const isUsingPseudonym = hasPseudonym && !!authorObj.use_pseudonym
+                                    return (
+                                        <div key={idx} className="Selected-Staff-Card" style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            background: '#ffffff',
+                                            border: '2px solid var(--border-color)',
+                                            borderRadius: 'var(--radius-md)',
+                                            padding: '0.5rem 0.8rem',
+                                            marginBottom: '0.5rem',
+                                            boxShadow: '2px 2px 0px #000'
+                                        }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <strong style={{ fontSize: '0.9rem' }}>{authorObj.staff_display_name}</strong>
+                                                {hasPseudonym ? (
+                                                    <span style={{ fontSize: '0.75rem', color: '#666' }}>
+                                                        Pseudonym: <em>{authorObj.staff_pseudonym}</em>
+                                                    </span>
+                                                ) : (
+                                                    <span style={{ fontSize: '0.75rem', color: '#999', fontStyle: 'italic' }}>
+                                                        No pseudonym configured
+                                                    </span>
+                                                )}
+                                            </div>
 
-                        <div className="Selected-Authors">
-                            {selectedAuthors.length > 0 && (
-                                <>
-                                    <p>Selected Writer:</p>
-                                    {selectedAuthors.map((authorObj, idx) => (
-                                        <div key={idx} className="Selected-Author">
-                                            <span>{authorObj.staff_display_name}</span>
+                                            <button
+                                                type="button"
+                                                disabled={!hasPseudonym}
+                                                onClick={() => {
+                                                    if (!hasPseudonym) return
+                                                    const updated = [...selectedAuthors]
+                                                    updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
+                                                    setSelectedAuthors(updated)
+                                                }}
+                                                style={{
+                                                    padding: '0.35rem 0.75rem',
+                                                    borderRadius: 'var(--radius-sm)',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '800',
+                                                    cursor: hasPseudonym ? 'pointer' : 'not-allowed',
+                                                    border: '2px solid #000',
+                                                    background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
+                                                    color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
+                                                    transition: 'all 0.15s ease',
+                                                    boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
+                                                }}
+                                            >
+                                                {!hasPseudonym
+                                                    ? `No Pseudonym Set`
+                                                    : isUsingPseudonym
+                                                        ? `Pseudonym (${authorObj.staff_pseudonym})`
+                                                        : `Real Name (${authorObj.staff_display_name})`
+                                                }
+                                            </button>
                                         </div>
-                                    ))}
-                                </>
-                            )}
-                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
 
-                        <div className="Selected-Media-Providers">
-                            {selectedMediaProviders.length > 0 && (
-                                <>
-                                    <p>Selected Media Provider:</p>
-                                    {selectedMediaProviders.map((mediaObj, idx) => (
-                                        <div key={idx} className="Selected-Media-Provider">
-                                            <p>{mediaObj.staff_display_name}</p>
+                        {selectedMediaProviders.length > 0 && (
+                            <div className="Selected-Media-Providers" style={{ marginTop: selectedAuthors.length > 0 ? "1rem" : "0" }}>
+                                <p style={{ fontWeight: "800", textTransform: "uppercase", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
+                                    Selected Media Provider(s):
+                                </p>
+                                {selectedMediaProviders.map((mediaObj, idx) => {
+                                    const hasPseudonym = Boolean(mediaObj.staff_pseudonym)
+                                    const isUsingPseudonym = hasPseudonym && !!mediaObj.use_pseudonym
+                                    return (
+                                        <div key={idx} className="Selected-Staff-Card" style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            background: '#ffffff',
+                                            border: '2px solid var(--border-color)',
+                                            borderRadius: 'var(--radius-md)',
+                                            padding: '0.5rem 0.8rem',
+                                            marginBottom: '0.5rem',
+                                            boxShadow: '2px 2px 0px #000'
+                                        }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <strong style={{ fontSize: '0.9rem' }}>{mediaObj.staff_display_name}</strong>
+                                                {hasPseudonym ? (
+                                                    <span style={{ fontSize: '0.75rem', color: '#666' }}>
+                                                        Pseudonym: <em>{mediaObj.staff_pseudonym}</em>
+                                                    </span>
+                                                ) : (
+                                                    <span style={{ fontSize: '0.75rem', color: '#999', fontStyle: 'italic' }}>
+                                                        No pseudonym configured
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <button
+                                                type="button"
+                                                disabled={!hasPseudonym}
+                                                onClick={() => {
+                                                    if (!hasPseudonym) return
+                                                    const updated = [...selectedMediaProviders]
+                                                    updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
+                                                    setSelectedMediaProviders(updated)
+                                                }}
+                                                style={{
+                                                    padding: '0.35rem 0.75rem',
+                                                    borderRadius: 'var(--radius-sm)',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '800',
+                                                    cursor: hasPseudonym ? 'pointer' : 'not-allowed',
+                                                    border: '2px solid #000',
+                                                    background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
+                                                    color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
+                                                    transition: 'all 0.15s ease',
+                                                    boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
+                                                }}
+                                            >
+                                                {!hasPseudonym
+                                                    ? `No Pseudonym Set`
+                                                    : isUsingPseudonym
+                                                        ? `Pseudonym (${mediaObj.staff_pseudonym})`
+                                                        : `Real Name (${mediaObj.staff_display_name})`
+                                                }
+                                            </button>
                                         </div>
-                                    ))}
-                                </>
-                            )}
-                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </div>
                 )}
 

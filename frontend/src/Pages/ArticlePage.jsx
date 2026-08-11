@@ -71,9 +71,11 @@ const ArticlePage = () => {
                         .from("article_staff")
                         .select(`
                             contribution_as,
+                            use_pseudonym,
                             staff (
                                 staff_id,
-                                staff_display_name
+                                staff_display_name,
+                                staff_pseudonym
                             )
                         `)
                         .eq("article_id", articleData.article_id);
@@ -83,19 +85,20 @@ const ArticlePage = () => {
                             console.warn("No FK relationship between article_staff and staff. Fetching manually...");
                             const { data: rawStaffRel, error: rawStaffRelErr } = await supabase
                                 .from("article_staff")
-                                .select("contribution_as, staff_id")
+                                .select("contribution_as, staff_id, use_pseudonym")
                                 .eq("article_id", articleData.article_id);
 
                             if (!rawStaffRelErr && rawStaffRel && rawStaffRel.length > 0) {
                                 const staffIds = rawStaffRel.map(r => r.staff_id).filter(Boolean);
                                 const { data: staffRows, error: staffRowsErr } = await supabase
                                     .from("staff")
-                                    .select("staff_id, staff_display_name")
+                                    .select("staff_id, staff_display_name, staff_pseudonym")
                                     .in("staff_id", staffIds);
 
                                 if (!staffRowsErr && staffRows) {
                                     staffContributions = rawStaffRel.map(rel => ({
                                         contribution_as: rel.contribution_as,
+                                        use_pseudonym: rel.use_pseudonym,
                                         staff: staffRows.find(s => s.staff_id === rel.staff_id)
                                     })).filter(c => c.staff);
                                 }
@@ -154,16 +157,23 @@ const ArticlePage = () => {
         );
     }
 
+    const getContributorName = (as) => {
+        if (as.use_pseudonym && as.staff?.staff_pseudonym) {
+            return as.staff.staff_pseudonym;
+        }
+        return as.staff?.staff_display_name;
+    };
+
     const authors = articleDetails.article_staff ? articleDetails.article_staff
         .filter((as) => as.contribution_as === "Author")
-        .map((as) => as.staff?.staff_display_name)
+        .map(getContributorName)
         .filter(Boolean)
         : []
 
     const mediaProviders = articleDetails.article_staff
         ? articleDetails.article_staff
             .filter((as) => as.contribution_as === "Media_Provider")
-            .map((as) => as.staff?.staff_display_name)
+            .map(getContributorName)
             .filter(Boolean)
         : [];
 
