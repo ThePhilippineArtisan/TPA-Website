@@ -53,7 +53,7 @@ const LatestMediaSegment = () => {
                             .from("article_staff")
                             .select(`
                                 contribution_as,
-                                use_pseudonym
+                                use_pseudonym,
                                 staff (
                                     staff_id,
                                     staff_display_name,

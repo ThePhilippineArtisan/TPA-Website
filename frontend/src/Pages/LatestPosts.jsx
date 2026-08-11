@@ -58,7 +58,7 @@ const LatestPosts = () => {
                             .select(`
                                 article_id,
                                 contribution_as,
-                                use_pseudonym
+                                use_pseudonym,
                                 staff(
                                     staff_id,
                                     staff_display_name,

@@ -11,7 +11,7 @@ import "../CSS/LatestMediaSegment.css"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 
 const MediaSegmentArticle = () => {
-    const { id } = useParams();
+    const { id, slug } = useParams();
     const navigate = useNavigate();
 
     const [articleDetails, setArticleDetails] = useState(null);
@@ -78,7 +78,7 @@ const MediaSegmentArticle = () => {
                         .from("article_staff")
                         .select(`
                             contribution_as,
-                            use_pseudonym
+                            use_pseudonym,
                             staff (
                                 staff_id,
                                 staff_display_name,

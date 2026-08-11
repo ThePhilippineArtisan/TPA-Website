@@ -30,7 +30,7 @@ const ManageArticles = () => {
                     try{
                         const { data: staffData, error: staffError } = await supabase
                             .from("article_staff")
-                            .select(`article_id, contribution_as, use_pseudonym
+                            .select(`article_id, contribution_as, use_pseudonym,
                                 staff(
                                     staff_id, staff_display_name, staff_last_name, staff_pseudonym
                                 )
