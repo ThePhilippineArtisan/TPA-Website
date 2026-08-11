@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient.js"
-import { isMediaSegment, getMediaSegmentLabel } from "../utils/articleUtils.js"
 import React, { useState, useEffect } from "react"
-import { isMediaSegment, getMediaSegmentLabel, getArticleUrl} from "../utils/articleUtils.js"
+import { isMediaSegment, getMediaSegmentLabel, getArticleUrl } from "../utils/articleUtils.js"
 
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
 

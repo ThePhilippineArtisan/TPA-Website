@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient.js";
-import { getMediaSegmentLabel } from "../utils/articleUtils.js";
-import { isMediaSegment, getMediaSegmentLabel, getArticleUrl} from "../utils/articleUtils.js"
+import { getMediaSegmentLabel, getArticleUrl } from "../utils/articleUtils.js";
 
 import "../CSS/LatestMediaSegment.css";
 
@@ -74,7 +73,7 @@ const LatestMediaSegment = () => {
                                     const staffIds = rawStaffRel.map(r => r.staff_id).filter(Boolean);
                                     const { data: staffRows, error: staffRowsErr } = await supabase
                                         .from("staff")
-                                        .select("staff_id, staff_display_name, use_pseudonym")
+                                        .select("staff_id, staff_display_name, staff_pseudonym")
                                         .in("staff_id", staffIds);
 
                                     if (!staffRowsErr && staffRows) {
@@ -133,6 +132,13 @@ const LatestMediaSegment = () => {
     const authors = latestSegment.article_staff
         ? latestSegment.article_staff
             .filter(as => as.contribution_as === "Author")
+            .map(getContributorName)
+            .filter(Boolean)
+        : [];
+
+    const mediaProviders = latestSegment.article_staff
+        ? latestSegment.article_staff
+            .filter(as => as.contribution_as === "Media Provider" || as.contribution_as === "Media_Provider" || as.contribution_as === "Photos" || as.contribution_as === "Visuals")
             .map(getContributorName)
             .filter(Boolean)
         : [];
