@@ -57,9 +57,11 @@ const LatestPosts = () => {
                             .select(`
                                 article_id,
                                 contribution_as,
+                                use_pseudonym
                                 staff(
                                     staff_id,
-                                    staff_display_name
+                                    staff_display_name,
+                                    staff_pseudonym
                                 )
                             `)
                             .in("article_id", articleIds);
@@ -69,7 +71,7 @@ const LatestPosts = () => {
                             if (staffError.code === "PGRST200" || staffError.message?.includes("relationship")) {
                                 const { data: rawStaffRel, error: rawStaffRelErr } = await supabase
                                     .from("article_staff")
-                                    .select("article_id, contribution_as, staff_id")
+                                    .select("article_id, contribution_as, staff_id, use_pseudonym")
                                     .in("article_id", articleIds);
 
                                 if (!rawStaffRelErr && rawStaffRel && rawStaffRel.length > 0) {
@@ -78,13 +80,14 @@ const LatestPosts = () => {
                                     // Fetch staff details manually
                                     const { data: staffRows, error: staffRowsErr } = await supabase
                                         .from("staff")
-                                        .select("staff_id, staff_display_name")
+                                        .select("staff_id, staff_display_name, staff_pseudonym")
                                         .in("staff_id", staffIds);
 
                                     if (!staffRowsErr && staffRows) {
                                         staffContributions = rawStaffRel.map(rel => ({
                                             article_id: rel.article_id,
                                             contribution_as: rel.contribution_as,
+                                            use_pseudonym: rel.use_pseudonym,
                                             staff: staffRows.find(s => s.staff_id === rel.staff_id)
                                         })).filter(c => c.staff);
                                     }
@@ -125,12 +128,18 @@ const LatestPosts = () => {
         fetchArticles();
     }, []);
 
+    const getContributorName = (articlestaff) => {
+        if(articlestaff.use_pseudonym && articlestaff.staff?.staff_pseudonym){
+            return articlestaff.staff.staff_pseudonym
+        }
+        return articlestaff.staff?.staff_display_name
+    }
     const getAuthorsString = (article) => {
         if (!article.article_staff || article.article_staff.length === 0)
             return "The Philippine Artisan Staff"
         const authors = article.article_staff
             .filter(articlestaff => articlestaff.contribution_as === "Author")
-            .map(articlestaff => articlestaff.staff?.staff_display_name)
+            .map(getContributorName)
             .filter(Boolean)
         return authors.length > 0 ? authors.join(", ") : "TPA Staff"
     }
@@ -140,7 +149,7 @@ const LatestPosts = () => {
             return "The Philippine Artisan Staff"
         const MedProvs = article.article_staff
             .filter(articlestaff => articlestaff.contribution_as === "Media_Provider")
-            .map(articlestaff => articlestaff.staff?.staff_display_name)
+            .map(getContributorName)
             .filter(Boolean)
         return MedProvs.length > 0 ? MedProvs.join(", ") : "TPA Staff"
     }

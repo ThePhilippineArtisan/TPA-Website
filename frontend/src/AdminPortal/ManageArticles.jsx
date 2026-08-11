@@ -29,24 +29,26 @@ const ManageArticles = () => {
                     try{
                         const { data: staffData, error: staffError } = await supabase
                             .from("article_staff")
-                            .select(`article_id, contribution_as,
+                            .select(`article_id, contribution_as, use_pseudonym
                                 staff(
-                                    staff_id, staff_display_name, staff_last_name
+                                    staff_id, staff_display_name, staff_last_name, staff_pseudonym
                                 )
                             `).in("article_id", articleIds)
 
-                        // if(staffError){}
+                        if(staffError){
+                            console.error("Error fetching staff contributors: ", staffError)
+                        }
 
                         staffContributions = staffData || []
                     } catch(staffErr){
-                        console.errror("Error fetching staff contributors: ", staffErr)
+                        console.error("Error fetching staff contributors: ", staffErr)
                     }
 
                     const mappedArticles = articlesData.map( article => {
                         const contributions = staffContributions.filter(
                             // the article id inside the article_staff is the same as is in article table
                             sc => sc.article_id === article.article_id) 
-                            return {... article, article_staff: contributions}
+                            return { ... article, article_staff: contributions }
                     })
 
                     setArticles(mappedArticles)
@@ -62,13 +64,20 @@ const ManageArticles = () => {
         fetchArticles()
     }, [])
 
+    const getContributorName = (articlestaff) => {
+        if (articlestaff.use_pseudonym && articlestaff.staff?.staff_pseudonym) {
+            return `${articlestaff.staff.staff_pseudonym} (Pseudonym)`
+        }
+        return articlestaff.staff?.staff_last_name || articlestaff.staff?.staff_display_name
+    }
+
     const getAuthorsString = (article) => {
         if(!article.article_staff || article.article_staff.length === 0){
             return "TPA"
         }
         const authors = article.article_staff
         .filter(articlestaff => articlestaff.contribution_as === "Author")
-        .map(articlestaff => articlestaff.staff?.staff_last_name)
+        .map(getContributorName)
         .filter(Boolean)
         return authors.length > 0 ? authors.join(", ") : "TPA"
     }
@@ -78,7 +87,7 @@ const ManageArticles = () => {
             return "TPA"
         const MedProvs = article.article_staff
             .filter(articlestaff => articlestaff.contribution_as === "Media_Provider")
-            .map(articlestaff => articlestaff.staff?.staff_last_name)
+            .map(getContributorName)
             .filter(Boolean)
         return MedProvs.length > 0 ? MedProvs.join(", ") : "TPA"
     }

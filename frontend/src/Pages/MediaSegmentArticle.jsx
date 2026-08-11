@@ -72,9 +72,11 @@ const MediaSegmentArticle = () => {
                         .from("article_staff")
                         .select(`
                             contribution_as,
+                            use_pseudonym
                             staff (
                                 staff_id,
                                 staff_display_name,
+                                staff_pseudonym,
                                 staff_bio,
                                 staff_picture
                             )
@@ -86,19 +88,20 @@ const MediaSegmentArticle = () => {
                         if (staffError.code === "PGRST200" || staffError.message?.includes("relationship")) {
                             const { data: rawStaffRel, error: rawStaffRelErr } = await supabase
                                 .from("article_staff")
-                                .select("contribution_as, staff_id")
+                                .select("contribution_as, staff_id, use_pseudonym")
                                 .eq("article_id", articleData.article_id);
 
                             if (!rawStaffRelErr && rawStaffRel && rawStaffRel.length > 0) {
                                 const staffIds = rawStaffRel.map(r => r.staff_id).filter(Boolean);
                                 const { data: staffRows, error: staffRowsErr } = await supabase
                                     .from("staff")
-                                    .select("staff_id, staff_display_name, staff_bio, staff_picture")
+                                    .select("staff_id, staff_display_name, staff_pseudonym, staff_bio, staff_picture")
                                     .in("staff_id", staffIds);
 
                                 if (!staffRowsErr && staffRows) {
                                     staffContributions = rawStaffRel.map(rel => ({
                                         contribution_as: rel.contribution_as,
+                                        use_pseudonym: rel.use_pseudonym,
                                         staff: staffRows.find(s => s.staff_id === rel.staff_id)
                                     })).filter(c => c.staff);
                                 }
@@ -155,22 +158,30 @@ const MediaSegmentArticle = () => {
         );
     }
 
+    const getContributorObject = (as) => {
+        if(!as.staff) return null
+        const displayName = (as.use_pseudonym && as.staff.staff_pseudonym)
+            ? as.staff.staff_pseudonym
+            : as.staff.staff_display_name
+        return{
+            ...as.staff,
+            displayName
+        }
+    }
+
     const authors = articleDetails.article_staff
         ? articleDetails.article_staff
             .filter(as => as.contribution_as === "Author")
-            .map(as => as.staff)
+            .map(getContributorObject)
             .filter(Boolean)
         : [];
 
     const mediaProviders = articleDetails.article_staff
         ? articleDetails.article_staff
             .filter(as => as.contribution_as === "Media_Provider")
-            .map(as => as.staff)
+            .map(getContributorObject)
             .filter(Boolean)
         : [];
-
-    const firstAuthor = authors[0];
-
 
     return (
         <div className="Media-Segment-Article-Page">
@@ -189,7 +200,7 @@ const MediaSegmentArticle = () => {
                                         authors.map((auth, idx) => (
                                             <span key={auth.staff_id}>
                                                 <Link to={`/staff/${auth.staff_id}`}>
-                                                    {auth.staff_display_name}
+                                                    {auth.displayName}
                                                     {idx < authors.length - 1 ? ", " : ""}
                                                 </Link>
                                             </span>
@@ -205,7 +216,7 @@ const MediaSegmentArticle = () => {
                                             mediaProviders.map((med, idx) => (
                                                 <span key={med.staff_id}>
                                                     <Link to={`/staff/${med.staff_id}`}>
-                                                        {med.staff_display_name}
+                                                        {med.displayName}
                                                         {idx < mediaProviders.length - 1 ? ", " : ""}
                                                     </Link>
                                                 </span>
@@ -233,7 +244,7 @@ const MediaSegmentArticle = () => {
                                     <h3>
                                         <span>
                                             {authors.length === 1
-                                                ? `About ${authors[0].staff_display_name}`
+                                                ? `About ${authors[0].displayName}`
                                                 : "About the Authors"}
                                         </span>
                                     </h3>
@@ -241,7 +252,7 @@ const MediaSegmentArticle = () => {
                                         <div key={auth.staff_id} style={{ marginBottom: idx < authors.length - 1 ? "1.5rem" : "0" }}>
                                             {authors.length > 1 && (
                                                 <h4 style={{ color: "#0265A9", fontWeight: "bold", marginBottom: "0.25rem" }}>
-                                                    {auth.staff_display_name}
+                                                    {auth.displayName}
                                                 </h4>
                                             )}
                                             <h5 className="Staff-Bio-Text">{auth.staff_bio || "No bio available."}</h5>
@@ -255,7 +266,7 @@ const MediaSegmentArticle = () => {
                                     <h3>
                                         <span>
                                             {mediaProviders.length === 1
-                                                ? `About ${mediaProviders[0].staff_display_name}`
+                                                ? `About ${mediaProviders[0].displayName}`
                                                 : "About the Photojournalists"}
                                         </span>
                                     </h3>
@@ -263,7 +274,7 @@ const MediaSegmentArticle = () => {
                                         <div key={auth.staff_id} style={{ marginBottom: idx < mediaProviders.length - 1 ? "1.5rem" : "0" }}>
                                             {mediaProviders.length > 1 && (
                                                 <h4 style={{ color: "#0265A9", fontWeight: "bold", marginBottom: "0.25rem" }}>
-                                                    {auth.staff_display_name}
+                                                    {auth.displayName}
                                                 </h4>
                                             )}
                                             <h5 className="Staff-Bio-Text">{auth.staff_bio || "No bio available."}</h5>
