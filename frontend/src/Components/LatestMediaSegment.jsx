@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient.js";
 import { getMediaSegmentLabel } from "../utils/articleUtils.js";
+import { isMediaSegment, getMediaSegmentLabel, getArticleUrl} from "../utils/articleUtils.js"
+
 import "../CSS/LatestMediaSegment.css";
 
 const LatestMediaSegment = () => {

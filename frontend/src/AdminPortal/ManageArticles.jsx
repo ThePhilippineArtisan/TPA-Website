@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
+import { isMediaSegment, getMediaSegmentLabel, getArticleUrl} from "../utils/articleUtils.js"
 
 import "./ManageArticles.css"
 import "./ManageStaff.css"
