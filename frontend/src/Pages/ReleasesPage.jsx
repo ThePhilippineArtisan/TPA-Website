@@ -1,193 +1,221 @@
-import { useEffect, useRef } from "react";
-import { supabase } from "../supabaseClient"
-
+import { useEffect, useState, useRef } from "react";
+import { supabase } from "../supabaseClient";
 import HTMLFlipbook from "react-pageflip";
 import "../CSS/ReleasesPage.css";
 
-
-
-import KALYOBOOKMOCKUP from "../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO BOOK MOCKUP.png"
-
 const ReleasesPage = () => {
+  const [dbReleases, setDbReleases] = useState([]);
+  const [selectedRelease, setSelectedRelease] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const flipbookRef = useRef(null);
 
-  
+  useEffect(() => {
+    const fetchPublicReleases = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('releases')
+          .select('*')
+          .eq('is_visible', true)
+          .order('date_published', { ascending: false });
 
-  const photos = [
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-001.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-002.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-003.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-004.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-005.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-006.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-007.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-008.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-009.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-010.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-011.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-012.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-013.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-014.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-015.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-016.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-017.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-018.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-019.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-020.png", import.meta.url).href,
-    new URL("../TPA-Releases/2024-Kalyo/KALYO__2024_Page/KALYO__2024_Page-021.png", import.meta.url).href,
-  ]
+        if (!error && data && data.length > 0) {
+          setDbReleases(data);
+          // Set featured or first release as selected
+          const featured = data.find(r => r.is_featured) || data[0];
+          setSelectedRelease(featured);
+        } else {
+          setDbReleases([]);
+        }
+      } catch (err) {
+        console.warn("Could not fetch releases for public page:", err);
+        setDbReleases([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPublicReleases();
+  }, []);
+
+  const currentTitle = selectedRelease
+    ? selectedRelease.title || selectedRelease.release_title
+    : (loading ? "Loading..." : "No Releases Available");
+
+  const currentSubtitle = selectedRelease
+    ? selectedRelease.subtitle || selectedRelease.tagline || `The Official ${selectedRelease.release_type || 'Release'} of The Philippine Artisan`
+    : "The Official Media Releases of The Philippine Artisan";
+
+  const currentCaption = selectedRelease
+    ? selectedRelease.description || selectedRelease.caption
+    : "Explore the official publications, literary folios, broadsheets, and newsletters released by The Philippine Artisan.";
+
+  const currentSoftCopyUrl = selectedRelease
+    ? selectedRelease.soft_copy_url || selectedRelease.pdf_url || selectedRelease.link
+    : null;
+
+  const currentPhotos = selectedRelease && Array.isArray(selectedRelease.photos) && selectedRelease.photos.length > 0
+    ? selectedRelease.photos
+    : (selectedRelease && selectedRelease.cover_url ? [selectedRelease.cover_url] : []);
 
   return (
     <div className="Releases-Page-Container">
-      <div className = "Releases-Page"> 
+      <div className="Releases-Page">
+        {/* Top Options Bar */}
         <div className="List-of-Releases-Covers">
           <div className="Releases-Option">
-            <div className="Releases-Option-Title">
-              <p> Kalyo '24 - '25</p>
-            </div>
-            <div className="Releases-Option-Title">
-              <p> Newsletter '24 - '25</p>
-            </div>
-            <div className="Releases-Option-Title">
-              <p> Tabula Rasa '24 - '25</p>
-            </div>
-            <div className="Releases-Option-Title">
-              <p> Duh! Filipit Artihan '24 - '25</p>
-            </div>
-            <div className="Releases-Option-Title">
-              <p> PhilArts </p>
-            </div>
-            <div className="Releases-Option-Title">
-              <p> Broadsheet '24 - '25</p>
-            </div>
-
+            {dbReleases.map(rel => (
+              <div
+                key={rel.id}
+                className="Releases-Option-Title"
+                onClick={() => setSelectedRelease(rel)}
+                style={{
+                  cursor: 'pointer',
+                  fontWeight: selectedRelease?.id === rel.id ? 'bold' : 'normal',
+                  opacity: selectedRelease?.id === rel.id ? 1 : 0.85
+                }}
+              >
+                <p>{rel.title || rel.release_title}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="Releases-Title"> 
-          <div className = "Releases-Title-Type">
-              <p> The Official Literary Folio of The Philippine Artisan </p>
-            <span>
-              KALYO: ? '24 - '25
-            </span>
-             <hr style = {{width: "80%", margin: "1rem 0rem"}}></hr>
-            <div>
-              <p> Click here for the full soft copy of this release </p>
-            </div>
+
+        {/* Selected Release Header & Details */}
+        <div className="Releases-Title">
+          <div className="Releases-Title-Type">
+            <p>{currentSubtitle}</p>
+            <span>{currentTitle}</span>
+            <hr style={{ width: "80%", margin: "1rem 0rem" }}></hr>
+            {currentSoftCopyUrl && (
+              <div>
+                <a
+                  href={currentSoftCopyUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: 'var(--primary-blue)', fontWeight: 'bold', textDecoration: 'underline' }}
+                >
+                  Click here for the full soft copy of this release
+                </a>
+              </div>
+            )}
           </div>
           <div className="Releases-Caption">
-            <p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium id quas labore dolore assumenda delectus ipsa vero culpa ex eveniet. Dicta tempora qui, expedita quod mollitia architecto doloremque reiciendis eos? 
-            </p>
+            <p>{currentCaption}</p>
           </div>
         </div>
 
-        <div className = "Releases-Book-Container">
-          <div className = "Releases-Book-Button-Container">
-            <HTMLFlipbook
-              className="Releases-Book"
-              width={500}
-              height={600}
-              maxShadowOpacity={0.5}
-              drawShadow={true}
-              showCover={true}
-              size="fixed"
-            >
-
-              {photos.map((photo, index) => (
-                <div className="Demo-Page" key={index}>
-                  <img
-                    src={photo}
-                    loading="lazy"
-                    draggable={false}
-                    style={{ width: "100%", height: "100%", cursor: "grab" }}
-                  />
+        {/* Flipbook Container */}
+        <div className="Releases-Book-Container">
+          <div className="Releases-Book-Button-Container">
+            {currentPhotos.length > 0 ? (
+              <>
+                <HTMLFlipbook
+                  ref={flipbookRef}
+                  className="Releases-Book"
+                  width={500}
+                  height={600}
+                  maxShadowOpacity={0.5}
+                  drawShadow={true}
+                  showCover={true}
+                  size="fixed"
+                >
+                  {currentPhotos.map((photo, index) => (
+                    <div className="Demo-Page" key={index}>
+                      <img
+                        src={photo}
+                        alt={`Page ${index + 1}`}
+                        loading="lazy"
+                        draggable={false}
+                        style={{ width: "100%", height: "100%", cursor: "grab", objectFit: "cover" }}
+                      />
+                    </div>
+                  ))}
+                </HTMLFlipbook>
+                <div className="Releases-Book-Button">
+                  <button onClick={() => flipbookRef.current?.pageFlip()?.flipPrev()}> Previous </button>
+                  <div className="Releases-Book-Button-Counter">
+                    <p> 1 of {currentPhotos.length} </p>
+                  </div>
+                  <button onClick={() => flipbookRef.current?.pageFlip()?.flipNext()}> Next </button>
                 </div>
-              ))}
-
-            </HTMLFlipbook>
-            <div className = "Releases-Book-Button">
-              <button> Previous </button>
-              <div className = "Releases-Book-Button-Counter">
-                <p> 1 of 10 </p>
+              </>
+            ) : (
+              <div style={{
+                width: '500px',
+                height: '400px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#f8fafc',
+                border: '2px dashed #cbd5e1',
+                borderRadius: '8px',
+                color: '#64748b',
+                textAlign: 'center',
+                padding: '2rem'
+              }}>
+                <p>
+                  {loading
+                    ? "Loading publication preview..."
+                    : "No flipbook pages uploaded for this release yet. Please check back soon!"}
+                </p>
               </div>
-              <button> Next </button>
-            </div>
+            )}
           </div>
         </div>
 
-        <div className = "List-Of-Releases-Container">
-            <div className = "List-Of-Releases">
-              <div>
-                <h1> AY 2025 - 2026 RELEASES</h1>
-                <div className = "Releases-Book-And-Title-Container">
-                  <div className = "Releases-Book-And-Title">
-                      <span className = "Releases-Option-Title"> <b>Kalyo</b>Kamatayan </span>
-                    <div className = "Releases-Book-Image">
-                      <img 
-                        src = {KALYOBOOKMOCKUP}
-                      />
-                    </div>
-                  </div>
-
-                  <div className = "Releases-Book-And-Title">
-                      <span className = "Releases-Option-Title"> <b>PhilArts</b>Status Quo </span>
-                    <div className = "Releases-Book-Image">
-                      <img 
-                        src = {KALYOBOOKMOCKUP}
-                      />
-                    </div>
-                  </div>
-
-                  <div className = "Releases-Book-And-Title">
-                      <span className = "Releases-Option-Title"> <b>Broadsheet</b>'25 - '26 </span>
-                    <div className = "Releases-Book-Image">
-                      <img 
-                        src = {KALYOBOOKMOCKUP}
-                      />
-                    </div>
-                  </div>
-
-                  <div className = "Releases-Book-And-Title">
-                      <span className = "Releases-Option-Title"> <b>Newsletter</b> '25 - '26 1st Batch </span>
-                    <div className = "Releases-Book-Image">
-                      <img 
-                        src = {KALYOBOOKMOCKUP}
-                      />
-                    </div>
-                  </div>
-
-                  <div className = "Releases-Book-And-Title">
-                      <span className = "Releases-Option-Title"> 
-                        <b>Newsletter</b>
-                        '25 - '26 2nd Batch 
+        {/* Releases Grid / Catalog */}
+        <div className="List-Of-Releases-Container">
+          <div className="List-Of-Releases">
+            <div>
+              <h1>RELEASES CATALOG</h1>
+              <div className="Releases-Book-And-Title-Container">
+                {dbReleases.length > 0 ? (
+                  dbReleases.map(rel => (
+                    <div
+                      key={rel.id}
+                      className="Releases-Book-And-Title"
+                      onClick={() => setSelectedRelease(rel)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <span className="Releases-Option-Title">
+                        <b>{rel.release_type || "Release"}</b> {rel.title || rel.release_title}
                       </span>
-                    <div className = "Releases-Book-Image">
-                      <img 
-                        src = {KALYOBOOKMOCKUP}
-                      />
+                      <div className="Releases-Book-Image">
+                        {rel.cover_url || rel.cover_image ? (
+                          <img
+                            src={rel.cover_url || rel.cover_image}
+                            alt={rel.title}
+                          />
+                        ) : (
+                          <div style={{
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: '#e2e8f0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '0.75rem',
+                            color: '#64748b'
+                          }}>
+                            {rel.title || "TPA Release"}
+                          </div>
+                        )}
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div style={{ padding: '2rem', color: '#64748b' }}>
+                    {loading ? "Loading releases..." : "No media releases available."}
                   </div>
-
-                  <div className = "Releases-Book-And-Title">
-                      <span className = "Releases-Option-Title">
-                        <b>Tabula Rasa</b>
-                        Does this have titles?
-                      </span>
-                    <div className = "Releases-Book-Image">
-                      <img 
-                        src = {KALYOBOOKMOCKUP}
-                      />
-                    </div>
-                  </div>
-
-                </div>
+                )}
               </div>
             </div>
-            <div className = "Releases-Filter">
-
-            </div>
+          </div>
+          <div className="Releases-Filter"></div>
         </div>
       </div>
     </div>
-
   );
 };
 

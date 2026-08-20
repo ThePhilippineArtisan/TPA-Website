@@ -1,0 +1,292 @@
+.Manage-Releases-Container {
+    font-family: var(--font-sans);
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.Manage-Releases-Header {
+    margin-bottom: 1.5rem;
+}
+
+.Manage-Releases-Header h1 {
+    font-size: 2rem;
+    color: var(--primary-blue, #0f2c59);
+    margin-bottom: 0.25rem;
+}
+
+.Manage-Releases-Header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.Manage-Releases-Grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .Manage-Releases-Grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.Add-Release-Form-Container, 
+.Existing-Releases-Container {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 8px);
+    padding: 1.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(4px);
+}
+
+.Existing-Releases-Container {
+    max-height: 950px;
+    overflow-y: auto;
+}
+
+.Section-Title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-blue, #0f2c59);
+    margin-bottom: 0.5rem;
+}
+
+.Divider-Line {
+    border: none;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: 1.25rem;
+}
+
+.Form-Group {
+    margin-bottom: 1.2rem;
+}
+
+.Form-Group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--primary-blue, #0f2c59);
+    margin-bottom: 0.35rem;
+}
+
+.Form-Group input[type="text"],
+.Form-Group input[type="url"],
+.Form-Group input[type="datetime-local"],
+.Form-Group select,
+.Form-Group textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: var(--radius-sm, 6px);
+    background-color: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.Form-Group input:focus,
+.Form-Group select:focus,
+.Form-Group textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue, #0f2c59);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(15, 44, 89, 0.1);
+}
+
+.Form-Row-Two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.Form-Checkbox-Group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.Form-Checkbox-Group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.Form-Checkbox-Group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #334155;
+}
+
+.Form-Actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.Btn-Submit {
+    background-color: var(--primary-blue, #0f2c59);
+    color: #ffffff;
+    padding: 0.65rem 1.4rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-sm, 6px);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.Btn-Submit:hover {
+    background-color: #1a365d;
+    transform: translateY(-1px);
+}
+
+.Btn-Cancel {
+    background-color: transparent;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 0.65rem 1.2rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm, 6px);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.Btn-Cancel:hover {
+    background-color: #f1f5f9;
+}
+
+.Release-Item-Card {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 8px);
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.Release-Item-Card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    background-color: #f8fafc;
+}
+
+.Release-Item-Card.is-hidden {
+    opacity: 0.65;
+    background-color: #f1f5f9;
+}
+
+.Release-Item-Thumb {
+    width: 90px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: var(--radius-sm, 4px);
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    background-color: #e2e8f0;
+}
+
+.Release-Item-Content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Release-Item-Header {
+    margin-bottom: 0.4rem;
+}
+
+.Release-Item-Title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+}
+
+.Release-Item-Subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.Release-Badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.4rem 0;
+}
+
+.Release-Badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.725rem;
+    font-weight: 600;
+    border-radius: 4px;
+    background-color: #e2e8f0;
+    color: #334155;
+}
+
+.Release-Badge-Category {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.Release-Badge-Year {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.Release-Badge-Status.visible {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.Release-Badge-Status.hidden {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.Release-Badge-Featured {
+    background-color: #fae8ff;
+    color: #86198f;
+}
+
+.Release-Item-Actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.Btn-Action-Small {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.775rem;
+    font-weight: 600;
+    border: 1px solid #cbd5e1;
+    background-color: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.Btn-Action-Small:hover {
+    background-color: #f1f5f9;
+}
+
+.Btn-Action-Danger {
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+.Btn-Action-Danger:hover {
+    background-color: #fef2f2;
+}
