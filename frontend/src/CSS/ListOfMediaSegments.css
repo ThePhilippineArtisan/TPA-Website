@@ -125,3 +125,27 @@
     font-size: 1rem;
     background-color: var(--primary-blue-hover);
 }
+
+.Load-More-Weeks-Btn {
+    background-color: #0265a9;
+    color: #ffffff;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 24px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    box-shadow: 0 4px 14px rgba(2, 101, 169, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Load-More-Weeks-Btn:hover {
+    background-color: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
+}
+
+.Load-More-Weeks-Btn:active {
+    transform: translateY(0);
+}

@@ -5,14 +5,27 @@ import { getMediaSegmentLabel, getArticleUrl } from "../utils/articleUtils.js";
 
 import "../CSS/LatestMediaSegment.css";
 
-const LatestMediaSegment = () => {
+const ALL_SEGMENT_TYPES = [
+    "MAKATA_MONDAYS",
+    "TEK_TUESDAY",
+    "WANKJOB_WEDNESDAY",
+    "TALA_THURSDAY",
+    "FEATURES_FRIDAY",
+    "STREAMING_SATURDAY",
+    "SPORTS_SUNDAY",
+    "OPINION",
+    "EDITORIAL"
+];
+
+const LatestMediaSegment = ({ filterType }) => {
     const [latestSegment, setLatestSegment] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchLatest = async () => {
+            setIsLoading(true);
             try {
-                const { data, error } = await supabase
+                let query = supabase
                     .from("article")
                     .select(`
                         article_id,
@@ -26,19 +39,16 @@ const LatestMediaSegment = () => {
                             )
                         )
                     `)
-                    .in("article_type", [
-                        "MAKATA_MONDAYS",
-                        "TEK_TUESDAY",
-                        "WANKJOB_WEDNESDAY",
-                        "TALA_THURSDAY",
-                        "FEATURES_FRIDAY",
-                        "STREAMING_SATURDAY",
-                        "SPORTS_SUNDAY"
-                    ])
                     .eq("is_published", true)
-                    .order("published_at", { ascending: false })
-                    .limit(1)
-                    .maybeSingle();
+                    .order("published_at", { ascending: false });
+
+                if (filterType) {
+                    query = query.eq("article_type", filterType.toUpperCase());
+                } else {
+                    query = query.in("article_type", ALL_SEGMENT_TYPES);
+                }
+
+                const { data, error } = await query.limit(1).maybeSingle();
 
                 if (error) {
                     console.error("Supabase error fetching latest media segment:", error);
@@ -106,7 +116,7 @@ const LatestMediaSegment = () => {
             }
         };
         fetchLatest();
-    }, []);
+    }, [filterType]);
 
     if (isLoading) {
         return (
