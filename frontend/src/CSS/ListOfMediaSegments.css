@@ -149,3 +149,71 @@
 .Load-More-Weeks-Btn:active {
     transform: translateY(0);
 }
+
+/* Past Weeks Grid Styling */
+.Past-Weeks-Section {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 3rem;
+    padding: 0 1.5rem;
+}
+
+.Past-Week-Container {
+    background-color: rgba(0, 20, 50, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.Past-Week-Header-Wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.Past-Week-Header {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.Past-Week-Grid-Block {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.Past-Week-Row-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.Past-Week-Row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 82%;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .Past-Week-Row-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .Past-Week-Row-3 {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .Past-Week-Row-4,
+    .Past-Week-Row-3 {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+}

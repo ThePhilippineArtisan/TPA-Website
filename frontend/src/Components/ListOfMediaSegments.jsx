@@ -16,14 +16,14 @@ const WEEKLY_DAYS_ORDER = [
 ];
 
 const ListOfMediaSegments = ({ filterType }) => {
-    const [latestSegments, setLatestSegments] = useState([]);
-    const [weeksCount, setWeeksCount] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
+    const [latestWeek, setLatestWeek] = useState([]);
+    const [pastWeeks, setPastWeeks] = useState([]);
+    const [showPastWeeks, setShowPastWeeks] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Reset week count when filter changes
+    // Reset view when filterType changes
     useEffect(() => {
-        setWeeksCount(1);
+        setShowPastWeeks(false);
     }, [filterType]);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const ListOfMediaSegments = ({ filterType }) => {
             setLoading(true);
             try {
                 if (!filterType) {
-                    // Fetch up to 100 recent articles across all weekly types
+                    // Fetch up to 100 articles across all 7 weekly types
                     const { data, error } = await supabase
                         .from("article")
                         .select(`
@@ -59,7 +59,7 @@ const ListOfMediaSegments = ({ filterType }) => {
                     }
 
                     if (isMounted && data) {
-                        // Group articles by article_type
+                        // Group articles by day type
                         const grouped = {};
                         WEEKLY_DAYS_ORDER.forEach(type => {
                             grouped[type] = [];
@@ -72,31 +72,31 @@ const ListOfMediaSegments = ({ filterType }) => {
                             }
                         });
 
-                        // Build ordered list (Monday -> Sunday) for each week iteration
-                        const orderedList = [];
-                        let moreAvailable = false;
+                        // Week 0: Latest week (1 item per day segment arranged Mon -> Sun)
+                        const week0 = WEEKLY_DAYS_ORDER
+                            .map(dayType => grouped[dayType]?.[0])
+                            .filter(Boolean);
 
-                        for (let weekIdx = 0; weekIdx < weeksCount; weekIdx++) {
-                            WEEKLY_DAYS_ORDER.forEach(dayType => {
-                                if (grouped[dayType] && grouped[dayType][weekIdx]) {
-                                    orderedList.push(grouped[dayType][weekIdx]);
-                                }
-                            });
-                        }
+                        // Week 1: 1 week ago
+                        const week1 = WEEKLY_DAYS_ORDER
+                            .map(dayType => grouped[dayType]?.[1])
+                            .filter(Boolean);
 
-                        // Check if any day category has more items beyond current weeksCount
-                        WEEKLY_DAYS_ORDER.forEach(dayType => {
-                            if (grouped[dayType] && grouped[dayType].length > weeksCount) {
-                                moreAvailable = true;
-                            }
-                        });
+                        // Week 2: 2 weeks ago
+                        const week2 = WEEKLY_DAYS_ORDER
+                            .map(dayType => grouped[dayType]?.[2])
+                            .filter(Boolean);
 
-                        setLatestSegments(orderedList);
-                        setHasMore(moreAvailable);
+                        setLatestWeek(week0);
+
+                        const past = [];
+                        if (week1.length > 0) past.push(week1);
+                        if (week2.length > 0) past.push(week2);
+
+                        setPastWeeks(past);
                     }
                 } else {
-                    // Single category filter mode
-                    const targetLimit = weeksCount * 7;
+                    // Single Category Filter (e.g. OPINION or TEK_TUESDAY)
                     const { data, error } = await supabase
                         .from("article")
                         .select(`
@@ -114,7 +114,7 @@ const ListOfMediaSegments = ({ filterType }) => {
                         .eq("article_type", filterType.toUpperCase())
                         .eq("is_published", true)
                         .order("published_at", { ascending: false })
-                        .limit(targetLimit + 1);
+                        .limit(21);
 
                     if (error) {
                         console.warn("Supabase query error for category filter:", error);
@@ -122,13 +122,15 @@ const ListOfMediaSegments = ({ filterType }) => {
                     }
 
                     if (isMounted && data) {
-                        if (data.length > targetLimit) {
-                            setHasMore(true);
-                            setLatestSegments(data.slice(0, targetLimit));
-                        } else {
-                            setHasMore(false);
-                            setLatestSegments(data);
-                        }
+                        const week0 = data.slice(0, 7);
+                        const week1 = data.slice(7, 14);
+                        const week2 = data.slice(14, 21);
+
+                        setLatestWeek(week0);
+                        const past = [];
+                        if (week1.length > 0) past.push(week1);
+                        if (week2.length > 0) past.push(week2);
+                        setPastWeeks(past);
                     }
                 }
             } catch (err) {
@@ -143,13 +145,49 @@ const ListOfMediaSegments = ({ filterType }) => {
         return () => {
             isMounted = false;
         };
-    }, [filterType, weeksCount]);
+    }, [filterType]);
+
+    const renderCard = (article) => {
+        const mediaUrl = article.article_media?.[0]?.media?.media_url;
+        const label = getMediaSegmentLabel(article.article_type);
+
+        return (
+            <Link
+                key={article.article_id}
+                to={getArticleUrl(article)}
+                className="List-Of-MS-Card"
+                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: '220px' }}
+            >
+                <div className="Segment-Container">
+                    <p>{label}</p>
+                </div>
+                {mediaUrl && (
+                    <img
+                        src={mediaUrl}
+                        alt={article.article_headline}
+                        style={{ width: '100%', height: '180px', objectFit: 'cover' }}
+                    />
+                )}
+                <p style={{
+                    marginTop: '0.5rem',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    lineHeight: '1.3'
+                }}>
+                    {article.article_headline}
+                </p>
+            </Link>
+        );
+    };
 
     const sectionTitle = filterType
         ? `${getMediaSegmentLabel(filterType).toUpperCase()} SEGMENTS`
         : "LATEST WEEKLY SEGMENTS";
 
-    if (loading && latestSegments.length === 0) {
+    if (loading && latestWeek.length === 0) {
         return (
             <div className="List-of-Media-Segments">
                 <p style={{ textAlign: "center", color: "#ffffff", padding: "2rem" }}>Loading media segments...</p>
@@ -157,7 +195,7 @@ const ListOfMediaSegments = ({ filterType }) => {
         );
     }
 
-    if (!loading && latestSegments.length === 0) {
+    if (!loading && latestWeek.length === 0) {
         return (
             <div className="List-of-Media-Segments">
                 <h1 id="Latest-Weekly-Segments">{sectionTitle}</h1>
@@ -172,52 +210,53 @@ const ListOfMediaSegments = ({ filterType }) => {
         <div className="List-of-Media-Segments">
             <div className="Media-Segment-Card-Wrapper">
                 <h1 id="Latest-Weekly-Segments">{sectionTitle}</h1>
-                <div className="Media-Segment-Card">
-                    {latestSegments.map(article => {
-                        const mediaUrl = article.article_media?.[0]?.media?.media_url;
-                        const label = getMediaSegmentLabel(article.article_type);
 
-                        return (
-                            <Link
-                                key={article.article_id}
-                                to={getArticleUrl(article)}
-                                className="List-Of-MS-Card"
-                                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: '240px' }}
-                            >
-                                <div className="Segment-Container">
-                                    <p>{label}</p>
-                                </div>
-                                {mediaUrl && (
-                                    <img
-                                        src={mediaUrl}
-                                        alt={article.article_headline}
-                                        style={{ width: '100%', height: '180px', objectFit: 'cover' }}
-                                    />
-                                )}
-                                <p style={{
-                                    marginTop: '0.5rem',
-                                    display: '-webkit-box',
-                                    WebkitLineClamp: 2,
-                                    WebkitBoxOrient: 'vertical',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    lineHeight: '1.3'
-                                }}>
-                                    {article.article_headline}
-                                </p>
-                            </Link>
-                        );
-                    })}
+                {/* Main Top Row: Latest Week (Monday to Sunday) */}
+                <div className="Media-Segment-Card">
+                    {latestWeek.map(renderCard)}
                 </div>
 
-                {hasMore && (
+                {/* More Button to Toggle Past 2 Weeks Grid */}
+                {pastWeeks.length > 0 && (
                     <div className="Load-More-Container" style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
                         <button
                             className="Load-More-Weeks-Btn"
-                            onClick={() => setWeeksCount(prev => prev + 1)}
+                            onClick={() => setShowPastWeeks(prev => !prev)}
                         >
-                            More
+                            {showPastWeeks ? "Show Less" : "More"}
                         </button>
+                    </div>
+                )}
+
+                {/* Past 2 Weeks Grid Section */}
+                {showPastWeeks && pastWeeks.length > 0 && (
+                    <div className="Past-Weeks-Section">
+                        {pastWeeks.map((weekArticles, index) => {
+                            const topFour = weekArticles.slice(0, 4);
+                            const bottomThree = weekArticles.slice(4, 7);
+
+                            return (
+                                <div className="Past-Week-Container" key={index}>
+                                    <div className="Past-Week-Header-Wrapper">
+                                        <hr className="Horizontal-Line-Date" />
+                                    </div>
+
+                                    <div className="Past-Week-Grid-Block">
+                                        {/* Top Row: 4 items (Monday - Thursday) */}
+                                        <div className="Past-Week-Row-4">
+                                            {topFour.map(renderCard)}
+                                        </div>
+
+                                        {/* Bottom Row: 3 items (Friday - Sunday) */}
+                                        {bottomThree.length > 0 && (
+                                            <div className="Past-Week-Row-3">
+                                                {bottomThree.map(renderCard)}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>
