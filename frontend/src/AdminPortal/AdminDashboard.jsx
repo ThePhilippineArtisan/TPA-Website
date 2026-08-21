@@ -184,24 +184,21 @@ const AdminDashboard = () => {
 
                     <div className = "Admin-Dashboard-Quick-Actions">
                         <h2> Quick Actions </h2>
-                        <div className = "Admin-Quick-Actions">
+                        <Link to="/admin/create-article" style={{ textDecoration: "none", color: "inherit" }} className = "Admin-Quick-Actions">
                             <p> Create an Article </p>
-                        </div>
-                        <div className = "Admin-Quick-Actions">
+                        </Link>
+                        <Link to="/admin/manage-page" style={{ textDecoration: "none", color: "inherit" }} className = "Admin-Quick-Actions">
                             <p> Configure Website Showcase Slides </p>
-                        </div>
-                        <div className = "Admin-Quick-Actions">
-                            <p> Add New Releases </p>
-                        </div>
-                        <div className = "Admin-Quick-Actions">
-                            <p> Add New Staff </p>
-                        </div>
-                        <div className = "Admin-Quick-Actions">
-                            <p> Add New YouTube Video Embed </p>
-                        </div>
-                        <div className = "Admin-Quick-Actions">
-                            <p> Coming Soon... </p>
-                        </div>            
+                        </Link>
+                        <Link to="/admin/manage-releases" style={{ textDecoration: "none", color: "inherit" }} className = "Admin-Quick-Actions">
+                            <p> Manage Releases </p>
+                        </Link>
+                        <Link to="/admin/staff" style={{ textDecoration: "none", color: "inherit" }} className = "Admin-Quick-Actions">
+                            <p> Manage Staff </p>
+                        </Link>
+                        <Link to="/admin/manage-videos" style={{ textDecoration: "none", color: "inherit" }} className = "Admin-Quick-Actions">
+                            <p> Manage YouTube Videos </p>
+                        </Link>
                     </div>
 
                 </div>        

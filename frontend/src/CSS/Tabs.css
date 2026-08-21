@@ -1,42 +1,39 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
-.Tabs{
+.Tabs {
     display: flex;
-    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    
+    align-items: center;
     background-color: #003f69;
-    padding: 1.5rem 0px;
-
+    padding: clamp(0.75rem, 1.5vw, 1.25rem) clamp(1rem, 3vw, 2rem);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.Tabs a{
+.Tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.Tabs a {
     color: white;
     text-decoration: none;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    
     display: flex;
     justify-content: center;
-
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 1.2vw, 1.05rem);
     font-weight: 500;    
-
-    padding: 0.5rem;
-    margin-right: 2rem;
-
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.5rem;
     border: 2px solid transparent;
     box-sizing: border-box;
-    
     will-change: transform;
-
+    flex-shrink: 0;
 }
 
-.Tabs a:hover{
-    transform: scale(1.1);
+.Tabs a:hover {
+    transform: scale(1.05);
     transition: transform 0.2s ease-in-out;
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.95);
 }
@@ -46,4 +43,4 @@
     border-bottom: 2px solid #38bdf8;
     font-weight: 700;
     text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
-}
+}

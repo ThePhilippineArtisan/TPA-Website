@@ -177,41 +177,44 @@ const ManageVideos = () => {
             </div>
             <div className = "Manage-Videos-Two-Grid">
                 <div className = "Add-Manage-Video-Container">
-                    <h4> Add/Edit Video Lists</h4>
+                    <h4> {editingId ? `Edit Video (ID: ${editingId})` : "Add Video"} </h4>
+                    <hr />
                     <form onSubmit = {handleSubmitVideo}>
                         <div className = "Add-Video-Fields">
-                            <p>Video Title</p>
+                            <p>VIDEO TITLE</p>
                             <input 
                                 type = "text"
                                 name = "title"
+                                className="Form-Input"
                                 value = {formState.title}
                                 onChange = {handleChange}
+                                placeholder="Enter YouTube video title..."
                                 required
                             />
                         </div>
                         
                         <div className = "Add-Video-Fields">
-                            <p>Video URL</p>
+                            <p>Video Embed URL</p>
                             <input 
                                 type = "url"
                                 name = "videoUrl"
+                                className="Form-Input"
                                 value = {formState.videoUrl}
                                 onChange = {handleChange}
                                 placeholder="https://www.youtube.com/watch?v=..."
-                                style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}
                                 required
                             />
                         </div>
                         
                         <div className = "Add-Video-Fields">
-                            <p>Video Thumbnail</p>
+                            <p>Video Thumbnail Cover</p>
                             <input 
                                 type = "url"
                                 name = "imageUrl"
+                                className="Form-Input"
                                 value = {formState.imageUrl}
                                 onChange = {handleChange}
                                 placeholder="https://img.youtube.com/vi/.../maxresdefault.jpg"
-                                style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}
                                 required
                             />
                         </div>
@@ -221,13 +224,13 @@ const ManageVideos = () => {
                             <input 
                                 type = "datetime-local"
                                 name = "dateAdded"
+                                className="Form-Input"
                                 value = {formState.dateAdded}
                                 onChange={handleChange}
-                                style={{ padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}
                             />
                         </div>
 
-                        <div className="Front-Page-Fields" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <div className="Add-Video-Fields" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <input
                                 type="checkbox"
                                 id="isVisible"
@@ -235,16 +238,16 @@ const ManageVideos = () => {
                                 checked={formState.isVisible}
                                 onChange={handleChange}
                             />
-                            <label htmlFor="isVisible" style={{ cursor: 'pointer', fontWeight: '500' }}>Visibility: ON / OFF</label>
+                            <label htmlFor="isVisible" style={{ cursor: 'pointer', fontWeight: '600', color: 'var(--primary-blue)' }}>Visibility: ON / OFF</label>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <button type="submit" style={{ padding: '0.6rem 1.2rem', backgroundColor: 'var(--primary-blue)', color: '#fff', border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontWeight: 'bold' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                            <button type="submit" className="Admin-Primary-Button">
                                 {editingId ? "Update Video" : "Save Video"}
                             </button>
                             {editingId && (
-                                <button type="button" onClick={handleCancelEdit} style={{ padding: '0.6rem 1.2rem', background: 'transparent', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}>
-                                    Cancel
+                                <button type="button" className="Btn-Outline Button-Outline" onClick={handleCancelEdit}>
+                                    Cancel Edit
                                 </button>
                             )}
                         </div>
@@ -260,7 +263,10 @@ const ManageVideos = () => {
                             <p> No videos found. </p>
                         ) : (
                             videos.map((item) => (
-                                <div key={item.id}>
+                                <div
+                                    key={item.id}
+                                    className={`Facade-Item-Card ${!item.is_visible ? 'hidden-item' : ''}`}
+                                >
                                     <div className="Item-Main-Info">
                                         <img
                                             src={item.thumbnail}
@@ -278,41 +284,40 @@ const ManageVideos = () => {
                                                 ID: {item.id}
                                             </span>
                                             <span className="Badge" style={{ background: 'var(--bg-light)', color: 'var(--text-dark)' }}>
-                                                Date added: #{item.date_added}
+                                                Date: {formatDate(item.date_added)}
+                                            </span>
+                                            <span className={`Badge ${item.is_visible ? 'Badge-Visible' : 'Badge-Hidden'}`}>
+                                                {item.is_visible ? 'Visible' : 'Hidden'}
                                             </span>
                                         </div>
-                                    </div>
+                                        <div className="Item-Action-Row">
+                                            <div className="Action-Buttons Action-Btns">
+                                                <button
+                                                    type="button"
+                                                    className="Btn-Outline Button-Outline"
+                                                    onClick={() => handleEdit(item)}
+                                                >
+                                                    Edit
+                                                </button>
 
-                                    <div className="Item-Action-Row">
-                                        <div className="Action-Buttons Action-Btns">
+                                                <button
+                                                    type="button"
+                                                    className="Btn-Outline Button-Outline"
+                                                    onClick={() => toggleVisibility(item.id)}
+                                                >
+                                                    {item.is_visible ? 'Hide' : 'Show'}
+                                                </button>
 
-                                            <button
-                                                type="button"
-                                                className="Btn-Outline Button-Outline"
-                                                onClick={() => handleEdit(item)}
-                                            >
-                                                Edit
-                                            </button>
-
-                                            <button
-                                                type="button"
-                                                className="Btn-Outline Button-Outline"
-                                                onClick={() => toggleVisibility(item.id)}
-                                            >
-                                                {item.is_visible ? 'Hide' : 'Show'}
-                                            </button>
-
-                                            <button
-                                                type="button"
-                                                className="Btn-Outline Button-Outline Btn-Danger Button-Danger"
-                                                onClick={() => handleDelete(item.id)}
-                                            >
-                                                Remove
-                                            </button>
-
+                                                <button
+                                                    type="button"
+                                                    className="Btn-Outline Button-Outline Btn-Danger Button-Danger"
+                                                    onClick={() => handleDelete(item.id)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             ))
                         )}

@@ -1,56 +1,93 @@
-.Staff-Profile-Full-Page{
+.Staff-Profile-Full-Page {
     display: flex;
     justify-content: center;
-
-    padding: 20dvh 0dvh;
+    align-items: center;
+    padding: clamp(3rem, 8vw, 7rem) clamp(1rem, 3vw, 2.5rem);
     background-color: #d7d8d2;
+    min-height: 100dvh;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.Staff-Profile-Main-Content{
+.Staff-Profile-Main-Content {
     display: flex;
-    width: 80%;
-    padding: 5rem;
-    border-radius: 5rem;
+    flex-direction: row;
+    width: 100%;
+    max-width: var(--container-max-width);
+    padding: clamp(1.5rem, 4vw, 4rem);
+    border-radius: clamp(1.5rem, 4vw, 3rem);
     border: 2px solid rgb(128, 128, 128);
     background-image: url("/notebook-dark.png");
     background-color: whitesmoke;
+    box-sizing: border-box;
+    gap: clamp(1.5rem, 3vw, 3rem);
 }
 
-.Staff-Profile-Image-Content{
+@media (max-width: 900px) {
+    .Staff-Profile-Main-Content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+.Staff-Profile-Image-Content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
 }
 
-.Staff-Profile-Image-Content img{
-    height: 500px;
+.Staff-Profile-Image-Content img {
+    width: clamp(180px, 30vw, 320px);
+    height: clamp(180px, 30vw, 320px);
     border-radius: 50%;
-    padding-right: 5rem;
-    padding-bottom: 3rem;
+    object-fit: cover;
+    border: 4px solid var(--primary-blue);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.Profile-Image-Container{
-    border-right: 2px solid rgba(128, 128, 128, 0.50)
+.Profile-Image-Container {
+    border-right: 2px solid rgba(128, 128, 128, 0.3);
+    padding-right: clamp(1rem, 2.5vw, 2.5rem);
 }
 
-.Horizontal-Staff-Profile-About{
+@media (max-width: 900px) {
+    .Profile-Image-Container {
+        border-right: none;
+        border-bottom: 2px solid rgba(128, 128, 128, 0.3);
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+        width: 100%;
+    }
+}
+
+.Horizontal-Staff-Profile-About {
     display: flex;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.50)
+    border-bottom: 2px solid rgba(128, 128, 128, 0.3);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-.Right-Side-Profile-About{
+.Right-Side-Profile-About {
     display: flex;
     flex-direction: column;
-    padding-left: 3rem;
-
     white-space: pre-wrap;
-    width: 60%;
+    width: 100%;
 }
 
-.Profile-Bio-Container{
-    padding-top: 30px;
-    width: 90%;
+.Right-Side-Profile-About h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    margin: 0 0 0.5rem 0;
+    color: var(--text-dark);
 }
 
-.Right-Side-Profile-About h1{
-    margin: 0;
-}
+.Profile-Bio-Container {
+    padding-top: 1rem;
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    line-height: 1.7;
+    color: var(--text-dark);
+}

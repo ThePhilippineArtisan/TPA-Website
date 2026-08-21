@@ -28,8 +28,8 @@ const menuItems = [
         label: "Manage Videos",
     },
     {
-        path: "/admin/add-releases",
-        label: "Releases",
+        path: "/admin/manage-releases",
+        label: "Manage Releases",
     }
 ]
 

@@ -3,66 +3,66 @@ import { Link } from "react-router-dom";
 import "../CSS/VerticalFastNews.css"
 
 const VerticalFastNews = ({ isHorizontal = false }) => {
-    return(
-        <div className = {`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
-            
-            <div style={{padding: "2rem 0rem"}}>
-                <Link to = "/Joseph-Brian-Balut" style = {{fontSize: "1.5rem"}}> BULLETIN BOARD  </Link>
+    return (
+        <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
 
-                <div className = "Vertical-Side-News">
-                    <hr className = "Vertical-Divider-Side-News" ></hr>
-                    <a href = "https://youtube.com/@AvoirJoseph" > Want to join the Philippine Artisan? <br></br>
-                    <br></br>
-                    Click  <span style = {{color: '#0265A9'}}> here </span> to be included in the list of our future applicants! </a>
+            <div style={{ padding: "2rem 0rem" }}>
+                <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }}> BULLETIN BOARD  </Link>
+
+                <div className="Vertical-Side-News">
+                    <hr className="Vertical-Divider-Side-News" style={{ padding: "1rem 0rem" }}></hr>
+                    <a href="https://youtube.com/@AvoirJoseph" > Want to join the Philippine Artisan? <br></br>
+                        <br></br>
+                        Click  <span style={{ color: '#0265A9' }}> here </span> to be included in the list of our future applicants! </a>
                 </div>
 
-                <div className = "Vertical-Side-News">
-                    <hr className = "Vertical-Divider-Side-News" style ={{alignSelf: "center"}}></hr>
-                    <a href = "https://youtube.com/@AvoirJoseph" > Subscribe to our email newsletter for updates inside and outside our university!</a>
+                <div className="Vertical-Side-News">
+                    <hr className="Vertical-Divider-Side-News" style={{ alignSelf: "center" }}></hr>
+                    <a href="https://youtube.com/@AvoirJoseph" > Subscribe to our email newsletter for updates inside and outside our university!</a>
                 </div>
 
             </div>
 
 
-            <div className = "Vertical-Fast-News">
-                <div className = "Vertical-Fast-News-Links">
-                    <Link to = "/Joseph-Brian-Balut"style = {{fontSize: "1.5rem"}} id = "Vertical-Fast-News-Links"> FAST NEWS </Link>
+            <div className="Vertical-Fast-News">
+                <div className="Vertical-Fast-News-Links">
+                    <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }} id="Vertical-Fast-News-Links"> FAST NEWS </Link>
                     {/** (JI, ICYMI, ANN) */}
-                    <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News">       
-                    <hr className = "Vertical-Divider-Side-News"></hr>
-                        <div className = "Vertical-Headlines">
+                    <Link to="/Joseph-Brian-Balut" className="Vertical-Side-News">
+                        <hr className="Vertical-Divider-Side-News"></hr>
+                        <div className="Vertical-Headlines">
                             <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
                         </div>
                     </Link>
 
-                    <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News">       
-                    <hr className = "Vertical-Divider-Side-News"></hr>      
-                        <div className = "Vertical-Headlines">
+                    <Link to="/Joseph-Brian-Balut" className="Vertical-Side-News">
+                        <hr className="Vertical-Divider-Side-News"></hr>
+                        <div className="Vertical-Headlines">
                             <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
                         </div>
                     </Link>
                 </div>
 
-                <div className = "Vertical-Fast-News-Links">
-                    <Link to = "/Joseph-Brian-Balut" style = {{fontSize: "1.5rem"}}> LOCAL, NATIONAL, SPORTS </Link>
-                    <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News"> 
-                        <img  loading = "lazy" 
-                            src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
-                        />      
-                        <hr className = "Vertical-Divider-Side-News"></hr>          
-                        <div className = "Vertical-Headlines">
+                <div className="Vertical-Fast-News-Links">
+                    <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }}> LOCAL, NATIONAL, SPORTS </Link>
+                    <Link to="/Joseph-Brian-Balut" className="Vertical-Side-News">
+                        <img loading="lazy"
+                            src={"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
+                        />
+                        <hr className="Vertical-Divider-Side-News"></hr>
+                        <div className="Vertical-Headlines">
                             <p> NATIONAL NEWS: Ferdinand Marcos Jr. Declares National Martial Law amid isolated unrest to be led by Torre </p>
                         </div>
                     </Link>
-    
-                    <Link to = "/Joseph-Brian-Balut" className = "Vertical-Side-News">       
-                            <img  loading = "lazy" 
-                            src = {"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
-                            />
-                        <hr className = "Vertical-Divider-Side-News"></hr>    
-                            <div className = "Vertical-Headlines">
-                                <p> JUST IN: Ferdinand Marcos Jr. Signs Means to Pre-Emptive Declaration of State of Disaster</p>
-                            </div>
+
+                    <Link to="/Joseph-Brian-Balut" className="Vertical-Side-News">
+                        <img loading="lazy"
+                            src={"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/JUST-IN.jpg"}
+                        />
+                        <hr className="Vertical-Divider-Side-News"></hr>
+                        <div className="Vertical-Headlines">
+                            <p> JUST IN: Ferdinand Marcos Jr. Signs Means to Pre-Emptive Declaration of State of Disaster</p>
+                        </div>
                     </Link>
 
 

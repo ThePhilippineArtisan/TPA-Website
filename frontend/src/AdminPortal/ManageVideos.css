@@ -1,32 +1,137 @@
-.Manage-Videos-Container{
+.Manage-Videos-Container {
     font-family: var(--font-sans);
     padding: 1rem;
 }
 
-.Manage-Videos-Two-Grid{
+.Manage-Videos-Two-Grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    flex-wrap: wrap;
-    padding: 2rem;
-
+    gap: 2rem;
+    padding: 1rem 0;
     width: 100%;
 }
 
-.Add-Manage-Video-Container, .Existing-Manage-Video-Container{
-    padding: 2rem;
-    border: 1px solid var(--border-color);
-    width: 80%;
-    
-    background-color: white;
-    backdrop-filter: blur(3.1px);
-    -webkit-backdrop-filter: blur(3.1px);
-    max-width: var(--container-max-width);
-
-    border-radius: var(--radius-md);
-    box-shadow: 0 0 10px hsla(207, 15%, 12%, 0.089); 
+@media (max-width: 1024px) {
+    .Manage-Videos-Two-Grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.Existing-Manage-Video-Container{
-    max-height: 1000px;
-    overflow-y: scroll;
+.Add-Manage-Video-Container, .Existing-Manage-Video-Container {
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.Existing-Manage-Video-Container {
+    max-height: 900px;
+    overflow-y: auto;
+}
+
+.Add-Video-Fields {
+    margin-bottom: 1rem;
+}
+
+.Add-Video-Fields p {
+    color: inherit;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+}
+
+.Add-Video-Fields input[type="text"],
+.Add-Video-Fields input[type="url"],
+.Add-Video-Fields input[type="datetime-local"] {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.Item-Badges {
+    display: flex;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+}
+
+.Item-Main-Info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Item-Thumb {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    background-color: #f0f0f0;
+}
+
+.Item-Text-Details {
+    flex: 1;
+    padding-left: 0.75rem;
+}
+
+.Facade-Item-Card {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    padding: 0.85rem;
+    background-color: #ffffff;
+}
+
+.Facade-Item-Card:hover {
+    background-color: #f8fafc;
+}
+
+.Item-Action-Row {
+    padding-top: 0.5rem;
+}
+
+.Action-Buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.Button-Outline, .Admin-Primary-Button {    
+    padding: 0.4rem 0.8rem;
+    font-size: 0.825rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    background-color: white;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.Admin-Primary-Button {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+}
+
+.Admin-Primary-Button:hover {
+    background-color: #024f85;
+}
+
+.Button-Danger {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    color: #991b1b;
+}
+
+.Button-Danger:hover {
+    background-color: #ef4444;
+    color: white;
 }

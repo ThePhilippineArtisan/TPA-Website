@@ -45,8 +45,9 @@ justify-content: flex-end;
 }
 
 .Front-Page-Fields, .Front-Page-Text-Fields p{
-    color: var(--primary-blue);
+    color: inherit;
     font-weight: 600;
+    font-size: 0.85rem;
     width: auto;
 }
 

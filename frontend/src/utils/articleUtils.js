@@ -32,20 +32,37 @@ export const getMediaSegmentLabel = (type) => {
     return mapping[type.toUpperCase()] || type
 }
 
+export const slugify = (text) => {
+    if (!text) return "";
+    return text
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // Remove accents/diacritics
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")   // Remove non-alphanumeric except spaces & hyphens
+        .replace(/[\s_]+/g, "-")         // Replace spaces & underscores with hyphens
+        .replace(/-+/g, "-")            // Collapse multiple hyphens
+        .replace(/^-+|-+$/g, "");       // Trim leading/trailing hyphens
+};
+
 export const getArticleUrl = (article) => {
     if (!article) return "/";
     const id = article.article_id || article.id;
-    const slug = article.slug_headline || article.slug;
+    let slug = article.slug_headline || article.slug;
+
+    if (!slug && (article.article_headline || article.title || article.headline)) {
+        slug = slugify(article.article_headline || article.title || article.headline);
+    }
+
     const isSegment = isMediaSegment(article.article_type);
-    
     const prefix = isSegment ? "/media-segment" : "/article";
-    
+
     if (id && slug) {
         return `${prefix}/${id}/${slug}`;
     } else if (id) {
         return `${prefix}/${id}`;
-    } else if (slug) {
-        return `${prefix}/${slug}`;
     }
     return prefix;
 };
+

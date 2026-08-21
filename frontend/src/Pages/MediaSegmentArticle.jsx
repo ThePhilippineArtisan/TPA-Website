@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { supabase } from "../supabaseClient.js"
 import { formatDateReadable } from "../utils/dateUtils.js"
-import { isMediaSegment, getMediaSegmentLabel } from "../utils/articleUtils.js"
+import { isMediaSegment, getMediaSegmentLabel, slugify } from "../utils/articleUtils.js"
 import AnimatedLoader from "./AnimatedLoader.jsx"
 
 import "../CSS/MediaSegmentArticle.css"
@@ -61,15 +61,22 @@ const MediaSegmentArticle = () => {
                     return;
                 }
 
+                const canonicalSlug = articleData.slug_headline || slugify(articleData.article_headline);
+
                 // If not a media segment, redirect to the normal article page
                 if (!isMediaSegment(articleData.article_type)) {
-                    navigate(`/article/${articleData.article_id}/${articleData.slug_headline}`, { replace: true });
+                    const targetUrl = canonicalSlug
+                        ? `/article/${articleData.article_id}/${canonicalSlug}`
+                        : `/article/${articleData.article_id}`;
+                    navigate(targetUrl, { replace: true });
                     return;
                 }
 
-                if (slug !== articleData.slug_headline) {
-                    navigate(`/media-segment/${articleData.article_id}/${articleData.slug_headline}`, { replace: true });
+                if (canonicalSlug && slug !== canonicalSlug) {
+                    navigate(`/media-segment/${articleData.article_id}/${canonicalSlug}`, { replace: true });
                 }
+
+
                 
                 // Fetch staff contributions
                 let staffContributions = [];

@@ -1,98 +1,72 @@
 
-*{
-    margin: 0;
-    padding: 0;
-}
-
-.Third-BG-First-Facade{ /* Originally named Dark-BG-First-Facade */
-
-    /* AUTO GROWS */
+.Third-BG-First-Facade {
     background-color: #183142;
-
-    /*    border-radius: 10px; */
-
-    padding-top: 14rem;
-    padding-bottom: 14rem;
-
-    
-
+    padding: clamp(3rem, 8vw, 8rem) clamp(1rem, 3vw, 2.5rem);
     background-image: url('/batthern.png');
     background-repeat: repeat;
     background-size: auto;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.DBFF-Third-Headline{
-    padding-top: 3.5rem;
-    padding-left: 30rem;
-    padding-bottom: 3.5rem;
-    
-    font-weight: 500;
-    font-size: 1.4rem;
-
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    font-weight: bolder;
+.DBFF-Third-Headline {
+    padding: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 4vw, 3rem);
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    font-family: var(--font-sans);
+    font-weight: 800;
     color: white;
-
     text-shadow: 3px 3px 6px black;
+    text-align: center;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
 }
 
-#Portfolio-Showcase{
+#Portfolio-Showcase {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap-reverse;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
 }
 
-.Image-Showcase:hover{
-    transition: 0.2s;
-    transform: scale(1.03);
+.Image-Showcase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
 }
 
-.Image-Showcase img{
-    width: 43rem;
-    filter: drop-shadow(5px 5px 10px rgb(29, 29, 29));
-    padding: 2rem;
+.Image-Showcase:hover {
+    transition: transform 0.2s ease;
+    transform: scale(1.02);
 }
 
-.Image-Showcase h2{
-    padding: 1.5rem;
-    padding-bottom: 3rem;
+.Image-Showcase img {
+    width: 100%;
+    max-width: clamp(280px, 80vw, 650px);
+    height: auto;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
 
+.Image-Showcase h2 {
+    padding: 1rem 0;
     display: flex;
     justify-content: center;
-    
-    font-family:  'Inter', sans-serif; /* font retrieved from google in index.html */
-    font-weight: bolder;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
     color: white;
-
     text-shadow: 3px 3px 6px black;
-
+    text-align: center;
 }
 
-
-@media (max-width: 768px){
-    .DBFF-Third-Headline{
-        padding-left: 0.8rem;
-        font-size: 01.1rem;
-
-        display: flex;
-        justify-content: center;
-
-        padding-top: 50px;
+@media (max-width: 768px) {
+    .DBFF-Third-Headline {
+        padding: 1rem;
+        font-size: clamp(1rem, 1.3vw, 1.25rem);
     }
-
-    
-    #Portfolio-Showcase .Image-Showcase{
-        display: none;
-
-        padding-bottom: 30px;
-    }
-
-    #Portfolio-Showcase .Image-Showcase:last-child{
-        display: block;
-    }
-
-    #Portfolio-Showcase img{
-        width: 20rem;
-    }
-}
+}

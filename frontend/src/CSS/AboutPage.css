@@ -5,8 +5,18 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    padding: 2rem;
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 3rem);
     overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .First-Part {
+        flex-direction: column;
+        gap: 2rem;
+    }
 }
 
 .First-Part::before {
@@ -22,7 +32,7 @@
     z-index: 0;
 }
 
-.First-Part>* {
+.First-Part > * {
     position: relative;
     z-index: 1;
 }
@@ -38,7 +48,7 @@
 }
 
 .Slide-Navigation img {
-    height: 5rem;
+    height: clamp(3rem, 5vw, 5rem);
     z-index: 3;
 }
 
@@ -47,18 +57,19 @@
 }
 
 .Slide-Image {
-    min-width: 50%;
-    max-width: 50%;
+    width: 100%;
+    max-width: 500px;
     align-self: center;
 }
 
 .Slide-Image img {
-    width: 70%;
+    width: 100%;
     object-fit: cover;
+    border-radius: 8px;
 }
 
 #TPAWTurno {
-    padding: 5rem;
+    padding: clamp(1rem, 4vw, 3rem);
 }
 
 .First-Part-Text {
@@ -69,15 +80,16 @@
 }
 
 .First-Part-Text h1 {
-    padding: 2rem;
+    padding: clamp(1rem, 2vw, 2rem);
     text-align: center;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
 }
 
 .First-Part-Text li {
     display: flex;
     align-items: center;
-    padding: 1rem;
-    font-size: 1.25rem;
+    padding: 0.75rem;
+    font-size: clamp(1rem, 1.3vw, 1.25rem);
     font-weight: 500;
 }
 
@@ -88,7 +100,7 @@
     justify-content: center;
     text-align: center;
     background-color: rgba(0, 20, 48, 0.932);
-    padding: 3rem 1rem;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 3vw, 2rem);
     color: white;
     overflow: hidden;
 }
@@ -106,7 +118,7 @@
     z-index: 0;
 }
 
-.Releases-Part>* {
+.Releases-Part > * {
     position: relative;
     z-index: 1;
 }
@@ -115,8 +127,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.5rem;
-    padding: 2rem 1rem;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    padding: clamp(1rem, 3vw, 2rem) 0;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -126,14 +138,23 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    padding: 1rem 1.25rem;
-    gap: 1.25rem;
-    width: 540px;
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    width: 100%;
+    max-width: 540px;
+    box-sizing: border-box;
     background-color: rgba(0, 30, 70);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+@media (max-width: 480px) {
+    .Covers {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 .Covers:hover {
@@ -143,7 +164,7 @@
 }
 
 .Covers img {
-    height: 15rem;
+    height: clamp(10rem, 20vw, 15rem);
     object-fit: cover;
     flex-shrink: 0;
     border: 1px solid rgba(0, 0, 0, 0.5);
@@ -159,7 +180,7 @@
 }
 
 .Cover-Title {
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
     font-weight: 700;
     color: #ffffff;
     margin: 0;
@@ -168,7 +189,7 @@
 }
 
 .Cover-Year {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 1.3vw, 1.25rem);
     font-weight: 500;
     color: #38bdf8;
     margin: 0;
@@ -179,7 +200,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3rem 0rem;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 3vw, 2rem);
     color: white;
     background-color: rgba(0, 38, 88, 0.932);
     overflow: hidden;
@@ -198,7 +219,7 @@
     z-index: 0;
 }
 
-.Meet-Our-Editors>* {
+.Meet-Our-Editors > * {
     position: relative;
     z-index: 1;
 }
@@ -207,7 +228,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 3rem;
+    gap: clamp(1.5rem, 3vw, 3rem);
 }
 
 .Editorial-Board-Individual-Card:hover {
@@ -218,27 +239,23 @@
 }
 
 .Editorial-Board-Individual {
-    border: 7px rgb(4, 113, 255) solid;
+    border: 5px rgb(4, 113, 255) solid;
     border-radius: 100%;
 }
 
 .Editorial-Board-Individual img {
-    border: 5px rgba(4, 113, 255, 0) solid;
+    border: 3px rgba(4, 113, 255, 0) solid;
     border-radius: 100%;
-    width: 15rem;
-    height: 15rem;
+    width: clamp(10rem, 20vw, 15rem);
+    height: clamp(10rem, 20vw, 15rem);
     object-fit: cover;
 }
 
 .Editorial-Board-Individual:hover {
     cursor: pointer;
     transition: 0.5s ease-in-out;
-    transform: scale(1.1);
+    transform: scale(1.08);
     z-index: 5;
-}
-
-.Editorial-Board-Pad-When-Hover:hover {
-    margin-bottom: 0.75rem;
 }
 
 /* Light Notebook Staff Directory Section */
@@ -246,11 +263,12 @@
     position: relative;
     background-color: #f1f5f9;
     color: #0f172a;
-    padding: 4.5rem 1.5rem;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 3vw, 2rem);
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .All-Staffer-About-Page-Section::before {
@@ -266,17 +284,17 @@
     z-index: 0;
 }
 
-.All-Staffer-About-Page-Section>* {
+.All-Staffer-About-Page-Section > * {
     position: relative;
     z-index: 1;
 }
 
 .Staffer-Section-Main-Title {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
     font-weight: 800;
     text-align: center;
     color: #0f172a;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
@@ -284,14 +302,14 @@
 .Regular-Staffers {
     width: 100%;
     max-width: 1200px;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 .Staff-Category-Header {
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
     font-weight: 800;
     color: #0265a9;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #0265a9;
     letter-spacing: 0.03em;
@@ -300,19 +318,19 @@
 
 .Regular-Staffers-Whole {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
     padding: 0;
 }
 
 .Staffer-Item {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     background-color: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 1rem 1.25rem;
+    padding: 0.85rem 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -342,14 +360,14 @@
 }
 
 .Staffer-Names-Individual h3 {
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
     font-weight: 700;
     color: #0f172a;
-    margin: 0 0 0.25rem 0;
+    margin: 0 0 0.2rem 0;
 }
 
 .Staffer-Names-Individual p {
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
     font-weight: 500;
     color: #475569;
     margin: 0;
@@ -362,8 +380,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4rem 1.5rem;
+    padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem);
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .Two-Part::before {
@@ -379,13 +398,13 @@
     z-index: 0;
 }
 
-.Two-Part>* {
+.Two-Part > * {
     position: relative;
     z-index: 1;
 }
 
 .Section-Title-Header {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
     font-weight: 800;
     text-align: center;
     color: #ffffff;
@@ -396,25 +415,26 @@
 
 .VM-Section-Grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
     max-width: 1200px;
     width: 100%;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
 }
 
 .VM-Block-Card {
     background: rgba(0, 40, 95, 0.65);
     border: 1px solid rgba(4, 113, 255);
     border-radius: 8px;
-    padding: 2rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
 }
 
 .VM-Block-Card h2 {
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
     font-weight: 800;
     color: #38bdf8;
     margin: 0 0 1rem 0;
@@ -424,7 +444,7 @@
 }
 
 .VM-Block-Card p {
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
     line-height: 1.7;
     color: #e2e8f0;
     margin: 0;
@@ -438,9 +458,9 @@
 
 .Principles-List-Grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     justify-content: center;
-    gap: 1.5rem;
+    gap: clamp(1rem, 2vw, 1.5rem);
     width: 100%;
 }
 
@@ -448,11 +468,12 @@
     background: rgba(0, 30, 75, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: clamp(1rem, 2vw, 1.5rem);
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     transition: transform 0.2s ease, border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 .Principle-Item-Card:hover {
@@ -461,7 +482,7 @@
 }
 
 .Principle-Num {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     font-weight: 900;
     color: #38bdf8;
     line-height: 1;
@@ -473,8 +494,8 @@
 }
 
 .Principle-Item-Card p {
-    font-size: 0.95rem;
+    font-size: clamp(0.85rem, 1.1vw, 0.95rem);
     line-height: 1.65;
     color: #e2e8f0;
     margin: 0;
-}
+}

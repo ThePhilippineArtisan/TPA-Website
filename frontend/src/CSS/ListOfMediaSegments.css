@@ -1,129 +1,128 @@
-
-.List-of-Media-Segments{
+.List-of-Media-Segments {
     text-decoration: none;
-    padding: 4rem 0rem 3rem;
+    padding: clamp(2rem, 5vw, 4rem) 0 clamp(1.5rem, 4vw, 3rem);
     background-color: var(--bg-dark);
 }
 
-#Latest-Weekly-Segments{
+#Latest-Weekly-Segments {
     font-family: var(--font-serif);
     display: flex;
     justify-content: center;
-    font-size: 5rem;
-    padding: 1rem;
+    text-align: center;
+    font-size: clamp(2rem, 4.5vw + 0.5rem, 4.5rem);
+    padding: clamp(0.5rem, 2vw, 1rem);
     color: white;
+    letter-spacing: -0.01em;
 }
-.Media-Segment-Card h1{
+
+.Media-Segment-Card h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
-.List-Of-MS-Card{
+.List-Of-MS-Card {
     background-color: var(--secondary-navy);
     text-align: center;
-
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
-    padding: 1rem;
-
+    padding: clamp(0.75rem, 2vw, 1.25rem);
     text-decoration: none;
-
     color: white;
+    scroll-snap-align: start;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.25s ease;
 }
 
-.List-Of-MS-Card img{
-    padding: 1rem;
+.List-Of-MS-Card img {
+    padding: 0.5rem 0;
+    border-radius: 8px;
+    width: 100%;
 }
 
-.List-Of-MS-Card p{
+.List-Of-MS-Card p {
     font-weight: 600;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
 }
 
-.List-Of-MS-Card:hover{
+.List-Of-MS-Card:hover {
     background-color: var(--primary-blue-hover);
-    box-shadow: 0 12px 32px rgba(2, 101, 169, 0.2);
-
+    box-shadow: 0 12px 32px rgba(2, 101, 169, 0.3);
     color: white;
-    transition: 0.25s 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: scale(1.05);
+    transform: translateY(-4px) scale(1.02);
     z-index: 3;
 }
 
-.Media-Segment-Card{
+/* Horizontal Scroll Container for Top Row */
+.Media-Segment-Card {
     display: flex;
     flex-wrap: nowrap;
-    gap: 2.75rem;
-    padding: 2rem;
-    scrollbar-gutter: stable;
-    
-    display: flex;
-    flex-wrap: nowrap;
-
-    overflow-x: scroll;
-    
-    padding: 2rem;
-    
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-blue) rgba(255, 255, 255, 0.05);
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
-.Media-Segment-Card::-webkit-scrollbar{
-    height: 10px;
+.Media-Segment-Card::-webkit-scrollbar {
+    height: 8px;
 }
 
 .Media-Segment-Card::-webkit-scrollbar-track {
-    background: #ffffff;
-
-    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
 }
 
-.Media-Segment-Card img{
+.Media-Segment-Card::-webkit-scrollbar-thumb {
+    background: var(--primary-blue, #0265a9);
+    border-radius: 4px;
+}
+
+.Media-Segment-Card img {
     object-fit: cover;
     object-position: center;
     max-height: 20rem;
-
     border-radius: 10px;
 }
 
-.Media-Card{
+.Media-Card {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     justify-content: space-between;
-
-    padding: 1rem;
+    padding: clamp(0.75rem, 2vw, 1.25rem);
     border-radius: 10px;
-
     text-decoration: none;
 }
 
-
-.Media-Card p{
-    font-size: 1.25rem;
+.Media-Card p {
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
     font-weight: 900;
     color: black;
-
     display: -webkit-box;
-    line-clamp: 3;           
-    -webkit-line-clamp: 3;         
-    box-orient: vertical;    
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
-
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-.Segment-Container{
-    font-size: 1rem;
+.Segment-Container {
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
     background-color: var(--primary-blue-hover);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
 }
 
 .Load-More-Weeks-Btn {
@@ -131,8 +130,8 @@
     color: #ffffff;
     border: 1px solid rgba(56, 189, 248, 0.4);
     border-radius: 24px;
-    padding: 0.75rem 2rem;
-    font-size: 1rem;
+    padding: clamp(0.6rem, 1.5vw, 0.85rem) clamp(1.5rem, 3vw, 2.5rem);
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
     font-weight: 700;
     cursor: pointer;
     letter-spacing: 0.03em;
@@ -154,16 +153,14 @@
 .Past-Weeks-Section {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
-    margin-top: 3rem;
-    padding: 0 1.5rem;
+    gap: clamp(2rem, 4vw, 3rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding: 0 clamp(0.75rem, 3vw, 1.5rem);
 }
 
 .Past-Week-Container {
-    background-color: rgba(0, 20, 50, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -173,7 +170,7 @@
 
 .Past-Week-Header {
     font-family: var(--font-serif);
-    font-size: 2rem;
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
     color: #ffffff;
     margin-bottom: 0.5rem;
     letter-spacing: 0.02em;
@@ -182,38 +179,55 @@
 .Past-Week-Grid-Block {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
 .Past-Week-Row-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: clamp(1rem, 2vw, 1.5rem);
 }
 
 .Past-Week-Row-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: clamp(1rem, 2vw, 1.5rem);
     max-width: 82%;
     margin: 0 auto;
     width: 100%;
 }
 
+/* Media Queries for Structural Layout Grid Breakpoints */
+
+/* Desktop & Laptop down to Tablet (1024px) */
 @media (max-width: 1024px) {
     .Past-Week-Row-4 {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .Past-Week-Row-3 {
         grid-template-columns: repeat(2, 1fr);
         max-width: 100%;
     }
 }
 
+/* Small Tablets & Mobile Landscape (640px) */
 @media (max-width: 640px) {
+
     .Past-Week-Row-4,
     .Past-Week-Row-3 {
         grid-template-columns: 1fr;
         max-width: 100%;
+    }
+}
+
+/* Extra Small Phones (400px) */
+@media (max-width: 400px) {
+    .Past-Week-Container {
+        padding: 0.75rem;
+    }
+
+    .List-Of-MS-Card {
+        min-width: 100%;
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { supabase } from "../supabaseClient";
 import { compressImage } from "../utils/imageUtils.js";
 import "./ManageReleases.css";
@@ -35,6 +35,23 @@ const ManageReleases = () => {
     const [formState, setFormState] = useState(initialFormState);
     const [uploadingCover, setUploadingCover] = useState(false);
     const [uploadingPages, setUploadingPages] = useState(false);
+
+    const pageUrls = useMemo(() => {
+        return formState.photosText
+            ? formState.photosText.split("\n").map(u => u.trim()).filter(Boolean)
+            : [];
+    }, [formState.photosText]);
+
+    const handleRemovePage = (indexToRemove) => {
+        setFormState(prev => {
+            const pages = prev.photosText ? prev.photosText.split("\n").map(u => u.trim()).filter(Boolean) : [];
+            pages.splice(indexToRemove, 1);
+            return {
+                ...prev,
+                photosText: pages.join("\n")
+            };
+        });
+    };
 
     const fetchReleases = async () => {
         setLoading(true);
@@ -132,7 +149,7 @@ const ManageReleases = () => {
         }
     };
 
-    // Compress multiple flipbook page files
+    // Upload multiple flipbook page files
     const handlePagePhotosUpload = async (e) => {
         const files = Array.from(e.target.files || []);
         if (files.length === 0) return;
@@ -142,7 +159,6 @@ const ManageReleases = () => {
             const uploadedUrls = [];
 
             for (const file of files) {
-                // Compress each flipbook page image
                 const compressedBlob = await compressImage(file, 1200, 1200, 0.8, 'image/webp');
                 const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
 
@@ -176,7 +192,6 @@ const ManageReleases = () => {
                 }
 
                 if (!finalUrl) {
-                    // Fallback to Data URL
                     finalUrl = await new Promise((resolve) => {
                         const r = new FileReader();
                         r.onloadend = () => resolve(r.result);
@@ -196,10 +211,10 @@ const ManageReleases = () => {
                 };
             });
 
-            alert(`Compressed and added ${uploadedUrls.length} flipbook page(s) successfully!`);
+            alert(`Added ${uploadedUrls.length} page photo(s)!`);
         } catch (err) {
-            console.error("Page photos compression error:", err);
-            alert("Error compressing page images: " + (err.message || err));
+            console.error("Page photos upload error:", err);
+            alert("Error uploading page images: " + (err.message || err));
         } finally {
             setUploadingPages(false);
             e.target.value = "";
@@ -476,7 +491,7 @@ const ManageReleases = () => {
                                     cursor: 'pointer',
                                     whiteSpace: 'nowrap'
                                 }}>
-                                    {uploadingCover ? "Compressing..." : "📁 Upload Cover"}
+                                    {uploadingCover ? "Compressing..." : "Upload Cover"}
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -501,21 +516,12 @@ const ManageReleases = () => {
                         </div>
 
                         <div className="Form-Group">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                                 <label htmlFor="photosText" style={{ margin: 0 }}>
-                                    Flipbook Page Image Links (One URL per line)
+                                    Flipbook Page Images ({pageUrls.length})
                                 </label>
-                                <label style={{
-                                    padding: '0.4rem 0.75rem',
-                                    background: '#0265A9',
-                                    color: '#fff',
-                                    borderRadius: '6px',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    whiteSpace: 'nowrap'
-                                }}>
-                                    {uploadingPages ? "Compressing Pages..." : "📁 Upload Pages"}
+                                <label className="Admin-Primary-Button" style={{ cursor: 'pointer', margin: 0, fontSize: '0.8rem' }}>
+                                    {uploadingPages ? "Uploading..." : "+ Add Images"}
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -526,13 +532,35 @@ const ManageReleases = () => {
                                     />
                                 </label>
                             </div>
+
+                            {pageUrls.length > 0 && (
+                                <div className="Thumbnail-Grid" style={{ marginBottom: '0.75rem' }}>
+                                    {pageUrls.map((url, idx) => (
+                                        <div key={idx} className="Page-Thumbnail-Card">
+                                            <div className="Thumbnail-Wrapper">
+                                                <img src={url} alt={`Page ${idx + 1}`} />
+                                                <span className="Page-Number-Badge">P.{idx + 1}</span>
+                                                <button
+                                                    type="button"
+                                                    className="Remove-Page-Btn"
+                                                    title="Remove page"
+                                                    onClick={() => handleRemovePage(idx)}
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
                             <textarea
                                 id="photosText"
                                 name="photosText"
-                                rows="4"
+                                rows="3"
                                 value={formState.photosText}
                                 onChange={handleChange}
-                                placeholder="https://example.com/page-1.png&#10;https://example.com/page-2.png"
+                                placeholder="Page URLs (one per line, filled automatically when you add images)"
                             />
                         </div>
 
@@ -616,6 +644,8 @@ const ManageReleases = () => {
                                             No Cover
                                         </div>
                                     )}
+
+                                    <hr style={{ height: "60%", marginLeft: "1rem" }} className="Vertical-Divider"></hr>
 
                                     <div className="Release-Item-Content">
                                         <div className="Release-Item-Header">

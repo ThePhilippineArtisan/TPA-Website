@@ -1,39 +1,60 @@
-.Footer{
+.Footer {
     color: var(--primary-blue);
-    border: 15px solid var(--primary-blue);
+    border: clamp(6px, 1.5vw, 15px) solid var(--primary-blue);
     background-color: white;
     font-weight: 600;
-
     display: flex;
     justify-content: space-around;
     flex-direction: column;
     flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.Top-Footer{
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 2rem;
-}
-
-.Bottom-Footer{
+.Top-Footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: clamp(1rem, 2vw, 2rem);
+    gap: 1.5rem;
 }
 
-.Bottom-Footer-Text{
+@media (max-width: 768px) {
+    .Top-Footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.Bottom-Footer {
     display: flex;
-    gap: 20px;
-    
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(0.5rem, 1.5vw, 1rem);
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: clamp(0.75rem, 1vw, 0.9rem);
 }
 
-.skeleton{
+@media (max-width: 640px) {
+    .Bottom-Footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.Bottom-Footer-Text {
+    display: flex;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.skeleton {
     animation: skeleton-loading 1s linear infinite alternate;
 }
 
-@keyframes skeleton-loading{
+@keyframes skeleton-loading {
     0% {
         background-color: hsl(200, 20%, 70%);
     }
@@ -43,47 +64,53 @@
     }
 }
 
-.Left-Footer{
+.Left-Footer {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-#TPA-Full-Logo{
-    height: 20dvh;
+#TPA-Full-Logo {
+    height: clamp(80px, 15vh, 160px);
+    width: auto;
+    object-fit: contain;
 }
 
-#TPA-Full-Logo:hover{
-    transition: 0.5s;
-    transform: scale(1.2);
+#TPA-Full-Logo:hover {
+    transition: transform 0.3s ease;
+    transform: scale(1.08);
 }
 
-.Right-Footer{
+.Right-Footer {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 10px;
-    width: 300px;
-
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 320px;
     flex-direction: column;
 }
 
-.Right-Footer p{
-    padding-bottom: 10px;
+.Right-Footer p {
+    padding-bottom: 0.5rem;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
 }
 
-.Right-Footer-Links{
-    padding-right: 10px;
+.Right-Footer-Links {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-.Right-Footer-Links img{
+.Right-Footer-Links img {
     padding: 5px;
-    
-    height: 45px;
+    height: clamp(35px, 4vw, 45px);
+    width: auto;
     cursor: pointer;
 }
 
-.Right-Footer-Links img:hover{
-    transition: 0.2s;
-    transform: scale(1.2);
-}
+.Right-Footer-Links img:hover {
+    transition: transform 0.2s ease;
+    transform: scale(1.15);
+}

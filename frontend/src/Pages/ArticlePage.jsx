@@ -2,14 +2,13 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { supabase } from "../supabaseClient.js"
 import { formatDateReadable } from "../utils/dateUtils.js"
-import { isMediaSegment } from "../utils/articleUtils.js"
+import { isMediaSegment, slugify } from "../utils/articleUtils.js"
 
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import "../CSS/ArticlePage.css"
 import AnimatedLoader from "./AnimatedLoader.jsx";
 
 const ArticlePage = () => {
-    const hasBody = Boolean(articleDetails?.article_body && articleDetails?.article_body.trim() !== "")
     const { articleId, slug } = useParams(); // get the articleId and slug from the URL parameters
     const navigate = useNavigate()
 
@@ -18,6 +17,8 @@ const ArticlePage = () => {
     const [currentPhoto, setCurrentPhoto] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
+
+    const hasBody = Boolean(articleDetails?.article_body && articleDetails?.article_body.trim() !== "")
 
     useEffect(() => {
         const fetchArticleDetails = async () => {
@@ -59,14 +60,21 @@ const ArticlePage = () => {
                     return
                 }
 
+                const canonicalSlug = articleData.slug_headline || slugify(articleData.article_headline);
+
                 if (isMediaSegment(articleData.article_type)) {
-                    navigate(`/media-segment/${articleData.article_id}/${articleData.slug_headline}`, { replace: true })
-                    return
+                    const targetUrl = canonicalSlug
+                        ? `/media-segment/${articleData.article_id}/${canonicalSlug}`
+                        : `/media-segment/${articleData.article_id}`;
+                    navigate(targetUrl, { replace: true });
+                    return;
                 }
 
-                if (slug !== articleData.slug_headline) {
-                    navigate(`/article/${articleData.article_id}/${articleData.slug_headline}`, { replace: true })
+                if (canonicalSlug && slug !== canonicalSlug) {
+                    navigate(`/article/${articleData.article_id}/${canonicalSlug}`, { replace: true });
                 }
+
+
                 
                 // Fetch the related staff contributions separately to bypass lack of FK relations in PostgreSQL
                 let staffContributions = [];

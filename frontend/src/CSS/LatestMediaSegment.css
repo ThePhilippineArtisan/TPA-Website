@@ -2,15 +2,12 @@
     content: "";
     position: absolute;
     background-image: var(--bgImage);
-
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-
-    width: 99.20vw;
+    width: 100%;
     inset: 0;
     filter: brightness(0.3) blur(2px);
-
     z-index: -1;
 }
 
@@ -18,49 +15,59 @@
     position: relative;
     display: flex;
     align-items: center;
-
-    padding: 2rem 0rem;
+    justify-content: center;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
     z-index: 1;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .Latest-Media-Segment-Image {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 }
 
 .Latest-Media-Segment-Image img {
-    max-height: 30%;
-    max-width: 30%;
+    max-height: 400px;
+    width: clamp(250px, 40vw, 400px);
+    max-width: 100%;
     object-fit: cover;
-
     filter: opacity(0.96);
     border-radius: 20px;
-
-    transition: transform 0.1s ease-in-out;
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease;
 }
 
 .Latest-Media-Segment-Image img:hover {
-    transform: scale(1.05);
-    transition: 0.25s;
+    transform: scale(1.03);
     cursor: pointer;
-    box-shadow: 4px 5px rgba(13, 0, 0, 0.724);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .Latest-MS-Title {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: clamp(1rem, 2vw, 2rem);
     align-items: center;
     text-decoration: none;
+    flex-wrap: wrap;
 }
 
 .Latest-MS-Title h2 {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 5rem;
+    font-size: clamp(2rem, 5vw + 0.5rem, 4.5rem);
     text-decoration: underline;
 }
 
 .Latest-MS-Title h3 {
     color: white;
     font-weight: 500;
-
-    text-shadow: 8px 8px 16px rgb(0, 0, 0);
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.8);
 }
 
 .Latest-MS-Title h3:hover {
@@ -69,54 +76,39 @@
 }
 
 .Latest-Media-Segment-Image a {
-    font-size: 3rem;
+    font-size: clamp(1.5rem, 3vw, 3rem);
     color: white;
-}
-
-.Latest-Media-Segment-Image h3 {
-    padding: 2rem 0rem;
-    font-size: 45%;
+    text-decoration: none;
 }
 
 .Segment-Container {
     width: auto;
-    padding: 0.5rem;
-    font-size: 1.25rem;
+    padding: 0.4rem 0.8rem;
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
     font-family: var(--font-sans);
     font-weight: 800;
     border-radius: var(--radius-md);
     background-color: var(--primary-blue);
-
     display: inline-block;
-    align-self: flex-start;
-}
-
-.Media-SegmentSample-Text p {
-    font-size: 30%;
-    color: #414141;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: keep-all;
 }
 
 .Media-Segment-Title-Author {
-    max-width: 50%;
+    max-width: 600px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-shadow: #414141;
+}
+
+@media (max-width: 768px) {
+    .Media-Segment-Title-Author {
+        max-width: 100%;
+        align-items: center;
+    }
 }
 
 .Media-Segment-Title-Author h2 {
-    font-size: 4rem;
+    font-size: clamp(1.75rem, 4vw, 3.5rem);
     line-height: 1.2;
 }
 
@@ -125,38 +117,32 @@
     justify-content: center;
     align-items: center;
     flex-direction: row;
-
     filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
-
     gap: 0.75rem;
-    background: rgba(255, 255, 255, 0.66);
-    backdrop-filter: blur(3rem);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(1.25rem);
     -webkit-backdrop-filter: blur(1.25rem);
-
     border-radius: 1.25rem;
-    padding: 1rem;
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
 .Sample-Text-Container:hover {
-    background-color: rgba(255, 255, 255);
-
+    background-color: rgba(255, 255, 255, 1);
     transition: transform 0.2s ease-in-out;
-    transform: scale(1.01);
-
+    transform: translateY(-2px);
     cursor: pointer;
 }
 
 .Sample-Text p {
     text-decoration: none;
     color: #414141;
-
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-
     white-space: normal;
     overflow-wrap: break-word;
     word-break: keep-all;
@@ -166,6 +152,6 @@
     background-color: #0265A9;
     height: 2rem;
     width: 0.25rem;
-    margin: 0rem 0.25rem;
+    margin: 0 0.25rem;
     border: none;
-}
+}

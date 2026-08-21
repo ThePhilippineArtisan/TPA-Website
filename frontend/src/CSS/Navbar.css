@@ -1,15 +1,18 @@
-.navbar-box{
+.navbar-box {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   position: fixed;
 
   top: 0;
   z-index: 11;
 
-  height: 5rem;
+  height: clamp(3.5rem, 5vw, 5rem);
   width: 95%;
-  margin: 2% 2%;
+  margin: 1.5% 2.5%;
+  padding: 0 clamp(0.75rem, 2vw, 1.5rem);
+  box-sizing: border-box;
   
   background-color: var(--glass-bg);
   backdrop-filter: blur(12px);
@@ -21,193 +24,98 @@
   transition: var(--transition-smooth);
 }
 
-.navbar-box.hidden{
+.navbar-box.hidden {
   transform: translateY(-125%);
 }
 
-.navbar-box a{
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    color: var(--text-dark);
-    text-decoration: none;
-
-    font-weight: 700;
-
-    text-decoration: none;
-    color: rgb(29, 29, 29);
-    gap: 3rem;
-}
-
-.navbar-box a{
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    color: var(--text-dark);
-    text-decoration: none;
-    font-weight: 700;
-    position: relative;
-    padding: 0.5rem 0;
-    transition: var(--transition-smooth);
+.navbar-box a {
+  font-family: var(--font-sans);
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 700;
+  position: relative;
+  padding: 0.4rem 0;
+  transition: var(--transition-smooth);
 }
 
 .navbar-box a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary-blue);
-    transition: var(--transition-smooth);
-    transform: translateX(-50%);
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-blue);
+  transition: var(--transition-smooth);
+  transform: translateX(-50%);
 }
 
 .navbar-box a:hover {
-    color: var(--primary-blue);
+  color: var(--primary-blue);
 }
 
 .navbar-box a:hover::after {
-    width: 80%;
+  width: 80%;
 }
 
-.navbar-links{
+.navbar-links {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-content: center;
   align-items: center;
+  gap: clamp(1rem, 3vw, 4rem);
 }
 
 #tpa-logo {
+  height: clamp(2.5rem, 4vw, 4rem);
   max-width: 12rem;
-  margin-left: 1.5rem;
+  object-fit: contain;
 }
 
-.tpa-circle-logo{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+.tpa-circle-logo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.tpa-circle-logo img{
-    display: block;
-    
-    height: 4rem;
-    margin-right: 1.5rem;
+.tpa-circle-logo img {
+  display: block;
+  height: clamp(2.5rem, 4vw, 4rem);
 }
 
-.tpa-circle-logo:hover{
-    transition: 0.2s ease-in-out;
-    transform: scale(1.1) ;
+.tpa-circle-logo:hover {
+  transition: 0.2s ease-in-out;
+  transform: scale(1.1);
 }
 
-/* --- Mobile Media Query--- */
-
-@media (min-width: 320px){
-  .tpa-circle-logo{
-    display: none;
-  }
-
-  .navbar-links{
-    display: none;
-  }
-
-  .navbar-box{
-    display: flex;
+/* Mobile Media Queries */
+@media (max-width: 768px) {
+  .navbar-box {
     justify-content: center;
-    align-items: center;
-    align-content: center;
+    padding: 0 0.5rem;
   }
 
-  #tpa-logo{
-    padding: 0rem;
-  }
-
-  .tpa-logo a{
-    margin: 0rem;
-  }
-
-}
-
-@media (min-width: 500px) {
-  #tpa-logo{
+  .tpa-circle-logo {
     display: none;
   }
 
-  .navbar-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+  .navbar-links {
+    gap: clamp(0.75rem, 2.5vw, 1.5rem);
   }
 
-  .navbar-links{
-    display: flex;
-    gap: 2rem;
-  }
-
-  .navbar-links a{
-    font-size: 1rem;
+  .navbar-links a {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
   }
 }
 
-@media (min-width: 768px) {
-  .navbar-box{
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .tpa-circle-logo{
-    display: inline-block;
-    justify-content: flex-end;
-  }
-
-  .tpa-circle-logo img{
-    height: 3rem;
-  }
-
-  #tpa-logo{
-    display: flex;
-    height: 3rem;
-  }
-
-  .navbar-links{
-    display: flex;
-    gap: 1rem;
-  }
-
-  .navbar-links a{
-    font-size: 0.75rem;
+@media (max-width: 480px) {
+  .navbar-links {
+    gap: 0.5rem;
   }
   
-}
-
-@media (min-width: 900px){
-  .navbar-links{
-    gap: 2rem;
+  .navbar-links a {
+    font-size: 0.75rem;
   }
-}
-
-@media (min-width: 1000px) {
-  .navbar-links a{
-    font-size: 1rem;
-  }
-
-  .navbar-links{
-    gap: 3rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  #tpa-logo{
-    height: 4rem;
-  }
-
-  .tpa-circle-logo img{
-    height: 4rem;
-  }
-
-  .navbar-links{
-    gap: 5.5rem;
-  }
-
-}
+}

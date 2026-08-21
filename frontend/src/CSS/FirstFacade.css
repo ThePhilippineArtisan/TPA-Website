@@ -8,36 +8,23 @@
 .Artisan-Logo-First-Facade,
 .First-BG-First-Facade {
   scroll-snap-align: start;
-  height: 100dvh;
+  min-height: 100dvh;
 }
 
 @keyframes moveStars {
   from {
     background-position: 0 0;
   }
-
   to {
     background-position: 1000px 1000px;
   }
 }
 
 @keyframes flicker {
-  0% {
-    opacity: 0.50;
-  }
-
-  25% {
-    opacity: 0.75;
-  }
-
-  75% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0.75;
-  }
-
+  0% { opacity: 0.50; }
+  25% { opacity: 0.75; }
+  75% { opacity: 1; }
+  100% { opacity: 0.75; }
 }
 
 .Artisan-Logo-First-Facade {
@@ -45,19 +32,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100dvh;
+  min-height: 100dvh;
   width: 100%;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  box-sizing: border-box;
 
   background: radial-gradient(circle at center, #0d2238 0%, #03080f 90%);
-
-  /**
-  background-image: url('/stars.png');
-  background-repeat: repeat;
-  animation: moveStars 20s linear infinite;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
-  **/
 }
 
 .Artisan-Logo-First-Facade::after {
@@ -74,7 +54,7 @@
 }
 
 .Artisan-Logo-First-Facade img {
-  max-width: 60rem;
+  max-width: min(90vw, 60rem);
   animation: flicker 3s infinite;
   transition: transform 0.5s ease-in-out;
   z-index: 2;
@@ -86,11 +66,11 @@
 }
 
 .Artisan-Logo-First-Facade img:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
-.Artisan-Logo-First-Facade p{
-  font-size: 2rem;
+.Artisan-Logo-First-Facade p {
+  font-size: clamp(1.25rem, 3vw, 2rem);
   color: white;
   font-weight: 800;
 }
@@ -99,20 +79,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
   min-height: 100dvh;
-  width: 53dvw;
-  padding-left: 2rem;
+  width: 53%;
+  padding-left: clamp(1rem, 3vw, 2rem);
+  box-sizing: border-box;
 }
 
 .DBFF-Headline p {
   display: flex;
-
   font-family: var(--font-display);
-  font-size: 5rem;
+  font-size: clamp(2rem, 5vw + 0.5rem, 5rem);
   font-weight: 900;
   color: #ffffff;
-  padding: 2rem 0rem;
+  padding: 1.5rem 0rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: -1px;
 
@@ -122,15 +101,12 @@
 }
 
 .DBFF-Text p {
-  padding: 0.5rem 2rem;
-  font-size: 1.45rem;
-  font-weight: 500;
-  line-height: 3rem;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
+  padding: 0.5rem 0;
+  font-size: clamp(1rem, 1.5vw + 0.5rem, 1.45rem);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
 
   color: rgb(236, 236, 236);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -139,23 +115,18 @@
   animation: fadeUp 2s ease-out forwards;
 }
 
-.DBFF-Text p {
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-  line-height: 1.7;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .First-BG-First-Facade {
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   z-index: 1;
 
-  height: 100dvh;
+  min-height: 100dvh;
   width: 100%;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  box-sizing: border-box;
 
   background-color: rgb(41,41,41);
   background-image: url('/stars.png');
@@ -164,7 +135,6 @@
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
-
 }
 
 .First-BG-First-Facade::after {
@@ -182,6 +152,8 @@
 .Cards {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
 }
 
 .Card-Images {
@@ -194,15 +166,13 @@
   transform: translateX(20px);
 
   animation: fadeLeft 3s ease-out forwards;
-  width: 35dvw;
-
+  width: 35%;
   padding: 1rem;
 }
 
 .Card-Images img {
-  height: 30rem;
-  max-height: 40rem;
-  max-width: 35dvw;
+  max-height: clamp(20rem, 40vw, 30rem);
+  max-width: 100%;
   transform: rotate(-1deg);
   object-fit: contain;
 
@@ -220,9 +190,8 @@
   position: absolute;
   z-index: 1;
   
-  height: 30rem;
-  max-height: 40rem;
-  max-width: 35dvw;
+  height: clamp(20rem, 40vw, 30rem);
+  width: 100%;
   
   inset: 0;
   margin: auto;
@@ -233,7 +202,6 @@
   background-position: center;
   
   transform: rotate(-1deg) translate(-10px, 15px);
-
   filter: blur(8px) saturate(1.5);
   opacity: 0.8;
   transition: all 0.2s ease;
@@ -241,39 +209,18 @@
 
 .Card-Images img:hover {
   cursor: pointer;
-  transform: rotate(3deg) scale(1.1);
+  transform: rotate(3deg) scale(1.05);
   z-index: 10;
-}
-
-.Card-Images:hover::after {
-  transform: rotate(3deg) scale(1.1) translate(-15px, 20px);
-  filter: blur(25px) saturate(1.8);
-  opacity: 1;
-}
-
-@keyframes fadeLeft {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .Slide-Navigation {
   display: flex;
   align-items: center;
-
   filter: invert(1);
 }
 
 .Slide-Navigation img {
-  height: 5rem;
+  height: clamp(3rem, 5vw, 5rem);
   z-index: 3;
 }
 
@@ -285,6 +232,8 @@
 .SlideWrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
   will-change: transform, opacity;
 }
 
@@ -296,66 +245,55 @@
   animation: tumbleInRight 1s ease forwards;
 }
 
-.SlideWrapper.exit.next {
-  animation: tumbleOutLeft 1s ease forwards;
-}
-
-.SlideWrapper.exit.prev {
-  animation: tumbleOutRight 1s ease forwards;
-}
-
-
 @keyframes tumbleInLeft {
-  from {
-    transform: translateX(50px) scale(0.96);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
+  from { transform: translateX(50px) scale(0.96); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 @keyframes tumbleInRight {
-  from {
-    transform: translateX(-50px) scale(0.96);
-    opacity: 0;
+  from { transform: translateX(-50px) scale(0.96); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes fadeLeft {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MEDIA QUERIES FOR LAYOUT BREAKPOINTS */
+
+@media (max-width: 900px) {
+  .First-BG-First-Facade {
+    flex-direction: column;
+    padding-top: 5rem;
   }
 
-  to {
-    transform: translateX(0) scale(1);
-    opacity: 1;
+  .SlideWrapper {
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
+
+  .DBFF-Headline {
+    width: 100%;
+    min-height: auto;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .Card-Images {
+    width: 80%;
+  }
+
+  .Card-Images img {
+    max-height: 20rem;
   }
 }
 
-@keyframes tumbleOutLeft {
-  from {
-    transform: translateX(0) scale(1);
-    opacity: 1;
+@media (max-width: 480px) {
+  .Card-Images {
+    width: 100%;
   }
-
-  to {
-    transform: translateX(-50px) scale(0.96);
-    opacity: 0;
-  }
-}
-
-@keyframes tumbleOutRight {
-  from {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateX(50px) scale(0.96)s;
-    opacity: 0;
-  }
-}
-
-
-/*
-
-    MEDIA QUERIES
-
-*/
+}

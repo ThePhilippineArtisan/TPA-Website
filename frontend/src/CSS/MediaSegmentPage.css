@@ -1,21 +1,43 @@
-.Media-Segment-Page{
-    padding-top: 8.5%;
+.Media-Segment-Page {
+    padding-top: clamp(4rem, 8vw, 7rem);
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.Below-Media-Segments{
+.Below-Media-Segments {
     display: flex;
     flex-direction: column;
     text-decoration: none;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    box-sizing: border-box;
 }
 
-#Latest-Weekly-Segments{
+#Latest-Weekly-Segments {
     display: flex;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-family: var(--font-serif);
+    font-weight: 700;
     padding-bottom: 1.5rem;
+    color: var(--text-dark);
 }
 
-.Media-Segment-Grid{
+.Media-Segment-Grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
 }
+
+@media (max-width: 1024px) {
+    .Media-Segment-Grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .Media-Segment-Grid {
+        grid-template-columns: 1fr;
+    }
+}
+
