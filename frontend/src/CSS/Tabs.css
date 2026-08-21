@@ -19,7 +19,6 @@
 .Tabs a {
     color: white;
     text-decoration: none;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
     font-size: clamp(0.85rem, 1.2vw, 1.05rem);
@@ -35,12 +34,10 @@
 .Tabs a:hover {
     transform: scale(1.05);
     transition: transform 0.2s ease-in-out;
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.95);
 }
 
 .Tabs a.active-tab {
     color: #38bdf8;
     border-bottom: 2px solid #38bdf8;
     font-weight: 700;
-    text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }

@@ -58,11 +58,6 @@
   animation: flicker 3s infinite;
   transition: transform 0.5s ease-in-out;
   z-index: 2;
-
-  filter: drop-shadow(2px 0px 0px #000000)
-          drop-shadow(-2px 0px 0px #000000)
-          drop-shadow(0px 2px 0px #000000)
-          drop-shadow(0px -2px 0px #000000);
 }
 
 .Artisan-Logo-First-Facade img:hover {
@@ -178,11 +173,6 @@
 
   transition: transform 0.2s ease;
   z-index: 2;
-  
-  filter: drop-shadow(2px 0px 0px #000000)
-          drop-shadow(-2px 0px 0px #000000)
-          drop-shadow(0px 2px 0px #000000)
-          drop-shadow(0px -2px 0px #000000);
 }
 
 .Card-Images::after {
@@ -202,8 +192,8 @@
   background-position: center;
   
   transform: rotate(-1deg) translate(-10px, 15px);
-  filter: blur(8px) saturate(1.5);
-  opacity: 0.8;
+  filter: blur(8px);
+  opacity: 0.4;
   transition: all 0.2s ease;
 }
 
@@ -226,7 +216,7 @@
 
 .Slide-Navigation img:hover {
   cursor: pointer;
-  filter: drop-shadow(0px 0px 5px #0099ff);
+  opacity: 0.8;
 }
 
 .SlideWrapper {

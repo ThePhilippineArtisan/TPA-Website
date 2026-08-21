@@ -67,7 +67,6 @@
     color: white;
     font-weight: 500;
     font-size: clamp(1.2rem, 2.5vw, 2rem);
-    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.8);
 }
 
 .Latest-MS-Title h3:hover {
@@ -82,7 +81,6 @@
 }
 
 .Segment-Container {
-    width: auto;
     padding: 0.4rem 0.8rem;
     font-size: clamp(0.75rem, 1.2vw, 1rem);
     font-family: var(--font-sans);
@@ -117,7 +115,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     gap: 0.75rem;
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(1.25rem);
@@ -154,4 +152,4 @@
     width: 0.25rem;
     margin: 0 0.25rem;
     border: none;
-}
+}

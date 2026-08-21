@@ -46,8 +46,6 @@
   
   scrollbar-width: none;
   -ms-overflow-style: none;
-  
-  filter: drop-shadow(2px 5px 10px rgba(95, 178, 255, 0.55));
 }
 
 .Releases-Option::-webkit-scrollbar {
@@ -86,10 +84,7 @@
 .Demo-Page {
   background-color: rgb(253, 253, 243);
   color: black;
-  filter: drop-shadow(2px 0px 0px #00000040)
-          drop-shadow(-2px 0px 0px #00000040)
-          drop-shadow(0px 2px 0px #00000040)
-          drop-shadow(0px -2px 0px #00000040);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .Releases-Book-Button-Container {
@@ -104,8 +99,8 @@
 }
 
 .Releases-Book {
-  filter: drop-shadow(2px 5px 20px rgba(254, 254, 254, 0.35));
   max-width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .Releases-Book-Button {
@@ -151,7 +146,6 @@
   background-color: var(--primary-blue-hover);
   color: var(--bg-light);
   border-radius: var(--radius-md);
-  filter: drop-shadow(2px 5px 20px var(--primary-blue-hover));
   transition: all 0.2s ease;
 }
 
@@ -194,22 +188,17 @@
 
 .Releases-Book-And-Title:hover {
   transition: all 0.2s ease;
-  transform: scale(1.05);
-  filter: drop-shadow(2px 5px 10px rgba(95, 178, 255, 0.55));
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .Releases-Book-Image img {
   max-height: clamp(12rem, 25vw, 17rem);
-  filter: drop-shadow(2px 0px 0px #000000)
-          drop-shadow(-2px 0px 0px #000000)
-          drop-shadow(0px 2px 0px #000000)
-          drop-shadow(0px -2px 0px #000000);
 }
 
 .Releases-Book-And-Title:hover img {
   transition: all 0.2s ease;
-  transform: rotate(2deg) scale(1.05);
-  filter: drop-shadow(2px 5px 10px rgba(95, 178, 255, 0.55));
+  transform: rotate(1deg) scale(1.03);
 }
 
 .Releases-Title span {

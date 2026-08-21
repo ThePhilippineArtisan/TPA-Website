@@ -3,7 +3,7 @@
     align-items: center;
     flex-direction: row;
 
-    filter: drop-shadow(2px 5px 7px rgba(20, 20, 20, 0.2));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
     gap: 0.5rem;
     background: rgba(255, 255, 255, 0.75);
@@ -127,7 +127,7 @@
 .Bulletin-Board {
     display: flex;
     flex-direction: row;
-    filter: drop-shadow(7px rgba(20, 20, 20, 0.2));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
     font-size: 1rem;
 
