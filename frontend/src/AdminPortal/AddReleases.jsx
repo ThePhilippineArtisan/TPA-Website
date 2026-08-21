@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { compressImage } from "../utils/imageUtils.js";
-import "./ManageReleases.css";
+import "./AddReleases.css";
 
 const RELEASE_CATEGORIES = [
     "Kalyo",
@@ -28,7 +28,7 @@ const initialFormState = {
     isFeatured: false
 };
 
-const ManageReleases = () => {
+const AddReleases = () => {
     const [loading, setLoading] = useState(true);
     const [releases, setReleases] = useState([]);
     const [editingId, setEditingId] = useState(null);
@@ -680,4 +680,4 @@ const ManageReleases = () => {
     );
 };
 
-export default ManageReleases;
+export default AddReleases;
