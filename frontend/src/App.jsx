@@ -70,6 +70,18 @@ const HomePage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (location.hash) {
+      const elementId = location.hash.substring(1);
+      const element = document.getElementById(elementId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      }
+    }
+  }, [location.hash]);
+
   return (
     <>
       <section id="home">
