@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
+import { supabase } from "../supabaseClient.js"
 import "../AdminPortal/AdminSidebar.css"
 
 const menuItems = [
@@ -39,8 +40,9 @@ const AdminSidebar = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    const handleLogout = () => {
-        localStorage.removeItem("isAuth")
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut()
+
         navigate("/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot")
     }
 
@@ -52,8 +54,8 @@ const AdminSidebar = () => {
                     <span className="brand-dot"></span>
                     <span className="brand-title">TPA Admin</span>
                 </div>
-                <button 
-                    className="mobile-hamburger-btn" 
+                <button
+                    className="mobile-hamburger-btn"
                     onClick={() => setMobileOpen(!mobileOpen)}
                 >
                 </button>
@@ -68,7 +70,7 @@ const AdminSidebar = () => {
                 <div className="sidebar-top">
                     <div className="sidebar-header">
                         <div className="brand-container">
-                            {!isCollapsed && <span className="brand-name">Admin Portal </span> }
+                            {!isCollapsed && <span className="brand-name">Admin Portal </span>}
                         </div>
                         <button
                             className="toggle-btn"

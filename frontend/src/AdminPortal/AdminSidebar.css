@@ -156,9 +156,9 @@
     gap: 0.75rem;
     width: 100%;
     padding: 0.85rem 1rem;
-    background-color: #fef2f2;
-    border: 1px solid #fee2e2;
-    color: #dc2626;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--border-color);
+    color: red;
     font-weight: 700;
     font-size: 0.95rem;
     border-radius: var(--radius-md);
@@ -167,13 +167,7 @@
 }
 
 .logout-btn .menu-icon {
-    color: #dc2626;
-}
-
-.logout-btn:hover {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border-color: #fca5a5;
+    color: red;
 }
 
 /* Mobile Header Bar & Drawer */

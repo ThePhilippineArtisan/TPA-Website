@@ -1,27 +1,35 @@
-.Admin-Log-In-Full-Page{
+.Admin-Log-In-Full-Page {
     height: 100dvh;
-    
+
     display: flex;
     justify-content: center;
 
     background-image:
-    radial-gradient(circle at top left, rgba(2, 101, 169, 0.15) 0%, rgba(2, 101, 169, 0) 50%),
-    radial-gradient(circle at bottom right, rgba(0, 63, 105, 0.1) 0%, rgba(0, 63, 105, 0) 50%),
-    radial-gradient(circle at center, rgba(230, 242, 252, 1) 0%, rgba(230, 242, 252, 0) 50%);
-    
-    background-color: white; 
-    
+        radial-gradient(circle at top left, rgba(2, 101, 169, 0.15) 0%, rgba(2, 101, 169, 0) 50%),
+        radial-gradient(circle at bottom right, rgba(0, 63, 105, 0.1) 0%, rgba(0, 63, 105, 0) 50%),
+        radial-gradient(circle at center, rgba(230, 242, 252, 1) 0%, rgba(230, 242, 252, 0) 50%);
+
+    background-color: white;
+
     background-size: 200% 200%;
     animation: blobMove 10s ease-in-out infinite alternate;
-    
+
     width: 100%;
     font-family: var(--font-sans);
 }
 
 @keyframes blobMove {
-    0% { background-position: 0% 0%, 100% 100%, 50% 50%; }
-    50% { background-position: 100% 0%, 0% 100%, 20% 80%; }
-    100% { background-position: 100% 100%, 0% 0%, 80% 20%; }
+    0% {
+        background-position: 0% 0%, 100% 100%, 50% 50%;
+    }
+
+    50% {
+        background-position: 100% 0%, 0% 100%, 20% 80%;
+    }
+
+    100% {
+        background-position: 100% 100%, 0% 0%, 80% 20%;
+    }
 }
 
 .Admin-Log-In-Form-Container {
@@ -34,7 +42,7 @@
     width: 100%;
 }
 
-.Admin-Log-In-Form{
+.Admin-Log-In-Form {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -55,7 +63,7 @@
     transition: var(--transition-smooth);
 }
 
-.Admin-Log-In-Form-Inputs p{
+.Admin-Log-In-Form-Inputs p {
     text-align: start;
     color: var(--primary-blue);
     line-height: 1.25rem;
@@ -64,7 +72,7 @@
     font-size: 1rem;
 }
 
-.Admin-Log-In-Form-Inputs{
+.Admin-Log-In-Form-Inputs {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,7 +82,7 @@
     border-color: var(--border-color);
 }
 
-.Admin-Log-In-Form-Inputs input{
+.Admin-Log-In-Form-Inputs input {
     padding: 0.75rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
@@ -85,69 +93,43 @@
 }
 
 
-.Admin-Log-In-Form p{
+.Admin-Log-In-Form p {
     font-size: 1rem;
     color: var(--text-muted);
     font-weight: 600;
 }
 
-.Admin-Mid-Bottom-Part{
+.Admin-Mid-Bottom-Part {
     display: flex;
     justify-content: center;
-
     width: 100%;
 }
 
-.Admin-Log-In-Form-Inputs p{
-    text-align: start;
-    color: var(--primary-blue);
-    line-height: 1.25rem;
-    font-weight: 800;
-    padding: 0.5rem 0;
-    font-size: 1rem;
+.Admin-Log-In-Form-Button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
 }
 
-.Admin-Log-In-Form-Inputs{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: var(--radius-sm);
+.Admin-Log-In-Form-Button button {
     width: 80%;
-
-    border-color: var(--border-color);
-}
-
-.Admin-Log-In-Form-Inputs input{
-    padding: 0.75rem;
+    padding: 0.75rem 1.25rem;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
-    width: 100%;
-    font-size: 1rem;
-    box-sizing: border-box;
-    font-family: var(--font-sans);
-}
-
-.Admin-Log-In-Form-Button{
-    border-radius: var(--radius-md);
-    padding: 0.25rem;
-    width: 50%;
-    background-color: var(--primary-blue);
-    color: white;
-}
-
-.Admin-Log-In-Form-Button h2{
-    color: white;
-}
-
-.Admin-Log-In-Form-Button button{
-    border-radius: var(--radius-md);
-    width: 100%;
     border: none;
     background-color: var(--primary-blue);
-    transition: var(--transition-smooth);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
+    transition: var(--transition-smooth);
 }
 
-.Admin-Log-In-Form-Button button:hover{
+.Admin-Log-In-Form-Button button:hover {
     background-color: var(--primary-blue-hover);
+}
+
+.Admin-Log-In-Form-Button button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }

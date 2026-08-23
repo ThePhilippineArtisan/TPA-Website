@@ -1,6 +1,7 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, Navigate } from 'react-router-dom';
 import AnimatedLoader from "./Pages/AnimatedLoader.jsx";
+import { supabase } from "./supabaseClient.js";
 
 // Components Folder
 const NavbarComponent = lazy(() => import('./Components/NavbarComponent.jsx'));
@@ -96,9 +97,28 @@ const HomePage = () => {
 };
 
 const ProtectedRoute = () => {
-  const isAuth = localStorage.getItem("isAuth") === "true"
+  const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  if (!isAuth) {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+      setLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  if (loading) {
+    return <AnimatedLoader />
+  }
+
+
+  if (!session) {
     return <Navigate to="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" replace />
   }
 
@@ -116,8 +136,8 @@ const App = () => {
               <Route path="/admin/create-article" element={<CreateArticlePage />} />
               <Route path="/admin/articles" element={<ManageArticlesPage />} />
               <Route path="/admin/staff" element={<ManageStaffPage />} />
-              <Route path="/admin/manage-page" element = {<ManageFrontPage/>} />
-              <Route path="/admin/manage-videos" element = {<ManageVideosPage/>} />
+              <Route path="/admin/manage-page" element={<ManageFrontPage />} />
+              <Route path="/admin/manage-videos" element={<ManageVideosPage />} />
               <Route path="/admin/manage-releases" element={<ManageReleasesPage />} />
             </Route>
           </Route>
@@ -126,7 +146,7 @@ const App = () => {
 
             <Route path="/" element={<HomePage />} />
 
-             <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/article/:articleId" element={<ArticlePage />} />
             <Route path="/article/:articleId/:slug" element={<ArticlePage />} />
             <Route path="/joseph-brian-balut" element={<PlaceholderArticlePage />} />
             <Route path="/latest" element={<LatestPosts />} />

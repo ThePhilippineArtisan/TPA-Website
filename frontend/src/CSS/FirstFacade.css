@@ -37,7 +37,7 @@
   padding: clamp(1rem, 3vw, 2.5rem);
   box-sizing: border-box;
 
-  background: radial-gradient(circle at center, #0d2238 0%, #03080f 90%);
+  background-color: #0d2238;
 }
 
 .Artisan-Logo-First-Facade::after {
@@ -132,17 +132,7 @@
   background-position: center;
 }
 
-.First-BG-First-Facade::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 125px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #003f69cc);
-  pointer-events: none;
-  z-index: 5;
-}
+
 
 .Cards {
   display: flex;
