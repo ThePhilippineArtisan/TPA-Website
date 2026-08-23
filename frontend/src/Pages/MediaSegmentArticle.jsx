@@ -5,6 +5,8 @@ import { formatDateReadable } from "../utils/dateUtils.js"
 import { isMediaSegment, getMediaSegmentLabel, slugify } from "../utils/articleUtils.js"
 import AnimatedLoader from "./AnimatedLoader.jsx"
 
+import DOMPurify from "dompurify"
+import { sanitizeUrl } from "../utils/stringUtils.js"
 import "../CSS/MediaSegmentArticle.css"
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx"
 import "../CSS/LatestMediaSegment.css"
@@ -307,7 +309,7 @@ const MediaSegmentArticle = () => {
                             {articleDetails.article_source && (
                                 <h5>
                                     <span>
-                                        Click this link to view the <a target="_blank" href={articleDetails.article_source} rel="noreferrer" style={{ color: '#0265A9', textDecoration: 'underline' }}>sources</a>, interview, or media used in this article.
+                                        Click this link to view the <a target="_blank" href={sanitizeUrl(articleDetails.article_source)} rel="noopener noreferrer" style={{ color: '#0265A9', textDecoration: 'underline' }}>sources</a>, interview, or media used in this article.
                                     </span>
                                 </h5>
                             )}
@@ -318,7 +320,7 @@ const MediaSegmentArticle = () => {
                         </div>
                     </div>
                     {hasBody && (
-                        <div className="Media-Segment-Article-Text" dangerouslySetInnerHTML={{ __html: articleDetails.article_body }} />
+                        <div className="Media-Segment-Article-Text" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(articleDetails.article_body) }} />
                     )}
 
                 </div>

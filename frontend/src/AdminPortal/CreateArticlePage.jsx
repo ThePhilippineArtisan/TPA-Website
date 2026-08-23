@@ -223,9 +223,15 @@ const CreateArticlePage = () => {
                     }
 
                     // Get presigned URL from Cloudflare Pages Function, asking permission
+                    const { data: { session } } = await supabase.auth.getSession()
+                    const token = session?.access_token
+
                     const presignRes = await fetch('/api/media/presign', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                        },
                         body: JSON.stringify({
                             filename: imgObj.name,
                             contentType: imgObj.file.type,

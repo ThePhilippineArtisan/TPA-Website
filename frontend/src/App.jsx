@@ -119,7 +119,7 @@ const ProtectedRoute = () => {
 
 
   if (!session) {
-    return <Navigate to="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" replace />
+    return <Navigate to="/admin/login" replace />
   }
 
   return <Outlet />
@@ -160,6 +160,7 @@ const App = () => {
             <Route path="/media-segment/id" element={<PlaceholderMediaSegmentArticle />} />
 
 
+            <Route path="/admin/login" element={<AdminLogInPage />} />
             <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
 
           </Route>

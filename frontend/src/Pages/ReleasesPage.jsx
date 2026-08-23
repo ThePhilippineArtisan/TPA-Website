@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../supabaseClient";
 import HTMLFlipbook from "react-pageflip";
+import { sanitizeUrl } from "../utils/stringUtils";
 import "../CSS/ReleasesPage.css";
 
 const ReleasesPage = () => {
@@ -90,9 +91,9 @@ const ReleasesPage = () => {
             {currentSoftCopyUrl && (
               <div>
                 <a
-                  href={currentSoftCopyUrl}
+                  href={sanitizeUrl(currentSoftCopyUrl)}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   style={{ color: 'var(--primary-blue)', fontWeight: 'bold', textDecoration: 'underline' }}
                 >
                   Click here for the full soft copy of this release

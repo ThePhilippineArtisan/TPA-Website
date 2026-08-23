@@ -104,9 +104,15 @@ const ManageReleases = () => {
 
             try {
                 // Try R2 storage upload via presigned URL
+                const { data: { session } } = await supabase.auth.getSession();
+                const token = session?.access_token;
+
                 const presignRes = await fetch('/api/media/presign', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                    },
                     body: JSON.stringify({
                         filename: compressedFileName,
                         contentType: 'image/webp',
@@ -164,9 +170,15 @@ const ManageReleases = () => {
 
                 let finalUrl = null;
                 try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    const token = session?.access_token;
+
                     const presignRes = await fetch('/api/media/presign', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                        },
                         body: JSON.stringify({
                             filename: compressedFileName,
                             contentType: 'image/webp',
