@@ -46,15 +46,19 @@
 }
 
 .Rolling-Headline img {
-    padding: 0 5px;
-    height: clamp(12px, 1.2vw, 16px);
+    padding: 0 3px;
+    height: clamp(18px, 1.2vw, 18px);
     width: auto;
     display: inline-block;
     vertical-align: middle;
 }
 
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+    0% {
+        transform: translateX(0);
+    }
 
+    100% {
+        transform: translateX(-50%);
+    }
+}
