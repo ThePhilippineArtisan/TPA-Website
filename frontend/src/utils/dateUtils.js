@@ -7,10 +7,15 @@
  */
 
 export const formatDateReadable = (dateInput) => {
-    if(!dateInput) return "" // no date passed to util
+    if (!dateInput) {
+        return ""
+    }
+
     const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput
     
-    if(isNaN(date.getTime())) return "" // if date is not a number (NaN)
+    if (isNaN(date.getTime())) {
+        return ""
+    }
 
     const dateOptions = {
         month: "long",
@@ -38,10 +43,15 @@ export const formatDateReadable = (dateInput) => {
  */
 
 export const formatRelativeTime = (dateInput) => {
-    if(!dateInput) return ""
+    if (!dateInput) {
+        return ""
+    }
+
     const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput
 
-    if(isNaN(date.getTime())) return ""
+    if (isNaN(date.getTime())) {
+        return ""
+    }
 
     const now = new Date()
     const diffMs = now.getTime() - date.getTime()
@@ -50,40 +60,39 @@ export const formatRelativeTime = (dateInput) => {
     const diffHours = Math.floor(diffMins / 60)
     const diffDays = Math.floor(diffHours / 24)
 
-    // schedyled post
-    if(diffMs < 0){
+    // scheduled post
+    if (diffMs < 0) {
         const absDiffMs = Math.abs(diffMs)
         const absDiffMins = Math.floor(absDiffMs / (1000 * 60))
         const absDiffHours = Math.floor(absDiffMins / 60)
         const absDiffDays = Math.floor(absDiffHours / 24)
 
-        if(absDiffMins < 60){
+        if (absDiffMins < 60) {
             return `in ${absDiffMins} minute${absDiffMins === 1 ? "" : "s"}`
         }
-        if(absDiffHours < 24){
+        if (absDiffHours < 24) {
             return `in ${absDiffHours} hour${absDiffHours === 1 ? "" : "s"}`
         }
-        return `in ${absDiffDays} day${absDiffDays === 1 ? "" : "s"}`;
+        return `in ${absDiffDays} day${absDiffDays === 1 ? "" : "s"}`
     }
 
-    if(diffSecs < 60){
+    if (diffSecs < 60) {
         return "Just now"
     }
-    if(diffMins < 60){
-    return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`;
+    if (diffMins < 60) {
+        return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`
     }
     if (diffHours < 24) {
-        return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+        return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`
     }
     if (diffDays === 1) {
-        return "Yesterday";
+        return "Yesterday"
     }
     if (diffDays < 7) {
-        return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+        return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`
     }
 
     // return date format if older than a week
-    
     return date.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",

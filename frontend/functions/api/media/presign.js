@@ -11,7 +11,7 @@ const ALLOWED_MIME_TYPES = new Set([
     'application/pdf'
 ])
 
-export async function onRequestPost(context){
+export async function onRequestPost(context) {
     try {
         const { request, env } = context
 
@@ -115,7 +115,7 @@ export async function onRequestPost(context){
     }
 }
 
-export async function onRequestOptions(){
+export async function onRequestOptions() {
     return new Response(null, {
         status: 204,
         headers: {

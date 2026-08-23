@@ -4,15 +4,15 @@ import { supabase } from "../supabaseClient.js"
 import { formatDateReadable } from "../utils/dateUtils.js"
 import { isMediaSegment, slugify } from "../utils/articleUtils.js"
 
-import DOMPurify from "dompurify";
-import { sanitizeUrl } from "../utils/stringUtils.js";
-import VerticalFastNews from "../Components/VerticalFastNews.jsx";
+import DOMPurify from "dompurify"
+import { sanitizeUrl } from "../utils/stringUtils.js"
+import VerticalFastNews from "../Components/VerticalFastNews.jsx"
 import "../CSS/ArticlePage.css"
-import AnimatedLoader from "./AnimatedLoader.jsx";
+import AnimatedLoader from "./AnimatedLoader.jsx"
 import RollingHeadlines from "../Components/RollingHeadlines.jsx"
 
 const ArticlePage = () => {
-    const { articleId, slug } = useParams(); // get the articleId and slug from the URL parameters
+    const { articleId, slug } = useParams()
     const navigate = useNavigate()
 
     const [articleDetails, setArticleDetails] = useState(null)
@@ -25,12 +25,14 @@ const ArticlePage = () => {
 
     useEffect(() => {
         const fetchArticleDetails = async () => {
-            if (!articleId) return
+            if (!articleId) {
+                return
+            }
 
             setIsLoading(true)
             setError(null)
 
-            try { // from article, take all, in article, article_staff*, article_media*, media*
+            try {
                 const query = supabase
                     .from("article")
                     .select(`
@@ -44,43 +46,40 @@ const ArticlePage = () => {
                         )
                     `)
 
-                // Check if parameter is a hybrid (ID-slug), numeric ID, or slug headline
-                const idMatch = articleId.match(/^(\d+)-/);
+                const idMatch = articleId.match(/^(\d+)-/)
                 if (idMatch) {
-                    query.eq("article_id", parseInt(idMatch[1], 10));
+                    query.eq("article_id", parseInt(idMatch[1], 10))
                 } else if (/^\d+$/.test(articleId)) {
-                    query.eq("article_id", parseInt(articleId, 10));
+                    query.eq("article_id", parseInt(articleId, 10))
                 } else {
-                    query.eq("slug_headline", articleId);
+                    query.eq("slug_headline", articleId)
                 }
 
                 const { data: articleData, error: fetchError } = await query.maybeSingle()
 
-                if (fetchError)
+                if (fetchError) {
                     throw fetchError
+                }
                 if (!articleData) {
                     setError("Article not found.")
                     return
                 }
 
-                const canonicalSlug = articleData.slug_headline || slugify(articleData.article_headline);
+                const canonicalSlug = articleData.slug_headline || slugify(articleData.article_headline)
 
                 if (isMediaSegment(articleData.article_type)) {
                     const targetUrl = canonicalSlug
                         ? `/media-segment/${articleData.article_id}/${canonicalSlug}`
-                        : `/media-segment/${articleData.article_id}`;
-                    navigate(targetUrl, { replace: true });
-                    return;
+                        : `/media-segment/${articleData.article_id}`
+                    navigate(targetUrl, { replace: true })
+                    return
                 }
 
                 if (canonicalSlug && slug !== canonicalSlug) {
-                    navigate(`/article/${articleData.article_id}/${canonicalSlug}`, { replace: true });
+                    navigate(`/article/${articleData.article_id}/${canonicalSlug}`, { replace: true })
                 }
 
-
-
-                // Fetch the related staff contributions separately to bypass lack of FK relations in PostgreSQL
-                let staffContributions = [];
+                let staffContributions = []
                 try {
                     const { data: staffData, error: staffError } = await supabase
                         .from("article_staff")
@@ -93,48 +92,46 @@ const ArticlePage = () => {
                                 staff_pseudonym
                             )
                         `)
-                        .eq("article_id", articleData.article_id);
+                        .eq("article_id", articleData.article_id)
 
                     if (staffError) {
                         if (staffError.code === "PGRST200" || staffError.message?.includes("relationship")) {
-                            console.warn("No FK relationship between article_staff and staff. Fetching manually...");
+                            console.warn("No FK relationship between article_staff and staff. Fetching manually...")
                             const { data: rawStaffRel, error: rawStaffRelErr } = await supabase
                                 .from("article_staff")
                                 .select("contribution_as, staff_id, use_pseudonym")
-                                .eq("article_id", articleData.article_id);
+                                .eq("article_id", articleData.article_id)
 
                             if (!rawStaffRelErr && rawStaffRel && rawStaffRel.length > 0) {
-                                const staffIds = rawStaffRel.map(r => r.staff_id).filter(Boolean);
+                                const staffIds = rawStaffRel.map(r => r.staff_id).filter(Boolean)
                                 const { data: staffRows, error: staffRowsErr } = await supabase
                                     .from("staff")
                                     .select("staff_id, staff_display_name, staff_pseudonym")
-                                    .in("staff_id", staffIds);
+                                    .in("staff_id", staffIds)
 
                                 if (!staffRowsErr && staffRows) {
                                     staffContributions = rawStaffRel.map(rel => ({
                                         contribution_as: rel.contribution_as,
                                         use_pseudonym: rel.use_pseudonym,
                                         staff: staffRows.find(s => s.staff_id === rel.staff_id)
-                                    })).filter(c => c.staff);
+                                    })).filter(c => c.staff)
                                 }
                             }
                         } else {
-                            throw staffError;
+                            throw staffError
                         }
                     } else {
-                        staffContributions = staffData || [];
+                        staffContributions = staffData || []
                     }
                 } catch (staffErr) {
-                    console.error("Non-blocking error fetching staff contributors:", staffErr);
+                    console.error("Non-blocking error fetching staff contributors:", staffErr)
                 }
 
-                // Combine the fetched article data with its staff contributions
                 setArticleDetails({
                     ...articleData,
                     article_staff: staffContributions
-                });
+                })
 
-                // sort media by media_order
                 if (articleData.article_media && articleData.article_media.length > 0) {
                     const sortedMedia = [...articleData.article_media].sort(
                         (a, b) => (a.media_order || 0) - (b.media_order || 0)
@@ -142,7 +139,6 @@ const ArticlePage = () => {
                     const urls = sortedMedia
                         .map((item) => item.media?.media_url)
                         .filter(Boolean)
-                    // if you want to limit how much photos are taken, uncomment this .slice(0,7)
                     setMediaUrls(urls)
                     setCurrentPhoto(urls[0] || null)
                 } else {
@@ -155,8 +151,8 @@ const ArticlePage = () => {
             } finally {
                 setIsLoading(false)
             }
-        };
-        fetchArticleDetails() // call the function before loading 
+        }
+        fetchArticleDetails()
     }, [articleId])
 
     if (isLoading) {
@@ -165,19 +161,19 @@ const ArticlePage = () => {
 
     if (error || !articleDetails) {
         return (
-            <div className="Article-Page" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh", flexDirection: "column" }}>
+            <div className = "Article-Page" style = {{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh", flexDirection: "column" }}>
                 <h2>Oops! Article not found.</h2>
-                <p style={{ color: "#0265A9", marginTop: "10px" }}>{"The article you are looking for does not exist."}</p>
+                <p style = {{ color: "#0265A9", marginTop: "10px" }}>{"The article you are looking for does not exist."}</p>
             </div>
-        );
+        )
     }
 
     const getContributorName = (as) => {
         if (as.use_pseudonym && as.staff?.staff_pseudonym) {
-            return as.staff.staff_pseudonym;
+            return as.staff.staff_pseudonym
         }
-        return as.staff?.staff_display_name;
-    };
+        return as.staff?.staff_display_name
+    }
 
     const authors = articleDetails.article_staff ? articleDetails.article_staff
         .filter((as) => as.contribution_as === "Author")
@@ -190,20 +186,19 @@ const ArticlePage = () => {
             .filter((as) => as.contribution_as === "Media_Provider")
             .map(getContributorName)
             .filter(Boolean)
-        : [];
+        : []
 
-    // Tags
     const tags = [
         articleDetails.article_type,
         articleDetails.article_tag1,
         articleDetails.article_tag2,
         articleDetails.article_tag3
-    ].filter((tag) => tag && tag !== "NULL" && tag !== "");
+    ].filter((tag) => tag && tag !== "NULL" && tag !== "")
 
     return (
-        <div className="Article-Page">
-            <div className="Article-Headline">
-                <div className="Simple-Tag">
+        <div className = "Article-Page">
+            <div className = "Article-Headline">
+                <div className = "Simple-Tag">
                     <h4>  {tags.join(", ").replace(/_/g, " ")} </h4>
                 </div>
 
@@ -211,11 +206,11 @@ const ArticlePage = () => {
 
                 <hr></hr>
 
-                <div className="Author-and-Date">
-                    <div className="Author">
+                <div className = "Author-and-Date">
+                    <div className = "Author">
                         {authors.length > 0 ? (
                             authors.map((display_name, idx) => (
-                                <a key={idx}>
+                                <a key = {idx}>
                                     <h3> {display_name} {idx < authors.length - 1 ? ", " : ""}</h3>
                                 </a>
                             ))
@@ -226,109 +221,85 @@ const ArticlePage = () => {
                         )}
                     </div>
 
-                    <div className="Date">
+                    <div className = "Date">
                         <a> <h3> {formatDateReadable(articleDetails.published_at)} </h3> </a>
                     </div>
                 </div>
 
             </div>
 
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style = {{ display: "flex", justifyContent: "center" }}>
                 {currentPhoto && (
-                    <div className="Foreground-Photo ">
-                        <img src={currentPhoto} alt={articleDetails.article_headline} loading="lazy" />
+                    <div className = "Foreground-Photo">
+                        <img src = {currentPhoto} alt = {articleDetails.article_headline} loading = "lazy" />
                     </div>
                 )}
-
-                {/** 
-                <div className = "Extra-Photos-Container-Two">
-                    <div className = "Extra-Photos"> 
-                        
-                        {photos.slice(0).map((photo, index) => (
-                            <img
-                                key = {index}
-                                src = {photo}
-                                loading = "lazy"
-                                onClick = {() => setCurrentPhoto(photo)}
-                                style = {{ cursor: "pointer" }}
-                            />
-                        ))}
-                        
-                        {/** <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/>
-                    </div>
-                </div>
-*/}
             </div>
 
-            <div className="Photo-Illustration-Layout-Credits" style={{ textAlign: "center" }}>
+            <div className = "Photo-Illustration-Layout-Credits" style = {{ textAlign: "center" }}>
                 Photos by {mediaProviders.join(", ")}
             </div>
 
             {mediaUrls.length > 1 && (
-                <div className="Extra-Photos-Container">
-                    <div className="Extra-Photos">
+                <div className = "Extra-Photos-Container">
+                    <div className = "Extra-Photos">
                         {mediaUrls.map((photo, index) => (
                             <img
-                                key={index}
-                                src={photo}
-                                alt={`Extra ${index + 1}`}
-                                loading="lazy"
-                                onClick={() => setCurrentPhoto(photo)}
-                                style={{
+                                key = {index}
+                                src = {photo}
+                                alt = {`Extra ${index + 1}`}
+                                loading = "lazy"
+                                onClick = {() => setCurrentPhoto(photo)}
+                                style = {{
                                     cursor: "pointer",
                                     border: photo === currentPhoto ? "3px solid #0265A9" : "none"
                                 }}
                             />
                         ))}
-
-                        {/** <img loading = "lazy" src = {ARROW} style = {{cursor: "pointer", height: "3rem"}}/> */}
                     </div>
-
                 </div>
             )}
 
-
-            <div className="Below-Small-Photos"
-                style={!hasBody ? { gridTemplateColumns: "1fr", width: "100%" } : {}}
+            <div className = "Below-Small-Photos"
+                style = {!hasBody ? { gridTemplateColumns: "1fr", width: "100%" } : {}}
             >
                 {hasBody && (
                     <div
-                        className="Article-Body"
-                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(articleDetails.article_body) }}
+                        className = "Article-Body"
+                        dangerouslySetInnerHTML = {{ __html: DOMPurify.sanitize(articleDetails.article_body) }}
                     />
                 )}
 
-                <div style={!hasBody ? { width: "100%" } : {}}>
-                    <h4> <span style={{ color: "#0265A9" }}>
-                        Click this link to view the <a target="_blank" rel="noopener noreferrer" href={sanitizeUrl(articleDetails.article_source)} >sources</a>, interview, or media used in this article.
+                <div style = {!hasBody ? { width: "100%" } : {}}>
+                    <h4> <span style = {{ color: "#0265A9" }}>
+                        Click this link to view the <a target = "_blank" rel = "noopener noreferrer" href = {sanitizeUrl(articleDetails.article_source)} >sources</a>, interview, or media used in this article.
                     </span> </h4>
                     <h4> {articleDetails.word_count || 0} words | {Math.ceil((articleDetails.word_count || 0) / 200)} minute read </h4>
-                    <h4> Want to request full-quality images? <span style={{ color: "#0265A9" }}> <a target="_blank" rel="noopener noreferrer" href="#"> Click here.</a></span> </h4>
-                    <hr ></hr>
-                    <VerticalFastNews isHorizontal={!hasBody} />
+                    <h4> Want to request full-quality images? <span style = {{ color: "#0265A9" }}> <a target = "_blank" rel = "noopener noreferrer" href = "#"> Click here.</a></span> </h4>
+                    <hr></hr>
+                    <VerticalFastNews isHorizontal = {!hasBody} />
                 </div>
             </div>
-            <div style={{ marginLeft: "10%", marginRight: "10%" }}>
-                <hr style={{ borderBottom: "2px solid #0265A9" }}></hr>
+            <div style = {{ marginLeft: "10%", marginRight: "10%" }}>
+                <hr style = {{ borderBottom: "2px solid #0265A9" }}></hr>
             </div>
-            <h1 id="Read-More"> READ MORE </h1>
+            <h1 id = "Read-More"> READ MORE </h1>
 
-            <div className="Suggested-Articles">
-                <div className="Suggested-News">
-                    <div className="Three-News">
+            <div className = "Suggested-Articles">
+                <div className = "Suggested-News">
+                    <div className = "Three-News">
                         <a> TUPM Shifts from deathly afraid of the dark </a>
                     </div>
-                    <div className="Three-News">
+                    <div className = "Three-News">
                         <a> TUPM Shifts from deathly afraid of the dark </a>
                     </div>
-                    <div className="Three-News">
+                    <div className = "Three-News">
                         <a> TUPM Shifts from deathly afraid of the dark </a>
                     </div>
-
                 </div>
             </div>
         </div>
     )
 }
 
-export default ArticlePage;
+export default ArticlePage

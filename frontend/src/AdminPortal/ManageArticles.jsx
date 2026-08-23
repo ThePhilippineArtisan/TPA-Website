@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { supabase } from "../supabaseClient"
 import { isMediaSegment, getMediaSegmentLabel, getArticleUrl} from "../utils/articleUtils.js"
 
@@ -98,7 +99,7 @@ const ManageArticles = () => {
             <div className = "Manage-Staff-Page-Header">
                 <h1> Manage Articles </h1>                
                 <p> Add or edit staff details 
-                    <span> <a href="https://supabase.com/dashboard/project/uapnaylpxunquhievzzm/editor/31990?schema=public" target = "_blank"> here! </a> 
+                    <span> <a href="https://supabase.com/dashboard/project/uapnaylpxunquhievzzm/editor/31990?schema=public" target="_blank" rel="noopener noreferrer"> here! </a> 
                     </span> <br></br> <br></br> </p>
 
             </div>
@@ -129,7 +130,7 @@ const ManageArticles = () => {
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_id} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_type} </td>
                                     <td className="Manage-Staff-Grid-Row" title={article.article_headline}>
-                                        <Link to={getArticleUrl(article)} target="_blank" rel="noreferrer" style={{ color: "var(--primary-blue)", fontWeight: "600", textDecoration: "underline" }}>
+                                        <Link to={getArticleUrl(article)} target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary-blue)", fontWeight: "600", textDecoration: "underline" }}>
                                             {article.article_headline}
                                         </Link>
                                     </td>

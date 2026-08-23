@@ -28,10 +28,10 @@ const ManageStaff = () => {
         <div className = "Manage-Staff-Page">
             <div className = "Manage-Staff-Page-Header">
                 <h1> Manage Staff </h1>
-                <p> Add or edit staff details <span> <a href="https://supabase.com/dashboard/project/uapnaylpxunquhievzzm/editor/31990?schema=public" target = "_blank"> here! </a> </span> <br></br> <br></br>
+                <p> Add or edit staff details <span> <a href="https://supabase.com/dashboard/project/uapnaylpxunquhievzzm/editor/31990?schema=public" target="_blank" rel="noopener noreferrer"> here! </a> </span> <br></br> <br></br>
                     Make sure to log-in using our Github account or an authorized/invited team account on our Supabase project. 
                 </p>
-                <p> To change staff's profile photo, use our Cloudflare R2 Images Account here: <a href = "https://dash.cloudflare.com/f98ca61f7a355790df8cf93617ed1111/r2/default/buckets/tpamediaassets?prefix=staff-photos%2F"> here! </a></p>
+                <p> To change staff's profile photo, use our Cloudflare R2 Images Account here: <a href="https://dash.cloudflare.com/f98ca61f7a355790df8cf93617ed1111/r2/default/buckets/tpamediaassets?prefix=staff-photos%2F" target="_blank" rel="noopener noreferrer"> here! </a></p>
             </div>
 
             <div className = "Manage-Staff-Grid-Container">

@@ -1,31 +1,31 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, Navigate } from 'react-router-dom';
-import AnimatedLoader from "./Pages/AnimatedLoader.jsx";
-import { supabase } from "./supabaseClient.js";
+import React, { Suspense, lazy, useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, Navigate } from 'react-router-dom'
+import AnimatedLoader from "./Pages/AnimatedLoader.jsx"
+import { supabase } from "./supabaseClient.js"
 
 // Components Folder
-const NavbarComponent = lazy(() => import('./Components/NavbarComponent.jsx'));
-const Footer = lazy(() => import('./Components/Footer.jsx'));
+const NavbarComponent = lazy(() => import('./Components/NavbarComponent.jsx'))
+const Footer = lazy(() => import('./Components/Footer.jsx'))
 
-const FirstFacade = lazy(() => import('./Pages/FirstFacade.jsx'));
-const SecondFacade = lazy(() => import('./Pages/SecondFacade.jsx'));
+const FirstFacade = lazy(() => import('./Pages/FirstFacade.jsx'))
+const SecondFacade = lazy(() => import('./Pages/SecondFacade.jsx'))
 const ArticlePage = lazy(() => import('./Pages/ArticlePage.jsx'))
-const PlaceholderArticlePage = lazy(() => import('./Pages/PlaceholderArticlePage.jsx'));
-const PlaceholderMediaSegmentArticle = lazy(() => import('./Pages/PlaceholderMediaSegmentArticle.jsx'));
-const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'));
-const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'));
-const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'));
-const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'));
-const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'));
+const PlaceholderArticlePage = lazy(() => import('./Pages/PlaceholderArticlePage.jsx'))
+const PlaceholderMediaSegmentArticle = lazy(() => import('./Pages/PlaceholderMediaSegmentArticle.jsx'))
+const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'))
+const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'))
+const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'))
+const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'))
+const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'))
 const StaffProfilePage = lazy(() => import('./Pages/StaffProfile.jsx'))
 
 // AdminPortal Folder
 const AdminLogInPage = lazy(() => import('./AdminPortal/AdminPageLogIn.jsx'))
 const AdminPage = lazy(() => import('./AdminPortal/AdminPage.jsx'))
 const AdminDashboard = lazy(() => import('./AdminPortal/AdminDashboard.jsx'))
-const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'));
-const ManageArticlesPage = lazy(() => import('./AdminPortal/ManageArticles.jsx'));
-const ManageStaffPage = lazy(() => import('./AdminPortal/ManageStaff.jsx'));
+const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'))
+const ManageArticlesPage = lazy(() => import('./AdminPortal/ManageArticles.jsx'))
+const ManageStaffPage = lazy(() => import('./AdminPortal/ManageStaff.jsx'))
 const ManageFrontPage = lazy(() => import('./AdminPortal/ManageFrontPage.jsx'))
 const ManageVideosPage = lazy(() => import('./AdminPortal/ManageVideos.jsx'))
 const ManageReleasesPage = lazy(() => import('./AdminPortal/ManageReleases.jsx'))
@@ -35,66 +35,66 @@ const MainLayout = () => {
     <>
       <NavbarComponent />
 
-      <Suspense fallback={<AnimatedLoader />}>
-        <main className="main-content">
+      <Suspense fallback = {<AnimatedLoader />}>
+        <main className = "Main-Content">
           <Outlet />
         </main>
       </Suspense>
 
       <Footer />
     </>
-  );
-};
+  )
+}
 
 const HomePage = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const cardsTop = window.innerHeight;
+      const currentScroll = window.scrollY
+      const cardsTop = window.innerHeight
 
       if (currentScroll > cardsTop + 10) {
-        document.documentElement.classList.remove('homepage-snap');
+        document.documentElement.classList.remove('homepage-snap')
       } else {
-        document.documentElement.classList.add('homepage-snap');
+        document.documentElement.classList.add('homepage-snap')
       }
-    };
+    }
 
-    handleScroll();
+    handleScroll()
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
     return () => {
-      document.documentElement.classList.remove('homepage-snap');
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      document.documentElement.classList.remove('homepage-snap')
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   useEffect(() => {
     if (location.hash) {
-      const elementId = location.hash.substring(1);
-      const element = document.getElementById(elementId);
+      const elementId = location.hash.substring(1)
+      const element = document.getElementById(elementId)
       if (element) {
         setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 150);
+          element.scrollIntoView({ behavior: 'smooth' })
+        }, 150)
       }
     }
-  }, [location.hash]);
+  }, [location.hash])
 
   return (
     <>
-      <section id="home">
+      <section id = "home">
         <FirstFacade />
       </section>
 
-      <section id="news">
+      <section id = "news">
         <SecondFacade />
       </section>
     </>
-  );
-};
+  )
+}
 
 const ProtectedRoute = () => {
   const [session, setSession] = useState(null)
@@ -117,9 +117,8 @@ const ProtectedRoute = () => {
     return <AnimatedLoader />
   }
 
-
   if (!session) {
-    return <Navigate to="/admin/login" replace />
+    return <Navigate to = "/admin/login" replace />
   }
 
   return <Outlet />
@@ -127,47 +126,46 @@ const ProtectedRoute = () => {
 
 const App = () => {
   return (
-    <div className="app-wrapper">
+    <div className = "App-Wrapper">
       <Router>
         <Routes>
-          <Route element={<ProtectedRoute />}>
-            <Route element={<AdminPage />}>
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/create-article" element={<CreateArticlePage />} />
-              <Route path="/admin/articles" element={<ManageArticlesPage />} />
-              <Route path="/admin/staff" element={<ManageStaffPage />} />
-              <Route path="/admin/manage-page" element={<ManageFrontPage />} />
-              <Route path="/admin/manage-videos" element={<ManageVideosPage />} />
-              <Route path="/admin/manage-releases" element={<ManageReleasesPage />} />
+          <Route element = {<ProtectedRoute />}>
+            <Route element = {<AdminPage />}>
+              <Route path = "/admin/dashboard" element = {<AdminDashboard />} />
+              <Route path = "/admin/create-article" element = {<CreateArticlePage />} />
+              <Route path = "/admin/articles" element = {<ManageArticlesPage />} />
+              <Route path = "/admin/staff" element = {<ManageStaffPage />} />
+              <Route path = "/admin/manage-page" element = {<ManageFrontPage />} />
+              <Route path = "/admin/manage-videos" element = {<ManageVideosPage />} />
+              <Route path = "/admin/manage-releases" element = {<ManageReleasesPage />} />
             </Route>
           </Route>
 
-          <Route element={<MainLayout />}>
+          <Route element = {<MainLayout />}>
 
-            <Route path="/" element={<HomePage />} />
+            <Route path = "/" element = {<HomePage />} />
 
-            <Route path="/article/:articleId" element={<ArticlePage />} />
-            <Route path="/article/:articleId/:slug" element={<ArticlePage />} />
-            <Route path="/joseph-brian-balut" element={<PlaceholderArticlePage />} />
-            <Route path="/latest" element={<LatestPosts />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
-            <Route path="/releases" element={<ReleasesPage />} />
+            <Route path = "/article/:articleId" element = {<ArticlePage />} />
+            <Route path = "/article/:articleId/:slug" element = {<ArticlePage />} />
+            <Route path = "/joseph-brian-balut" element = {<PlaceholderArticlePage />} />
+            <Route path = "/latest" element = {<LatestPosts />} />
+            <Route path = "/about" element = {<AboutPage />} />
+            <Route path = "/staff/:staffSlug" element = {<StaffProfilePage />} />
+            <Route path = "/releases" element = {<ReleasesPage />} />
 
-            <Route path="/media-segment" element={<MediaSegmentPage />} />
-            <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
-            <Route path="/media-segment/:id/:slug" element={<MediaSegmentArticle />} />
-            <Route path="/media-segment/id" element={<PlaceholderMediaSegmentArticle />} />
+            <Route path = "/media-segment" element = {<MediaSegmentPage />} />
+            <Route path = "/media-segment/:id" element = {<MediaSegmentArticle />} />
+            <Route path = "/media-segment/:id/:slug" element = {<MediaSegmentArticle />} />
+            <Route path = "/media-segment/id" element = {<PlaceholderMediaSegmentArticle />} />
 
-
-            <Route path="/admin/login" element={<AdminLogInPage />} />
-            <Route path="/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
+            <Route path = "/admin/login" element = {<AdminLogInPage />} />
+            <Route path = "/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element = {<AdminLogInPage />} />
 
           </Route>
         </Routes>
       </Router>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
