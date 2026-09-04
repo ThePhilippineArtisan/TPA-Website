@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "../supabaseClient.js"
 import React, { useState, useEffect } from "react"
 import { isMediaSegment, getMediaSegmentLabel, getArticleUrl } from "../utils/articleUtils.js"
@@ -12,10 +12,17 @@ import Tabs from "../Components/Tabs.jsx"
 
 const LatestPosts = () => {
 
+    const [searchParams] = useSearchParams()
+    const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedFilters, setSelectedFilters] = useState([])
     const [visibleWeeks, setVisibleWeeks] = useState(3) // only three weeks
+
+    useEffect(() => {
+        const q = searchParams.get("q") || ""
+        setSearchQuery(q)
+    }, [searchParams])
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -224,10 +231,13 @@ const LatestPosts = () => {
         "Advisory": { type: "ADVISORY" },
         "Alert": { type: "ALERT" },
         "Walang Pasok": { type: "WALANG_PASOK", tag: "walang pasok" },
+        "Happening Now": { type: "HAPPENING_NOW" },
+        "Erratum": { type: "ERRATUM" },
         "University News": { type: "UNIVERSITY_NEWS" },
         "Local News": { type: "LOCAL_NEWS", tag: "local news" },
         "National News": { type: "NATIONAL_NEWS" },
         "International News": { type: "INTERNATIONAL_NEWS" },
+        "Sports News": { type: "SPORTS_NEWS" },
         "Developing Story": { type: "DEVELOPING_STORY" },
         "Look": { type: "LOOK" },
         "In Photos": { type: "IN_PHOTOS", tag: "in photos" },
@@ -259,12 +269,30 @@ const LatestPosts = () => {
     }
 
     const filteredArticles = articles.filter(article => {
-        if (selectedFilters.length === 0)
+        if (searchQuery.trim()) {
+            const q = searchQuery.toLowerCase().trim()
+            const headlineMatch = article.article_headline?.toLowerCase().includes(q)
+            const tagMatch = [article.article_tag1, article.article_tag2, article.article_tag3]
+                .some(t => t?.toLowerCase().includes(q))
+            const typeMatch = article.article_type?.toLowerCase().includes(q)
+            const authorMatch = article.article_staff?.some(s =>
+                s.staff?.staff_display_name?.toLowerCase().includes(q) ||
+                s.staff?.staff_pseudonym?.toLowerCase().includes(q)
+            )
+            if (!headlineMatch && !tagMatch && !typeMatch && !authorMatch) {
+                return false
+            }
+        }
+
+        if (selectedFilters.length === 0) {
             return true
+        }
+
         return selectedFilters.some(filterName => {
             const criteria = filterMap[filterName]
-            if (!criteria)
+            if (!criteria) {
                 return false
+            }
 
             const typeMatch = criteria.type && article.article_type === criteria.type
             const tagMatch = criteria.tag && (
@@ -280,7 +308,7 @@ const LatestPosts = () => {
 
     return (
         <div className="Latest-Posts-Page">
-            <CoverPhotoSearch />
+            <CoverPhotoSearch searchQuery = {searchQuery} setSearchQuery = {setSearchQuery} />
             <Tabs />
             <div className="Latest-Article-Two-Part">
                 <div className="Latest-Articles-Container">
@@ -366,16 +394,22 @@ const LatestPosts = () => {
                         <br></br><h3>Short-Form News</h3><br></br>
                         <hr></hr>
                         <div>
-                            {["Just In", "In Case You Missed It!", "Announcement", "Advisory", "Alert", "Walang Pasok"].map(renderCheckbox)}
+                            {["Just In", "In Case You Missed It!", "Announcement", "Advisory", "Alert", "Walang Pasok", "Happening Now", "Erratum"].map(renderCheckbox)}
                         </div>
 
                         <br></br><h3>Long-Form News</h3><br></br>
                         <hr></hr>
                         <div>
-                            {["University News", "Local News", "National News", "International News", "Developing Story"].map(renderCheckbox)}
+                            {["University News", "Local News", "National News", "International News", "Sports News", "Developing Story"].map(renderCheckbox)}
                         </div>
 
-                        <br></br><h3>Look, In Photos, Highlights</h3><br></br>
+                        <br></br><h3>Opinion & Editorial</h3><br></br>
+                        <hr></hr>
+                        <div>
+                            {["Opinion", "Editorial"].map(renderCheckbox)}
+                        </div>
+
+                        <br></br><h3>Look & Highlights</h3><br></br>
                         <hr></hr>
                         <div>
                             {["Look", "In Photos", "Highlights"].map(renderCheckbox)}

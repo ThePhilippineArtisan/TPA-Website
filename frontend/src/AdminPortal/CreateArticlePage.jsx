@@ -61,6 +61,7 @@ const CreateArticlePage = () => {
     const [tag1, setTag1] = useState("")
     const [tag2, setTag2] = useState("")
     const [tag3, setTag3] = useState("")
+    const [isPhotoOnly, setIsPhotoOnly] = useState(false)
 
     const [articleSource, setArticleSource] = useState("")
 
@@ -131,6 +132,20 @@ const CreateArticlePage = () => {
         try {
             const generatedSlug = slugify(headline)
 
+            let finalTag1 = tag1
+            let finalTag2 = tag2
+            let finalTag3 = tag3
+
+            if (isPhotoOnly) {
+                if (!finalTag1) {
+                    finalTag1 = "SET_PHOTO_ONLY"
+                } else if (!finalTag2) {
+                    finalTag2 = "SET_PHOTO_ONLY"
+                } else if (!finalTag3) {
+                    finalTag3 = "SET_PHOTO_ONLY"
+                }
+            }
+
             const newArticlePayloads = {
                 article_headline: headline,
                 article_body: body,
@@ -140,9 +155,9 @@ const CreateArticlePage = () => {
                 published_at: scheduledTime ? new Date(scheduledTime).toISOString() : undefined,
                 // published_by: figure it out
                 word_count: countWords(body),
-                article_tag1: tag1,
-                article_tag2: tag2,
-                article_tag3: tag3,
+                article_tag1: finalTag1,
+                article_tag2: finalTag2,
+                article_tag3: finalTag3,
                 article_source: articleSource,
                 // edit_history: probably just json
             }
@@ -228,7 +243,7 @@ const CreateArticlePage = () => {
 
                     const presignRes = await fetch('/api/media/presign', {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Content-Type': 'application/json',
                             ...(token ? { 'Authorization': `Bearer ${token}` } : {})
                         },
@@ -389,13 +404,18 @@ const CreateArticlePage = () => {
                         <option value="LOOK"> LOOK </option>
                         <option value="ICYMI"> ICYMI </option>
                         <option value="ANNOUNCEMENT"> ANNOUNCEMENT </option>
+                        <option value="WALANG_PASOK"> WALANG PASOK </option>
                         <option value="ADVISORY"> ADVISORY </option>
                         <option value="ALERT"> ALERT </option>
                         <option value="JUST_IN"> JUST IN </option>
+                        <option value="HAPPENING_NOW"> HAPPENING NOW </option>
+                        <option value="LOCAL_NEWS"> LOCAL NEWS </option>
                         <option value="UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
-                        <option value="NATIONAL_NEWS"> NATIONAL NEWS</option>
+                        <option value="NATIONAL_NEWS"> NATIONAL NEWS </option>
                         <option value="INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
+                        <option value="SPORTS_NEWS"> SPORTS NEWS </option>
                         <option value="DEVELOPING_STORY"> DEVELOPING STORY </option>
+                        <option value="ERRATUM"> ERRATUM </option>
 
                         <option value="NULL"> None </option>
 
@@ -410,12 +430,26 @@ const CreateArticlePage = () => {
                         <option value="EDITORIAL"> EDITORIAL </option>
                     </select>
 
-                    <label htmlFor="file-upload">
+                    <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", color: "#334155", cursor: "pointer", userSelect: "none" }}>
+                        <input
+                            type="checkbox"
+                            checked={isPhotoOnly}
+                            onChange={(e) => setIsPhotoOnly(e.target.checked)}
+                        />
+                        Set Photo Only
+                    </label>
+
+                    <label
+                        htmlFor="file-upload"
+                        title="Upload Custom Image or Graphic Card"
+                        style={{ display: "flex", alignItems: "center", gap: "0.3rem", cursor: "pointer" }}
+                    >
                         <img
                             src={ATTACH}
-                            alt="Upload"
+                            alt="Upload Photo"
                             style={{ cursor: "pointer" }}
                         />
+                        <span style={{ fontSize: "0.85rem", color: "#0265A9", fontWeight: "600" }}>Attach Photo</span>
 
                         <input
                             id="file-upload"
@@ -425,7 +459,6 @@ const CreateArticlePage = () => {
                             style={{ display: "none" }}
                             onChange={handleFileChange}
                         />
-
                     </label>
 
                     <img
@@ -718,12 +751,3 @@ const CreateArticlePage = () => {
             </div>
 
             <div className="Preview-Section">
-                <h1> Article Preview </h1>
-            </div>
-
-
-        </div>
-    )
-}
-
-export default CreateArticlePage;

@@ -9,6 +9,7 @@ import "./ManageStaff.css"
 const ManageArticles = () => {
     const [loading, setLoading] = useState(true)
     const [articles, setArticles] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -94,14 +95,52 @@ const ManageArticles = () => {
         return MedProvs.length > 0 ? MedProvs.join(", ") : "TPA"
     }
 
-    return(
+    const filteredArticles = articles.filter((article) => {
+        if (!searchTerm.trim()) {
+            return true
+        }
+        const query = searchTerm.toLowerCase().trim()
+        const idMatch = String(article.article_id).includes(query)
+        const typeMatch = article.article_type?.toLowerCase().includes(query)
+        const headlineMatch = article.article_headline?.toLowerCase().includes(query)
+        const authorMatch = getAuthorsString(article).toLowerCase().includes(query)
+        const medProvMatch = getMedProvsString(article).toLowerCase().includes(query)
+        return idMatch || typeMatch || headlineMatch || authorMatch || medProvMatch
+    })
+
+    return (
         <div className = "Manage-Staff-Page">
             <div className = "Manage-Staff-Page-Header">
                 <h1> Manage Articles </h1>                
-                <p> Add or edit staff details 
-                    <span> <a href="https://supabase.com/dashboard/project/uapnaylpxunquhievzzm/editor/31990?schema=public" target="_blank" rel="noopener noreferrer"> here! </a> 
-                    </span> <br></br> <br></br> </p>
+                <p> Search, view, or manage existing articles in the database. </p>
+            </div>
 
+            <div className = "Admin-Search-Container">
+                <div className = "Admin-Search-Input-Wrapper">
+                    <svg className = "Admin-Search-Icon" width = "16" height = "16" viewBox = "0 0 24 24" fill = "none" stroke = "currentColor" strokeWidth = "2">
+                        <circle cx = "11" cy = "11" r = "8" />
+                        <line x1 = "21" y1 = "21" x2 = "16.65" y2 = "16.65" />
+                    </svg>
+                    <input
+                        type = "text"
+                        className = "Admin-Search-Input"
+                        value = {searchTerm}
+                        onChange = {(e) => setSearchTerm(e.target.value)}
+                        placeholder = "Search by headline, category, ID, or author..."
+                    />
+                    {searchTerm && (
+                        <button
+                            type = "button"
+                            className = "Admin-Search-Clear"
+                            onClick = {() => setSearchTerm("")}
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
+                <span style = {{ fontSize: "0.85rem", color: "#64748b" }}>
+                    Showing {filteredArticles.length} of {articles.length} articles
+                </span>
             </div>
 
             <div className = "Manage-Staff-Grid-Container">
@@ -109,10 +148,11 @@ const ManageArticles = () => {
                     <div style={{ color: "black", padding: "5rem", textAlign: "center" }}>
                         <h3>Loading articles...</h3>
                     </div>
-                ) : articles.length === 0 ? ( 
+                ) : filteredArticles.length === 0 ? ( 
                     <div style={{ color: "black", padding: "5rem", textAlign: "center" }}>
-                        <h3>No articles found.</h3>
-                    </div>) : (
+                        <h3>No articles found matching "{searchTerm}".</h3>
+                    </div>
+                ) : (
                     <table className="Manage-Staff-Table">
                         <thead className="Manage-Staff-Grid-Columns">
                             <tr>
@@ -125,7 +165,7 @@ const ManageArticles = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {articles.map((article) => (
+                            {filteredArticles.map((article) => (
                                 <tr key = {article.article_id}>
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_id} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_type} </td>
@@ -146,10 +186,9 @@ const ManageArticles = () => {
                                 </tr>
                             ))}
                         </tbody>
-                        </table>
-                    )}
-
-                </div>
+                    </table>
+                )}
+            </div>
                 <div className = "Manage-Staff-Grid-Rows">
 
                 </div>
