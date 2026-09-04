@@ -1,17 +1,7 @@
 .Entire-Page {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1rem, 2.5vw, 2rem);
-    margin: clamp(1.5rem, 4vw, 3rem) 0;
-    padding: clamp(0.75rem, 2vw, 2rem);
-    box-sizing: border-box;
-    width: 100%;
-}
-
-@media (max-width: 1024px) {
-    .Entire-Page {
-        grid-template-columns: 1fr;
-    }
+    padding-top: 8dvh;
+    padding-left: 8dvw;
+    width: 90%;
 }
 
 .Editor-Rectangle {
@@ -103,7 +93,7 @@ select::picker(select) {
 #Body-Text {
     min-height: 350px;
     width: 100%;
-    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+    font-size: clamp(0.75rem, 0.9vw, 0.9rem);
     border: 3px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 1rem;
@@ -467,4 +457,4 @@ dialog {
 .Success-Copy-Button:hover {
     background-color: #1b5e20;
     border-color: #1b5e20;
-}
+}

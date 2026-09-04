@@ -24,6 +24,7 @@ const AdminLogInPage = lazy(() => import('./AdminPortal/AdminPageLogIn.jsx'))
 const AdminPage = lazy(() => import('./AdminPortal/AdminPage.jsx'))
 const AdminDashboard = lazy(() => import('./AdminPortal/AdminDashboard.jsx'))
 const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'))
+const AdminCalendar = lazy (()=> import('./AdminPortal/AdminCalendar.jsx'))
 const ManageArticlesPage = lazy(() => import('./AdminPortal/ManageArticles.jsx'))
 const ManageStaffPage = lazy(() => import('./AdminPortal/ManageStaff.jsx'))
 const ManageFrontPage = lazy(() => import('./AdminPortal/ManageFrontPage.jsx'))
@@ -133,6 +134,7 @@ const App = () => {
             <Route element = {<AdminPage />}>
               <Route path = "/admin/dashboard" element = {<AdminDashboard />} />
               <Route path = "/admin/create-article" element = {<CreateArticlePage />} />
+              <Route path = "/admin/content-calendar" element = {<AdminCalendar />} />
               <Route path = "/admin/articles" element = {<ManageArticlesPage />} />
               <Route path = "/admin/staff" element = {<ManageStaffPage />} />
               <Route path = "/admin/manage-page" element = {<ManageFrontPage />} />

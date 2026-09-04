@@ -9,6 +9,10 @@ const menuItems = [
         label: "Dashboard"
     },
     {
+        path: "/admin/content-calendar",
+        label: "Content Calendar"
+    },
+    {
         path: "/admin/create-article",
         label: "Create Article"
     },

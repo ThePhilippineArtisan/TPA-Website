@@ -749,5 +749,9 @@ const CreateArticlePage = () => {
                 </div>
 
             </div>
+</div>
 
-            <div className="Preview-Section">
+)
+}
+
+export default CreateArticlePage;
