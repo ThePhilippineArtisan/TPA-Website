@@ -1,114 +1,275 @@
 .Staff-Profile-Full-Page {
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: clamp(3rem, 8vw, 7rem) clamp(1rem, 3vw, 2.5rem);
-    background-color: #d7d8d2;
+    align-items: flex-start;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+    background-color: var(--bg-light, #f5f9fc);
     min-height: 100dvh;
     box-sizing: border-box;
     width: 100%;
 }
 
-.Staff-Profile-Main-Content {
-    display: flex;
-    flex-direction: row;
+.Staff-Profile-Container {
     width: 100%;
-    max-width: var(--container-max-width);
-    padding: clamp(1.5rem, 4vw, 4rem);
-    border-radius: clamp(1.5rem, 4vw, 3rem);
-    border: 2px solid rgb(128, 128, 128);
-    background-image: url("/notebook-dark.png");
-    background-color: whitesmoke;
-    box-sizing: border-box;
-    gap: clamp(1.5rem, 3vw, 3rem);
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
-@media (max-width: 900px) {
-    .Staff-Profile-Main-Content {
+/* Top Navigation Bar */
+.Staff-Profile-Nav-Bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.Staff-Profile-Back-Btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--primary-blue, #0265A9);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm, 4px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.Staff-Profile-Back-Btn:hover {
+    background-color: #f0f7ff;
+    border-color: var(--primary-blue, #0265A9);
+    transform: translateX(-2px);
+}
+
+.Staff-Profile-Admin-Edit-Btn {
+    background-color: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.5rem 1.15rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+}
+
+.Staff-Profile-Admin-Edit-Btn:hover {
+    background-color: var(--primary-blue-hover, #014c80);
+    transform: translateY(-1px);
+}
+
+/* Loading & Empty States */
+.Staff-Profile-Loading-Box,
+.Staff-Profile-Not-Found-Box {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-md, 12px);
+    padding: 4rem 2rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 4rem auto;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.Staff-Profile-Not-Found-Box h2 {
+    color: var(--text-dark, #121824);
+    margin-bottom: 0.5rem;
+}
+
+.Staff-Profile-Not-Found-Box p {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+/* Main Profile Card */
+.Staff-Profile-Main-Content {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-md, 12px);
+    padding: clamp(1.5rem, 3.5vw, 3rem);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.Horizontal-Staff-Profile-About {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 2.25rem;
+    margin-bottom: 2.25rem;
+}
+
+@media (max-width: 850px) {
+    .Horizontal-Staff-Profile-About {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
 }
 
-.Staff-Profile-Image-Content {
+.Profile-Image-Container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.75rem;
     flex-shrink: 0;
 }
 
-.Staff-Profile-Image-Content img {
-    width: clamp(180px, 30vw, 320px);
-    height: clamp(180px, 30vw, 320px);
+.Profile-Image-Container img {
+    width: clamp(160px, 22vw, 240px);
+    height: clamp(160px, 22vw, 240px);
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--primary-blue);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.Profile-Image-Container {
-    border-right: 2px solid rgba(128, 128, 128, 0.3);
-    padding-right: clamp(1rem, 2.5vw, 2.5rem);
-}
-
-@media (max-width: 900px) {
-    .Profile-Image-Container {
-        border-right: none;
-        border-bottom: 2px solid rgba(128, 128, 128, 0.3);
-        padding-right: 0;
-        padding-bottom: 1.5rem;
-        width: 100%;
-    }
-}
-
-.Horizontal-Staff-Profile-About {
-    display: flex;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.3);
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    border: 4px solid var(--primary-blue, #0265A9);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    background-color: #f1f5f9;
 }
 
 .Right-Side-Profile-About {
     display: flex;
     flex-direction: column;
-    white-space: pre-wrap;
-    width: 100%;
+    justify-content: center;
+    flex: 1;
 }
 
-.Right-Side-Profile-About h1 {
+.Staff-Pills-Row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.85rem;
+}
+
+@media (max-width: 850px) {
+    .Staff-Pills-Row {
+        justify-content: center;
+    }
+}
+
+.Staff-Active-Pill {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    background-color: #15803d;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+}
+
+.Staff-EdBoard-Pill {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    background-color: #0f172a;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+}
+
+.Staff-Position-Pill {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--primary-blue, #0265A9);
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+}
+
+.Staff-Meta-Pill {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+}
+
+.Staff-Display-Name {
     font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-    margin: 0 0 0.5rem 0;
-    color: var(--text-dark);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    color: var(--text-dark, #121824);
+    line-height: 1.2;
+    margin: 0 0 0.35rem 0;
+}
+
+.Staff-Pseudonym-Line {
+    font-size: 0.92rem;
+    color: #64748b;
+    margin: 0 0 1.25rem 0;
+}
+
+.Staff-Pseudonym-Line span {
+    font-weight: 600;
+    color: #334155;
+    font-style: italic;
 }
 
 .Profile-Bio-Container {
-    padding-top: 1rem;
-    width: 100%;
-    font-family: var(--font-sans);
-    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-    line-height: 1.7;
-    color: var(--text-dark);
+    background-color: #f8fafc;
+    border-left: 3px solid var(--primary-blue, #0265A9);
+    border-radius: 0 var(--radius-sm, 4px) var(--radius-sm, 4px) 0;
+    padding: 1rem 1.25rem;
+    margin-top: 0.5rem;
+    text-align: left;
 }
 
-/* Staff Contributions & Recent Creations Section */
+.Profile-Bio-Container h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #334155;
+    margin: 0 0 0.5rem 0;
+}
+
+.Staff-Bio-Paragraph {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #334155;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Creations & Contributions Section */
 .Staff-Contributions-Section {
     width: 100%;
-    margin-top: 2rem;
-    padding-top: 1rem;
 }
 
-.Staff-Contributions-Section h2 {
-    font-family: var(--font-sans);
-    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+.Staff-Contributions-Header-Bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid #0265A9;
+    padding-bottom: 0.65rem;
+    margin-bottom: 1.5rem;
+}
+
+.Staff-Contributions-Header-Bar h2 {
+    font-size: clamp(1.15rem, 2.2vw, 1.45rem);
     font-weight: 800;
-    color: var(--primary-blue, #0265A9);
-    margin-bottom: 1.25rem;
-    border-bottom: 2px solid rgba(2, 101, 169, 0.2);
-    padding-bottom: 0.5rem;
+    color: var(--text-dark, #121824);
+    margin: 0;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.03em;
+}
+
+.Staff-Contributions-Total {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--primary-blue, #0265A9);
+    text-transform: uppercase;
 }
 
 .Staff-Contributions-Grid {
@@ -121,26 +282,54 @@
 .Staff-Contrib-Card {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background-color: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .Staff-Contrib-Card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(2, 101, 169, 0.12);
-    border-color: #0265A9;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary-blue, #0265A9);
+}
+
+.Staff-Contrib-Img-Wrap {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background-color: #0f172a;
+    overflow: hidden;
 }
 
 .Staff-Contrib-Image {
     width: 100%;
-    height: 160px;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.Staff-Contrib-Card:hover .Staff-Contrib-Image {
+    transform: scale(1.03);
+}
+
+.Staff-Contrib-Category-Tag {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
 }
 
 .Staff-Contrib-Details {
@@ -153,35 +342,32 @@
 
 .Staff-Contrib-Tags {
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
 }
 
 .Contrib-Role-Badge {
-    font-size: 0.75rem;
     font-weight: 700;
-    background-color: #0265A9;
-    color: #ffffff;
-    padding: 0.15rem 0.5rem;
+    color: var(--primary-blue, #0265A9);
+    background-color: #f0f7ff;
+    padding: 0.15rem 0.45rem;
     border-radius: 4px;
+    border: 1px solid rgba(2, 101, 169, 0.2);
     text-transform: uppercase;
 }
 
-.Contrib-Type-Badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    background-color: #e0f2fe;
-    color: #0369a1;
-    padding: 0.15rem 0.5rem;
-    border-radius: 4px;
-    text-transform: uppercase;
+.Staff-Contrib-Date {
+    color: #64748b;
+    font-weight: 500;
 }
 
 .Staff-Contrib-Headline {
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.98rem;
     font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.4;
     color: #0f172a;
     margin: 0;
     display: -webkit-box;
@@ -190,15 +376,12 @@
     overflow: hidden;
 }
 
-.Staff-Contrib-Date {
-    font-size: 0.8rem;
+.Staff-No-Contribs-Box {
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 3rem 1.5rem;
+    text-align: center;
     color: #64748b;
-    margin-top: auto;
+    font-size: 0.92rem;
 }
-
-.No-Contribs-Text {
-    font-size: 1rem;
-    color: #64748b;
-    font-style: italic;
-}
-

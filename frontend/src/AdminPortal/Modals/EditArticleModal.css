@@ -1,0 +1,54 @@
+.Edit-Article-Card-Wide {
+    max-width: 820px;
+}
+
+.Edit-Modal-Header-Actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.Edit-Modal-View-Link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-blue, #0265A9);
+    text-decoration: none;
+    border: 1px solid rgba(2, 101, 169, 0.4);
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.35rem 0.75rem;
+    transition: all 0.15s ease;
+}
+
+.Edit-Modal-View-Link:hover {
+    background-color: #f0f9ff;
+    border-color: var(--primary-blue, #0265A9);
+}
+
+.Edit-Body-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Edit-Word-Count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.Edit-Article-Body-Textarea {
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0.75rem;
+    resize: vertical;
+    min-height: 180px;
+}
+
+.Edit-Publish-Status-Hint {
+    font-size: 0.8rem;
+    color: #64748b;
+    align-self: center;
+}

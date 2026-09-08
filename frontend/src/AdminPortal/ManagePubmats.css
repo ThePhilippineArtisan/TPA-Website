@@ -1,0 +1,532 @@
+.Manage-Pubmats-Container {
+    padding: clamp(1rem, 2.5vw, 2rem);
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    font-family: var(--font-sans);
+}
+
+.Manage-Pubmats-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.Manage-Pubmats-Header h1 {
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.25rem 0;
+    color: #111827;
+}
+
+.Manage-Pubmats-Count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.Pubmat-Btn-New {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border: 2px solid var(--primary-blue);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 1.15rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.Pubmat-Btn-New:hover {
+    background-color: #025287;
+}
+
+/* Table Missing Banner */
+.Pubmat-Table-Missing-Banner {
+    background-color: #ffffff;
+    border: 3px solid #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.Pubmat-Table-Missing-Banner strong {
+    display: block;
+    font-size: 1rem;
+    color: #b45309;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.Pubmat-Table-Missing-Banner p {
+    font-size: 0.85rem;
+    margin: 0 0 0.75rem 0;
+    color: #334155;
+}
+
+.Pubmat-Table-Missing-Banner pre {
+    background-color: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
+    font-size: 0.78rem;
+    overflow-x: auto;
+    margin: 0 0 0.75rem 0;
+}
+
+.Pubmat-Btn-Copy-Sql {
+    background-color: #ffffff;
+    color: #b45309;
+    border: 2px solid #b45309;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.Pubmat-Btn-Copy-Sql:hover {
+    background-color: #b45309;
+    color: #ffffff;
+}
+
+/* Create / Edit Form Card */
+.Pubmat-Form-Card {
+    background-color: #ffffff;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.Pubmat-Form-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.Pubmat-Form-Header h2 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+    color: #111827;
+}
+
+.Pubmat-Form-Close-Btn {
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    color: #111827;
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.Pubmat-Form-Close-Btn:hover {
+    background-color: #f1f5f9;
+}
+
+.Pubmat-Form-Error {
+    padding: 0.75rem 1rem;
+    border: 2px solid #dc2626;
+    border-radius: var(--radius-sm);
+    color: #dc2626;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+}
+
+.Pubmat-Form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.Pubmat-Form-Row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    align-items: flex-end;
+}
+
+@media (max-width: 768px) {
+    .Pubmat-Form-Row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.Pubmat-Form-Field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.Pubmat-Form-Field label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #334155;
+    letter-spacing: 0.5px;
+}
+
+.Pubmat-Form-Field input[type="text"],
+.Pubmat-Form-Field select {
+    padding: 0.6rem 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    outline: none;
+    background-color: #ffffff;
+}
+
+.Pubmat-Form-Field input[type="text"]:focus,
+.Pubmat-Form-Field select:focus {
+    border-color: var(--primary-blue);
+}
+
+.Pubmat-File-Upload-Btn {
+    display: inline-block;
+    padding: 0.55rem 0.9rem;
+    background-color: #ffffff;
+    color: #0265A9;
+    border: 2px solid #0265A9;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.Pubmat-File-Upload-Btn:hover {
+    background-color: #0265A9;
+    color: #ffffff;
+}
+
+.Pubmat-Form-Field-Checkbox {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0;
+}
+
+.Pubmat-Form-Field-Checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111827;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Pubmat-Form-Field-Checkbox input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+}
+
+.Pubmat-Form-Preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.Pubmat-Form-Preview-Label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #334155;
+}
+
+.Pubmat-Preview-Box {
+    width: 100%;
+    max-width: 320px;
+    height: 200px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.Pubmat-Preview-Box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.Pubmat-Form-Actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    border-top: 2px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.Pubmat-Btn-Secondary {
+    background-color: #ffffff;
+    border: 2px solid var(--border-color);
+    color: #111827;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.Pubmat-Btn-Secondary:hover {
+    background-color: #f1f5f9;
+}
+
+.Pubmat-Btn-Primary {
+    background-color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.Pubmat-Btn-Primary:hover {
+    background-color: #025287;
+}
+
+/* Toolbar & Filters */
+.Pubmat-Toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.Pubmat-Search-Wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.Pubmat-Search-Input {
+    width: 100%;
+    padding: 0.6rem 3.5rem 0.6rem 0.85rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    outline: none;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.Pubmat-Search-Input:focus {
+    border-color: var(--primary-blue);
+}
+
+.Pubmat-Search-Clear {
+    position: absolute;
+    right: 0.6rem;
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.Pubmat-Search-Clear:hover {
+    color: #111827;
+}
+
+.Pubmat-Category-Filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.Pubmat-Category-Pill {
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #334155;
+    transition: all 0.15s ease;
+}
+
+.Pubmat-Category-Pill:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.Pubmat-Category-Pill.active {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+/* Pubmat Cards Grid */
+.Pubmat-Grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.Pubmat-Card {
+    background-color: #ffffff;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.Pubmat-Card.inactive {
+    opacity: 0.65;
+}
+
+.Pubmat-Card-Image-Wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: #ffffff;
+    overflow: hidden;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.Pubmat-Card-Image-Wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.Pubmat-Card-Category {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #111827;
+}
+
+.Pubmat-Card-Status-Inactive {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: #dc2626;
+    color: #ffffff;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.Pubmat-Card-Body {
+    padding: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.Pubmat-Card-Title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.Pubmat-Card-Actions {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.6rem;
+    gap: 0.4rem;
+}
+
+.Pubmat-Card-Btn {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.4rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #111827;
+    transition: all 0.12s ease;
+    text-align: center;
+}
+
+.Pubmat-Card-Btn:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.Pubmat-Card-Btn-Delete {
+    color: #dc2626;
+}
+
+.Pubmat-Card-Btn-Delete:hover {
+    border-color: #dc2626;
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.Pubmat-Loading,
+.Pubmat-Empty-State {
+    text-align: center;
+    padding: 3.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+}

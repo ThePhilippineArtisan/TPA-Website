@@ -35,6 +35,10 @@ const menuItems = [
     {
         path: "/admin/manage-releases",
         label: "Manage Releases",
+    },
+    {
+        path: "/admin/manage-pubmats",
+        label: "Manage Pubmats",
     }
 ]
 

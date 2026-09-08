@@ -3,10 +3,12 @@ import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 
 import "./ManageStaff.css"
+import EditStaffModal from "./Modals/EditStaffModal.jsx"
 
 const ManageStaff = () => {
     const [staff, setStaff] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
+    const [selectedStaffToEdit, setSelectedStaffToEdit] = useState(null)
 
     useEffect(() => {
         const fetchStaff = async () => {
@@ -25,15 +27,24 @@ const ManageStaff = () => {
         fetchStaff()
     }, [])
 
+    const handleStaffUpdated = (updatedMember) => {
+        setStaff((prev) =>
+            prev.map((m) => (m.staff_id === updatedMember.staff_id ? updatedMember : m))
+        )
+    }
+
     const filteredStaff = staff.filter((member) => {
         if (!searchTerm.trim()) {
             return true
         }
         const query = searchTerm.toLowerCase().trim()
         const idMatch = String(member.staff_id).includes(query)
-        const nameMatch = member.staff_display_name?.toLowerCase().includes(query)
+        const nameMatch = member.staff_display_name?.toLowerCase().includes(query) ||
+            `${member.staff_first_name || ""} ${member.staff_last_name || ""}`.toLowerCase().includes(query)
         const pseudonymMatch = member.staff_pseudonym?.toLowerCase().includes(query)
-        const positionMatch = member.staff_position?.toLowerCase().includes(query)
+        const rawPos = member.staff_position ? member.staff_position.toLowerCase() : ""
+        const cleanPos = member.staff_position ? replaceUnderscore(member.staff_position).toLowerCase() : ""
+        const positionMatch = rawPos.includes(query) || cleanPos.includes(query)
         const bioMatch = member.staff_bio?.toLowerCase().includes(query)
         return idMatch || nameMatch || pseudonymMatch || positionMatch || bioMatch
     })
@@ -42,10 +53,9 @@ const ManageStaff = () => {
         <div className = "Manage-Staff-Page">
             <div className = "Manage-Staff-Page-Header">
                 <h1> Manage Staff </h1>
-                <p> Add or edit staff details <span> <a href = "https://supabase.com/dashboard/project/uapnaylpxunquhievzzm/editor/31990?schema=public" target = "_blank" rel = "noopener noreferrer"> here! </a> </span> <br></br> <br></br>
-                    Make sure to log-in using our Github account or an authorized/invited team account on our Supabase project. 
+                <p>
+                    Click any staff member row below to edit their details directly. Changes save immediately to the database.
                 </p>
-                <p> To change staff's profile photo, use our Cloudflare R2 Images Account here: <a href = "https://dash.cloudflare.com/f98ca61f7a355790df8cf93617ed1111/r2/default/buckets/tpamediaassets?prefix=staff-photos%2F" target = "_blank" rel = "noopener noreferrer"> here! </a></p>
             </div>
 
             <div className = "Admin-Search-Container">
@@ -66,8 +76,12 @@ const ManageStaff = () => {
                             type = "button"
                             className = "Admin-Search-Clear"
                             onClick = {() => setSearchTerm("")}
+                            aria-label = "Clear search"
                         >
-                            ✕
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                         </button>
                     )}
                 </div>
@@ -98,17 +112,24 @@ const ManageStaff = () => {
                         
                         <tbody>
                             {filteredStaff.map((member) => (
-                                <tr key = {member.staff_id}>
+                                <tr 
+                                    key = {member.staff_id}
+                                    className = "Manage-Staff-Clickable-Row"
+                                    onClick = {() => setSelectedStaffToEdit(member)}
+                                    title = "Click to edit staff member"
+                                >
                                     <td className = "Manage-Staff-Grid-Row"> {member.staff_id} </td>
-                                    <td className = "Manage-Staff-Grid-Row"> {member.staff_display_name} </td>
-                                    <td className = "Manage-Staff-Grid-Row"> {member.staff_pseudonym} </td>
-                                    <td className = "Manage-Staff-Grid-Row"> 
-                                        <div className = "long-column"> {member.staff_bio} </div>
+                                    <td className = "Manage-Staff-Grid-Row" style = {{ fontWeight: "600", color: "var(--primary-blue)" }}> 
+                                        {member.staff_display_name} 
                                     </td>
-                                    <td className = "Manage-Staff-Grid-Row"> {member.staff_birthday} </td>
+                                    <td className = "Manage-Staff-Grid-Row"> {member.staff_pseudonym || "-"} </td>
+                                    <td className = "Manage-Staff-Grid-Row"> 
+                                        <div className = "long-column"> {member.staff_bio || "-"} </div>
+                                    </td>
+                                    <td className = "Manage-Staff-Grid-Row"> {member.staff_birthday || "-"} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {replaceUnderscore(member.staff_position)} </td>
-                                    <td className = "Manage-Staff-Grid-Row long-column"> {member.staff_picture} </td>
-                                    <td className = "Manage-Staff-Grid-Row"> {member.join_date} </td>
+                                    <td className = "Manage-Staff-Grid-Row long-column"> {member.staff_picture || "-"} </td>
+                                    <td className = "Manage-Staff-Grid-Row"> {member.join_date || "-"} </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -116,6 +137,13 @@ const ManageStaff = () => {
                 )}
             </div>
 
+            {selectedStaffToEdit && (
+                <EditStaffModal
+                    staff={selectedStaffToEdit}
+                    onClose={() => setSelectedStaffToEdit(null)}
+                    onSave={handleStaffUpdated}
+                />
+            )}
         </div>
     )
 }

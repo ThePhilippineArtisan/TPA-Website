@@ -8,6 +8,7 @@ import DOMPurify from "dompurify"
 import { sanitizeUrl } from "../utils/stringUtils.js"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx"
 import NeighboringArticles from "../Components/NeighboringArticles.jsx"
+import EditArticleModal from "../AdminPortal/Modals/EditArticleModal.jsx"
 import "../CSS/ArticlePage.css"
 
 const ArticlePage = () => {
@@ -19,6 +20,14 @@ const ArticlePage = () => {
     const [currentPhoto, setCurrentPhoto] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [isAdmin, setIsAdmin] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setIsAdmin(Boolean(session))
+        })
+    }, [])
 
     useEffect(() => {
         const fetchArticleDetails = async () => {
@@ -175,7 +184,7 @@ const ArticlePage = () => {
                         {authors.length > 0 ? (
                             authors.map((auth, idx) => (
                                 <span key={auth.staff_id}>
-                                    <Link to={`/staff/${auth.staff_id}`}>{auth.displayName}</Link>
+                                    <Link to={`/staff/${slugify(auth.displayName)}`}>{auth.displayName}</Link>
                                     {idx < authors.length - 1 ? ", " : ""}
                                 </span>
                             ))
@@ -185,6 +194,26 @@ const ArticlePage = () => {
                     </p>
                     <span className="Meta-Dot">•</span>
                     <span className="Article-Date">{formatDateReadable(articleDetails.published_at)}</span>
+
+                    {isAdmin && (
+                        <button
+                            type="button"
+                            onClick={() => setIsEditModalOpen(true)}
+                            style={{
+                                marginLeft: "auto",
+                                padding: "0.35rem 0.85rem",
+                                fontSize: "0.8rem",
+                                fontWeight: "700",
+                                color: "#ffffff",
+                                backgroundColor: "var(--primary-blue, #0265A9)",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer"
+                            }}
+                        >
+                            Edit Article
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -196,7 +225,7 @@ const ArticlePage = () => {
                             Photo by{" "}
                             {mediaProviders.map((med, idx) => (
                                 <span key={med.staff_id}>
-                                    <Link to={`/staff/${med.staff_id}`}>{med.displayName}</Link>
+                                    <Link to={`/staff/${slugify(med.displayName)}`}>{med.displayName}</Link>
                                     {idx < mediaProviders.length - 1 ? ", " : ""}
                                 </span>
                             ))}
@@ -239,6 +268,14 @@ const ArticlePage = () => {
                 publishedAt={articleDetails.published_at} 
                 isMediaSegment={false} 
             />
+
+            {isEditModalOpen && (
+                <EditArticleModal
+                    article={articleDetails}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={(updated) => setArticleDetails((prev) => ({ ...prev, ...updated }))}
+                />
+            )}
         </div>
     )
 }

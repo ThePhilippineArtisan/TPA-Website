@@ -5,11 +5,19 @@ import { isMediaSegment, getMediaSegmentLabel, getArticleUrl} from "../utils/art
 
 import "./ManageArticles.css"
 import "./ManageStaff.css"
+import EditArticleModal from "./Modals/EditArticleModal.jsx"
 
 const ManageArticles = () => {
     const [loading, setLoading] = useState(true)
     const [articles, setArticles] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
+    const [selectedArticleToEdit, setSelectedArticleToEdit] = useState(null)
+
+    const handleArticleUpdated = (updatedArt) => {
+        setArticles((prev) =>
+            prev.map((a) => (a.article_id === updatedArt.article_id ? { ...a, ...updatedArt } : a))
+        )
+    }
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -112,7 +120,7 @@ const ManageArticles = () => {
         <div className = "Manage-Staff-Page">
             <div className = "Manage-Staff-Page-Header">
                 <h1> Manage Articles </h1>                
-                <p> Search, view, or manage existing articles in the database. </p>
+                <p> Click any article row below to edit its headline, type, publication status, date, tags, or content directly. </p>
             </div>
 
             <div className = "Admin-Search-Container">
@@ -166,13 +174,18 @@ const ManageArticles = () => {
                         </thead>
                         <tbody>
                             {filteredArticles.map((article) => (
-                                <tr key = {article.article_id}>
+                                <tr 
+                                    key = {article.article_id}
+                                    className = "Manage-Staff-Clickable-Row"
+                                    onClick = {() => setSelectedArticleToEdit(article)}
+                                    title = "Click to edit article"
+                                >
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_id} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {article.article_type} </td>
-                                    <td className="Manage-Staff-Grid-Row" title={article.article_headline}>
-                                        <Link to={getArticleUrl(article)} target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary-blue)", fontWeight: "600", textDecoration: "underline" }}>
+                                    <td className="Manage-Staff-Grid-Row" style={{ textAlign: "left", maxWidth: "35ch", overflow: "hidden", textOverflow: "ellipsis" }} title={article.article_headline}>
+                                        <span style={{ color: "var(--primary-blue)", fontWeight: "600" }}>
                                             {article.article_headline}
-                                        </Link>
+                                        </span>
                                     </td>
                                     <td className = "Manage-Staff-Grid-Row"> {getAuthorsString(article)} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {getMedProvsString(article)} </td>
@@ -189,11 +202,15 @@ const ManageArticles = () => {
                     </table>
                 )}
             </div>
-                <div className = "Manage-Staff-Grid-Rows">
 
-                </div>
-
-            </div>
+            {selectedArticleToEdit && (
+                <EditArticleModal
+                    article={selectedArticleToEdit}
+                    onClose={() => setSelectedArticleToEdit(null)}
+                    onSave={handleArticleUpdated}
+                />
+            )}
+        </div>
     )
 }
 

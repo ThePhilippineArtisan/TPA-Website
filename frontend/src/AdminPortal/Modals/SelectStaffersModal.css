@@ -1,59 +1,250 @@
-.Dialog-Box{
-    position: fixed;
-    top: 15%;
-    left: 30%;
+.Select-Staffers-Dialog {
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: 100%;
+}
 
-    background-color: white;
+.Select-Staffers-Dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Dialog-Box {
+    background-color: #ffffff;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    
-    height: 70%;
-    width: 35rem;
-    
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 2rem 1rem;
+    width: 90vw;
+    max-width: 36rem;
+    max-height: 85vh;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
     color: var(--text-dark);
     font-family: var(--font-sans);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    animation: fadeIn 0.25s ease-out;
+    box-sizing: border-box;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-.Inside-Dialog-Box{
-    display: flex;
-    justify-content: center;
-
-    height: 100%;
-    width: 100%;
-    overflow-y: scroll;
-}
-
-.Staffer-Item{
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-
+.Staff-Modal-Header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    width: 30rem;
-    padding: 0.75rem 1rem;
-    margin: 0.75rem 0rem;
-    cursor: pointer;
-    transition: var(--transition-smooth);
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 1rem;
 }
 
-.Staffer-Item:hover{
-    background-color: var(--bg-light);
+.Staff-Modal-Header h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    color: #111827;
+}
+
+.Staff-Modal-Close-X {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #4b5563;
+    line-height: 1;
+    padding: 0.2rem 0.5rem;
+}
+
+.Staff-Modal-Close-X:hover {
+    color: #000000;
+}
+
+/* Selected Chips */
+.Selected-Staff-Chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+    max-height: 90px;
+    overflow-y: auto;
+}
+
+.Staff-Chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.Staff-Chip-Remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: #dc2626;
+    padding: 0 0.15rem;
+}
+
+/* Search Bar */
+.Staff-Modal-Search-Container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.Staff-Modal-Search-Input {
+    width: 100%;
+    padding: 0.55rem 3.5rem 0.55rem 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.Staff-Modal-Search-Input:focus {
     border-color: var(--primary-blue);
 }
 
-.Staffer-Item p{
-    padding-right: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
+.Staff-Modal-Search-Clear {
+    position: absolute;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.Staff-Modal-Search-Clear:hover {
+    color: #111827;
+}
+
+/* Scrollable Staffer List */
+.Inside-Dialog-Box {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    max-height: 300px;
+}
+
+.Staffer-Section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.Staffer-Item-Label {
+    display: block;
+    cursor: pointer;
+}
+
+.Staffer-Item {
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.75rem;
+    background-color: #ffffff;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.Staffer-Item:hover {
+    border-color: var(--primary-blue);
+}
+
+.Staffer-Item.selected {
+    border-color: var(--primary-blue);
+    background-color: #ffffff;
+}
+
+.Staffer-Item-Checkbox {
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+}
+
+.Staffer-Item-Details {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-grow: 1;
+}
+
+.Staffer-Item-Name {
+    font-size: 0.88rem;
+    font-weight: 700;
     color: var(--text-dark);
 }
+
+.Staffer-Item-Pseudonym {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.Staffer-No-Results {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Footer Buttons */
+.Staff-Modal-Footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.Staff-Modal-Cancel-Btn {
+    background-color: #ffffff;
+    border: 2px solid var(--border-color);
+    color: #111827;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.Staff-Modal-Cancel-Btn:hover {
+    background-color: #f1f5f9;
+}
+
+.Staff-Modal-Confirm-Btn {
+    background-color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.45rem 1.1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.Staff-Modal-Confirm-Btn:hover {
+    background-color: #025287;
+}

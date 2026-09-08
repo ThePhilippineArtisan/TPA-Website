@@ -21,6 +21,7 @@ import MediaProvider from "../assets/Miniature_Icon_Version/MediaProvider.svg"
 
 import "../AdminPortal/CreateArticlePage.css"
 import StaffModal from "./Modals/SelectStaffersModal.jsx"
+import SelectPubmatModal from "./Modals/SelectPubmatModal.jsx"
 
 const CreateArticlePage = () => {
 
@@ -58,6 +59,10 @@ const CreateArticlePage = () => {
     // container for photo/s, initially empty array
     const [mediaImagePhoto, setMediaImagePhoto] = useState([])
 
+    // Reusable Pubmat for single photo posts / storage saving
+    const [selectedPubmat, setSelectedPubmat] = useState(null)
+    const [isPubmatModalOpen, setIsPubmatModalOpen] = useState(false)
+
     const [tag1, setTag1] = useState("")
     const [tag2, setTag2] = useState("")
     const [tag3, setTag3] = useState("")
@@ -65,11 +70,22 @@ const CreateArticlePage = () => {
 
     const [articleSource, setArticleSource] = useState("")
 
-    // calls imageUtils.js = 
+    // Move any attached photo to primary position (index 0)
+    const handleSetAsCover = (indexToPromote) => {
+        if (indexToPromote === 0) return
+        setMediaImagePhoto(prev => {
+            const chosen = prev[indexToPromote]
+            const remaining = prev.filter((_, idx) => idx !== indexToPromote)
+            return [chosen, ...remaining]
+        })
+    }
+
+    // General file upload from toolbar
     const handleFileChange = async (e) => {
         const files = Array.from(e.target.files)
+        if (!files.length) return
 
-        try { // Compress all selected images
+        try {
             const compressedResults = await Promise.all(
                 files.map(async (file) => {
                     const compressedBlob = await compressImage(file)
@@ -81,11 +97,12 @@ const CreateArticlePage = () => {
                     }
                 })
             )
-            // add recent image into the array of mediaImagePhoto
             setMediaImagePhoto(prev => [...prev, ...compressedResults])
         } catch (error) {
             console.error("Image compression error: ", error)
             alert("Error compressing images: " + error.message)
+        } finally {
+            e.target.value = ""
         }
     }
 
@@ -210,6 +227,30 @@ const CreateArticlePage = () => {
 
             const articleMediaPayloads = []
 
+            // If a pubmat was selected, link it directly as primary #1 (zero duplicate uploads)
+            let pubmatMediaId = selectedPubmat?.media_id
+            if (selectedPubmat?.media_url && !pubmatMediaId) {
+                const { data: createdMedia } = await supabase
+                    .from("media")
+                    .insert([{
+                        media_url: selectedPubmat.media_url,
+                        media_altText: selectedPubmat.title || "Pubmat Graphic"
+                    }])
+                    .select()
+                    .single()
+                if (createdMedia?.media_id) {
+                    pubmatMediaId = createdMedia.media_id
+                }
+            }
+
+            if (pubmatMediaId) {
+                articleMediaPayloads.push({
+                    article_id: newArticleId,
+                    media_id: pubmatMediaId,
+                    media_order: 1
+                })
+            }
+
             // default to the first one in the array, ?.staff_id optional chaining
             const mediaContributorId = selectedMediaProviders[0]?.staff_id || null
 
@@ -225,6 +266,7 @@ const CreateArticlePage = () => {
 
             for (let idx = 0; idx < mediaImagePhoto.length; idx++) {
                 const imgObj = mediaImagePhoto[idx]
+                const currentOrder = pubmatMediaId ? idx + 2 : idx + 1
 
                 try {
                     // Use a single bucket (article-photos) to simplify CORS and public URLs,
@@ -289,7 +331,7 @@ const CreateArticlePage = () => {
                     articleMediaPayloads.push({
                         article_id: newArticleId, // add this to article_media
                         media_id: mediaRow.media_id,
-                        media_order: idx + 1
+                        media_order: currentOrder
                     })
                 } catch (err) {
                     console.error(`Error uploading image "${imgObj.name}": `, err)
@@ -334,6 +376,7 @@ const CreateArticlePage = () => {
             setTag2("")
             setTag3("")
             setArticleSource("")
+            setSelectedPubmat(null)
 
             mediaImagePhoto.forEach(imgObj => {
                 if (imgObj.preview) {
@@ -354,40 +397,47 @@ const CreateArticlePage = () => {
 
     return (
         <div className="Entire-Page">
-            <div className="Editor-Rectangle">
-                {publishedUrl && (
-                    <div className="Success-Banner">
-                        <div className="Success-Banner-Content">
-                            <div className="Success-Text-Details">
-                                <strong>Success! Article uploaded successfully.</strong>
-                                <p>You can view your article or copy the link below:</p>
-                            </div>
-                            <button className="Dismiss-Banner" onClick={() => setPublishedUrl("")}>✕</button>
+            {publishedUrl && (
+                <div className="Success-Banner">
+                    <div className="Success-Banner-Content">
+                        <div className="Success-Text-Details">
+                            <strong>Success! Article uploaded successfully.</strong>
+                            <p>You can view your article or copy the link below:</p>
                         </div>
-                        <div className="Success-Banner-Url-Row">
-                            <input
-                                type="text"
-                                readOnly
-                                value={publishedUrl}
-                                onClick={(e) => e.target.select()}
-                                className="Success-Url-Input"
-                            />
-                            <button
-                                onClick={async () => {
-                                    try {
-                                        await navigator.clipboard.writeText(publishedUrl)
-                                        alert("Link copied to clipboard!")
-                                    } catch (err) {
-                                        alert("Could not copy automatically. Please copy the text manually from the box.")
-                                    }
-                                }}
-                                className="Success-Copy-Button"
-                            >
-                                Copy
-                            </button>
-                        </div>
+                        <button className="Dismiss-Banner" onClick={() => setPublishedUrl("")} aria-label="Dismiss banner">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
                     </div>
-                )}
+                    <div className="Success-Banner-Url-Row">
+                        <input
+                            type="text"
+                            readOnly
+                            value={publishedUrl}
+                            onClick={(e) => e.target.select()}
+                            className="Success-Url-Input"
+                        />
+                        <button
+                            onClick={async () => {
+                                try {
+                                    await navigator.clipboard.writeText(publishedUrl)
+                                    alert("Link copied to clipboard!")
+                                } catch (err) {
+                                    alert("Could not copy automatically. Please copy the text manually from the box.")
+                                }
+                            }}
+                            className="Success-Copy-Button"
+                        >
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <div className="Admin-Article-Create-Layout">
+                <div className="Editor-Rectangle">
 
                 <div className="Text-Formatting-Section">
                     <img src={BOLD} />
@@ -438,6 +488,14 @@ const CreateArticlePage = () => {
                         />
                         Set Photo Only
                     </label>
+
+                    <button
+                        type="button"
+                        className="Toolbar-Pubmat-Btn"
+                        onClick={() => setIsPubmatModalOpen(true)}
+                    >
+                        Pubmats{selectedPubmat ? " (1)" : ""}
+                    </button>
 
                     <label
                         htmlFor="file-upload"
@@ -503,21 +561,6 @@ const CreateArticlePage = () => {
 
                 </div>
 
-                {/** List of Images with Remove Option through handleRemoveImage's index */}
-
-                {(mediaImagePhoto.length > 0) && (
-                    <div className="Selected-Images-List">
-                        <h4> Selected Images ({mediaImagePhoto.length}): </h4>
-                        <div className="Selected-Images-Grid">
-                            {mediaImagePhoto.map((imgObj, idx) => (
-                                <div key={idx} className="Selected-Image-Item">
-                                    <span> {imgObj.name} </span>
-                                    <button type="button" onClick={() => handleRemoveImage(idx)}> Remove</button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
 
                 {(selectedAuthors.length > 0 || selectedMediaProviders.length > 0) && (
                     <div className="Selected-Staffers" style={{ padding: "1rem" }}>
@@ -659,6 +702,52 @@ const CreateArticlePage = () => {
                     </div>
                 )}
 
+                {(isPhotoOnly || selectedPubmat) && (
+                    <div className="Single-Photo-Post-Container">
+                        <div className="Single-Photo-Post-Header">
+                            <span>Single Photo Post (Pubmat)</span>
+                            <div className="Single-Photo-Post-Actions">
+                                <button
+                                    type="button"
+                                    className="Single-Photo-Action-Btn"
+                                    onClick={() => setIsPubmatModalOpen(true)}
+                                >
+                                    {selectedPubmat ? "Change Pubmat" : "Select Pubmat"}
+                                </button>
+                                {selectedPubmat && (
+                                    <button
+                                        type="button"
+                                        className="Single-Photo-Action-Btn-Remove"
+                                        onClick={() => setSelectedPubmat(null)}
+                                    >
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        {selectedPubmat ? (
+                            <div className="Single-Photo-Post-Preview">
+                                <img src={selectedPubmat.media_url || selectedPubmat.preview} alt="Single post pubmat" />
+                                {selectedPubmat.title && (
+                                    <div style={{ marginTop: "0.5rem", fontSize: "0.85rem", color: "#64748b" }}>
+                                        Pubmat: <strong>{selectedPubmat.title}</strong>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="Single-Photo-Post-Placeholder">
+                                <button
+                                    type="button"
+                                    className="Single-Photo-Placeholder-Btn"
+                                    onClick={() => setIsPubmatModalOpen(true)}
+                                >
+                                    Select Pubmat
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 <div className="Text-Area">
                     <input
                         type="text"
@@ -749,7 +838,71 @@ const CreateArticlePage = () => {
                 </div>
 
             </div>
-</div>
+
+            {/* Side Media Panel - Simple, no icons, no small text, no two-tone containers */}
+            <aside className="Admin-Article-Side-Panel">
+                <div className="Side-Panel-Header">
+                    <h3>Photos</h3>
+                    <label className="Side-Add-Photos-Btn">
+                        Add Photos
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            style={{ display: "none" }}
+                            onChange={handleFileChange}
+                        />
+                    </label>
+                </div>
+
+                {mediaImagePhoto.length > 0 ? (
+                    <div className="Side-Photos-List">
+                        {mediaImagePhoto.map((imgObj, idx) => (
+                            <div key={idx} className="Side-Photo-Item">
+                                <img src={imgObj.preview} alt="Article media" />
+                                <div className="Side-Photo-Item-Actions">
+                                    {idx !== 0 && (
+                                        <button
+                                            type="button"
+                                            className="Side-Btn-Action"
+                                            onClick={() => handleSetAsCover(idx)}
+                                        >
+                                            Make Cover
+                                        </button>
+                                    )}
+                                    <button
+                                        type="button"
+                                        className="Side-Btn-Action Side-Btn-Delete"
+                                        onClick={() => handleRemoveImage(idx)}
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="Side-Photos-Empty">
+                        No photos added
+                    </div>
+                )}
+            </aside>
+        </div>
+
+        <SelectPubmatModal
+            isOpen={isPubmatModalOpen}
+            onClose={() => setIsPubmatModalOpen(false)}
+            onSelectPubmat={(pubmat) => {
+                setSelectedPubmat({
+                    media_id: pubmat.media_id,
+                    media_url: pubmat.image_url,
+                    title: pubmat.title,
+                    pubmat_id: pubmat.pubmat_id
+                })
+            }}
+            selectedPubmatId={selectedPubmat?.pubmat_id}
+        />
+    </div>
 
 )
 }

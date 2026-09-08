@@ -1,0 +1,220 @@
+.Edit-Modal-Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(3, 8, 15, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.Edit-Modal-Card {
+    background-color: #ffffff;
+    border-radius: var(--radius-md, 12px);
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+    box-sizing: border-box;
+    font-family: var(--font-sans);
+    color: var(--text-dark, #121824);
+}
+
+.Edit-Modal-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.Edit-Modal-Header h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-dark, #121824);
+}
+
+.Edit-Modal-Subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.Edit-Modal-Close-Btn {
+    background: none;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm, 4px);
+    color: #475569;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.Edit-Modal-Close-Btn:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+.Edit-Modal-Error {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm, 4px);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.Edit-Modal-Form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.Edit-Modal-Form-Row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.85rem;
+}
+
+.Edit-Form-Group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.Edit-Form-Group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.Edit-Form-Group input,
+.Edit-Form-Group select,
+.Edit-Form-Group textarea {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm, 4px);
+    outline: none;
+    color: #0f172a;
+    background-color: #f8fafc;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.Edit-Form-Group input:focus,
+.Edit-Form-Group select:focus,
+.Edit-Form-Group textarea:focus {
+    border-color: var(--primary-blue, #0265A9);
+    background-color: #ffffff;
+}
+
+.Edit-Picture-Row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.Edit-Picture-Row input {
+    flex: 1;
+}
+
+.Edit-Picture-Preview {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-blue, #0265A9);
+    flex-shrink: 0;
+}
+
+.Edit-Modal-Toggles-Row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+}
+
+.Edit-Checkbox-Label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Edit-Checkbox-Label input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.Edit-Modal-Footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.Edit-Btn-Cancel {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.Edit-Btn-Cancel:hover:not(:disabled) {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.Edit-Btn-Save {
+    background: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.6rem 1.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.Edit-Btn-Save:hover:not(:disabled) {
+    background: var(--primary-blue-hover, #014c80);
+}
+
+.Edit-Btn-Save:disabled,
+.Edit-Btn-Cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

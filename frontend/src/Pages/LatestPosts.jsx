@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "../supabaseClient.js"
 import React, { useState, useEffect } from "react"
 import { isMediaSegment, getMediaSegmentLabel, getArticleUrl } from "../utils/articleUtils.js"
+import { replaceUnderscore } from "../utils/slugifyUtils.js"
 
 import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
 
@@ -47,7 +48,7 @@ const LatestPosts = () => {
                     `)
                     .eq("is_published", true)
                     .order('published_at', { ascending: false })
-                    .limit(21);
+                    .limit(150);
 
                 if (articlesError) {
                     throw articlesError;
@@ -268,16 +269,79 @@ const LatestPosts = () => {
         )
     }
 
+    const scoreArticle = (article, query) => {
+        if (!query) return 0
+        const q = query.toLowerCase().trim()
+        const words = q.split(/\s+/).filter(Boolean)
+        let score = 0
+
+        const headline = (article.article_headline || "").toLowerCase()
+        if (headline === q) {
+            score += 100
+        } else if (headline.includes(q)) {
+            score += 60
+        } else {
+            words.forEach(w => {
+                if (headline.includes(w)) score += 15
+            })
+        }
+
+        const tags = [article.article_tag1, article.article_tag2, article.article_tag3].filter(Boolean)
+        tags.forEach(t => {
+            const tagLower = t.toLowerCase()
+            if (tagLower === q) score += 40
+            else if (tagLower.includes(q)) score += 20
+            else {
+                words.forEach(w => {
+                    if (tagLower.includes(w)) score += 8
+                })
+            }
+        })
+
+        const rawType = (article.article_type || "").toLowerCase()
+        const cleanType = article.article_type ? replaceUnderscore(article.article_type).toLowerCase() : ""
+        const labelType = article.article_type ? getMediaSegmentLabel(article.article_type).toLowerCase() : ""
+        if (rawType.includes(q) || cleanType.includes(q) || labelType.includes(q)) {
+            score += 25
+        }
+
+        const authors = (article.article_staff || []).map(s => (
+            s.staff?.staff_display_name || s.staff?.staff_pseudonym || `${s.staff?.staff_first_name || ""} ${s.staff?.staff_last_name || ""}`
+        ).toLowerCase())
+        authors.forEach(authorName => {
+            if (authorName.includes(q)) score += 30
+            else {
+                words.forEach(w => {
+                    if (authorName.includes(w)) score += 10
+                })
+            }
+        })
+
+        if (article.published_at && score > 0) {
+            const time = new Date(article.published_at).getTime()
+            if (!isNaN(time)) {
+                score += (time / 1000000000000) * 0.5
+            }
+        }
+
+        return score
+    }
+
     const filteredArticles = articles.filter(article => {
         if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase().trim()
             const headlineMatch = article.article_headline?.toLowerCase().includes(q)
             const tagMatch = [article.article_tag1, article.article_tag2, article.article_tag3]
                 .some(t => t?.toLowerCase().includes(q))
-            const typeMatch = article.article_type?.toLowerCase().includes(q)
+            const rawType = article.article_type?.toLowerCase() || ""
+            const cleanType = article.article_type ? replaceUnderscore(article.article_type).toLowerCase() : ""
+            const labelType = article.article_type ? getMediaSegmentLabel(article.article_type).toLowerCase() : ""
+            const typeMatch = rawType.includes(q) || cleanType.includes(q) || labelType.includes(q)
             const authorMatch = article.article_staff?.some(s =>
                 s.staff?.staff_display_name?.toLowerCase().includes(q) ||
-                s.staff?.staff_pseudonym?.toLowerCase().includes(q)
+                s.staff?.staff_pseudonym?.toLowerCase().includes(q) ||
+                s.staff?.staff_first_name?.toLowerCase().includes(q) ||
+                s.staff?.staff_last_name?.toLowerCase().includes(q)
             )
             if (!headlineMatch && !tagMatch && !typeMatch && !authorMatch) {
                 return false
@@ -304,43 +368,96 @@ const LatestPosts = () => {
         })
     })
 
-    const groupedWeeks = groupArticlesByWeek(filteredArticles)
+    const isSearchActive = Boolean(searchQuery.trim())
+
+    // When searching, sort matching articles by relevance score
+    const rankedArticles = isSearchActive
+        ? [...filteredArticles].sort((a, b) => scoreArticle(b, searchQuery) - scoreArticle(a, searchQuery))
+        : filteredArticles
+
+    // Top 3 or 4 articles best matching the query
+    const bestMatchingArticles = isSearchActive ? rankedArticles.slice(0, 4) : []
+
+    const groupedWeeks = groupArticlesByWeek(rankedArticles)
+    const isFiltering = Boolean(searchQuery.trim() || selectedFilters.length > 0)
+    const weeksToDisplay = isFiltering ? groupedWeeks : groupedWeeks.slice(0, visibleWeeks)
 
     return (
         <div className="Latest-Posts-Page">
             <CoverPhotoSearch searchQuery = {searchQuery} setSearchQuery = {setSearchQuery} />
             <Tabs />
+
             <div className="Latest-Article-Two-Part">
                 <div className="Latest-Articles-Container">
+                    {isSearchActive && (
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            backgroundColor: "#f0f7ff",
+                            border: "1px solid rgba(2, 101, 169, 0.25)",
+                            borderRadius: "6px",
+                            padding: "0.75rem 1.25rem",
+                            marginBottom: "1.5rem"
+                        }}>
+                            <span style={{ fontSize: "0.9rem", color: "#0f172a", fontWeight: "600" }}>
+                                Showing {filteredArticles.length} {filteredArticles.length === 1 ? "article" : "articles"} matching "{searchQuery}"
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setSearchQuery("")}
+                                style={{
+                                    background: "none",
+                                    border: "1px solid #cbd5e1",
+                                    borderRadius: "4px",
+                                    padding: "0.3rem 0.75rem",
+                                    fontSize: "0.8rem",
+                                    fontWeight: "600",
+                                    color: "#475569",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Clear search
+                            </button>
+                        </div>
+                    )}
+
                     {loading ? (
                         <div style={{ color: "black", padding: "5rem", minHeight: "40dvh" }}>
                             <h3>Loading articles...</h3>
                         </div>
-                    ) : groupedWeeks.length === 0 ? (
+                    ) : filteredArticles.length === 0 ? (
                         <div style={{ color: "black", padding: "5rem", minHeight: "40dvh" }}>
-                            <h3>No articles found.</h3>
+                            <h3>No articles found matching your criteria.</h3>
+                            {isSearchActive && (
+                                <p style={{ color: "#64748b", marginTop: "0.5rem" }}>
+                                    Try searching with different keywords, topics, or writer names.
+                                </p>
+                            )}
                         </div>
                     ) : (
-                        groupedWeeks.slice(0, visibleWeeks).map((week, weekIdx) => (
-                            <React.Fragment key={weekIdx}>
-                                <div className="Latest-Articles-Date">
-                                    <h1>{week.label}</h1>
-                                    <hr className="Horizontal-Line-Date" />
-                                </div>
-                                <div className="Day-Articles">
-                                    <hr className="Vertical-Line-Date" />
-                                    <div className="Three-Article-Column">
-                                        {week.articles.map((article) => {
+                        <>
+                            {/* Best Matching Articles Section (Top 3 or 4) */}
+                            {isSearchActive && bestMatchingArticles.length > 0 && (
+                                <div className="Best-Matches-Section">
+                                    <div className="Best-Matches-Header">
+                                        <h2>Best Matching Articles</h2>
+                                        <span className="Best-Matches-Subtitle">
+                                            Top {bestMatchingArticles.length} {bestMatchingArticles.length === 1 ? "article" : "articles"} matching "{searchQuery}"
+                                        </span>
+                                    </div>
+                                    <div className="Best-Matches-Grid">
+                                        {bestMatchingArticles.map((article) => {
                                             const firstMedia = article.article_media?.[0]?.media?.media_url || Photo2
-                                            const staffList = article.article_staff || [];
-                                            const authorsCount = staffList.filter(s => s.contribution_as === "Author" && s.staff?.staff_display_name).length;
-                                            const medProvsCount = staffList.filter(s => s.contribution_as === "Media_Provider" && s.staff?.staff_display_name).length;
+                                            const staffList = article.article_staff || []
+                                            const authorsCount = staffList.filter(s => s.contribution_as === "Author" && s.staff?.staff_display_name).length
+                                            const medProvsCount = staffList.filter(s => s.contribution_as === "Media_Provider" && s.staff?.staff_display_name).length
 
                                             const authorsStr = getAuthorsString(article)
                                             const medProvsStr = getMedProvString(article)
                                             const authorMediaDisplay = (authorsCount > 1 || medProvsCount > 1)
                                                 ? "TPA Staffers"
-                                                : (authorsStr === medProvsStr ? authorsStr : `${authorsStr} & ${medProvsStr}`);
+                                                : (authorsStr === medProvsStr ? authorsStr : `${authorsStr} & ${medProvsStr}`)
 
                                             const formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
                                                 month: "long",
@@ -351,22 +468,20 @@ const LatestPosts = () => {
                                             const detailLink = getArticleUrl(article)
 
                                             return (
-                                                <Link to={detailLink} className="Individual-Article" key={article.article_id}>
-                                                    <img loading="lazy" src={firstMedia} alt={article.article_headline} />
-                                                    <div className="Individual-Article-Texts">
+                                                <Link to={detailLink} className="Best-Match-Card" key={`best-${article.article_id}`}>
+                                                    <div className="Best-Match-Image-Wrapper">
+                                                        <img loading="lazy" src={firstMedia} alt={article.article_headline} />
                                                         {article.article_type && (
-                                                            <div className = "Article-Type-Indicator">
-                                                                { getMediaSegmentLabel(article.article_type)}
-                                                            </div>
+                                                            <span className="Best-Match-Badge">
+                                                                {getMediaSegmentLabel(article.article_type)}
+                                                            </span>
                                                         )}
-                                                        <div className="Individual-Article-Headline">
-                                                            <p> {article.article_headline} </p>
-                                                            <div className="Latest-Posts-Article-Author-Time">
-                                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                                    <p style={{ fontSize: "0.8rem", color: "var(--text-dark)", margin: "0", padding: "0" }}> {formattedDate} </p>
-                                                                    <p> {authorMediaDisplay}</p>
-                                                                </div>
-                                                            </div>
+                                                    </div>
+                                                    <div className="Best-Match-Card-Body">
+                                                        <h3 className="Best-Match-Headline">{article.article_headline}</h3>
+                                                        <div className="Best-Match-Meta">
+                                                            <span className="Best-Match-Date">{formattedDate}</span>
+                                                            <span className="Best-Match-Author">{authorMediaDisplay}</span>
                                                         </div>
                                                     </div>
                                                 </Link>
@@ -374,11 +489,79 @@ const LatestPosts = () => {
                                         })}
                                     </div>
                                 </div>
-                            </React.Fragment>
-                        ))
+                            )}
+
+                            {/* More Results by Week when there are more than 4 matches, or all weeks during regular browsing */}
+                            {(!isSearchActive || rankedArticles.length > 4) && (
+                                <>
+                                    {isSearchActive && rankedArticles.length > 4 && (
+                                        <div className="Search-More-Results-Header">
+                                            <h3>All Results by Week ({rankedArticles.length} total)</h3>
+                                            <hr className="Horizontal-Line-Date" />
+                                        </div>
+                                    )}
+
+                                    {weeksToDisplay.map((week, weekIdx) => (
+                                        <React.Fragment key={weekIdx}>
+                                            <div className="Latest-Articles-Date">
+                                                <h1>{week.label}</h1>
+                                                <hr className="Horizontal-Line-Date" />
+                                            </div>
+                                            <div className="Day-Articles">
+                                                <hr className="Vertical-Line-Date" />
+                                                <div className="Three-Article-Column">
+                                                    {week.articles.map((article) => {
+                                                        const firstMedia = article.article_media?.[0]?.media?.media_url || Photo2
+                                                        const staffList = article.article_staff || [];
+                                                        const authorsCount = staffList.filter(s => s.contribution_as === "Author" && s.staff?.staff_display_name).length;
+                                                        const medProvsCount = staffList.filter(s => s.contribution_as === "Media_Provider" && s.staff?.staff_display_name).length;
+
+                                                        const authorsStr = getAuthorsString(article)
+                                                        const medProvsStr = getMedProvString(article)
+                                                        const authorMediaDisplay = (authorsCount > 1 || medProvsCount > 1)
+                                                            ? "TPA Staffers"
+                                                            : (authorsStr === medProvsStr ? authorsStr : `${authorsStr} & ${medProvsStr}`);
+
+                                                        const formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
+                                                            month: "long",
+                                                            day: "numeric",
+                                                            year: "numeric"
+                                                        })
+
+                                                        const detailLink = getArticleUrl(article)
+
+                                                        return (
+                                                            <Link to={detailLink} className="Individual-Article" key={article.article_id}>
+                                                                <img loading="lazy" src={firstMedia} alt={article.article_headline} />
+                                                                <div className="Individual-Article-Texts">
+                                                                    {article.article_type && (
+                                                                        <div className = "Article-Type-Indicator">
+                                                                            { getMediaSegmentLabel(article.article_type)}
+                                                                        </div>
+                                                                    )}
+                                                                    <div className="Individual-Article-Headline">
+                                                                        <p> {article.article_headline} </p>
+                                                                        <div className="Latest-Posts-Article-Author-Time">
+                                                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                                                <p style={{ fontSize: "0.8rem", color: "var(--text-dark)", margin: "0", padding: "0" }}> {formattedDate} </p>
+                                                                                <p> {authorMediaDisplay}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </Link>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
+                                </>
+                            )}
+                        </>
                     )}
 
-                    {visibleWeeks < groupedWeeks.length && (
+                    {!isFiltering && visibleWeeks < groupedWeeks.length && (
                         <div className="Load-More-Container">
                             <button className="Load-More-Button" onClick={() => setVisibleWeeks(prev => prev + 3)}>
                                 Load More Articles

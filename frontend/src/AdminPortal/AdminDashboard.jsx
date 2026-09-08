@@ -196,6 +196,9 @@ const AdminDashboard = () => {
                         <Link to="/admin/manage-videos" style={{ textDecoration: "none", color: "inherit" }} className="Admin-Quick-Actions">
                             <p> Manage YouTube Videos </p>
                         </Link>
+                        <Link to="/admin/manage-pubmats" style={{ textDecoration: "none", color: "inherit" }} className="Admin-Quick-Actions">
+                            <p> Manage Pubmats </p>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -18,13 +18,25 @@ const AboutPage = () => {
     const [dbReleases, setDbReleases] = useState([])
     const [activeIndex, setActiveIndex] = useState(0)
     const [direction, setDirection] = useState("next")
+    const [staffSearchInput, setStaffSearchInput] = useState("")
+    const [staffSearchTerm, setStaffSearchTerm] = useState("")
     const slideRef = useRef(null)
+
+    const handleStaffSearchSubmit = (e) => {
+        e.preventDefault()
+        setStaffSearchTerm(staffSearchInput.trim())
+    }
+
+    const handleStaffSearchClear = () => {
+        setStaffSearchInput("")
+        setStaffSearchTerm("")
+    }
 
     useEffect(() => {
         const fetchStaff = async () => {
             let { data, error } = await supabase
                 .from('staff')
-                .select('staff_id, staff_first_name, staff_last_name, staff_display_name, staff_position, is_editorial_board, staff_picture, staff_order')
+                .select('staff_id, staff_first_name, staff_last_name, staff_display_name, staff_pseudonym, staff_position, is_editorial_board, staff_picture, staff_order')
                 .eq('staff_isactive', true)
                 .not('staff_position', 'is', null)
                 .order('staff_order', { ascending: true })
@@ -134,8 +146,25 @@ const AboutPage = () => {
 
     // Cleanly separate the filtered arrays before the return block
     const editorialBoard = staff.filter(member => member.is_editorial_board === true)
-    const seniorStaffers = staff.filter(member => !member.is_editorial_board && [12, 13, 14, 15, 16].includes(member.staff_order))
-    const juniorStaffers = staff.filter(member => !member.is_editorial_board && [17, 18, 19, 20, 21].includes(member.staff_order))
+    const seniorStaffers = staff.filter(member => !member.is_editorial_board && ([12, 13, 14, 15, 16].includes(member.staff_order) || member.staff_position?.toLowerCase().includes("senior")))
+    const juniorStaffers = staff.filter(member => !member.is_editorial_board && !([12, 13, 14, 15, 16].includes(member.staff_order) || member.staff_position?.toLowerCase().includes("senior")))
+
+    const cleanStaffQuery = staffSearchTerm.toLowerCase().trim()
+    const filterStaffMember = (member) => {
+        if (!cleanStaffQuery) return true
+        const nameMatch = member.staff_display_name?.toLowerCase().includes(cleanStaffQuery) ||
+            `${member.staff_first_name || ""} ${member.staff_last_name || ""}`.toLowerCase().includes(cleanStaffQuery)
+        const pseudonymMatch = member.staff_pseudonym?.toLowerCase().includes(cleanStaffQuery)
+        const rawPos = member.staff_position ? member.staff_position.toLowerCase() : ""
+        const cleanPos = member.staff_position ? replaceUnderscore(member.staff_position).toLowerCase() : ""
+        const posMatch = rawPos.includes(cleanStaffQuery) || cleanPos.includes(cleanStaffQuery)
+        return nameMatch || pseudonymMatch || posMatch
+    }
+
+    const filteredEdBoard = editorialBoard.filter(filterStaffMember)
+    const filteredSenior = seniorStaffers.filter(filterStaffMember)
+    const filteredJunior = juniorStaffers.filter(filterStaffMember)
+    const totalStaffFound = filteredEdBoard.length + filteredSenior.length + filteredJunior.length
 
     return (
         <div className="About-Page">
@@ -235,83 +264,157 @@ const AboutPage = () => {
             <div className="Meet-Our-Editors First-Part-Text">
                 <h1> MEET OUR EDITORIAL BOARD </h1>
 
-                <div className="Editors">
-                    <div className="Editorial-Board">
-                        {editorialBoard.map(isEdBoard => (
-                            <Link
-                                to={`/staff/${slugify(isEdBoard.staff_display_name)}-${isEdBoard.staff_id}`}
-                                className="Editorial-Board-Individual-Card"
-                                key={isEdBoard.staff_display_name}
-                                style={{ textDecoration: "none", color: "inherit" }}
+                {/* Staff Search Bar */}
+                <form className="About-Staff-Search-Wrapper" onSubmit={handleStaffSearchSubmit}>
+                    <div className="About-Staff-Search-Container">
+                        <svg
+                            className="About-Staff-Search-Icon"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input
+                            type="text"
+                            className="About-Staff-Search-Input"
+                            placeholder="Search staff by name, pseudonym, or position..."
+                            value={staffSearchInput}
+                            onChange={(e) => setStaffSearchInput(e.target.value)}
+                        />
+                        {staffSearchInput && (
+                            <button
+                                type="button"
+                                className="About-Staff-Search-Clear-Btn"
+                                onClick={handleStaffSearchClear}
+                                aria-label="Clear staff search"
                             >
-                                <div className="Editorial-Board-Pad-When-Hover" style={{ border: "2px whitesmoke solid", borderRadius: "100%" }}>
-                                    <div className="Editorial-Board-Individual">
-                                        <img
-                                            src={isEdBoard.staff_picture}
-                                            alt={isEdBoard.staff_display_name}
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", lineHeight: "1.1" }}>
-                                    <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
-                                    <p style={{ color: 'whitesmoke', margin: "0.25rem" }}> {replaceUnderscore(isEdBoard.staff_position)} </p>
-                                </div>
-                            </Link>
-                        ))}
+                                Clear
+                            </button>
+                        )}
+                        <button
+                            type="submit"
+                            className="About-Staff-Search-Submit-Btn"
+                        >
+                            Search
+                        </button>
                     </div>
-                </div>
+                    {cleanStaffQuery && (
+                        <div className="About-Staff-Search-Count">
+                            Showing {totalStaffFound} {totalStaffFound === 1 ? "staff member" : "staff members"} matching "{staffSearchTerm}"
+                        </div>
+                    )}
+                </form>
+
+                {cleanStaffQuery && totalStaffFound === 0 ? (
+                    <div className="About-Staff-No-Results">
+                        <h3>No staff members found matching "{staffSearchTerm}".</h3>
+                        <p>Try searching for another position, name, or pseudonym.</p>
+                        <button
+                            type="button"
+                            className="About-Staff-Reset-Btn"
+                            onClick={handleStaffSearchClear}
+                        >
+                            View All Staff
+                        </button>
+                    </div>
+                ) : (
+                    <>
+                        {cleanStaffQuery && filteredEdBoard.length === 0 && (
+                            <div className="About-Staff-Notice">
+                                No editorial board members matching "{staffSearchTerm}". Results found in the Staff Directory below.
+                            </div>
+                        )}
+                        {filteredEdBoard.length > 0 && (
+                            <div className="Editors">
+                                <div className="Editorial-Board">
+                                    {filteredEdBoard.map(isEdBoard => (
+                                        <Link
+                                            to={`/staff/${slugify(isEdBoard.staff_display_name)}`}
+                                            className="Editorial-Board-Individual-Card"
+                                            key={isEdBoard.staff_display_name}
+                                            style={{ textDecoration: "none", color: "inherit" }}
+                                        >
+                                            <div className="Editorial-Board-Pad-When-Hover">
+                                                <div className="Editorial-Board-Individual">
+                                                    <img
+                                                        src={isEdBoard.staff_picture || "/TPA-LEFT_BLUE.png"}
+                                                        alt={isEdBoard.staff_display_name}
+                                                        loading="lazy"
+                                                        onError={(e) => { e.currentTarget.src = "/TPA-LEFT_BLUE.png" }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="Editorial-Board-Card-Text">
+                                                <h3> {replaceUnderscore(isEdBoard.staff_display_name)} </h3>
+                                                <p className="Editorial-Board-Role"> {replaceUnderscore(isEdBoard.staff_position)} </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
 
             {/* Staff Directory Section */}
-            {((seniorStaffers && seniorStaffers.length > 0) || (juniorStaffers && juniorStaffers.length > 0)) && (
-                <div className="All-Staffer-About-Page-Section">
-                    <h1 className="Staffer-Section-Main-Title">STAFF DIRECTORY</h1>
+            {(!cleanStaffQuery || (filteredSenior.length > 0 || filteredJunior.length > 0)) && (
+                ((filteredSenior && filteredSenior.length > 0) || (filteredJunior && filteredJunior.length > 0)) && (
+                    <div className="All-Staffer-About-Page-Section">
+                        <h1 className="Staffer-Section-Main-Title">STAFF DIRECTORY</h1>
 
-                    {seniorStaffers.length > 0 && (
-                        <div className="Regular-Staffers">
-                            <h2 className="Staff-Category-Header">Senior Staffers</h2>
-                            <div className="Regular-Staffers-Whole">
-                                {seniorStaffers.map(seniorStaffMember => (
-                                    <Link
-                                        to={`/staff/${slugify(seniorStaffMember.staff_display_name)}-${seniorStaffMember.staff_id}`}
-                                        className="Staffer-Item"
-                                        key={seniorStaffMember.staff_display_name}
-                                        style={{ textDecoration: "none" }}
-                                    >
-                                        <div className="Circle"></div>
-                                        <div className="Staffer-Names-Individual">
-                                            <h3>{seniorStaffMember.staff_display_name}</h3>
-                                            <p>{replaceUnderscore(seniorStaffMember.staff_position)}</p>
-                                        </div>
-                                    </Link>
-                                ))}
+                        {filteredSenior.length > 0 && (
+                            <div className="Regular-Staffers">
+                                <h2 className="Staff-Category-Header">Senior Staffers</h2>
+                                <div className="Regular-Staffers-Whole">
+                                    {filteredSenior.map(seniorStaffMember => (
+                                        <Link
+                                            to={`/staff/${slugify(seniorStaffMember.staff_display_name)}`}
+                                            className="Staffer-Item"
+                                            key={seniorStaffMember.staff_display_name}
+                                            style={{ textDecoration: "none" }}
+                                        >
+                                            <div className="Staffer-Item-Badge">SR</div>
+                                            <div className="Staffer-Names-Individual">
+                                                <h3>{seniorStaffMember.staff_display_name}</h3>
+                                                <p>{replaceUnderscore(seniorStaffMember.staff_position)}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {juniorStaffers.length > 0 && (
-                        <div className="Regular-Staffers">
-                            <h2 className="Staff-Category-Header">Junior Staffers</h2>
-                            <div className="Regular-Staffers-Whole">
-                                {juniorStaffers.map((juniorStaffMember) => (
-                                    <Link
-                                        to={`/staff/${slugify(juniorStaffMember.staff_display_name)}-${juniorStaffMember.staff_id}`}
-                                        className="Staffer-Item"
-                                        key={juniorStaffMember.staff_display_name}
-                                        style={{ textDecoration: "none" }}
-                                    >
-                                        <div className="Circle"></div>
-                                        <div className="Staffer-Names-Individual">
-                                            <h3>{juniorStaffMember.staff_display_name}</h3>
-                                            <p>{replaceUnderscore(juniorStaffMember.staff_position)}</p>
-                                        </div>
-                                    </Link>
-                                ))}
+                        {filteredJunior.length > 0 && (
+                            <div className="Regular-Staffers">
+                                <h2 className="Staff-Category-Header">Junior Staffers</h2>
+                                <div className="Regular-Staffers-Whole">
+                                    {filteredJunior.map((juniorStaffMember) => (
+                                        <Link
+                                            to={`/staff/${slugify(juniorStaffMember.staff_display_name)}`}
+                                            className="Staffer-Item"
+                                            key={juniorStaffMember.staff_display_name}
+                                            style={{ textDecoration: "none" }}
+                                        >
+                                            <div className="Staffer-Item-Badge Staffer-Badge-JR">JR</div>
+                                            <div className="Staffer-Names-Individual">
+                                                <h3>{juniorStaffMember.staff_display_name}</h3>
+                                                <p>{replaceUnderscore(juniorStaffMember.staff_position)}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )
             )}
 
             {/* Vision, Mission & Principles Section */}

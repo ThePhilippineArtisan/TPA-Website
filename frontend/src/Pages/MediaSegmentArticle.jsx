@@ -214,7 +214,7 @@ const MediaSegmentArticle = () => {
                                     {authors.length > 0 ? (
                                         authors.map((auth, idx) => (
                                             <span key = {auth.staff_id}>
-                                                <Link to = {`/staff/${auth.staff_id}`}>
+                                                <Link to = {`/staff/${slugify(auth.displayName)}`}>
                                                     {auth.displayName}
                                                     {idx < authors.length - 1 ? ", " : ""}
                                                 </Link>
@@ -230,7 +230,7 @@ const MediaSegmentArticle = () => {
                                         {mediaProviders.length > 0 ? (
                                             mediaProviders.map((med, idx) => (
                                                 <span key = {med.staff_id}>
-                                                    <Link to = {`/staff/${med.staff_id}`}>
+                                                    <Link to = {`/staff/${slugify(med.displayName)}`}>
                                                         {med.displayName}
                                                         {idx < mediaProviders.length - 1 ? ", " : ""}
                                                     </Link>

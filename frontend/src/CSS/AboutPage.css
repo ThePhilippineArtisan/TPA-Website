@@ -224,6 +224,154 @@
     z-index: 1;
 }
 
+/* Staff Search Bar in Meet-Our-Editors */
+.About-Staff-Search-Wrapper {
+    width: 100%;
+    max-width: 580px;
+    margin: 1.25rem 0 2.25rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    box-sizing: border-box;
+}
+
+.About-Staff-Search-Container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.About-Staff-Search-Icon {
+    position: absolute;
+    left: 1rem;
+    color: #38bdf8;
+    pointer-events: none;
+}
+
+.About-Staff-Search-Input {
+    width: 100%;
+    padding: 0.75rem 7.5rem 0.75rem 2.85rem;
+    background: rgba(0, 20, 50, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 9999px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.About-Staff-Search-Input:focus {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: #38bdf8;
+}
+
+.About-Staff-Search-Input::placeholder {
+    color: #94a3b8;
+}
+
+.About-Staff-Search-Clear-Btn {
+    position: absolute;
+    right: 5.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #f1f5f9;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    z-index: 2;
+}
+
+.About-Staff-Search-Clear-Btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+}
+
+.About-Staff-Search-Submit-Btn {
+    position: absolute;
+    right: 0.35rem;
+    background-color: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px;
+    padding: 0.45rem 1.15rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 2;
+}
+
+.About-Staff-Search-Submit-Btn:hover {
+    background-color: #025287;
+}
+
+.About-Staff-Search-Count {
+    font-size: 0.85rem;
+    color: #38bdf8;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.About-Staff-Notice {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.65rem 1.25rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 600px;
+}
+
+.About-Staff-No-Results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem 4rem 1.5rem;
+    gap: 0.75rem;
+    max-width: 500px;
+}
+
+.About-Staff-No-Results h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.About-Staff-No-Results p {
+    color: #94a3b8;
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+.About-Staff-Reset-Btn {
+    margin-top: 0.75rem;
+    background-color: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    padding: 0.55rem 1.4rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.About-Staff-Reset-Btn:hover {
+    background-color: #025287;
+}
+
 .Editorial-Board {
     display: flex;
     flex-wrap: wrap;
@@ -231,31 +379,75 @@
     gap: clamp(1.5rem, 3vw, 3rem);
 }
 
+.Editorial-Board-Individual-Card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .Editorial-Board-Individual-Card:hover {
     cursor: pointer;
-    transition: 0.5s ease-in-out;
-    transform: scale(1.05);
+    transform: translateY(-6px) scale(1.03);
     z-index: 5;
+}
+
+.Editorial-Board-Pad-When-Hover {
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 100%;
+    padding: 3px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Editorial-Board-Individual-Card:hover .Editorial-Board-Pad-When-Hover {
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .Editorial-Board-Individual {
     border: 4px solid var(--primary-blue);
     border-radius: 100%;
+    overflow: hidden;
+    background-color: #03080f;
 }
 
 .Editorial-Board-Individual img {
     border: none;
     border-radius: 100%;
-    width: clamp(10rem, 20vw, 15rem);
-    height: clamp(10rem, 20vw, 15rem);
+    width: clamp(9rem, 18vw, 13.5rem);
+    height: clamp(9rem, 18vw, 13.5rem);
     object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.Editorial-Board-Individual:hover {
-    cursor: pointer;
-    transition: 0.5s ease-in-out;
-    transform: scale(1.08);
-    z-index: 5;
+.Editorial-Board-Individual-Card:hover .Editorial-Board-Individual img {
+    transform: scale(1.05);
+}
+
+.Editorial-Board-Card-Text {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 0.75rem;
+    gap: 0.25rem;
+}
+
+.Editorial-Board-Card-Text h3 {
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+}
+
+.Editorial-Board-Role {
+    font-size: clamp(0.78rem, 1.1vw, 0.88rem);
+    font-weight: 600;
+    color: #38bdf8;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 /* Light Notebook Staff Directory Section */
@@ -318,7 +510,7 @@
 
 .Regular-Staffers-Whole {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1rem;
     padding: 0;
 }
@@ -326,12 +518,12 @@
 .Staffer-Item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.85rem;
     background-color: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 0.85rem 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0.85rem 1.1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -339,15 +531,22 @@
     cursor: pointer;
     transform: translateY(-2px);
     border-color: #0265a9;
-    box-shadow: 0 6px 16px rgba(2, 101, 169, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.Circle {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+.Staffer-Item-Badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #ffffff;
     background-color: #0265a9;
+    padding: 0.25rem 0.45rem;
+    border-radius: 4px;
     flex-shrink: 0;
+    letter-spacing: 0.04em;
+}
+
+.Staffer-Badge-JR {
+    background-color: #0d9488;
 }
 
 .Staffer-Names-Individual {

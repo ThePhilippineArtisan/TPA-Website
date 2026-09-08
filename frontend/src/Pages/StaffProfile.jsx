@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import { supabase } from "../supabaseClient"
-import { replaceUnderscore } from "../utils/slugifyUtils"
+import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 import { getArticleUrl, getMediaSegmentLabel, getCategoryFallbackImage } from "../utils/articleUtils"
 import { formatDateReadable } from "../utils/dateUtils"
+import EditStaffModal from "../AdminPortal/Modals/EditStaffModal.jsx"
 
 import "../CSS/StaffProfile.css"
 
@@ -13,26 +14,54 @@ const StaffProfile = () => {
     const [staffDetails, setStaffDetails] = useState(null)
     const [contributions, setContributions] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isAdmin, setIsAdmin] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setIsAdmin(Boolean(session))
+        })
+    }, [])
 
     useEffect(() => {
         const fetchStaffMemberAndContributions = async () => {
+            setLoading(true)
             try {
-                const slugParts = staffSlug.split('-')
-                const staffId = slugParts[slugParts.length - 1]
-
-                // 1. Fetch Staff Member Details
-                const { data: staffData, error: staffErr } = await supabase
-                    .from('staff')
-                    .select('*')
-                    .eq('staff_id', staffId)
-                    .single()
+                // 1. Fetch staff records to match by slugified name, pseudonym, or legacy ID
+                const { data: allStaff, error: staffErr } = await supabase
+                    .from("staff")
+                    .select("*")
 
                 if (staffErr) throw staffErr
-                setStaffDetails(staffData)
 
-                // 2. Fetch Staff Articles / Media Contributions
+                // Match staff member:
+                // - By slugified display name (e.g., 'john-doe' === slugify('John Doe'))
+                // - By slugified pseudonym
+                // - Backward-compat: exact staff_id match
+                // - Backward-compat: legacy slug with ID ('john-doe-42')
+                const matched = (allStaff || []).find((member) => {
+                    const slugName = slugify(member.staff_display_name)
+                    const slugPseudo = member.staff_pseudonym ? slugify(member.staff_pseudonym) : null
+                    const legacySlugWithId = `${slugName}-${member.staff_id}`
+                    return (
+                        slugName === staffSlug ||
+                        slugPseudo === staffSlug ||
+                        legacySlugWithId === staffSlug ||
+                        String(member.staff_id) === staffSlug
+                    )
+                })
+
+                if (!matched) {
+                    setStaffDetails(null)
+                    setContributions([])
+                    return
+                }
+
+                setStaffDetails(matched)
+
+                // 2. Fetch Staff Articles / Media Contributions using matched.staff_id
                 const { data: rawContribs, error: contribErr } = await supabase
-                    .from('article_staff')
+                    .from("article_staff")
                     .select(`
                         contribution_as,
                         article (
@@ -50,12 +79,11 @@ const StaffProfile = () => {
                             )
                         )
                     `)
-                    .eq('staff_id', staffId)
+                    .eq("staff_id", matched.staff_id)
 
                 if (!contribErr && rawContribs) {
-                    // Filter published articles and sort chronologically (most recent first)
                     const publishedList = rawContribs
-                        .filter(item => item.article && item.article.is_published)
+                        .filter((item) => item.article && item.article.is_published)
                         .sort((a, b) => new Date(b.article.published_at) - new Date(a.article.published_at))
                     setContributions(publishedList)
                 } else {
@@ -63,6 +91,7 @@ const StaffProfile = () => {
                 }
             } catch (error) {
                 console.error("Error fetching staff member profile or contributions:", error)
+                setStaffDetails(null)
             } finally {
                 setLoading(false)
             }
@@ -75,16 +104,24 @@ const StaffProfile = () => {
 
     if (loading) {
         return (
-            <div className="Staff-Profile-Full-Page" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <p style={{ color: "#0265A9", fontWeight: "bold" }}>Loading profile...</p>
+            <div className="Staff-Profile-Full-Page">
+                <div className="Staff-Profile-Loading-Box">
+                    <p>Loading staff profile...</p>
+                </div>
             </div>
         )
     }
 
     if (!staffDetails) {
         return (
-            <div className="Staff-Profile-Full-Page" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <p style={{ color: "#0265A9", fontWeight: "bold" }}>Staff member not found.</p>
+            <div className="Staff-Profile-Full-Page">
+                <div className="Staff-Profile-Not-Found-Box">
+                    <h2>Staff Member Not Found</h2>
+                    <p>The profile you are looking for may have been moved or updated.</p>
+                    <Link to="/about" className="Staff-Profile-Back-Btn">
+                        Return to Staff Directory
+                    </Link>
+                </div>
             </div>
         )
     }
@@ -96,53 +133,99 @@ const StaffProfile = () => {
             const url = sorted[0]?.media?.media_url
             if (url) return url
         }
-        return getCategoryFallbackImage(article.article_type) || "https://media.philartisan.org/sample-photos/1.jpg"
+        return getCategoryFallbackImage(article.article_type) || "/TPA-LEFT_BLUE.png"
     }
 
     const getContributionRoleLabel = (role) => {
         if (!role) return "Contributor"
         const mapping = {
-            "Author": "Written by",
-            "Media_Provider": "Photo by",
-            "Illustrator": "Graphics by",
-            "Broadcaster": "Broadcast by",
-            "Designer": "Designed by"
+            Author: "Written by",
+            Media_Provider: "Photo by",
+            Illustrator: "Graphics by",
+            Broadcaster: "Broadcast by",
+            Designer: "Designed by"
         }
         return mapping[role] || replaceUnderscore(role)
     }
 
     return (
         <div className="Staff-Profile-Full-Page">
-            <div className="Staff-Profile-Main-Content">
-                <div className="Staff-Profile-Image-Content" style={{ width: "100%" }}>
+            <div className="Staff-Profile-Container">
+                {/* Top Navigation Bar */}
+                <div className="Staff-Profile-Nav-Bar">
+                    <Link to="/about" className="Staff-Profile-Back-Btn">
+                        Back to Staff Directory & About
+                    </Link>
+                    {isAdmin && (
+                        <button
+                            type="button"
+                            className="Staff-Profile-Admin-Edit-Btn"
+                            onClick={() => setIsEditModalOpen(true)}
+                        >
+                            Edit Staff Record
+                        </button>
+                    )}
+                </div>
+
+                {/* Main Profile Card */}
+                <div className="Staff-Profile-Main-Content">
                     <div className="Horizontal-Staff-Profile-About">
                         <div className="Profile-Image-Container">
                             <img
-                                src={staffDetails.staff_picture || "https://media.philartisan.org/sample-photos/1.jpg"}
+                                src={staffDetails.staff_picture || "/TPA-LEFT_BLUE.png"}
                                 alt={staffDetails.staff_display_name}
+                                onError={(e) => {
+                                    e.currentTarget.src = "/TPA-LEFT_BLUE.png"
+                                }}
                             />
                         </div>
+
                         <div className="Right-Side-Profile-About">
-                            <h1>{staffDetails.staff_display_name}</h1>
-                            <p>
-                                {replaceUnderscore(staffDetails.staff_position)}{" "}
-                                {staffDetails.join_date && (
-                                    <span style={{ color: "gray" }}> | Joined {staffDetails.join_date}</span>
+                            <div className="Staff-Pills-Row">
+                                {staffDetails.staff_isactive && (
+                                    <span className="Staff-Active-Pill">Active</span>
                                 )}
-                            </p>
-                            <br />
+                                {staffDetails.is_editorial_board && (
+                                    <span className="Staff-EdBoard-Pill">Editorial Board</span>
+                                )}
+                                <span className="Staff-Position-Pill">
+                                    {replaceUnderscore(staffDetails.staff_position)}
+                                </span>
+                                {staffDetails.join_date && (
+                                    <span className="Staff-Meta-Pill">
+                                        Joined {staffDetails.join_date}
+                                    </span>
+                                )}
+                                <span className="Staff-Meta-Pill">
+                                    {contributions.length} {contributions.length === 1 ? "Contribution" : "Contributions"}
+                                </span>
+                            </div>
+
+                            <h1 className="Staff-Display-Name">{staffDetails.staff_display_name}</h1>
+                            {staffDetails.staff_pseudonym && (
+                                <p className="Staff-Pseudonym-Line">
+                                    Byline / Pseudonym: <span>{staffDetails.staff_pseudonym}</span>
+                                </p>
+                            )}
 
                             <div className="Profile-Bio-Container">
                                 <h2>About {staffDetails.staff_first_name}</h2>
-                                <br />
-                                <p>{staffDetails.staff_bio || "No bio information provided yet."}</p>
+                                <p className="Staff-Bio-Paragraph">
+                                    {staffDetails.staff_bio || "No biographical information provided yet."}
+                                </p>
                             </div>
                         </div>
                     </div>
 
                     {/* Staff Creations & Contributions Section */}
                     <div className="Staff-Contributions-Section">
-                        <h2>Recent Creations & Contributions ({contributions.length})</h2>
+                        <div className="Staff-Contributions-Header-Bar">
+                            <h2>Recent Creations & Contributions</h2>
+                            <span className="Staff-Contributions-Total">
+                                {contributions.length} {contributions.length === 1 ? "work published" : "works published"}
+                            </span>
+                        </div>
+
                         {contributions.length > 0 ? (
                             <div className="Staff-Contributions-Grid">
                                 {contributions.map((item, idx) => {
@@ -153,35 +236,51 @@ const StaffProfile = () => {
                                             key={`${art.article_id}-${idx}`}
                                             className="Staff-Contrib-Card"
                                         >
-                                            <img
-                                                src={getThumbnail(art)}
-                                                alt={art.article_headline}
-                                                className="Staff-Contrib-Image"
-                                            />
+                                            <div className="Staff-Contrib-Img-Wrap">
+                                                <img
+                                                    src={getThumbnail(art)}
+                                                    alt={art.article_headline}
+                                                    className="Staff-Contrib-Image"
+                                                    loading="lazy"
+                                                />
+                                                <span className="Staff-Contrib-Category-Tag">
+                                                    {getMediaSegmentLabel(art.article_type)}
+                                                </span>
+                                            </div>
                                             <div className="Staff-Contrib-Details">
                                                 <div className="Staff-Contrib-Tags">
                                                     <span className="Contrib-Role-Badge">
                                                         {getContributionRoleLabel(item.contribution_as)}
                                                     </span>
-                                                    <span className="Contrib-Type-Badge">
-                                                        {getMediaSegmentLabel(art.article_type)}
+                                                    <span className="Staff-Contrib-Date">
+                                                        {formatDateReadable(art.published_at)}
                                                     </span>
                                                 </div>
                                                 <h3 className="Staff-Contrib-Headline">{art.article_headline}</h3>
-                                                <span className="Staff-Contrib-Date">
-                                                    {formatDateReadable(art.published_at)}
-                                                </span>
                                             </div>
                                         </Link>
                                     )
                                 })}
                             </div>
                         ) : (
-                            <p className="No-Contribs-Text">No published creations or contributions yet.</p>
+                            <div className="Staff-No-Contribs-Box">
+                                <p>No published creations or contributions found yet.</p>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
+
+            {/* Admin Edit Modal */}
+            {isEditModalOpen && (
+                <EditStaffModal
+                    staff={staffDetails}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={(updated) => {
+                        setStaffDetails(updated)
+                    }}
+                />
+            )}
         </div>
     )
 }

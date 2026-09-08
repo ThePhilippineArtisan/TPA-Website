@@ -141,3 +141,16 @@
 .Manage-Staff-Grid-Row:last-child {
     border-right: none;
 }
+
+.Manage-Staff-Clickable-Row {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.Manage-Staff-Clickable-Row:hover {
+    background-color: #f0f7ff;
+}
+
+.Manage-Staff-Clickable-Row:hover .Manage-Staff-Grid-Row {
+    background-color: #f0f7ff;
+}

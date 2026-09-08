@@ -1,0 +1,259 @@
+.Pubmat-Modal-Overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.Pubmat-Modal-Card {
+    background-color: #ffffff;
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 740px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    font-family: var(--font-sans);
+}
+
+.Pubmat-Modal-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    gap: 1rem;
+}
+
+.Pubmat-Modal-Header h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.2rem 0;
+    color: #111827;
+}
+
+.Pubmat-Modal-Subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.Pubmat-Modal-Header-Actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.Pubmat-Modal-Manage-Link {
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    color: #111827;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.Pubmat-Modal-Manage-Link:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.Pubmat-Modal-Close-Btn {
+    background-color: #ffffff;
+    border: 2px solid var(--border-color);
+    color: #111827;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.Pubmat-Modal-Close-Btn:hover {
+    background-color: #f1f5f9;
+}
+
+.Pubmat-Modal-Missing-Notice {
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.Pubmat-Modal-Missing-Notice strong {
+    display: block;
+    color: #b45309;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.Pubmat-Modal-Missing-Notice p {
+    font-size: 0.88rem;
+    color: var(--text-dark);
+}
+
+.Pubmat-Modal-Toolbar {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.Pubmat-Modal-Search-Wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.Pubmat-Modal-Search-Input {
+    width: 100%;
+    padding: 0.55rem 3.5rem 0.55rem 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.Pubmat-Modal-Search-Input:focus {
+    border-color: var(--primary-blue);
+}
+
+.Pubmat-Modal-Search-Clear {
+    position: absolute;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.Pubmat-Modal-Categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.Pubmat-Modal-Category-Pill {
+    background-color: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #334155;
+    transition: all 0.12s ease;
+}
+
+.Pubmat-Modal-Category-Pill:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.Pubmat-Modal-Category-Pill.active {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+.Pubmat-Modal-Body {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.Pubmat-Modal-Status {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.Pubmat-Modal-Grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.Pubmat-Modal-Grid-Item {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease;
+}
+
+.Pubmat-Modal-Grid-Item:hover {
+    border-color: var(--primary-blue);
+}
+
+.Pubmat-Modal-Grid-Item.selected {
+    border-color: var(--primary-blue);
+    outline: 2px solid var(--primary-blue);
+}
+
+.Pubmat-Modal-Item-Thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.Pubmat-Modal-Item-Thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.Pubmat-Modal-Item-Category {
+    position: absolute;
+    top: 0.35rem;
+    left: 0.35rem;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #111827;
+}
+
+.Pubmat-Modal-Item-Title {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
