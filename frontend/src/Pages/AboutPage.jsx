@@ -15,6 +15,7 @@ import "../CSS/AboutPage.css"
 
 const AboutPage = () => {
     const [staff, setStaff] = useState([])
+    const [dbReleases, setDbReleases] = useState([])
     const [activeIndex, setActiveIndex] = useState(0)
     const [direction, setDirection] = useState("next")
     const slideRef = useRef(null)
@@ -35,8 +36,44 @@ const AboutPage = () => {
             }
         }
 
+        const fetchReleases = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('releases')
+                    .select(`
+                        *,
+                        releases_pages (
+                            page_number,
+                            image_url
+                        )
+                    `)
+                    .eq('is_visible', true)
+                    .order('order', { ascending: true })
+
+                if (!error && data && data.length > 0) {
+                    setDbReleases(data)
+                } else {
+                    setDbReleases([])
+                }
+            } catch (err) {
+                console.warn("Error fetching releases for About page:", err)
+                setDbReleases([])
+            }
+        }
+
         fetchStaff()
+        fetchReleases()
     }, [])
+
+    const getReleaseCover = (release) => {
+        if (!release) return LAMPOON
+        if (release.releases_pages && release.releases_pages.length > 0) {
+            const sorted = [...release.releases_pages].sort((a, b) => (a.page_number || 0) - (b.page_number || 0))
+            const coverPage = sorted.find(p => p.page_number === 1) || sorted[0]
+            if (coverPage?.image_url) return coverPage.image_url
+        }
+        return release.cover_url || release.image_url || LAMPOON
+    }
 
     const slides = [
         {
@@ -134,41 +171,64 @@ const AboutPage = () => {
             <div className="Releases-Part">
                 <h1> OUR LATEST RELEASES </h1>
                 <div className="Releases-Part-Covers">
-                    <div className="Covers">
-                        <img src={LAMPOON} alt="Kalyo Cover" />
-                        <div className="Cover-Text">
-                            <p className="Cover-Title">KALYO: KAMATAYAN</p>
-                            <p className="Cover-Year">'24 - '25</p>
-                        </div>
-                    </div>
-                    <div className="Covers">
-                        <img src={LAMPOON} alt="PhilArts Cover" />
-                        <div className="Cover-Text">
-                            <p className="Cover-Title">PHILARTS: STATUS QUO</p>
-                            <p className="Cover-Year">'24 - '25</p>
-                        </div>
-                    </div>
-                    <div className="Covers">
-                        <img src={LAMPOON} alt="Broadsheet Cover" />
-                        <div className="Cover-Text">
-                            <p className="Cover-Title">BROADSHEET</p>
-                            <p className="Cover-Year">'24 - '25</p>
-                        </div>
-                    </div>
-                    <div className="Covers">
-                        <img src={LAMPOON} alt="Newsletter Cover" />
-                        <div className="Cover-Text">
-                            <p className="Cover-Title">NEWSLETTER</p>
-                            <p className="Cover-Year">'24 - '25</p>
-                        </div>
-                    </div>
-                    <div className="Covers">
-                        <img src={LAMPOON} alt="Lampoon Cover" />
-                        <div className="Cover-Text">
-                            <p className="Cover-Title">LAMPOON</p>
-                            <p className="Cover-Year">'24 - '25</p>
-                        </div>
-                    </div>
+                    {dbReleases && dbReleases.length > 0 ? (
+                        dbReleases.map(rel => (
+                            <Link 
+                                to="/releases" 
+                                key={rel.id} 
+                                className="Covers" 
+                                style={{ textDecoration: "none" }}
+                            >
+                                <img src={getReleaseCover(rel)} alt={rel.release_title || "Release Cover"} />
+                                <div className="Cover-Text">
+                                    <p className="Cover-Title">{rel.release_title ? rel.release_title.toUpperCase() : (rel.release_type || "RELEASE")}</p>
+                                    <p className="Cover-Year">
+                                        {rel.release_date 
+                                            ? new Date(rel.release_date).getFullYear() 
+                                            : (rel.issue_number ? `ISSUE #${rel.issue_number}` : "'24 - '25")}
+                                    </p>
+                                </div>
+                            </Link>
+                        ))
+                    ) : (
+                        <>
+                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
+                                <img src={LAMPOON} alt="Kalyo Cover" />
+                                <div className="Cover-Text">
+                                    <p className="Cover-Title">KALYO: KAMATAYAN</p>
+                                    <p className="Cover-Year">'24 - '25</p>
+                                </div>
+                            </Link>
+                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
+                                <img src={LAMPOON} alt="PhilArts Cover" />
+                                <div className="Cover-Text">
+                                    <p className="Cover-Title">PHILARTS: STATUS QUO</p>
+                                    <p className="Cover-Year">'24 - '25</p>
+                                </div>
+                            </Link>
+                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
+                                <img src={LAMPOON} alt="Broadsheet Cover" />
+                                <div className="Cover-Text">
+                                    <p className="Cover-Title">BROADSHEET</p>
+                                    <p className="Cover-Year">'24 - '25</p>
+                                </div>
+                            </Link>
+                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
+                                <img src={LAMPOON} alt="Newsletter Cover" />
+                                <div className="Cover-Text">
+                                    <p className="Cover-Title">NEWSLETTER</p>
+                                    <p className="Cover-Year">'24 - '25</p>
+                                </div>
+                            </Link>
+                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
+                                <img src={LAMPOON} alt="Lampoon Cover" />
+                                <div className="Cover-Text">
+                                    <p className="Cover-Title">LAMPOON</p>
+                                    <p className="Cover-Year">'24 - '25</p>
+                                </div>
+                            </Link>
+                        </>
+                    )}
                 </div>
             </div>
 

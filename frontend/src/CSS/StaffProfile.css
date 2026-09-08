@@ -90,4 +90,115 @@
     font-size: clamp(0.95rem, 1.2vw, 1.1rem);
     line-height: 1.7;
     color: var(--text-dark);
-}
+}
+
+/* Staff Contributions & Recent Creations Section */
+.Staff-Contributions-Section {
+    width: 100%;
+    margin-top: 2rem;
+    padding-top: 1rem;
+}
+
+.Staff-Contributions-Section h2 {
+    font-family: var(--font-sans);
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    font-weight: 800;
+    color: var(--primary-blue, #0265A9);
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid rgba(2, 101, 169, 0.2);
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.Staff-Contributions-Grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.Staff-Contrib-Card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.Staff-Contrib-Card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(2, 101, 169, 0.12);
+    border-color: #0265A9;
+}
+
+.Staff-Contrib-Image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.Staff-Contrib-Details {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.Staff-Contrib-Tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.Contrib-Role-Badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: #0265A9;
+    color: #ffffff;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.Contrib-Type-Badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.Staff-Contrib-Headline {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #0f172a;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.Staff-Contrib-Date {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: auto;
+}
+
+.No-Contribs-Text {
+    font-size: 1rem;
+    color: #64748b;
+    font-style: italic;
+}
+

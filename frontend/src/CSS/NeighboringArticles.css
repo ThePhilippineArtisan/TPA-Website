@@ -1,0 +1,135 @@
+.Neighboring-Articles-Container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 3rem auto 2rem auto;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.Neighboring-Header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.Neighboring-Header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0265A9;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.Neighboring-Divider {
+    flex: 1;
+    border: none;
+    height: 2px;
+    background-color: #e0e0e0;
+}
+
+.Neighboring-Grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .Neighboring-Grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.Neighbor-Card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.Neighbor-Card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(2, 101, 169, 0.12);
+    border-color: #0265A9;
+}
+
+.Neighbor-Card.Empty {
+    justify-content: center;
+    align-items: center;
+    background: #f8fafc;
+    border-style: dashed;
+    color: #64748b;
+    padding: 2rem 1rem;
+}
+
+.Empty-Text {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: #64748b;
+}
+
+.Neighbor-Direction {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #0265A9;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.Neighbor-Content {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.Neighbor-Image {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.Neighbor-Details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    overflow: hidden;
+}
+
+.Neighbor-Badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.Neighbor-Title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1e293b;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.Neighbor-Date {
+    font-size: 0.8rem;
+    color: #64748b;
+}

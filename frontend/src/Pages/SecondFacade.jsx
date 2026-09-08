@@ -117,13 +117,13 @@ const SecondFacade = () => {
     }, []);
 
     const getArticleMedia = (article) => {
-        if (!article) return 'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg';
+        if (!article) return 'https://media.philartisan.org/sample-photos/Multification-Invication.jpg';
         if (article.article_media && article.article_media.length > 0) {
             const sorted = [...article.article_media].sort((a, b) => (a.media_order || 0) - (b.media_order || 0));
             const url = sorted[0]?.media?.media_url;
             if (url) return url;
         }
-        return 'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg';
+        return 'https://media.philartisan.org/sample-photos/Multification-Invication.jpg';
     };
 
     const getAuthorsString = (article) => {
@@ -195,7 +195,7 @@ const SecondFacade = () => {
                             ) : (
                                 <Link to="/latest" className="Large-Photo-News" style={{ flexWrap: "wrap" }}>
                                     <img
-                                        src={'https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Multification-Invication.jpg'}
+                                        src={'https://media.philartisan.org/sample-photos/Multification-Invication.jpg'}
                                         style={{ width: "100%" }}
                                         alt="Latest News"
                                     />

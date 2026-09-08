@@ -10,7 +10,7 @@ const PlaceholderMediaSegmentArticle = () => {
             <div className="Media-Segment-Article">
 
                 <div className="Media-Segment-Image">
-                    {/** style={{ "--bgImage": `url(${"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/Features_Friday.jpg"})`}}  */}
+                    {/** style={{ "--bgImage": `url(${"https://media.philartisan.org/sample-photos/Features_Friday.jpg"})`}}  */}
                     <div className="Author-and-Details">
                         <div>
                             <span id="Week-Segment"> Features Friday </span>
@@ -24,7 +24,7 @@ const PlaceholderMediaSegmentArticle = () => {
                     </div>
 
                     <img
-                        src={"https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos/StreamingSat.jpg"}
+                        src={"https://media.philartisan.org/sample-photos/StreamingSat.jpg"}
                     />
                 </div>
 

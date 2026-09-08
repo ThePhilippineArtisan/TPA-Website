@@ -1,19 +1,20 @@
+export const MEDIA_SEGMENT_TYPES = [
+    "MAKATA_MONDAYS",
+    "TEK_TUESDAY",
+    "WANKJOB_WEDNESDAY",
+    "TALA_THURSDAY",
+    "FEATURES_FRIDAY",
+    "STREAMING_SATURDAY",
+    "SPORTS_SUNDAY",
+    "OPINION",
+    "EDITORIAL"
+]
+
 export const isMediaSegment = (type) => {
     if (!type) {
         return false
     }
-    const segments = [
-        "MAKATA_MONDAYS",
-        "TEK_TUESDAY",
-        "WANKJOB_WEDNESDAY",
-        "TALA_THURSDAY",
-        "FEATURES_FRIDAY",
-        "STREAMING_SATURDAY",
-        "SPORTS_SUNDAY",
-        "OPINION",
-        "EDITORIAL"
-    ]
-    return segments.includes(type.toUpperCase())
+    return MEDIA_SEGMENT_TYPES.includes(type.toUpperCase())
 }
 
 export const getMediaSegmentLabel = (type) => {
@@ -73,7 +74,7 @@ export const getCategoryFallbackImage = (type) => {
         return null
     }
     const normalized = type.toUpperCase()
-    const R2_PREFIX = "https://pub-3f5d40cb1c9d4e07ad651d5c303f5384.r2.dev/sample-photos"
+    const R2_PREFIX = "https://media.philartisan.org/sample-photos"
 
     const fallbacks = {
         "JUST_IN": `${R2_PREFIX}/JUST-IN.jpg`,

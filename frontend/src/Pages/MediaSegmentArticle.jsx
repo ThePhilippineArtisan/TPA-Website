@@ -11,6 +11,7 @@ import "../CSS/MediaSegmentArticle.css"
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx"
 import "../CSS/LatestMediaSegment.css"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx"
+import NeighboringArticles from "../Components/NeighboringArticles.jsx"
 
 const MediaSegmentArticle = () => {
     const { id, slug } = useParams()
@@ -324,6 +325,12 @@ const MediaSegmentArticle = () => {
 
                 </div>
             </div>
+
+            <NeighboringArticles 
+                currentArticleId={articleDetails.article_id} 
+                publishedAt={articleDetails.published_at} 
+                isMediaSegment={true} 
+            />
 
             <ListOfMediaSegments />
         </div>
