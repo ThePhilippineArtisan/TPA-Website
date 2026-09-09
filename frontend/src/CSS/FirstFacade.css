@@ -153,6 +153,8 @@
   animation: fadeLeft 3s ease-out forwards;
   width: 35%;
   padding: 1rem;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .Card-Images img {
@@ -187,6 +189,7 @@
   transition: all 0.2s ease;
 }
 
+.Card-Images:hover img,
 .Card-Images img:hover {
   cursor: pointer;
   transform: rotate(3deg) scale(1.05);
@@ -217,22 +220,83 @@
   will-change: transform, opacity;
 }
 
-.SlideWrapper.next {
-  animation: tumbleInLeft 1s ease forwards;
+.SlideWrapper.exit-next {
+  animation: slideExitLeft 0.35s ease forwards;
 }
 
-.SlideWrapper.prev {
-  animation: tumbleInRight 1s ease forwards;
+.SlideWrapper.enter-next {
+  animation: slideEnterRight 0.35s ease forwards;
 }
 
-@keyframes tumbleInLeft {
-  from { transform: translateX(50px) scale(0.96); opacity: 0; }
+.SlideWrapper.exit-prev {
+  animation: slideExitRight 0.35s ease forwards;
+}
+
+.SlideWrapper.enter-prev {
+  animation: slideEnterLeft 0.35s ease forwards;
+}
+
+@keyframes slideExitLeft {
+  from { transform: translateX(0) scale(1); opacity: 1; }
+  to { transform: translateX(-40px) scale(0.97); opacity: 0; }
+}
+
+@keyframes slideEnterRight {
+  from { transform: translateX(40px) scale(0.97); opacity: 0; }
   to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
-@keyframes tumbleInRight {
-  from { transform: translateX(-50px) scale(0.96); opacity: 0; }
+@keyframes slideExitRight {
+  from { transform: translateX(0) scale(1); opacity: 1; }
+  to { transform: translateX(40px) scale(0.97); opacity: 0; }
+}
+
+@keyframes slideEnterLeft {
+  from { transform: translateX(-40px) scale(0.97); opacity: 0; }
   to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.DBFF-Headline-Title {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.DBFF-Headline-Title:hover p {
+  color: #f0f7ff;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+.DBFF-Explore-Button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem 1.4rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  color: #ffffff !important;
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.DBFF-Explore-Button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: #ffffff !important;
 }
 
 @keyframes fadeLeft {

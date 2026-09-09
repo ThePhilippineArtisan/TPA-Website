@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from "../supabaseClient"
 
 import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
@@ -10,12 +11,12 @@ import "../CSS/FirstFacade.css"
 let cachedSlides = null
 
 const preloadImages = (slidesArray) => {
-    slidesArray.forEach((slide) => { // for each slide, do this arrow function
-        if(slide.image_url){
+    slidesArray.forEach((slide) => {
+        if (slide.image_url) {
             const img = new Image()
             img.src = slide.image_url
         }
-        if(slide.backgroundSRC){
+        if (slide.backgroundSRC) {
             const img = new Image()
             img.src = slide.backgroundSRC
         }
@@ -26,7 +27,7 @@ const FirstFacade = () => {
 
     const [slides, setSlides] = useState(cachedSlides || [])
     const artisanLogo = slides.find(logo => logo.order === 999);
-
+    const carouselSlides = slides.filter(slide => slide.order !== 999);
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(null); // "next" | "prev"
@@ -35,169 +36,185 @@ const FirstFacade = () => {
     useEffect(() => {
         const fetchSlides = async () => {
             let { data, error } = await supabase
-            .from('homepage_slides')
-            .select('*')
-            .eq('is_visible', true)
-            .order('order', { ascending: true })
+                .from('homepage_slides')
+                .select('*')
+                .eq('is_visible', true)
+                .order('order', { ascending: true })
 
             if (error) {
                 console.log('Error fetching slides: ', error)
-            } else{
-                setSlides(data)
+            } else {
+                const fetched = data || []
+                setSlides(fetched)
+                cachedSlides = fetched
+                preloadImages(fetched)
             }
         }
         fetchSlides()
     }, [])
 
     const handleNext = () => {
-        if (phase !== "idle") return;
+        if (phase !== "idle" || carouselSlides.length <= 1) return;
         setDirection("next");
         setPhase("exit");
     };
 
     const handlePrev = () => {
-        if (phase !== "idle") return;
+        if (phase !== "idle" || carouselSlides.length <= 1) return;
         setDirection("prev");
         setPhase("exit");
     };
 
+    // Auto-advance slides every 15s
     useEffect(() => {
-    if (phase !== "idle" || slides.length === 0) return;
+        if (phase !== "idle" || carouselSlides.length <= 1) return;
 
-    const timer = setTimeout(() => {
-        setDirection("next");
-        setPhase("exit");
-    }, 15000);
+        const timer = setTimeout(() => {
+            setDirection("next");
+            setPhase("exit");
+        }, 15000);
 
-    return () => clearTimeout(timer);
-    }, [phase, activeIndex, slides.length]);
+        return () => clearTimeout(timer);
+    }, [phase, activeIndex, carouselSlides.length]);
 
-    if(slides.length === 0){
-        return(<div className="Literary-Showcase-First-Facade">
+    // Safety fallback: guarantee transition returns to "idle" even if animation events are dropped
+    useEffect(() => {
+        if (phase === "idle" || carouselSlides.length === 0) return;
+
+        const safety = setTimeout(() => {
+            if (phase === "exit") {
+                setActiveIndex((i) =>
+                    direction === "next"
+                        ? (i + 1) % carouselSlides.length
+                        : (i - 1 + carouselSlides.length) % carouselSlides.length
+                );
+                setPhase("enter");
+            } else if (phase === "enter") {
+                setPhase("idle");
+                setDirection(null);
+            }
+        }, 400);
+
+        return () => clearTimeout(safety);
+    }, [phase, direction, carouselSlides.length]);
+
+    const handleAnimationEnd = (e) => {
+        // Only respond to animations ending on the SlideWrapper itself
+        if (e.target !== e.currentTarget) return;
+
+        if (phase === "exit") {
+            setActiveIndex((i) =>
+                direction === "next"
+                    ? (i + 1) % carouselSlides.length
+                    : (i - 1 + carouselSlides.length) % carouselSlides.length
+            );
+            setPhase("enter");
+        } else if (phase === "enter") {
+            setPhase("idle");
+            setDirection(null);
+        }
+    };
+
+    if (slides.length === 0) {
+        return (
+            <div className="Literary-Showcase-First-Facade">
                 <div className="Artisan-Logo-First-Facade">
                     <p> Loading... </p>
                 </div>
                 <RollingHeadlines />
             </div>
-        )
+        );
     }
 
-    const mainSlide = slides[activeIndex]
+    const safeIndex = carouselSlides.length > 0 ? activeIndex % carouselSlides.length : 0;
+    const mainSlide = carouselSlides[safeIndex] || slides[0];
 
-    return(
-        <div className = "Literary-Showcase-First-Facade">
-            <div className = "Artisan-Logo-First-Facade">
+    const animationClass = phase === "exit"
+        ? `exit-${direction}`
+        : phase === "enter"
+        ? `enter-${direction}`
+        : "";
+
+    return (
+        <div className="Literary-Showcase-First-Facade">
+            <div className="Artisan-Logo-First-Facade">
                 <img 
-                    key = {artisanLogo.order}
-                    src = {artisanLogo.image_url}
-                    id = "ArtisanLogo"
+                    key={artisanLogo?.order || "artisan-logo"}
+                    src={artisanLogo?.image_url || "/TPA-LEFT_BLUE.png"}
+                    id="ArtisanLogo"
+                    alt="The Philippine Artisan"
                 />
             </div>
-                <RollingHeadlines />
-            <div className = "First-BG-First-Facade">
+            <RollingHeadlines />
+            <div className="First-BG-First-Facade">
                 <div 
-                style = {{
-                    backgroundImage: `url(${mainSlide.backgroundSRC})`,
-                    filter: "blur(5px)",
-                    position: "absolute",
-                    inset: 0,
-                    zIndex: -2,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
+                    style={{
+                        backgroundImage: `url(${mainSlide?.backgroundSRC || ''})`,
+                        filter: "blur(5px)",
+                        position: "absolute",
+                        inset: 0,
+                        zIndex: -2,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                    }}
                 ></div>
-                
-                {/* Background image with blur 
-                <div
-                    style={{
-                    backgroundColor: "rgba(192, 192, 192, 1)",
-                    backgroundImage: `url(${mainSlide.backgroundSRC})`,
-                    backgroundSize: "30rem",
-                    backgroundPosition: "center",
-                    transform: "rotate(3deg)",
-                    filter: "blur(10px)",
-                    position: "absolute",
-                    inset: 0,
-                    zIndex: -2
-                    }}
-                />
-                */}
-                {/* Dark overlay                 
-                
-                <div
-                    style={{
-                    backgroundImage: `url(${starsBackground})`,
-                    backgroundPosition: "center",
-                    position: "absolute",
-                    inset: 0,
-                    zIndex: -1
-                    }}
-                />
-                
-                */}
-                    <div className="Slide-Navigation">
-                        <img 
-                            src = {PreviousSlide}
-                            alt = "Previous"
-                            onClick = {handlePrev}
-                        />
-                    </div>
 
-                <div className={`Cards SlideWrapper ${
-                        phase === "exit" ? `exit ${direction}` : ""
-                    } ${
-                        phase === "enter" ? direction : ""
-                    }`}
-                    onAnimationEnd={() => {
-                        if (phase === "exit") {
-                        setActiveIndex((i) =>
-                            direction === "next"
-                            ? (i + 1) % slides.length
-                            : (i - 1 + slides.length) % slides.length
-                        );
-                        setPhase("enter");
-                        } else if (phase === "enter") {
-                        setPhase("idle");
-                        setDirection(null);
-                        }
-                    }}
-                    >
+                <div className="Slide-Navigation">
+                    <img 
+                        src={PreviousSlide}
+                        alt="Previous"
+                        onClick={handlePrev}
+                    />
+                </div>
 
-                    <div className = "DBFF-Headline">
-                        <p> {mainSlide.header} </p>
-                        <div className = "DBFF-Text">
-                            <p style = {{fontSize: "1.5rem"}}> <i> {mainSlide.text1 && <span>{mainSlide.text1} </span>}</i> </p> <br></br>
-                            <p> {mainSlide.text2 && <span>{mainSlide.text2} </span>} </p>
-                            <p> {mainSlide.text3 && <span>{mainSlide.text3} </span>} </p>
-                            <p> {mainSlide.text4 && <span>{mainSlide.text4} </span>} </p>
-                            <p> {mainSlide.text5 && <span>{mainSlide.text5} </span>} </p>
-                            <p> {mainSlide.text6 && <span>{mainSlide.text6} </span>} </p>
-                            <p> {mainSlide.text7 && <span>{mainSlide.text7} </span>} </p>
-                            <p> {mainSlide.text8 && <span>{mainSlide.text8} </span>} </p>
+                <div
+                    className={`Cards SlideWrapper ${animationClass}`}
+                    onAnimationEnd={handleAnimationEnd}
+                >
+                    <div className="DBFF-Headline">
+                        <Link to="/releases" className="DBFF-Headline-Title" title="View in Releases">
+                            <p>{mainSlide?.header}</p>
+                        </Link>
+                        <div className="DBFF-Text">
+                            {mainSlide?.text1 && <p style={{ fontSize: "1.5rem" }}><i><span>{mainSlide.text1}</span></i></p>}
+                            {mainSlide?.text2 && <p><span>{mainSlide.text2}</span></p>}
+                            {mainSlide?.text3 && <p><span>{mainSlide.text3}</span></p>}
+                            {mainSlide?.text4 && <p><span>{mainSlide.text4}</span></p>}
+                            {mainSlide?.text5 && <p><span>{mainSlide.text5}</span></p>}
+                            {mainSlide?.text6 && <p><span>{mainSlide.text6}</span></p>}
+                            {mainSlide?.text7 && <p><span>{mainSlide.text7}</span></p>}
+                            {mainSlide?.text8 && <p><span>{mainSlide.text8}</span></p>}
+                            <Link to="/releases" className="DBFF-Explore-Button">
+                                Explore Releases ⟶
+                            </Link>
                         </div>
                     </div>
 
-                    <div className = "Card-Images" style={{ "--cover-img": `url(${mainSlide.image_url})` }}>
+                    <Link
+                        to="/releases"
+                        className="Card-Images"
+                        style={{ "--cover-img": `url(${mainSlide?.image_url || ''})` }}
+                        title="View in Releases"
+                    >
                         <img
-                            key = {mainSlide.id}
-                            loading = "lazy" 
-                            src = {mainSlide.image_url}
-                            alt = {mainSlide.header}
+                            key={mainSlide?.id}
+                            loading="lazy" 
+                            src={mainSlide?.image_url}
+                            alt={mainSlide?.header}
                         /> 
-                    </div>
-
+                    </Link>
                 </div>
-                    <div className="Slide-Navigation">
-                        <img 
-                            src = {NextSlide}
-                            alt = "Next"
-                            onClick = {handleNext}
-                        />
-                    </div>
 
+                <div className="Slide-Navigation">
+                    <img 
+                        src={NextSlide}
+                        alt="Next"
+                        onClick={handleNext}
+                    />
+                </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default FirstFacade;

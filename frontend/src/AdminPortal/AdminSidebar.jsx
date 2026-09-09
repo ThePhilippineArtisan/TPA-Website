@@ -39,6 +39,10 @@ const menuItems = [
     {
         path: "/admin/manage-pubmats",
         label: "Manage Pubmats",
+    },
+    {
+        path: "/admin/dashboard#activity-logs",
+        label: "Activity & Logs",
     }
 ]
 
@@ -91,7 +95,9 @@ const AdminSidebar = () => {
 
                     <nav className="sidebar-menu">
                         {menuItems.map((item) => {
-                            const isActive = location.pathname === item.path
+                            const isActive = item.path.includes("#")
+                                ? (location.pathname + location.hash) === item.path
+                                : location.pathname === item.path && !location.hash
                             return (
                                 <Link
                                     key={item.path}

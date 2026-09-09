@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, Navigate } from 'react-router-dom'
 import AnimatedLoader from "./Pages/AnimatedLoader.jsx"
+import ScrollToTop from "./Components/ScrollToTop.jsx"
 import { supabase } from "./supabaseClient.js"
 
 // Components Folder
@@ -130,6 +131,7 @@ const App = () => {
   return (
     <div className = "App-Wrapper">
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route element = {<ProtectedRoute />}>
             <Route element = {<AdminPage />}>

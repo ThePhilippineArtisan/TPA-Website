@@ -260,4 +260,431 @@
 .Tag-Count {
     color: var(--text-muted);
     font-size: 0.75rem;
+}
+
+/* AUDIT & ACTIVITY LOGS SECTION */
+
+.Admin-Dashboard-Audit-Section {
+    margin-top: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Audit-Logs-Card {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.Audit-Logs-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.Audit-Logs-Title h2 {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-family: var(--font-serif);
+    margin: 0 0 0.25rem 0;
+    color: var(--text-dark);
+}
+
+.Audit-Logs-Title p {
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.Audit-Refresh-Button {
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-light);
+    color: var(--primary-blue);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.Audit-Refresh-Button:hover:not(:disabled) {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+}
+
+.Audit-Refresh-Button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.Audit-Logs-Controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.Audit-Action-Tabs {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.Audit-Action-Tab {
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: white;
+    color: var(--text-dark);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.Audit-Action-Tab:hover {
+    border-color: var(--primary-blue);
+}
+
+.Audit-Action-Tab.active {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+}
+
+.Audit-Filters-Right {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.Audit-Table-Select {
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    font-size: 0.82rem;
+    background-color: white;
+    color: var(--text-dark);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.Audit-Search-Input {
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    font-size: 0.82rem;
+    width: 200px;
+    background-color: white;
+    color: var(--text-dark);
+    transition: var(--transition-smooth);
+}
+
+.Audit-Search-Input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+.Audit-Logs-List {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.Audit-Log-Item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: white;
+    transition: var(--transition-smooth);
+    overflow: hidden;
+}
+
+.Audit-Log-Item:hover {
+    border-color: #94a3b8;
+}
+
+.Audit-Log-Item.expanded {
+    border-color: var(--primary-blue);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.Audit-Log-Row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+.Audit-Log-Left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.Audit-Badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.badge-insert {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.badge-update {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.badge-delete {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.Audit-Entity-Badge {
+    padding: 0.2rem 0.5rem;
+    background-color: #f1f5f9;
+    color: #475569;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.Audit-Log-Info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.Audit-Log-Title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 2px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.Audit-Log-Meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.Audit-Expand-Btn {
+    padding: 0.35rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition-smooth);
+}
+
+.Audit-Expand-Btn:hover {
+    background-color: var(--bg-light);
+}
+
+.Audit-Details-Box {
+    background-color: #f8fafc;
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+    font-size: 0.85rem;
+}
+
+.Audit-Details-Meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    color: #475569;
+    font-size: 0.82rem;
+}
+
+.Audit-Details-Meta p {
+    margin: 0;
+}
+
+.Audit-Diff-Section {
+    margin-bottom: 1rem;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+}
+
+.Audit-Diff-Section h4,
+.Audit-Raw-Json-Section h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.Audit-Diff-List {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.Audit-Diff-Item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.Audit-Diff-Key {
+    font-weight: bold;
+    color: #334155;
+    min-width: 120px;
+}
+
+.Audit-Diff-Values {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.Audit-Diff-Old {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    text-decoration: line-through;
+}
+
+.Audit-Diff-Arrow {
+    color: #94a3b8;
+    font-weight: bold;
+}
+
+.Audit-Diff-New {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+}
+
+.Audit-Json-Columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .Audit-Json-Columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.Audit-Json-Column pre {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    max-height: 250px;
+    overflow: auto;
+    margin: 0;
+}
+
+.Audit-Json-Label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #475569;
+    margin: 0 0 0.35rem 0;
+}
+
+.Audit-Empty-State,
+.Audit-Loading-State {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.Audit-Setup-Card {
+    background: #f8fafc;
+    border: 1px dashed #94a3b8;
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.Audit-Setup-Header h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.Audit-Setup-Header p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin: 0 0 1rem 0;
+}
+
+.Audit-Setup-Toggle {
+    padding: 0.55rem 1.25rem;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.Audit-Setup-Toggle:hover {
+    background-color: var(--primary-blue-hover);
+}
+
+.Audit-Sql-Box {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.Audit-Sql-Code {
+    background-color: #0f172a;
+    color: #38bdf8;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.78rem;
+    max-height: 350px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
 }
