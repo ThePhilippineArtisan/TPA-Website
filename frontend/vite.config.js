@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(),
   VitePWA({
     registerType: 'autoUpdate',
-    includeAssets: ['favicon.png', 'faviconpointer.png', 'pwa-192x192.png', 'pwa-512x512.png', 'robots.txt'],
+    includeAssets: ['favicon.png', 'favicon.svg', 'faviconpointer.png', 'pwa-192x192.png', 'pwa-512x512.png', 'robots.txt'],
     devOptions: {
       enabled: true
     },
