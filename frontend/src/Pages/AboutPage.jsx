@@ -7,8 +7,6 @@ import { getStaffBadge } from "../utils/staffUtils"
 import TPAWTurno from "/TPA-LEFT_BLUE.png"
 import TPACircleLogo from "../assets/Miniature_Icon_Version/TPACircleLogo.svg"
 
-import LAMPOON from "../TPA-Releases/2025-Lampoon/2025-Lampoon_Duh-Filipit-Artihan/2025-Lampoon_Duh-Filipit-Artihan-1.png"
-
 import PreviousSlide from "../assets/Miniature_Icon_Version/Previous.svg"
 import NextSlide from "../assets/Miniature_Icon_Version/Next.svg"
 
@@ -67,13 +65,13 @@ const AboutPage = () => {
     }, [])
 
     const getReleaseCover = (release) => {
-        if (!release) return LAMPOON
+        if (!release) return null
         if (release.releases_pages && release.releases_pages.length > 0) {
             const sorted = [...release.releases_pages].sort((a, b) => (a.page_number || 0) - (b.page_number || 0))
             const coverPage = sorted.find(p => p.page_number === 1) || sorted[0]
             if (coverPage?.image_url) return coverPage.image_url
         }
-        return release.cover_url || release.image_url || LAMPOON
+        return release.cover_url || release.image_url || null
     }
 
     const slides = [
@@ -168,67 +166,46 @@ const AboutPage = () => {
                     />
                 </div>
             </div>
-
             <div className="Releases-Part">
                 <h1> OUR LATEST RELEASES </h1>
                 <div className="Releases-Part-Covers">
                     {dbReleases && dbReleases.length > 0 ? (
-                        dbReleases.map(rel => (
-                            <Link 
-                                to="/releases" 
-                                key={rel.id} 
-                                className="Covers" 
-                                style={{ textDecoration: "none" }}
-                            >
-                                <img src={getReleaseCover(rel)} alt={rel.release_title || "Release Cover"} />
-                                <div className="Cover-Text">
-                                    <p className="Cover-Title">{rel.release_title ? rel.release_title.toUpperCase() : (rel.release_type || "RELEASE")}</p>
-                                    <p className="Cover-Year">
-                                        {rel.release_date 
-                                            ? new Date(rel.release_date).getFullYear() 
-                                            : (rel.issue_number ? `ISSUE #${rel.issue_number}` : "'24 - '25")}
-                                    </p>
-                                </div>
-                            </Link>
-                        ))
+                        dbReleases.map(rel => {
+                            const cover = getReleaseCover(rel)
+                            return (
+                                <Link 
+                                    to="/releases" 
+                                    key={rel.id} 
+                                    className="Covers" 
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    {cover ? (
+                                        <img src={cover} alt={rel.release_title || "Release Cover"} />
+                                    ) : (
+                                        <div className="Cover-Placeholder-Card">
+                                            <span className="Cover-Placeholder-Tag">{rel.release_type || "RELEASE"}</span>
+                                            <p className="Cover-Placeholder-Title">{rel.release_title || "The Philippine Artisan"}</p>
+                                        </div>
+                                    )}
+                                    <div className="Cover-Text">
+                                        <p className="Cover-Title">{rel.release_title ? rel.release_title.toUpperCase() : (rel.release_type || "RELEASE")}</p>
+                                        <p className="Cover-Year">
+                                            {rel.release_date 
+                                                ? new Date(rel.release_date).getFullYear() 
+                                                : (rel.issue_number ? `ISSUE #${rel.issue_number}` : "'24 - '25")}
+                                        </p>
+                                    </div>
+                                </Link>
+                            )
+                        })
                     ) : (
-                        <>
-                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
-                                <img src={LAMPOON} alt="Kalyo Cover" />
-                                <div className="Cover-Text">
-                                    <p className="Cover-Title">KALYO: KAMATAYAN</p>
-                                    <p className="Cover-Year">'24 - '25</p>
-                                </div>
+                        <div className="Releases-Empty-State">
+                            <p className="Releases-Empty-Title">ARCHIVED PUBLICATIONS & ISSUES</p>
+                            <p className="Releases-Empty-Text">Explore our official broadsheets, literary folios, newsletters, and lampoon releases in the digital archive.</p>
+                            <Link to="/releases" className="Releases-Archive-Link">
+                                View Releases Archive &rarr;
                             </Link>
-                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
-                                <img src={LAMPOON} alt="PhilArts Cover" />
-                                <div className="Cover-Text">
-                                    <p className="Cover-Title">PHILARTS: STATUS QUO</p>
-                                    <p className="Cover-Year">'24 - '25</p>
-                                </div>
-                            </Link>
-                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
-                                <img src={LAMPOON} alt="Broadsheet Cover" />
-                                <div className="Cover-Text">
-                                    <p className="Cover-Title">BROADSHEET</p>
-                                    <p className="Cover-Year">'24 - '25</p>
-                                </div>
-                            </Link>
-                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
-                                <img src={LAMPOON} alt="Newsletter Cover" />
-                                <div className="Cover-Text">
-                                    <p className="Cover-Title">NEWSLETTER</p>
-                                    <p className="Cover-Year">'24 - '25</p>
-                                </div>
-                            </Link>
-                            <Link to="/releases" className="Covers" style={{ textDecoration: "none" }}>
-                                <img src={LAMPOON} alt="Lampoon Cover" />
-                                <div className="Cover-Text">
-                                    <p className="Cover-Title">LAMPOON</p>
-                                    <p className="Cover-Year">'24 - '25</p>
-                                </div>
-                            </Link>
-                        </>
+                        </div>
                     )}
                 </div>
             </div>

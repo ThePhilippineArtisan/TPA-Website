@@ -74,22 +74,7 @@ const PlaceholderArticlePage = () => {
         "https://media.philartisan.org/sample-photos/OPINION.jpg",
         "https://media.philartisan.org/sample-photos/StreamingSat.jpg",
         "https://media.philartisan.org/sample-photos/Features_Friday.jpg",
-        "https://media.philartisan.org/sample-photos/Bata.jpg",
-
-        // new URL("../Sample-Photos/1.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/2.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/3.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/JUST-IN.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/4.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/5.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/6.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/Multification-Invication.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/7.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/8.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/9.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/GAD-Kapihan.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/10.jpg", import.meta.url).href,
-        // new URL("../Sample-Photos/OPINION.jpg", import.meta.url).href,
+        "https://media.philartisan.org/sample-photos/Bata.jpg"
     ]
 
     const [currentPhoto, setCurrentPhoto] = useState(photos[0])

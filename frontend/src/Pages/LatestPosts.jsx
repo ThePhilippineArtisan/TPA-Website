@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react"
 import { isMediaSegment, getMediaSegmentLabel, getArticleUrl } from "../utils/articleUtils.js"
 import { replaceUnderscore } from "../utils/slugifyUtils.js"
 
-import Photo2 from "../Sample-Photos/Multification-Invication.jpg"
-
 import "../CSS/LatestPosts.css"
 
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";

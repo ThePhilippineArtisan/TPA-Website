@@ -60,6 +60,7 @@ const StaffProfile = () => {
                 setStaffDetails(matched)
 
                 // 2. Fetch Staff Articles / Media Contributions using matched.staff_id
+                let publishedList = []
                 const { data: rawContribs, error: contribErr } = await supabase
                     .from("article_staff")
                     .select(`
@@ -81,14 +82,55 @@ const StaffProfile = () => {
                     `)
                     .eq("staff_id", matched.staff_id)
 
-                if (!contribErr && rawContribs) {
-                    const publishedList = rawContribs
+                if (!contribErr && rawContribs && rawContribs.length > 0) {
+                    publishedList = rawContribs
                         .filter((item) => item.article && item.article.is_published)
                         .sort((a, b) => new Date(b.article.published_at) - new Date(a.article.published_at))
-                    setContributions(publishedList)
                 } else {
-                    setContributions([])
+                    // Fallback: 2-step fetch when no foreign key relationship exists between article_staff and article
+                    const { data: staffCredits, error: creditsErr } = await supabase
+                        .from("article_staff")
+                        .select("article_id, contribution_as, use_pseudonym")
+                        .eq("staff_id", matched.staff_id)
+
+                    if (!creditsErr && staffCredits && staffCredits.length > 0) {
+                        const articleIds = [...new Set(staffCredits.map(c => c.article_id).filter(Boolean))]
+                        if (articleIds.length > 0) {
+                            const { data: articles, error: artErr } = await supabase
+                                .from("article")
+                                .select(`
+                                    article_id,
+                                    article_headline,
+                                    slug_headline,
+                                    published_at,
+                                    article_type,
+                                    is_published,
+                                    article_media (
+                                        media_order,
+                                        media (
+                                            media_url
+                                        )
+                                    )
+                                `)
+                                .in("article_id", articleIds)
+                                .eq("is_published", true)
+
+                            if (!artErr && articles) {
+                                const articleMap = new Map(articles.map(a => [a.article_id, a]))
+                                publishedList = staffCredits
+                                    .map(credit => ({
+                                        contribution_as: credit.contribution_as,
+                                        use_pseudonym: credit.use_pseudonym,
+                                        article: articleMap.get(credit.article_id)
+                                    }))
+                                    .filter(item => Boolean(item.article))
+                                    .sort((a, b) => new Date(b.article.published_at) - new Date(a.article.published_at))
+                            }
+                        }
+                    }
                 }
+
+                setContributions(publishedList)
             } catch (error) {
                 console.error("Error fetching staff member profile or contributions:", error)
                 setStaffDetails(null)
