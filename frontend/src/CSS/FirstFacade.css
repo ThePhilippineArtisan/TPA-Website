@@ -199,7 +199,19 @@
 .Slide-Navigation {
   display: flex;
   align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0.5rem;
   filter: invert(1);
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.Slide-Navigation:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .Slide-Navigation img {
@@ -207,9 +219,9 @@
   z-index: 3;
 }
 
-.Slide-Navigation img:hover {
-  cursor: pointer;
+.Slide-Navigation:hover:not(:disabled) {
   opacity: 0.8;
+  transform: scale(1.08);
 }
 
 .SlideWrapper {
@@ -221,19 +233,19 @@
 }
 
 .SlideWrapper.exit-next {
-  animation: slideExitLeft 0.35s ease forwards;
+  animation: slideExitLeft 0.25s ease forwards;
 }
 
 .SlideWrapper.enter-next {
-  animation: slideEnterRight 0.35s ease forwards;
+  animation: slideEnterRight 0.25s ease forwards;
 }
 
 .SlideWrapper.exit-prev {
-  animation: slideExitRight 0.35s ease forwards;
+  animation: slideExitRight 0.25s ease forwards;
 }
 
 .SlideWrapper.enter-prev {
-  animation: slideEnterLeft 0.35s ease forwards;
+  animation: slideEnterLeft 0.25s ease forwards;
 }
 
 @keyframes slideExitLeft {

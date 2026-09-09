@@ -321,14 +321,14 @@
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
-    background: rgba(15, 23, 42, 0.85);
+    background: var(--secondary-navy);
     color: #ffffff;
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     padding: 0.2rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     backdrop-filter: blur(4px);
 }
 
@@ -353,13 +353,13 @@
     color: var(--primary-blue, #0265A9);
     background-color: #f0f7ff;
     padding: 0.15rem 0.45rem;
-    border-radius: 4px;
-    border: 1px solid rgba(2, 101, 169, 0.2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
     text-transform: uppercase;
 }
 
 .Staff-Contrib-Date {
-    color: #64748b;
+    color: var(--text-muted);
     font-weight: 500;
 }
 

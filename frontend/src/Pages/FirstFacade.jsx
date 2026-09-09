@@ -93,7 +93,7 @@ const FirstFacade = () => {
                 setPhase("idle");
                 setDirection(null);
             }
-        }, 400);
+        }, 300);
 
         return () => clearTimeout(safety);
     }, [phase, direction, carouselSlides.length]);
@@ -159,13 +159,18 @@ const FirstFacade = () => {
                     }}
                 ></div>
 
-                <div className="Slide-Navigation">
+                <button 
+                    type="button"
+                    className="Slide-Navigation"
+                    onClick={handlePrev}
+                    aria-label="Previous slide"
+                    disabled={carouselSlides.length <= 1}
+                >
                     <img 
                         src={PreviousSlide}
                         alt="Previous"
-                        onClick={handlePrev}
                     />
-                </div>
+                </button>
 
                 <div
                     className={`Cards SlideWrapper ${animationClass}`}
@@ -198,20 +203,27 @@ const FirstFacade = () => {
                     >
                         <img
                             key={mainSlide?.id}
-                            loading="lazy" 
+                            loading="eager"
+                            fetchPriority="high"
+                            decoding="async"
                             src={mainSlide?.image_url}
                             alt={mainSlide?.header}
                         /> 
                     </Link>
                 </div>
 
-                <div className="Slide-Navigation">
+                <button 
+                    type="button"
+                    className="Slide-Navigation"
+                    onClick={handleNext}
+                    aria-label="Next slide"
+                    disabled={carouselSlides.length <= 1}
+                >
                     <img 
                         src={NextSlide}
                         alt="Next"
-                        onClick={handleNext}
                     />
-                </div>
+                </button>
             </div>
         </div>
     );
