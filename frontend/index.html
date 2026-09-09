@@ -7,11 +7,57 @@
     <!-- Use Inter Font from Google Fonts -->
 
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/public/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicons & Manifest -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+
+    <!-- Title & SEO Description -->
     <title>The Philippine Artisan | Turno en contra.</title>
+    <meta name="description" content="The Official Student Publication of the Technological University of the Philippines. Delivering prompt, fearless, and progressive student journalism." />
+    <meta name="keywords" content="The Philippine Artisan, TPA, TUP Manila, Technological University of the Philippines, Student Publication, News, Editorial, Kalyo" />
+    <meta name="author" content="The Philippine Artisan" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://philartisan.org/" />
+
+    <!-- Open Graph (Facebook, Messenger, Discord, LinkedIn Previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Philippine Artisan" />
+    <meta property="og:title" content="The Philippine Artisan | Turno en contra." />
+    <meta property="og:description" content="The Official Student Publication of the Technological University of the Philippines." />
+    <meta property="og:url" content="https://philartisan.org/" />
+    <meta property="og:image" content="https://philartisan.org/TPA-Cover.png" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@PhilArtisanMNL" />
+    <meta name="twitter:creator" content="@PhilArtisanMNL" />
+    <meta name="twitter:title" content="The Philippine Artisan" />
+    <meta name="twitter:description" content="The Official Student Publication of the Technological University of the Philippines." />
+    <meta name="twitter:image" content="https://philartisan.org/TPA-Cover.png" />
+
+    <!-- Structured Data (JSON-LD) for Google News & Search -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "NewsMediaOrganization",
+        "name": "The Philippine Artisan",
+        "url": "https://philartisan.org",
+        "logo": "https://philartisan.org/TPA-Cover.png",
+        "sameAs": [
+          "https://www.facebook.com/PhilArtisanMNL",
+          "https://www.x.com/PhilArtisanMNL",
+          "https://www.instagram.com/PhilArtisanMNL"
+        ],
+        "parentOrganization": {
+          "@type": "CollegeOrUniversity",
+          "name": "Technological University of the Philippines"
+        }
+      }
+    </script>
+
     <link rel="stylesheet" href="styles.css" />
-    
   </head>
   <body>
     <div id="root"></div>

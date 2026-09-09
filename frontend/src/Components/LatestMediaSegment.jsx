@@ -133,7 +133,7 @@ const LatestMediaSegment = ({ filterType }) => {
     const firstMedia = latestSegment.article_media?.[0]?.media?.media_url
 
     const getContributorName = (as) => {
-        if(as.use_pseudonym && as.staff?.staff_pseudonym){
+        if (as.use_pseudonym && as.staff?.staff_pseudonym) {
             return as.staff.staff_pseudonym
         }
         return as.staff?.staff_display_name
@@ -160,9 +160,9 @@ const LatestMediaSegment = ({ filterType }) => {
     return (
         <div>
             <div className="Latest-Media-Segment-Image"
-                style={{ "--bgImage": `url(${firstMedia})`, width: "90%" }} >
-                
-                <Link to = {getArticleUrl(latestSegment)} className="Latest-MS-Title">
+                style={{ "--bgImage": `url(${firstMedia})`, width: "110%" }} >
+
+                <Link to={getArticleUrl(latestSegment)} className="Latest-MS-Title">
                     <img
                         src={firstMedia}
                         alt={latestSegment.article_headline}

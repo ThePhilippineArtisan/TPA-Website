@@ -1,5 +1,6 @@
-# public/robots.txt
-User-agent: Googlebot
-Disallow:
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot
+
+Sitemap: https://philartisan.org/sitemap.xml
