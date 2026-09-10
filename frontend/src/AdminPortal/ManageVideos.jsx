@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient.js"
+import { getYoutubeThumbnail } from "../utils/stringUtils.js"
+import { compressImage, uploadToR2Storage } from "../utils/imageUtils.js"
 
 import "./ManageVideos.css"
 import "./ManageFrontPage.css"
@@ -13,28 +15,29 @@ const initialFormState = {
 }
 
 const ManageVideos = () => {
-    const [ loading, setLoading ] = useState(true)
-    const [ videos, setVideos ] = useState([])
-    const [ editingId, setEditingId ] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [videos, setVideos] = useState([])
+    const [editingId, setEditingId] = useState(null)
     const [formState, setFormState] = useState(initialFormState)
+    const [uploadingThumbnail, setUploadingThumbnail] = useState(false)
 
     const fetchVideos = async () => {
         setLoading(true)
-        try{
+        try {
             const { data, error } = await supabase
                 .from('videos')
                 .select('*')
-                .order('date_added', {ascending : false})
-            
-            if(error){
+                .order('date_added', { ascending: false })
+
+            if (error) {
                 throw error
             }
             setVideos(data || [])
 
-        } catch (error){
+        } catch (error) {
             console.warn("Couldn't fetch videos: ", error)
             setVideos([])
-        } finally{
+        } finally {
             setLoading(false)
         }
     }
@@ -55,7 +58,7 @@ const ManageVideos = () => {
         e.preventDefault()
 
         const title = formState.title.trim()
-        if(!title){
+        if (!title) {
             alert("Please provide a title for the video.")
             return
         }
@@ -96,7 +99,7 @@ const ManageVideos = () => {
 
     const handleEdit = (video) => {
         setEditingId(video.id)
-        
+
         let formattedDate = ""
         if (video.date_added) {
             const d = new Date(video.date_added)
@@ -113,12 +116,67 @@ const ManageVideos = () => {
             dateAdded: formattedDate,
             isVisible: video.is_visible ?? true,
         })
-        window.scrollTo({top: 0, behavior: 'smooth'})
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const handleCancelEdit = () => {
         setEditingId(null)
         setFormState(initialFormState)
+    }
+
+    const handleAutoFetchYoutubeThumbnail = () => {
+        if (!formState.videoUrl) {
+            alert("Please enter a YouTube video URL first.")
+            return
+        }
+        const ytThumb = getYoutubeThumbnail(formState.videoUrl, "maxresdefault") || getYoutubeThumbnail(formState.videoUrl, "hqdefault")
+        if (!ytThumb) {
+            alert("Could not extract a valid YouTube video ID from the provided URL.")
+            return
+        }
+        setFormState(prev => ({ ...prev, imageUrl: ytThumb }))
+    }
+
+    const handleThumbnailFileUpload = async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setUploadingThumbnail(true)
+        try {
+            const compressedBlob = await compressImage(file, 1280, 720, 0.8, 'image/webp')
+            const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") + ".webp"
+
+            try {
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: cleanName,
+                    folder: 'video_thumbnails',
+                    contentType: 'image/webp',
+                    bucket: 'article-photos'
+                })
+
+                if (publicUrl) {
+                    setFormState(prev => ({ ...prev, imageUrl: publicUrl }))
+                    alert("Video thumbnail converted to WebP and uploaded!")
+                    return
+                }
+            } catch (r2Err) {
+                console.warn("R2 upload error, falling back to compressed Data URL:", r2Err)
+            }
+
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setFormState(prev => ({ ...prev, imageUrl: reader.result }))
+                alert("Video thumbnail compressed to WebP successfully!")
+            }
+            reader.readAsDataURL(compressedBlob)
+        } catch (err) {
+            console.error("Thumbnail upload error:", err)
+            alert("Error processing video thumbnail: " + (err.message || err))
+        } finally {
+            setUploadingThumbnail(false)
+            e.target.value = ""
+        }
     }
 
     const toggleVisibility = async (id) => {
@@ -169,63 +227,118 @@ const ManageVideos = () => {
     }
 
 
-    return(
-        <div className = "Manage-Videos-Container">
+    return (
+        <div className="Manage-Videos-Container">
             <div>
                 <h1>Manage Videos</h1>
                 <p>Add, edit, or manage TPA's latest videos here.</p>
             </div>
-            <div className = "Manage-Videos-Two-Grid">
-                <div className = "Add-Manage-Video-Container">
+            <div className="Manage-Videos-Two-Grid">
+                <div className="Add-Manage-Video-Container">
                     <h4> {editingId ? `Edit Video (ID: ${editingId})` : "Add Video"} </h4>
                     <hr />
-                    <form onSubmit = {handleSubmitVideo}>
-                        <div className = "Add-Video-Fields">
+                    <form onSubmit={handleSubmitVideo}>
+                        <div className="Add-Video-Fields">
                             <p>VIDEO TITLE</p>
-                            <input 
-                                type = "text"
-                                name = "title"
+                            <input
+                                type="text"
+                                name="title"
                                 className="Form-Input"
-                                value = {formState.title}
-                                onChange = {handleChange}
+                                value={formState.title}
+                                onChange={handleChange}
                                 placeholder="Enter YouTube video title..."
                                 required
                             />
                         </div>
-                        
-                        <div className = "Add-Video-Fields">
+
+                        <div className="Add-Video-Fields">
                             <p>Video Embed URL</p>
-                            <input 
-                                type = "url"
-                                name = "videoUrl"
+                            <input
+                                type="url"
+                                name="videoUrl"
                                 className="Form-Input"
-                                value = {formState.videoUrl}
-                                onChange = {handleChange}
+                                value={formState.videoUrl}
+                                onChange={handleChange}
                                 placeholder="https://www.youtube.com/watch?v=..."
                                 required
                             />
                         </div>
-                        
-                        <div className = "Add-Video-Fields">
+
+                        <div className="Add-Video-Fields">
                             <p>Video Thumbnail Cover</p>
-                            <input 
-                                type = "url"
-                                name = "imageUrl"
-                                className="Form-Input"
-                                value = {formState.imageUrl}
-                                onChange = {handleChange}
-                                placeholder="https://img.youtube.com/vi/.../maxresdefault.jpg"
-                                required
-                            />
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                <input
+                                    type="text"
+                                    name="imageUrl"
+                                    className="Form-Input"
+                                    style={{ flex: 1, minWidth: '220px' }}
+                                    value={formState.imageUrl}
+                                    onChange={handleChange}
+                                    placeholder="Paste thumbnail link or fetch from YouTube..."
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="Btn-Outline Button-Outline"
+                                    style={{ fontSize: '0.8rem', whiteSpace: 'nowrap', padding: '0.55rem 0.85rem' }}
+                                    onClick={handleAutoFetchYoutubeThumbnail}
+                                    title="Automatically grab thumbnail from the YouTube URL above"
+                                >
+                                    Fetch from YouTube
+                                </button>
+                                <label
+                                    className="Admin-Primary-Button"
+                                    style={{
+                                        cursor: uploadingThumbnail ? 'not-allowed' : 'pointer',
+                                        whiteSpace: 'nowrap',
+                                        margin: 0,
+                                        padding: '0.55rem 0.85rem',
+                                        fontSize: '0.8rem'
+                                    }}
+                                >
+                                    {uploadingThumbnail ? "Processing..." : "Upload"}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleThumbnailFileUpload}
+                                        disabled={uploadingThumbnail}
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
+                            </div>
+                            {formState.imageUrl && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+                                    <img
+                                        src={formState.imageUrl}
+                                        alt="Thumbnail preview"
+                                        style={{ width: '80px', height: '45px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border-color)' }}
+                                        onError={(e) => {
+                                            const yt = getYoutubeThumbnail(formState.videoUrl);
+                                            if (yt && e.currentTarget.src !== yt) {
+                                                e.currentTarget.onerror = null;
+                                                e.currentTarget.src = yt;
+                                            }
+                                        }}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="Button-Outline"
+                                        style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
+                                        onClick={() => setFormState(prev => ({ ...prev, imageUrl: "" }))}
+                                    >
+                                        Clear
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                        
-                        <div className = "Add-Video-Fields">
+
+                        <div className="Add-Video-Fields">
                             <p>Date Added</p>
-                            <input 
-                                type = "datetime-local"
-                                name = "dateAdded"
+                            <input
+                                type="datetime-local"
+                                name="dateAdded"
                                 className="Form-Input"
-                                value = {formState.dateAdded}
+                                value={formState.dateAdded}
                                 onChange={handleChange}
                             />
                         </div>
@@ -269,9 +382,16 @@ const ManageVideos = () => {
                                 >
                                     <div className="Item-Main-Info">
                                         <img
-                                            src={item.thumbnail}
+                                            src={item.thumbnail || getYoutubeThumbnail(item.youtube_url)}
                                             alt={item.youtube_title}
                                             className="Item-Thumb"
+                                            onError={(e) => {
+                                                const yt = getYoutubeThumbnail(item.youtube_url);
+                                                if (yt && e.currentTarget.src !== yt) {
+                                                    e.currentTarget.onerror = null;
+                                                    e.currentTarget.src = yt;
+                                                }
+                                            }}
                                         />
                                     </div>
 

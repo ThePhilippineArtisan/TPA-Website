@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 import { formatRelativeTime } from "../utils/dateUtils"
-import { sanitizeUrl } from "../utils/stringUtils"
+import { sanitizeUrl, getYoutubeThumbnail } from "../utils/stringUtils"
 
 import "../CSS/VideoShowcase.css"
 
@@ -38,9 +38,16 @@ const VideoShowcase = () => {
                         <div className="Thumbnail-Videos-Individual-Container" key={video.id}>
                             <a href={sanitizeUrl(video.youtube_url)} target="_blank" rel="noopener noreferrer">
                                 <img 
-                                    src={video.thumbnail}
+                                    src={video.thumbnail || getYoutubeThumbnail(video.youtube_url)}
                                     alt={video.youtube_title}
                                     loading="lazy"
+                                    onError={(e) => {
+                                        const fallback = getYoutubeThumbnail(video.youtube_url);
+                                        if (fallback && e.currentTarget.src !== fallback) {
+                                            e.currentTarget.onerror = null;
+                                            e.currentTarget.src = fallback;
+                                        }
+                                    }}
                                 />
                                 <div className="Title-Date-Container">
                                     <p>{video.youtube_title}</p>

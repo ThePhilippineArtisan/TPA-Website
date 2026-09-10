@@ -60,3 +60,26 @@ export const sanitizeUrl = (url) => {
 
     return "#"
 }
+
+/**
+ * Extracts a YouTube video ID from standard, short, or embed YouTube URLs.
+ * @param {string} url 
+ * @returns {string|null}
+ */
+export const getYoutubeId = (url) => {
+    if (!url || typeof url !== "string") return null
+    const regex = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/
+    const match = url.match(regex)
+    return match ? match[1] : null
+}
+
+/**
+ * Generates the official YouTube thumbnail URL for a given YouTube URL.
+ * @param {string} url 
+ * @param {"default"|"hqdefault"|"mqdefault"|"sddefault"|"maxresdefault"} [quality="hqdefault"]
+ * @returns {string|null}
+ */
+export const getYoutubeThumbnail = (url, quality = "hqdefault") => {
+    const id = getYoutubeId(url)
+    return id ? `https://img.youtube.com/vi/${id}/${quality}.jpg` : null
+}
