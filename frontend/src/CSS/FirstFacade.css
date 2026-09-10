@@ -15,16 +15,28 @@
   from {
     background-position: 0 0;
   }
+
   to {
     background-position: 1000px 1000px;
   }
 }
 
 @keyframes flicker {
-  0% { opacity: 0.50; }
-  25% { opacity: 0.75; }
-  75% { opacity: 1; }
-  100% { opacity: 0.75; }
+  0% {
+    opacity: 0.50;
+  }
+
+  25% {
+    opacity: 0.75;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.75;
+  }
 }
 
 .Artisan-Logo-First-Facade {
@@ -54,7 +66,7 @@
 }
 
 .Artisan-Logo-First-Facade img {
-  max-width: min(90vw, 60rem);
+  max-width: min(70vw, 45em);
   animation: flicker 3s infinite;
   transition: transform 0.5s ease-in-out;
   z-index: 2;
@@ -123,7 +135,7 @@
   padding: clamp(1rem, 3vw, 2.5rem);
   box-sizing: border-box;
 
-  background-color: rgb(41,41,41);
+  background-color: rgb(41, 41, 41);
   background-image: url('/stars.png');
   background-repeat: repeat;
   animation: moveStars 20s linear infinite;
@@ -171,18 +183,18 @@
   content: "";
   position: absolute;
   z-index: 1;
-  
+
   height: clamp(20rem, 40vw, 30rem);
   width: 100%;
-  
+
   inset: 0;
   margin: auto;
-  
+
   background-image: var(--cover-img);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  
+
   transform: rotate(-1deg) translate(-10px, 15px);
   filter: blur(8px);
   opacity: 0.4;
@@ -249,23 +261,51 @@
 }
 
 @keyframes slideExitLeft {
-  from { transform: translateX(0) scale(1); opacity: 1; }
-  to { transform: translateX(-40px) scale(0.97); opacity: 0; }
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-40px) scale(0.97);
+    opacity: 0;
+  }
 }
 
 @keyframes slideEnterRight {
-  from { transform: translateX(40px) scale(0.97); opacity: 0; }
-  to { transform: translateX(0) scale(1); opacity: 1; }
+  from {
+    transform: translateX(40px) scale(0.97);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes slideExitRight {
-  from { transform: translateX(0) scale(1); opacity: 1; }
-  to { transform: translateX(40px) scale(0.97); opacity: 0; }
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(40px) scale(0.97);
+    opacity: 0;
+  }
 }
 
 @keyframes slideEnterLeft {
-  from { transform: translateX(-40px) scale(0.97); opacity: 0; }
-  to { transform: translateX(0) scale(1); opacity: 1; }
+  from {
+    transform: translateX(-40px) scale(0.97);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .DBFF-Headline-Title {
@@ -312,11 +352,17 @@
 }
 
 @keyframes fadeLeft {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* MEDIA QUERIES FOR LAYOUT BREAKPOINTS */
@@ -352,4 +398,4 @@
   .Card-Images {
     width: 100%;
   }
-}
+}

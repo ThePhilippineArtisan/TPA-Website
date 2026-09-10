@@ -21,19 +21,19 @@ const NewsletterSubscribe = ({
     const isArticle = variant === "article";
 
     const defaultTitle = isSidebar
-        ? "Artisan Dispatch"
+        ? "Artisan Digest"
         : isArticle
-        ? "Stay Updated with The Philippine Artisan"
-        : "Subscribe to The Philippine Artisan";
+            ? "Stay Updated with The Philippine Artisan"
+            : "Subscribe to The Philippine Artisan";
 
     const defaultSubtitle = isSidebar
         ? "Get campus dispatches and editorial releases delivered to your inbox."
         : isArticle
-        ? "Never miss an investigative report, campus story, or official release. Join our official mailing list."
-        : "Receive our latest investigative stories, campus news, in-depth features, and official university releases directly in your inbox.";
+            ? "Never miss an investigative report, campus story, or official release. Join our official mailing list."
+            : "Receive our latest investigative stories, campus news, in-depth features, and official university releases directly in your inbox.";
 
     return (
-        <section 
+        <section
             className={`tpa-newsletter-section tpa-newsletter-${variant} ${className}`}
             aria-label="Newsletter Subscription"
         >

@@ -4,7 +4,7 @@ a {
 }
 
 .Second-Facade {
-    background-color: var(--bg-light); 
+    background-color: var(--bg-light);
     width: 100%;
     min-height: 100dvh;
 }
@@ -25,7 +25,7 @@ a {
 .Cover-Photo-Image-Facade::before {
     content: "";
     position: absolute;
-    background-image: url('/TPA-Cover.png');
+    background-image: url('/TPA-Cover.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -248,14 +248,14 @@ a {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .Large-Photo-News img {
         width: 100%;
     }
 }
 
 .Large-Photo-News:hover img {
-    object-position: 90% 90%;  
+    object-position: 90% 90%;
     border-radius: 12px;
 }
 
@@ -361,12 +361,10 @@ a {
     width: 0.25rem;
     margin-right: 0.75rem;
     border: none;
-    
+
     transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .Large-Photo-News:hover .Vertical-Divider {
     height: 3rem;
 }
-
-

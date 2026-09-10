@@ -11,10 +11,11 @@
     -webkit-backdrop-filter: blur(1.25rem);
 
     border-radius: 1.25rem;
-    padding: 1rem 0rem;
+    padding: 0.75rem 1rem;
     margin: 1.5rem 0rem;
 
     height: 5rem;
+    box-sizing: border-box;
 }
 
 .Vertical-Fast-News {
@@ -86,10 +87,15 @@
 .Vertical-Divider-Side-News {
     background-color: #0265A9;
     height: 2rem;
-    width: 0.33rem;
+    width: 4px;
+    min-width: 4px;
+    max-width: 4px;
+    flex-shrink: 0;
 
     border: none;
-    margin-right: 5px;
+    margin: 0 10px 0 0;
+    padding: 0;
+    border-radius: 2px;
 }
 
 .Vertical-Headlines {

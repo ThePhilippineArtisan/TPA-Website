@@ -1,51 +1,70 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
-    <!-- Use Inter Font from Google Fonts -->
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+    rel="stylesheet">
+  <!-- Use Inter Font from Google Fonts -->
 
-    <!-- Favicons & Manifest -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Title & SEO Description -->
-    <title>The Philippine Artisan | Turno en contra.</title>
-    <meta name="description" content="The Official Student Publication of the Technological University of the Philippines. Delivering prompt, fearless, and progressive student journalism." />
-    <meta name="keywords" content="The Philippine Artisan, TPA, TUP Manila, Technological University of the Philippines, Student Publication, News, Editorial, Kalyo" />
-    <meta name="author" content="The Philippine Artisan" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://philartisan.org/" />
+  <!-- Favicons & Manifest -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+  <link rel="apple-touch-icon" href="/pwa-192x192.png" />
 
-    <!-- Open Graph (Facebook, Messenger, Discord, LinkedIn Previews) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="The Philippine Artisan" />
-    <meta property="og:title" content="The Philippine Artisan | Turno en contra." />
-    <meta property="og:description" content="The Official Student Publication of the Technological University of the Philippines." />
-    <meta property="og:url" content="https://philartisan.org/" />
-    <meta property="og:image" content="https://philartisan.org/TPA-Cover.png" />
+  <!-- Title & SEO Description -->
+  <title>The Philippine Artisan | Turno en contra.</title>
+  <meta name="description"
+    content="The Official Student Publication of the Technological University of the Philippines. Turno en contra." />
+  <meta name="keywords"
+    content="The Philippine Artisan, TPA, TUP Manila, Technological University of the Philippines, Student Publication, News, Editorial, Kalyo" />
+  <meta name="author" content="The Philippine Artisan" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://philartisan.org/" />
 
-    <!-- Twitter / X Cards -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@PhilArtisanMNL" />
-    <meta name="twitter:creator" content="@PhilArtisanMNL" />
-    <meta name="twitter:title" content="The Philippine Artisan" />
-    <meta name="twitter:description" content="The Official Student Publication of the Technological University of the Philippines." />
-    <meta name="twitter:image" content="https://philartisan.org/TPA-Cover.png" />
+  <!-- Open Graph (Facebook, Messenger, Discord, LinkedIn Previews) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Philippine Artisan" />
+  <meta property="og:title" content="The Philippine Artisan | Turno en contra." />
+  <meta property="og:description"
+    content="The Official Student Publication of the Technological University of the Philippines." />
+  <meta property="og:url" content="https://philartisan.org/" />
+  <meta property="og:image" content="https://philartisan.org/TPA-Cover.webp" />
 
-    <!-- Structured Data (JSON-LD) for Google News & Search -->
-    <script type="application/ld+json">
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@PhilArtisanMNL" />
+  <meta name="twitter:creator" content="@PhilArtisanMNL" />
+  <meta name="twitter:title" content="The Philippine Artisan" />
+  <meta name="twitter:description"
+    content="The Official Student Publication of the Technological University of the Philippines." />
+  <meta name="twitter:image" content="https://philartisan.org/TPA-Cover.webp" />
+
+  <!-- Structured Data (JSON-LD) for Google News & Search -->
+  <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "The Philippine Artisan",
+          "alternateName": ["TPA", "Philippine Artisan"],
+          "url": "https://philartisan.org/"
+        }
+     </script>
+
+
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "NewsMediaOrganization",
         "name": "The Philippine Artisan",
         "url": "https://philartisan.org",
-        "logo": "https://philartisan.org/TPA-Cover.png",
+        "logo": "https://philartisan.org/TPA-Cover.webp",
         "sameAs": [
           "https://www.facebook.com/PhilArtisanMNL",
           "https://www.x.com/PhilArtisanMNL",
@@ -58,10 +77,12 @@
       }
     </script>
 
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

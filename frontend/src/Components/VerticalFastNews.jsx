@@ -63,7 +63,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                 <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }}> BULLETIN BOARD </Link>
 
                 <div className="Vertical-Side-News">
-                    <hr className="Vertical-Divider-Side-News" style={{ padding: "1rem 0rem" }} />
+                    <hr className="Vertical-Divider-Side-News" />
                     <a href="https://youtube.com/@AvoirJoseph" target="_blank" rel="noopener noreferrer">
                         Want to join the Philippine Artisan? <br /><br />
                         Click <span style={{ color: '#0265A9' }}>here</span> to be included in the list of our future applicants!
@@ -71,7 +71,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                 </div>
 
                 <div className="Vertical-Side-News">
-                    <hr className="Vertical-Divider-Side-News" style={{ alignSelf: "center" }} />
+                    <hr className="Vertical-Divider-Side-News" />
                     <a href="https://youtube.com/@AvoirJoseph" target="_blank" rel="noopener noreferrer">
                         Subscribe to our email newsletter for updates inside and outside our university!
                     </a>
