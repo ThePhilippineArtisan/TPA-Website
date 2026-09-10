@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
-import { compressImage } from "../utils/imageUtils"
+import { compressImage, uploadToR2Storage } from "../utils/imageUtils"
 import "./ManagePubmats.css"
 
 export const PUBMAT_CATEGORIES = [
@@ -154,38 +154,13 @@ const ManagePubmats = () => {
                 const compressedBlob = await compressImage(selectedFile)
                 const cleanName = selectedFile.name.replace(/\.[^/.]+$/, "") + ".webp"
 
-                const { data: { session } } = await supabase.auth.getSession()
-                const token = session?.access_token
-
-                const presignRes = await fetch("/api/media/presign", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...(token ? { "Authorization": `Bearer ${token}` } : {})
-                    },
-                    body: JSON.stringify({
-                        filename: cleanName,
-                        contentType: "image/webp",
-                        folder: "pubmats"
-                    })
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: cleanName,
+                    folder: "pubmats",
+                    contentType: "image/webp",
+                    bucket: "article-photos"
                 })
-
-                if (!presignRes.ok) {
-                    const errData = await presignRes.json().catch(() => ({}))
-                    throw new Error(errData.error || "Failed to get presigned upload URL")
-                }
-
-                const { presignedUrl, publicUrl } = await presignRes.json()
-
-                const uploadRes = await fetch(presignedUrl, {
-                    method: "PUT",
-                    headers: { "Content-Type": "image/webp" },
-                    body: compressedBlob
-                })
-
-                if (!uploadRes.ok) {
-                    throw new Error(`Upload to storage failed with status ${uploadRes.status}`)
-                }
 
                 finalImageUrl = publicUrl
 

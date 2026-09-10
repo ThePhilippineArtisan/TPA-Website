@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
-import { compressImage } from "../utils/imageUtils.js"
+import { compressImage, uploadToR2Storage } from "../utils/imageUtils.js"
 import { formatDateReadable, formatRelativeTime } from "../utils/dateUtils"
 import { isMediaSegment } from "../utils/articleUtils"
 
@@ -337,41 +337,13 @@ const CreateArticlePage = () => {
                         uploadFolder = `media-segments/${pubYear}/${folderName}/${generatedSlug}`
                     }
 
-                    // Get presigned URL from Cloudflare Pages Function, asking permission
-                    const { data: { session } } = await supabase.auth.getSession()
-                    const token = session?.access_token
-
-                    const presignRes = await fetch('/api/media/presign', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                        },
-                        body: JSON.stringify({
-                            filename: imgObj.name,
-                            contentType: imgObj.file.type,
-                            folder: uploadFolder,
-                            bucket: targetBucket
-                        })
+                    const { publicUrl } = await uploadToR2Storage({
+                        file: imgObj.file,
+                        filename: imgObj.name,
+                        folder: uploadFolder,
+                        contentType: imgObj.file.type,
+                        bucket: targetBucket
                     })
-
-                    if (!presignRes.ok) {
-                        const errData = await presignRes.json()
-                        throw new Error(errData.error || 'Failed to get presigned URL')
-                    }
-
-                    const { presignedUrl, publicUrl } = await presignRes.json()
-
-                    // Upload directly to Cloudflare R2 via presigned PUT URL once allowed
-                    const uploadRes = await fetch(presignedUrl, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': imgObj.file.type },
-                        body: imgObj.file
-                    })
-
-                    if (!uploadRes.ok) {
-                        throw new Error(`Upload to R2 failed with status ${uploadRes.status}`)
-                    }
 
                     // Save image metadata in media table
                     const { data: mediaRow, error: mediaInsertError } = await supabase

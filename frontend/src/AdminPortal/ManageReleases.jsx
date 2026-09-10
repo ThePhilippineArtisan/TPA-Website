@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { supabase } from "../supabaseClient";
-import { compressImage } from "../utils/imageUtils.js";
+import { compressImage, uploadToR2Storage } from "../utils/imageUtils.js";
 import "./ManageReleases.css";
 
 const RELEASE_CATEGORIES = [
@@ -145,40 +145,21 @@ const ManageReleases = () => {
             const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
 
             try {
-                // Try R2 storage upload via presigned URL
-                const { data: { session } } = await supabase.auth.getSession()
-                const token = session?.access_token
-
-                const presignRes = await fetch('/api/media/presign', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                    },
-                    body: JSON.stringify({
-                        filename: compressedFileName,
-                        contentType: 'image/webp',
-                        folder: 'releases/covers',
-                        bucket: 'article-photos'
-                    })
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: compressedFileName,
+                    folder: 'releases/covers',
+                    contentType: 'image/webp',
+                    bucket: 'article-photos'
                 });
 
-                if (presignRes.ok) {
-                    const { presignedUrl, publicUrl } = await presignRes.json();
-                    const uploadRes = await fetch(presignedUrl, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'image/webp' },
-                        body: compressedBlob
-                    });
-
-                    if (uploadRes.ok) {
-                        setFormState(prev => ({ ...prev, coverUrl: publicUrl }));
-                        alert("Cover image compressed and uploaded successfully!");
-                        return;
-                    }
+                if (publicUrl) {
+                    setFormState(prev => ({ ...prev, coverUrl: publicUrl }));
+                    alert("Cover image compressed and uploaded successfully!");
+                    return;
                 }
             } catch (r2Err) {
-                console.warn("R2 upload endpoint not active, using compressed Data URL fallback:", r2Err);
+                console.warn("R2 upload error, using compressed Data URL fallback:", r2Err);
             }
 
             // Fallback: Convert compressed WebP Blob to Data URL if direct R2 presign fails
@@ -216,37 +197,18 @@ const ManageReleases = () => {
 
                 let finalUrl = null;
                 try {
-                    const { data: { session } } = await supabase.auth.getSession()
-                    const token = session?.access_token
-
-                    const presignRes = await fetch('/api/media/presign', {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                        },
-                        body: JSON.stringify({
-                            filename: compressedFileName,
-                            contentType: 'image/webp',
-                            folder: 'releases/pages',
-                            bucket: 'article-photos'
-                        })
+                    const uploadResult = await uploadToR2Storage({
+                        file: compressedBlob,
+                        filename: compressedFileName,
+                        folder: 'releases/pages',
+                        contentType: 'image/webp',
+                        bucket: 'article-photos'
                     });
-
-                    if (presignRes.ok) {
-                        const { presignedUrl, publicUrl } = await presignRes.json();
-                        const uploadRes = await fetch(presignedUrl, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'image/webp' },
-                            body: compressedBlob
-                        });
-
-                        if (uploadRes.ok) {
-                            finalUrl = publicUrl;
-                        }
+                    if (uploadResult?.publicUrl) {
+                        finalUrl = uploadResult.publicUrl;
                     }
                 } catch (r2Err) {
-                    console.warn("R2 presign failed for page photo, falling back to data URL:", r2Err);
+                    console.warn("R2 upload failed for page photo, falling back to data URL:", r2Err);
                 }
 
                 if (!finalUrl) {

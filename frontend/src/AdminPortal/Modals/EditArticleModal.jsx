@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { supabase } from "../../supabaseClient"
 import { slugify, replaceUnderscore } from "../../utils/slugifyUtils"
 import { getArticleUrl, isMediaSegment } from "../../utils/articleUtils"
-import { compressImage } from "../../utils/imageUtils"
+import { compressImage, uploadToR2Storage } from "../../utils/imageUtils"
 import "./EditArticleModal.css"
 
 const ARTICLE_TYPES = [
@@ -191,38 +191,13 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                 const compressedBlob = await compressImage(file, 1600, 1600, 0.82, "image/webp")
                 const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp"
 
-                const { data: { session } } = await supabase.auth.getSession()
-                const token = session?.access_token
-
-                const presignRes = await fetch("/api/media/presign", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...(token ? { Authorization: `Bearer ${token}` } : {})
-                    },
-                    body: JSON.stringify({
-                        filename: compressedFileName,
-                        contentType: "image/webp",
-                        folder: folder,
-                        bucket: "article-photos"
-                    })
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: compressedFileName,
+                    folder: folder,
+                    contentType: "image/webp",
+                    bucket: "article-photos"
                 })
-
-                if (!presignRes.ok) {
-                    throw new Error("Failed to obtain presigned upload URL")
-                }
-
-                const { presignedUrl, publicUrl } = await presignRes.json()
-
-                const uploadRes = await fetch(presignedUrl, {
-                    method: "PUT",
-                    headers: { "Content-Type": "image/webp" },
-                    body: compressedBlob
-                })
-
-                if (!uploadRes.ok) {
-                    throw new Error(`Upload failed with status ${uploadRes.status}`)
-                }
 
                 const { data: mediaRow, error: mediaInsertError } = await supabase
                     .from("media")
