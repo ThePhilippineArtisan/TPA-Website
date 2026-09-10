@@ -160,7 +160,7 @@ const LatestMediaSegment = ({ filterType }) => {
     return (
         <div>
             <div className="Latest-Media-Segment-Image"
-                style={{ "--bgImage": `url(${firstMedia})`, width: "110%" }} >
+                style={{ "--bgImage": `url(${firstMedia})`, width: "101%" }} >
 
                 <Link to={getArticleUrl(latestSegment)} className="Latest-MS-Title">
                     <img

@@ -8,6 +8,7 @@ import DOMPurify from "dompurify"
 import { sanitizeUrl } from "../utils/stringUtils.js"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx"
 import NeighboringArticles from "../Components/NeighboringArticles.jsx"
+import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx"
 import EditArticleModal from "../AdminPortal/Modals/EditArticleModal.jsx"
 import "../CSS/ArticlePage.css"
 
@@ -255,6 +256,8 @@ const ArticlePage = () => {
                             </span>
                         </div>
                     )}
+
+                    <NewsletterSubscribe variant="article" />
                 </div>
 
                 <div className="Article-Sidebar-Column">

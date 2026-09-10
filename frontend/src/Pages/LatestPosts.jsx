@@ -8,6 +8,7 @@ import "../CSS/LatestPosts.css"
 
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
 import Tabs from "../Components/Tabs.jsx"
+import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx";
 
 const LatestPosts = () => {
 
@@ -595,6 +596,8 @@ const LatestPosts = () => {
                         <div>
                             {["Look", "In Photos", "Highlights"].map(renderCheckbox)}
                         </div>
+
+                        <NewsletterSubscribe variant="sidebar" />
                     </div>
                 </div>
             </div>

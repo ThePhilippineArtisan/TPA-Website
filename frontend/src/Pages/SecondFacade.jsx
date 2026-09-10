@@ -10,6 +10,7 @@ import VerticalFastNews from "../Components/VerticalFastNews.jsx";
 import VideoShowcase from "../Components/VideoShowcase.jsx";
 import LatestMediaSegment from "../Components/LatestMediaSegment.jsx";
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx";
+import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx";
 
 const SecondFacade = () => {
     const [latestNews, setLatestNews] = useState(null);
@@ -264,6 +265,7 @@ const SecondFacade = () => {
             <VideoShowcase />
             <LatestMediaSegment />
             <ListOfMediaSegments />
+            <NewsletterSubscribe variant="banner" />
         </div>
     );
 };

@@ -1,0 +1,206 @@
+/* ==========================================================================
+   The Philippine Artisan - Newsletter Subscription Styles
+   ========================================================================== */
+
+.tpa-newsletter-section {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Variant: Banner (Used on Homepage / SecondFacade & Section Dividers)
+   -------------------------------------------------------------------------- */
+.tpa-newsletter-banner {
+    max-width: 1400px;
+    margin: clamp(2.5rem, 5vw, 4.5rem) auto;
+    padding: 0 clamp(1rem, 3vw, 2.5rem);
+}
+
+.tpa-newsletter-banner .tpa-newsletter-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8fc 100%);
+    border: 2px solid var(--primary-blue, #0265A9);
+    border-radius: var(--radius-lg, 16px);
+    box-shadow: 0 10px 30px rgba(2, 101, 169, 0.08);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(2rem, 4vw, 3rem);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    position: relative;
+    overflow: hidden;
+}
+
+.tpa-newsletter-banner .tpa-newsletter-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-blue, #0265A9) 0%, #038cf5 100%);
+}
+
+.tpa-newsletter-banner .tpa-newsletter-header {
+    flex: 1 1 50%;
+    max-width: 580px;
+    text-align: left;
+}
+
+.tpa-newsletter-banner .tpa-newsletter-iframe-wrapper {
+    flex: 1 1 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   Variant: Article (Used inline at the end of article pages)
+   -------------------------------------------------------------------------- */
+.tpa-newsletter-article {
+    max-width: 100%;
+    margin: 2.5rem 0;
+}
+
+.tpa-newsletter-article .tpa-newsletter-container {
+    background: #ffffff;
+    border: 1.5px solid rgba(2, 101, 169, 0.35);
+    border-top: 4px solid var(--primary-blue, #0265A9);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: 0 6px 20px rgba(2, 101, 169, 0.06);
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1rem, 2vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+}
+
+.tpa-newsletter-article .tpa-newsletter-header {
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   Variant: Sidebar (Used in feed sidebars & compact columns)
+   -------------------------------------------------------------------------- */
+.tpa-newsletter-sidebar {
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+.tpa-newsletter-sidebar .tpa-newsletter-container {
+    background: #ffffff;
+    border: 1.5px solid rgba(2, 101, 169, 0.25);
+    border-top: 3px solid var(--primary-blue, #0265A9);
+    border-radius: var(--radius-md, 12px);
+    padding: 1.25rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.tpa-newsletter-sidebar .tpa-newsletter-header {
+    text-align: center;
+}
+
+.tpa-newsletter-sidebar .tpa-newsletter-title {
+    font-size: 1.15rem;
+}
+
+.tpa-newsletter-sidebar .tpa-newsletter-subtitle {
+    font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   Common Typography & Badges
+   -------------------------------------------------------------------------- */
+.tpa-newsletter-badge {
+    display: inline-block;
+    background-color: rgba(2, 101, 169, 0.09);
+    color: var(--primary-blue, #0265A9);
+    font-family: var(--font-sans, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(2, 101, 169, 0.2);
+}
+
+.tpa-newsletter-title {
+    font-family: var(--font-display, 'Montserrat', sans-serif);
+    color: var(--primary-blue, #0265A9);
+    font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 0.5rem 0;
+}
+
+.tpa-newsletter-subtitle {
+    font-family: var(--font-sans, sans-serif);
+    color: var(--text-muted, #64748b);
+    font-size: clamp(0.9rem, 1.1vw, 1rem);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Iframe Embedding & Fluid Resets
+   -------------------------------------------------------------------------- */
+.tpa-newsletter-iframe-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tpa-newsletter-iframe {
+    width: 100%;
+    max-width: 480px;
+    height: 320px;
+    border: none !important;
+    background: transparent !important;
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--radius-sm, 6px);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+    .tpa-newsletter-banner .tpa-newsletter-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.25rem;
+    }
+
+    .tpa-newsletter-banner .tpa-newsletter-header {
+        max-width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 520px) {
+    .tpa-newsletter-banner,
+    .tpa-newsletter-article,
+    .tpa-newsletter-sidebar {
+        padding: 0 0.5rem;
+    }
+
+    .tpa-newsletter-banner .tpa-newsletter-container,
+    .tpa-newsletter-article .tpa-newsletter-container {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .tpa-newsletter-iframe {
+        max-width: 100%;
+        height: 310px;
+    }
+}
