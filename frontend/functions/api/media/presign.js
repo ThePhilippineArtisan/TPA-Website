@@ -7,20 +7,34 @@ const ALLOWED_MIME_TYPES = new Set([
     'image/png',
     'image/webp',
     'image/gif',
-    'image/svg+xml',
     'application/pdf'
 ])
+
+function getCorsHeaders(request) {
+    const origin = request.headers.get('Origin') || ''
+    const isAllowed = 
+        origin === 'https://philartisan.org' || 
+        origin.endsWith('.philartisan.org') || 
+        origin.startsWith('http://localhost:')
+    
+    return {
+        'Access-Control-Allow-Origin': isAllowed ? origin : 'https://philartisan.org',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    }
+}
 
 export async function onRequestPost(context) {
     try {
         const { request, env } = context
+        const corsHeaders = getCorsHeaders(request)
 
         // 1. Authenticate Request via Supabase JWT
         const authHeader = request.headers.get('Authorization')
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return new Response(
                 JSON.stringify({ error: 'Unauthorized: Missing or invalid Authorization header' }),
-                { status: 401, headers: { 'Content-Type': 'application/json' } }
+                { status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
             )
         }
 
@@ -28,20 +42,25 @@ export async function onRequestPost(context) {
         const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL
         const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY
 
-        if (supabaseUrl && supabaseAnonKey) {
-            const userRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'apikey': supabaseAnonKey
-                }
-            })
+        if (!supabaseUrl || !supabaseAnonKey) {
+            return new Response(
+                JSON.stringify({ error: 'Server configuration error: Missing Supabase credentials' }),
+                { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+            )
+        }
 
-            if (!userRes.ok) {
-                return new Response(
-                    JSON.stringify({ error: 'Unauthorized: Invalid authentication session' }),
-                    { status: 401, headers: { 'Content-Type': 'application/json' } }
-                )
+        const userRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'apikey': supabaseAnonKey
             }
+        })
+
+        if (!userRes.ok) {
+            return new Response(
+                JSON.stringify({ error: 'Unauthorized: Invalid authentication session' }),
+                { status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+            )
         }
 
         // 2. Parse JSON body
@@ -50,7 +69,7 @@ export async function onRequestPost(context) {
         if (!filename || !contentType) {
             return new Response(
                 JSON.stringify({ error: 'filename and contentType are required' }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
+                { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
             )
         }
 
@@ -58,7 +77,7 @@ export async function onRequestPost(context) {
         if (!ALLOWED_MIME_TYPES.has(contentType.toLowerCase())) {
             return new Response(
                 JSON.stringify({ error: 'Forbidden: Unsupported or unsafe file type' }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
+                { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
             )
         }
 
@@ -102,7 +121,7 @@ export async function onRequestPost(context) {
                 status: 200,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    ...corsHeaders
                 }
             }
         )   
@@ -110,18 +129,16 @@ export async function onRequestPost(context) {
         console.error('Error generating presigned URL: ', error)
         return new Response(
             JSON.stringify({ error: error.message || 'Failed to generate presigned URL' }),
-            { status: 500, headers: { 'Content-Type': 'application/json' } }
+            { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
         )
     }
 }
 
-export async function onRequestOptions() {
+export async function onRequestOptions(context) {
+    const { request } = context
+    const corsHeaders = getCorsHeaders(request)
     return new Response(null, {
         status: 204,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
+        headers: corsHeaders
     })
 }

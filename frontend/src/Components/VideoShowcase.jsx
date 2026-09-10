@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 import { formatRelativeTime } from "../utils/dateUtils"
+import { sanitizeUrl } from "../utils/stringUtils"
 
 import "../CSS/VideoShowcase.css"
 
@@ -35,7 +36,7 @@ const VideoShowcase = () => {
                 <div className="Thumbnail-Videos">
                     {videos.map((video) => (
                         <div className="Thumbnail-Videos-Individual-Container" key={video.id}>
-                            <a href={video.youtube_url} target="_blank" rel="noopener noreferrer">
+                            <a href={sanitizeUrl(video.youtube_url)} target="_blank" rel="noopener noreferrer">
                                 <img 
                                     src={video.thumbnail}
                                     alt={video.youtube_title}
