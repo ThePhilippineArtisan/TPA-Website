@@ -4,14 +4,12 @@ import { compressImage, uploadToR2Storage } from "../utils/imageUtils.js";
 import "./ManageReleases.css";
 
 const RELEASE_CATEGORIES = [
-    "Kalyo",
-    "Newsletter",
-    "Tabula Rasa",
-    "Broadsheet",
-    "PhilArts",
-    "Duh! Filipit Artihan",
-    "Special Release",
-    "Other"
+    { label: "Kalyo", value: "Kalyo" },
+    { label: "Newsletter", value: "Newsletter" },
+    { label: "Tabula Rasa", value: "Tabula_Rasa" },
+    { label: "Broadsheet", value: "Broadsheet" },
+    { label: "PhilArts", value: "PhilArts" },
+    { label: "Duh! Filipit Artihan", value: "Duh_Filipit_Artihan" }
 ];
 
 const initialFormState = {
@@ -129,24 +127,43 @@ const ManageReleases = () => {
         setDraggedPageIndex(null);
     };
 
+    const normalizeAndSetReleases = (rawList) => {
+        const normalized = (rawList || []).map(item => {
+            const sortedPages = (item.releases_pages || [])
+                .sort((a, b) => a.page_number - b.page_number)
+                .map(p => p.image_url);
+            const cover = sortedPages[0] || "";
+            return {
+                ...item,
+                title: item.release_title || item.title || "Untitled Release",
+                description: item.releases_description || item.description || "",
+                cover_url: cover,
+                photos: sortedPages,
+                photosText: sortedPages.join("\n")
+            };
+        });
+        setReleases(normalized);
+    };
+
     const fetchReleases = async () => {
         setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('releases')
-                .select('*')
+                .select('*, releases_pages(*)')
                 .order('order', { ascending: true, nullsFirst: false })
-                .order('created_at', { ascending: false });
+                .order('release_date', { ascending: false });
 
             if (error) {
+                console.warn("Could not order releases, falling back:", error);
                 const { data: fallbackData, error: fallbackError } = await supabase
                     .from('releases')
-                    .select('*');
+                    .select('*, releases_pages(*)');
 
                 if (fallbackError) throw fallbackError;
-                setReleases(fallbackData || []);
+                normalizeAndSetReleases(fallbackData || []);
             } else {
-                setReleases(data || []);
+                normalizeAndSetReleases(data || []);
             }
         } catch (error) {
             console.warn("Could not fetch releases from Supabase:", error);
@@ -342,35 +359,27 @@ const ManageReleases = () => {
         setEditingId(item.id);
 
         let formattedDate = "";
-        const rawDate = item.date_published || item.release_date || item.created_at || item.published_at;
+        const rawDate = item.release_date || item.date_published;
         if (rawDate) {
-            const d = new Date(rawDate);
-            if (!isNaN(d.getTime())) {
-                const tzOffset = d.getTimezoneOffset() * 60000;
-                formattedDate = new Date(d.getTime() - tzOffset).toISOString().slice(0, 16);
-            }
+            formattedDate = String(rawDate).split("T")[0];
         }
 
-        let photosStr = "";
-        const rawPhotos = item.photos || item.pages || item.page_urls;
-        if (Array.isArray(rawPhotos)) {
-            photosStr = rawPhotos.join("\n");
-        } else if (typeof rawPhotos === 'string') {
-            photosStr = rawPhotos;
-        }
+        const pages = item.photos || (item.releases_pages || [])
+            .sort((a, b) => a.page_number - b.page_number)
+            .map(p => p.image_url);
 
         setFormState({
-            title: item.title || item.release_title || "",
-            releaseType: item.release_type || item.type || item.category || "Kalyo",
-            academicYear: item.academic_year || item.year || (item.release_date ? `AY ${new Date(item.release_date).getFullYear()}` : "AY 2024 - 2025"),
-            subtitle: item.subtitle || item.tagline || "",
-            description: item.description || item.caption || item.releases_description || "",
-            coverUrl: item.cover_url || item.cover_image || item.thumbnail || "",
-            softCopyUrl: item.soft_copy_url || item.pdf_url || item.link || "",
-            photosText: photosStr,
+            title: item.release_title || item.title || "",
+            releaseType: item.release_type || "Kalyo",
+            academicYear: item.academic_year || "",
+            subtitle: item.subtitle || "",
+            description: item.releases_description || item.description || "",
+            coverUrl: item.cover_url || pages[0] || "",
+            softCopyUrl: item.soft_copy_url || "",
+            photosText: pages.join("\n"),
             datePublished: formattedDate,
             isVisible: item.is_visible ?? true,
-            isFeatured: item.is_featured ?? item.is_pinned ?? false,
+            isFeatured: false,
             order: item.order !== null && item.order !== undefined ? item.order : ""
         });
 
@@ -396,53 +405,82 @@ const ManageReleases = () => {
             .map(url => url.trim())
             .filter(Boolean);
 
-        const dateObj = formState.datePublished ? new Date(formState.datePublished) : new Date();
-        const isoDate = dateObj.toISOString();
-        const dateOnly = isoDate.split("T")[0];
-
-        const payload = {
-            title: title,
-            release_type: formState.releaseType,
-            academic_year: formState.academicYear || "AY 2024 - 2025",
-            subtitle: formState.subtitle || "",
-            description: formState.description || "",
-            cover_url: formState.coverUrl || "",
-            soft_copy_url: formState.softCopyUrl || "",
-            photos: photosArray,
-            date_published: isoDate,
-            release_date: dateOnly,
-            is_visible: Boolean(formState.isVisible),
-            is_featured: Boolean(formState.isFeatured),
-            order: formState.order !== "" && formState.order !== null && !isNaN(formState.order) ? parseInt(formState.order, 10) : null
-        };
-
-        const attemptSave = async (dataPayload) => {
-            if (editingId) {
-                return await supabase
-                    .from('releases')
-                    .update(dataPayload)
-                    .eq('id', editingId);
-            } else {
-                return await supabase
-                    .from('releases')
-                    .insert([dataPayload]);
+        // If coverUrl is provided and not already first in photosArray, ensure it's at index 0
+        if (formState.coverUrl && formState.coverUrl.trim()) {
+            const coverTrimmed = formState.coverUrl.trim();
+            if (!photosArray.includes(coverTrimmed)) {
+                photosArray.unshift(coverTrimmed);
+            } else if (photosArray[0] !== coverTrimmed) {
+                const rest = photosArray.filter(u => u !== coverTrimmed);
+                photosArray.splice(0, photosArray.length, coverTrimmed, ...rest);
             }
+        }
+
+        let dateOnly = null;
+        if (formState.datePublished) {
+            dateOnly = formState.datePublished.split("T")[0];
+        } else {
+            dateOnly = new Date().toISOString().split("T")[0];
+        }
+
+        const orderVal = formState.order !== "" && formState.order !== null && !isNaN(formState.order)
+            ? parseInt(formState.order, 10)
+            : null;
+
+        const releasePayload = {
+            release_title: title,
+            releases_description: formState.description.trim() || title,
+            release_date: dateOnly,
+            release_type: formState.releaseType || "Kalyo",
+            order: orderVal,
+            is_visible: Boolean(formState.isVisible)
         };
 
         try {
-            let res = await attemptSave(payload);
-            if (res.error && res.error.message && res.error.message.includes("release_date")) {
-                const fallbackPayload = { ...payload };
-                delete fallbackPayload.release_date;
-                res = await attemptSave(fallbackPayload);
-            }
-            if (res.error && res.error.message && res.error.message.includes("order")) {
-                const fallbackPayload = { ...payload };
-                delete fallbackPayload.order;
-                res = await attemptSave(fallbackPayload);
+            let targetReleaseId = editingId;
+
+            if (editingId) {
+                const { error: updateErr } = await supabase
+                    .from('releases')
+                    .update(releasePayload)
+                    .eq('id', editingId);
+
+                if (updateErr) throw updateErr;
+
+                // Delete old pages to re-insert in the updated sequence
+                await supabase
+                    .from('releases_pages')
+                    .delete()
+                    .eq('releases_id', editingId);
+            } else {
+                const { data: inserted, error: insertErr } = await supabase
+                    .from('releases')
+                    .insert([releasePayload])
+                    .select('id')
+                    .single();
+
+                if (insertErr) throw insertErr;
+                targetReleaseId = inserted.id;
             }
 
-            if (res.error) throw res.error;
+            // Insert flipbook pages into releases_pages
+            if (targetReleaseId && photosArray.length > 0) {
+                const pageRows = photosArray.map((url, idx) => ({
+                    releases_id: targetReleaseId,
+                    page_number: idx + 1,
+                    image_url: url,
+                    alt_text: idx === 0 ? "Cover" : `Page ${idx + 1}`
+                }));
+
+                const { error: pagesErr } = await supabase
+                    .from('releases_pages')
+                    .insert(pageRows);
+
+                if (pagesErr) {
+                    console.error("Error saving releases_pages:", pagesErr);
+                    alert(`Release metadata saved, but could not link pages: ${pagesErr.message}`);
+                }
+            }
 
             alert(editingId ? "Release updated successfully!" : "Release saved successfully!");
             handleCancelEdit();
@@ -504,27 +542,6 @@ const ManageReleases = () => {
         } catch (err) {
             console.error("Error updating visibility:", err);
             alert(`Failed to update visibility: ${err.message || err}`);
-            fetchReleases();
-        }
-    };
-
-    const toggleFeatured = async (id) => {
-        const itemToUpdate = releases.find(r => r.id === id);
-        if (!itemToUpdate) return;
-        const updatedFeatured = !itemToUpdate.is_featured;
-
-        setReleases(prev => prev.map(r => r.id === id ? { ...r, is_featured: updatedFeatured } : r));
-
-        try {
-            const { error } = await supabase
-                .from('releases')
-                .update({ is_featured: updatedFeatured })
-                .eq('id', id);
-
-            if (error) throw error;
-        } catch (err) {
-            console.error("Error updating featured status:", err);
-            alert(`Failed to update featured status: ${err.message || err}`);
             fetchReleases();
         }
     };
@@ -594,7 +611,7 @@ const ManageReleases = () => {
                                     onChange={handleChange}
                                 >
                                     {RELEASE_CATEGORIES.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
+                                        <option key={cat.value} value={cat.value}>{cat.label}</option>
                                     ))}
                                 </select>
                             </div>
@@ -637,7 +654,7 @@ const ManageReleases = () => {
                             <div className="Form-Group">
                                 <label htmlFor="datePublished">Publication Date</label>
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     id="datePublished"
                                     name="datePublished"
                                     value={formState.datePublished}
@@ -913,19 +930,6 @@ const ManageReleases = () => {
                             </div>
                         </div>
 
-                        <div className="Form-Group">
-                            <div className="Form-Checkbox-Group">
-                                <input
-                                    type="checkbox"
-                                    id="isFeatured"
-                                    name="isFeatured"
-                                    checked={formState.isFeatured}
-                                    onChange={handleChange}
-                                />
-                                <label htmlFor="isFeatured">Featured / Main Flipbook Highlight</label>
-                            </div>
-                        </div>
-
                         <div className="Form-Actions">
                             <button type="submit" className="Btn-Submit">
                                 {editingId ? "Update Release" : "Save Release"}
@@ -1021,14 +1025,6 @@ const ManageReleases = () => {
                                                 onClick={() => handleEdit(item)}
                                             >
                                                 Edit
-                                            </button>
-
-                                            <button
-                                                type="button"
-                                                className="Btn-Action-Small"
-                                                onClick={() => toggleFeatured(item.id)}
-                                            >
-                                                {isFeatured ? 'Unfeature' : '⭐ Feature'}
                                             </button>
 
                                             <button

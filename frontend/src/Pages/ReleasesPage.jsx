@@ -18,25 +18,35 @@ const ReleasesPage = () => {
       try {
         let { data, error } = await supabase
           .from('releases')
-          .select('*')
+          .select('*, releases_pages(*)')
           .eq('is_visible', true)
           .order('order', { ascending: true, nullsFirst: false })
-          .order('date_published', { ascending: false })
+          .order('release_date', { ascending: false })
 
         if (error) {
+          console.warn("Falling back fetch without order:", error)
           const fallback = await supabase
             .from('releases')
-            .select('*')
+            .select('*, releases_pages(*)')
             .eq('is_visible', true)
-            .order('date_published', { ascending: false })
           data = fallback.data
         }
 
         if (data && data.length > 0) {
-          setDbReleases(data)
-          // Set featured or first release as selected
-          const featured = data.find(r => r.is_featured) || data[0]
-          setSelectedRelease(featured)
+          const normalized = data.map(rel => {
+            const pages = (rel.releases_pages || [])
+              .sort((a, b) => a.page_number - b.page_number)
+              .map(p => p.image_url)
+            return {
+              ...rel,
+              title: rel.release_title || rel.title || "TPA Release",
+              description: rel.releases_description || rel.description || "",
+              photos: pages,
+              cover_url: pages[0] || rel.cover_url || ""
+            }
+          })
+          setDbReleases(normalized)
+          setSelectedRelease(normalized[0])
         } else {
           setDbReleases([])
         }
