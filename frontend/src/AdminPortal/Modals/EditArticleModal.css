@@ -214,3 +214,199 @@
     padding: 1.5rem 0;
     text-align: center;
 }
+
+/* Contributors & Staff Management Section in Edit Article */
+.Edit-Staff-Section {
+    margin: 1.25rem 0;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm, 6px);
+    background-color: #fafbfc;
+}
+
+.Edit-Staff-Section-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.75rem;
+}
+
+.Edit-Staff-Section-Header h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    color: #0f2c59;
+    font-weight: 700;
+}
+
+.Edit-Staff-Section-Header p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.Edit-Staff-Subsections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.Edit-Staff-Group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.Edit-Staff-Group-Title-Row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Edit-Staff-Group-Title-Row h4 {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.Edit-Staff-Add-Btn {
+    background-color: #ffffff;
+    border: 1.5px solid #0265A9;
+    color: #0265A9;
+    border-radius: 4px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.Edit-Staff-Add-Btn:hover {
+    background-color: #0265A9;
+    color: #ffffff;
+}
+
+.Edit-Staff-List {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.Edit-Staff-Empty-Hint {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-style: italic;
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+.Edit-Staff-Card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.6rem 0.85rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.15s ease;
+}
+
+.Edit-Staff-Card:hover {
+    border-color: #0265A9;
+}
+
+.Edit-Staff-Card-Details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 180px;
+}
+
+.Edit-Staff-Card-Name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.Edit-Staff-Card-Pseudonym {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.Edit-Staff-Card-Position {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.Edit-Staff-Card-Actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.Edit-Staff-Pseudonym-Btn {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    transition: all 0.15s ease;
+}
+
+.Edit-Staff-Pseudonym-Btn:hover {
+    border-color: #0265A9;
+}
+
+.Edit-Staff-Pseudonym-Btn.active {
+    background: #0265A9;
+    border-color: #0265A9;
+    color: #ffffff;
+}
+
+.Edit-Staff-Edit-Profile-Btn {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    transition: all 0.15s ease;
+}
+
+.Edit-Staff-Edit-Profile-Btn:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+.Edit-Staff-Remove-Btn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+}
+
+.Edit-Staff-Remove-Btn:hover {
+    background: #fee2e2;
+}
+

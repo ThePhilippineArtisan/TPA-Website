@@ -1,12 +1,16 @@
-.Select-Staffers-Dialog {
-    padding: 0;
-    border: none;
-    background: transparent;
-    max-width: 100%;
-}
-
-.Select-Staffers-Dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+.Staff-Modal-Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 .Dialog-Box {
@@ -14,15 +18,27 @@
     display: flex;
     flex-direction: column;
     width: 90vw;
-    max-width: 36rem;
+    max-width: 38rem;
     max-height: 85vh;
-    border: 3px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
     padding: 1.5rem;
-    color: var(--text-dark);
-    font-family: var(--font-sans);
+    color: #1e293b;
+    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
     box-sizing: border-box;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.25);
+    animation: StaffModalAppear 0.15s ease-out;
+}
+
+@keyframes StaffModalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .Staff-Modal-Header {
@@ -30,31 +46,33 @@
     justify-content: space-between;
     align-items: center;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid #e2e8f0;
     margin-bottom: 1rem;
 }
 
 .Staff-Modal-Header h2 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0;
-    color: #111827;
+    color: #0f172a;
 }
 
 .Staff-Modal-Close-X {
     background: transparent;
     border: none;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    color: #4b5563;
+    color: #64748b;
     line-height: 1;
     padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: color 0.15s ease;
 }
 
 .Staff-Modal-Close-X:hover {
-    color: #000000;
+    color: #0f172a;
 }
 
 /* Selected Chips */
@@ -62,32 +80,68 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 0.75rem;
-    max-height: 90px;
+    margin-bottom: 0.85rem;
+    max-height: 100px;
     overflow-y: auto;
+    padding: 0.35rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
 }
 
 .Staff-Chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
     background-color: #ffffff;
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
     padding: 0.25rem 0.5rem;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    color: #111827;
+    color: #0f172a;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.Staff-Chip.using-pseudonym {
+    border-color: #0265A9;
+    background-color: #f0f9ff;
+}
+
+.Staff-Chip-Name {
+    white-space: nowrap;
+}
+
+.Staff-Chip-Pseudonym-Toggle {
+    background: #e2e8f0;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #475569;
+    padding: 0.15rem 0.35rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+}
+
+.Staff-Chip-Pseudonym-Toggle.active {
+    background: #0265A9;
+    color: #ffffff;
 }
 
 .Staff-Chip-Remove {
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1;
-    color: #dc2626;
+    color: #ef4444;
     padding: 0 0.15rem;
+}
+
+.Staff-Chip-Remove:hover {
+    color: #b91c1c;
 }
 
 /* Search Bar */
@@ -95,30 +149,29 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
 }
 
 .Staff-Modal-Search-Input {
     width: 100%;
-    padding: 0.55rem 3.5rem 0.55rem 0.75rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-sans);
+    padding: 0.6rem 3.5rem 0.6rem 0.85rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
     font-size: 0.88rem;
     outline: none;
     box-sizing: border-box;
+    transition: border-color 0.15s ease;
 }
 
 .Staff-Modal-Search-Input:focus {
-    border-color: var(--primary-blue);
+    border-color: #0265A9;
 }
 
 .Staff-Modal-Search-Clear {
     position: absolute;
-    right: 0.5rem;
+    right: 0.6rem;
     background: transparent;
     border: none;
-    font-family: var(--font-sans);
     font-size: 0.75rem;
     font-weight: 700;
     color: #64748b;
@@ -127,7 +180,7 @@
 }
 
 .Staff-Modal-Search-Clear:hover {
-    color: #111827;
+    color: #0f172a;
 }
 
 /* Scrollable Staffer List */
@@ -136,75 +189,98 @@
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.65rem;
     margin-bottom: 1rem;
-    max-height: 300px;
+    max-height: 320px;
+    background: #fdfdfd;
 }
 
 .Staffer-Section {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-}
-
-.Staffer-Item-Label {
-    display: block;
-    cursor: pointer;
+    gap: 0.45rem;
 }
 
 .Staffer-Item {
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.55rem 0.75rem;
+    padding: 0.6rem 0.85rem;
     background-color: #ffffff;
-    transition: border-color 0.15s ease;
+    transition: all 0.15s ease;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .Staffer-Item:hover {
-    border-color: var(--primary-blue);
+    border-color: #0265A9;
+    background-color: #f8fafc;
 }
 
 .Staffer-Item.selected {
-    border-color: var(--primary-blue);
-    background-color: #ffffff;
+    border-color: #0265A9;
+    background-color: #f0f7fc;
 }
 
 .Staffer-Item-Checkbox {
-    width: 1.05rem;
-    height: 1.05rem;
-    accent-color: var(--primary-blue);
+    width: 1.15rem;
+    height: 1.15rem;
+    accent-color: #0265A9;
     cursor: pointer;
 }
 
 .Staffer-Item-Details {
     display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
+    flex-direction: column;
+    gap: 0.15rem;
     flex-grow: 1;
 }
 
 .Staffer-Item-Name {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: #0f172a;
 }
 
 .Staffer-Item-Pseudonym {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Pseudonym Action Button in Row */
+.Staffer-Pseudonym-Action-Btn {
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.Staffer-Pseudonym-Action-Btn:hover {
+    border-color: #0265A9;
+}
+
+.Staffer-Pseudonym-Action-Btn.pseudonym-active {
+    background: #0265A9;
+    border-color: #0265A9;
+    color: #ffffff;
 }
 
 .Staffer-No-Results {
     text-align: center;
-    padding: 2rem 1rem;
-    font-size: 0.85rem;
-    color: var(--text-muted);
+    padding: 2.5rem 1rem;
+    font-size: 0.9rem;
+    color: #64748b;
 }
 
 /* Footer Buttons */
@@ -216,15 +292,15 @@
 
 .Staff-Modal-Cancel-Btn {
     background-color: #ffffff;
-    border: 2px solid var(--border-color);
-    color: #111827;
-    font-family: var(--font-sans);
-    font-size: 0.82rem;
+    border: 1.5px solid #cbd5e1;
+    color: #334155;
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 0.45rem 1rem;
-    border-radius: var(--radius-sm);
+    padding: 0.5rem 1.1rem;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
 .Staff-Modal-Cancel-Btn:hover {
@@ -232,19 +308,18 @@
 }
 
 .Staff-Modal-Confirm-Btn {
-    background-color: var(--primary-blue);
-    border: 2px solid var(--primary-blue);
+    background-color: #0265A9;
+    border: 1.5px solid #0265A9;
     color: #ffffff;
-    font-family: var(--font-sans);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 0.45rem 1.1rem;
-    border-radius: var(--radius-sm);
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.15s ease;
 }
 
 .Staff-Modal-Confirm-Btn:hover {
-    background-color: #025287;
-}
+    background-color: #014c80;
+}

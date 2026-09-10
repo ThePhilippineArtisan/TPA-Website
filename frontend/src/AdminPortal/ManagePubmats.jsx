@@ -6,6 +6,11 @@ import "./ManagePubmats.css"
 export const PUBMAT_CATEGORIES = [
     "ALL",
     "ANNOUNCEMENT",
+    "BREAKING_NEWS",
+    "CLOSURE_REPORT",
+    "OFFICIAL_STATEMENT",
+    "ELECTION_UPDATES",
+    "LOCAL_NEWS",
     "WALANG_PASOK",
     "LOOK",
     "ICYMI",

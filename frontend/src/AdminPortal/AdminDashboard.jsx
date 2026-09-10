@@ -297,266 +297,105 @@ const AdminDashboard = () => {
                         <Link to="/admin/manage-pubmats" style={{ textDecoration: "none", color: "inherit" }} className="Admin-Quick-Actions">
                             <p> Manage Pubmats </p>
                         </Link>
-                        <a href="#activity-logs" style={{ textDecoration: "none", color: "inherit" }} className="Admin-Quick-Actions">
-                            <p> 📋 View Activity Logs </p>
-                        </a>
+                        <Link to="/admin/audit-logs" style={{ textDecoration: "none", color: "inherit" }} className="Admin-Quick-Actions">
+                            <p> 📋 View Activity & Audit Logs </p>
+                        </Link>
                     </div>
                 </div>
             </div>
 
-            {/* Audit & Activity Logs Section */}
-            <div className="Admin-Dashboard-Audit-Section" id="activity-logs">
+            {/* Recent Activity & Audit Preview */}
+            <div className="Admin-Dashboard-Audit-Section">
                 <div className="Audit-Logs-Card">
-                    <div className="Audit-Logs-Header">
+                    <div className="Audit-Logs-Header" style={{ borderBottom: "1px solid #e2e8f0", paddingBottom: "1rem", marginBottom: "1rem" }}>
                         <div className="Audit-Logs-Title">
-                            <h2> Activity & Audit Logs </h2>
-                            <p> Track who created, updated, or deleted articles, releases, staff, and other content. </p>
+                            <h2>Recent Activity</h2>
+                            <p>Recent database changes across articles, staff, and pubmats.</p>
                         </div>
-                        <button className="Audit-Refresh-Button" onClick={fetchAuditLogs} disabled={logsLoading}>
-                            {logsLoading ? "Refreshing..." : "↻ Refresh Logs"}
-                        </button>
+                        <Link
+                            to="/admin/audit-logs"
+                            style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "0.4rem",
+                                background: "#0265A9",
+                                color: "#ffffff",
+                                padding: "0.6rem 1.1rem",
+                                borderRadius: "8px",
+                                textDecoration: "none",
+                                fontSize: "0.85rem",
+                                fontWeight: "700"
+                            }}
+                        >
+                            View All Activity & Audit Logs &rarr;
+                        </Link>
                     </div>
 
-                    {/* Controls & Filter Bar */}
-                    <div className="Audit-Logs-Controls">
-                        <div className="Audit-Action-Tabs">
-                            {["ALL", "INSERT", "UPDATE", "DELETE"].map(action => (
-                                <button
-                                    key={action}
-                                    className={`Audit-Action-Tab ${logActionFilter === action ? "active" : ""}`}
-                                    onClick={() => setLogActionFilter(action)}
-                                >
-                                    {action === "ALL" ? "All Actions" : action === "INSERT" ? "Created (+)" : action === "UPDATE" ? "Updated (✎)" : "Deleted (✕)"}
-                                </button>
-                            ))}
-                        </div>
-
-                        <div className="Audit-Filters-Right">
-                            <select
-                                className="Audit-Table-Select"
-                                value={logTableFilter}
-                                onChange={(e) => setLogTableFilter(e.target.value)}
-                            >
-                                <option value="ALL">All Tables</option>
-                                <option value="article">Articles</option>
-                                <option value="staff">Staff</option>
-                                <option value="releases">Releases</option>
-                                <option value="pubmat">Pubmats</option>
-                                <option value="videos">Videos</option>
-                                <option value="homepage_slides">Slides</option>
-                            </select>
-
-                            <input
-                                type="text"
-                                className="Audit-Search-Input"
-                                placeholder="Search by title, email..."
-                                value={searchLogQuery}
-                                onChange={(e) => setSearchLogQuery(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Content / Logs List */}
                     {logsLoading ? (
-                        <div className="Audit-Loading-State">
-                            <p>Loading activity logs...</p>
-                        </div>
-                    ) : logsError === "TABLE_NOT_FOUND" ? (
-                        <div className="Audit-Setup-Card">
-                            <div className="Audit-Setup-Header">
-                                <h3> Database Audit Trigger Setup Required</h3>
-                                <p>
-                                    To automatically track changes, create the <code>audit_logs</code> table and triggers in your Supabase project.
-                                </p>
-                            </div>
-                            <button
-                                className="Audit-Setup-Toggle"
-                                onClick={() => setShowSqlGuide(!showSqlGuide)}
-                            >
-                                {showSqlGuide ? "Hide SQL Setup Script ▲" : "View SQL Setup Script ▼"}
-                            </button>
-
-                            {showSqlGuide && (
-                                <div className="Audit-Sql-Box">
-                                    <p style={{ color: "#666", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
-                                        Copy and run this in your <b>Supabase Dashboard &rarr; SQL Editor</b>:
-                                    </p>
-                                    <pre className="Audit-Sql-Code">
-{`-- 1. Create audit_logs table
-create table if not exists public.audit_logs (
-    id bigint generated by default as identity primary key,
-    table_name text not null,
-    action text not null,
-    record_id text,
-    user_id uuid,
-    user_email text,
-    old_data jsonb,
-    new_data jsonb,
-    created_at timestamp with time zone default now()
-);
-
--- 2. Enable RLS
-alter table public.audit_logs enable row level security;
-
-create policy "Authenticated users can read audit logs"
-on public.audit_logs for select to authenticated using (true);
-
--- 3. Create Trigger Function
-create or replace function public.process_audit_log()
-returns trigger language plpgsql security definer as $$
-declare
-    current_user_id uuid;
-    current_user_email text;
-    rec_id text;
-    data_json jsonb;
-begin
-    current_user_id := auth.uid();
-    current_user_email := auth.jwt() ->> 'email';
-
-    if (tg_op = 'DELETE') then
-        data_json := to_jsonb(old);
-        rec_id := coalesce(
-            data_json ->> 'article_id',
-            data_json ->> 'staff_id',
-            data_json ->> 'pubmat_id',
-            data_json ->> 'id'
-        );
-        insert into public.audit_logs (table_name, action, record_id, user_id, user_email, old_data)
-        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, data_json);
-        return old;
-    elsif (tg_op = 'UPDATE') then
-        data_json := to_jsonb(new);
-        rec_id := coalesce(
-            data_json ->> 'article_id',
-            data_json ->> 'staff_id',
-            data_json ->> 'pubmat_id',
-            data_json ->> 'id'
-        );
-        insert into public.audit_logs (table_name, action, record_id, user_id, user_email, old_data, new_data)
-        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, to_jsonb(old), data_json);
-        return new;
-    elsif (tg_op = 'INSERT') then
-        data_json := to_jsonb(new);
-        rec_id := coalesce(
-            data_json ->> 'article_id',
-            data_json ->> 'staff_id',
-            data_json ->> 'pubmat_id',
-            data_json ->> 'id'
-        );
-        insert into public.audit_logs (table_name, action, record_id, user_id, user_email, new_data)
-        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, data_json);
-        return new;
-    end if;
-    return null;
-end;
-$$;
-
--- 4. Attach Triggers
-create or replace trigger audit_article_trigger
-after insert or update or delete on public.article
-for each row execute function public.process_audit_log();
-
-create or replace trigger audit_releases_trigger
-after insert or update or delete on public.releases
-for each row execute function public.process_audit_log();
-
-create or replace trigger audit_staff_trigger
-after insert or update or delete on public.staff
-for each row execute function public.process_audit_log();
-
-create or replace trigger audit_pubmat_trigger
-after insert or update or delete on public.pubmat
-for each row execute function public.process_audit_log();`}
-                                    </pre>
-                                </div>
-                            )}
-                        </div>
-                    ) : filteredLogs.length === 0 ? (
-                        <div className="Audit-Empty-State">
-                            <p>No activity logs found {searchLogQuery || logActionFilter !== "ALL" || logTableFilter !== "ALL" ? "matching your filters" : "yet"}.</p>
+                        <p style={{ color: "#64748b", padding: "1.5rem 0" }}>Loading recent activity...</p>
+                    ) : auditLogs.length === 0 ? (
+                        <div style={{ padding: "1.5rem 0", color: "#64748b" }}>
+                            <p style={{ margin: "0 0 0.5rem 0" }}>No activity logs recorded yet.</p>
+                            <Link to="/admin/audit-logs" style={{ color: "#0265A9", fontWeight: "700", fontSize: "0.85rem" }}>
+                                Open Activity & Audit Center &rarr;
+                            </Link>
                         </div>
                     ) : (
-                        <div className="Audit-Logs-List">
-                            {filteredLogs.map(log => {
-                                const isExpanded = expandedLogId === log.id
-                                const recordTitle = getLogRecordName(log)
-                                const changedFields = log.action === "UPDATE" ? getChangedFields(log.old_data, log.new_data) : []
-
-                                return (
-                                    <div key={log.id} className={`Audit-Log-Item ${isExpanded ? "expanded" : ""}`}>
-                                        <div className="Audit-Log-Row" onClick={() => setExpandedLogId(isExpanded ? null : log.id)}>
-                                            <div className="Audit-Log-Left">
-                                                <span className={`Audit-Badge badge-${(log.action || "").toLowerCase()}`}>
-                                                    {log.action === "INSERT" ? "+ Created" : log.action === "UPDATE" ? "✎ Updated" : "✕ Deleted"}
-                                                </span>
-                                                <span className="Audit-Entity-Badge">
-                                                    {log.table_name}
-                                                </span>
-                                                <div className="Audit-Log-Info">
-                                                    <p className="Audit-Log-Title">{recordTitle}</p>
-                                                    <p className="Audit-Log-Meta">
-                                                        By <b>{log.user_email || "Admin User"}</b> &bull; {formatLogDate(log.created_at)}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="Audit-Log-Right">
-                                                <button className="Audit-Expand-Btn" type="button">
-                                                    {isExpanded ? "Close Details ▲" : "View Details ▼"}
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        {/* Expanded Details / Diff Box */}
-                                        {isExpanded && (
-                                            <div className="Audit-Details-Box">
-                                                <div className="Audit-Details-Meta">
-                                                    <p><b>Record ID:</b> {log.record_id || "N/A"}</p>
-                                                    <p><b>User ID:</b> {log.user_id || "N/A"}</p>
-                                                    <p><b>Table:</b> {log.table_name}</p>
-                                                    <p><b>Time:</b> {formatLogDate(log.created_at)}</p>
-                                                </div>
-
-                                                {log.action === "UPDATE" && changedFields.length > 0 && (
-                                                    <div className="Audit-Diff-Section">
-                                                        <h4>Changed Fields ({changedFields.length}):</h4>
-                                                        <div className="Audit-Diff-List">
-                                                            {changedFields.map(({ key, old: oldVal, new: newVal }) => (
-                                                                <div key={key} className="Audit-Diff-Item">
-                                                                    <span className="Audit-Diff-Key">{key}:</span>
-                                                                    <div className="Audit-Diff-Values">
-                                                                        <span className="Audit-Diff-Old">{typeof oldVal === "object" ? JSON.stringify(oldVal) : String(oldVal || "null")}</span>
-                                                                        <span className="Audit-Diff-Arrow">&rarr;</span>
-                                                                        <span className="Audit-Diff-New">{typeof newVal === "object" ? JSON.stringify(newVal) : String(newVal || "null")}</span>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                <div className="Audit-Raw-Json-Section">
-                                                    <h4>Full Record Data:</h4>
-                                                    <div className="Audit-Json-Columns">
-                                                        {log.old_data && (
-                                                            <div className="Audit-Json-Column">
-                                                                <p className="Audit-Json-Label">Previous Data:</p>
-                                                                <pre>{JSON.stringify(log.old_data, null, 2)}</pre>
-                                                            </div>
-                                                        )}
-                                                        {log.new_data && (
-                                                            <div className="Audit-Json-Column">
-                                                                <p className="Audit-Json-Label">New Data:</p>
-                                                                <pre>{JSON.stringify(log.new_data, null, 2)}</pre>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                            {auditLogs.slice(0, 4).map(log => (
+                                <div
+                                    key={log.id}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        padding: "0.75rem 1rem",
+                                        borderRadius: "8px",
+                                        border: "1px solid #e2e8f0",
+                                        background: "#ffffff",
+                                        gap: "1rem",
+                                        flexWrap: "wrap"
+                                    }}
+                                >
+                                    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+                                        <span
+                                            style={{
+                                                fontSize: "0.75rem",
+                                                fontWeight: "800",
+                                                padding: "0.2rem 0.5rem",
+                                                borderRadius: "4px",
+                                                background: log.action === "INSERT" ? "#dcfce7" : log.action === "UPDATE" ? "#e0f2fe" : "#fee2e2",
+                                                color: log.action === "INSERT" ? "#166534" : log.action === "UPDATE" ? "#0369a1" : "#991b1b"
+                                            }}
+                                        >
+                                            {log.action === "INSERT" ? "+ Created" : log.action === "UPDATE" ? "✎ Edited" : "✕ Deleted"}
+                                        </span>
+                                        <span style={{ fontSize: "0.75rem", fontWeight: "700", color: "#64748b", background: "#f1f5f9", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
+                                            {log.table_name}
+                                        </span>
+                                        <strong style={{ fontSize: "0.9rem", color: "#0f172a" }}>
+                                            {getLogRecordName(log)}
+                                        </strong>
                                     </div>
-                                )
-                            })}
+                                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>
+                                        <span>By <b>{log.user_email || "Admin"}</b> &bull; {formatLogDate(log.created_at)}</span>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div style={{ textAlign: "center", marginTop: "0.75rem" }}>
+                                <Link
+                                    to="/admin/audit-logs"
+                                    style={{
+                                        color: "#0265A9",
+                                        fontWeight: "700",
+                                        fontSize: "0.9rem",
+                                        textDecoration: "none"
+                                    }}
+                                >
+                                    View All {auditLogs.length} Records with Full Diff & Edit Shortcuts &rarr;
+                                </Link>
+                            </div>
                         </div>
                     )}
                 </div>

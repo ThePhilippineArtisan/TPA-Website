@@ -3,12 +3,18 @@ import { supabase } from "../../supabaseClient"
 import { slugify, replaceUnderscore } from "../../utils/slugifyUtils"
 import { getArticleUrl, isMediaSegment } from "../../utils/articleUtils"
 import { compressImage, uploadToR2Storage } from "../../utils/imageUtils"
+import SelectStaffersModal from "./SelectStaffersModal.jsx"
+import EditStaffModal from "./EditStaffModal.jsx"
 import "./EditArticleModal.css"
 
 const ARTICLE_TYPES = [
     "LOOK",
     "ICYMI",
     "ANNOUNCEMENT",
+    "BREAKING_NEWS",
+    "CLOSURE_REPORT",
+    "OFFICIAL_STATEMENT",
+    "ELECTION_UPDATES",
     "WALANG_PASOK",
     "ADVISORY",
     "ALERT",
@@ -65,6 +71,16 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
     const [articleSource, setArticleSource] = useState(article.article_source || "")
     const [body, setBody] = useState(article.article_body || "")
 
+    // Contributors & Staff Management
+    const [allStaff, setAllStaff] = useState([])
+    const [articleAuthors, setArticleAuthors] = useState([])
+    const [articleMediaProviders, setArticleMediaProviders] = useState([])
+    const [loadingStaff, setLoadingStaff] = useState(true)
+
+    const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false)
+    const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
+    const [staffMemberToEdit, setStaffMemberToEdit] = useState(null)
+
     // Photo Management States
     const [attachedPhotos, setAttachedPhotos] = useState([])
     const [loadingPhotos, setLoadingPhotos] = useState(true)
@@ -74,6 +90,81 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
 
     const [saving, setSaving] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
+    // Fetch all active staff for the selector modals
+    const fetchAllStaff = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("staff")
+                .select("*")
+                .order("staff_order", { ascending: true })
+
+            if (error) throw error
+            setAllStaff(data || [])
+        } catch (err) {
+            console.warn("Could not fetch staff list:", err)
+        }
+    }
+
+    // Fetch existing contributors for this article
+    const fetchArticleStaff = async () => {
+        if (!article?.article_id) return
+        setLoadingStaff(true)
+        try {
+            const { data, error } = await supabase
+                .from("article_staff")
+                .select(`
+                    article_id,
+                    staff_id,
+                    contribution_as,
+                    use_pseudonym,
+                    staff (
+                        staff_id,
+                        staff_first_name,
+                        staff_middle_name,
+                        staff_last_name,
+                        staff_display_name,
+                        staff_pseudonym,
+                        staff_position,
+                        staff_picture,
+                        staff_bio,
+                        staff_birthday,
+                        join_date,
+                        staff_isactive,
+                        is_editorial_board
+                    )
+                `)
+                .eq("article_id", article.article_id)
+
+            if (error) throw error
+
+            const authors = []
+            const mediaProviders = []
+
+            (data || []).forEach(row => {
+                const staffData = row.staff || {}
+                const member = {
+                    ...staffData,
+                    staff_id: row.staff_id,
+                    use_pseudonym: Boolean(row.use_pseudonym),
+                    staff_display_name: staffData.staff_display_name || `${staffData.staff_first_name || ""} ${staffData.staff_last_name || ""}`.trim()
+                }
+
+                if (row.contribution_as === "Author") {
+                    authors.push(member)
+                } else if (row.contribution_as === "Media_Provider") {
+                    mediaProviders.push(member)
+                }
+            })
+
+            setArticleAuthors(authors)
+            setArticleMediaProviders(mediaProviders)
+        } catch (err) {
+            console.warn("Could not fetch article contributors:", err)
+        } finally {
+            setLoadingStaff(false)
+        }
+    }
 
     const fetchArticlePhotos = async () => {
         if (!article?.article_id) return
@@ -107,8 +198,54 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
     }
 
     useEffect(() => {
+        fetchAllStaff()
+        fetchArticleStaff()
         fetchArticlePhotos()
     }, [article?.article_id])
+
+    // Toggle pseudonym for an author
+    const handleToggleAuthorPseudonym = (staffId) => {
+        setArticleAuthors(prev =>
+            prev.map(a => (a.staff_id === staffId ? { ...a, use_pseudonym: !a.use_pseudonym } : a))
+        )
+    }
+
+    // Toggle pseudonym for a media provider
+    const handleToggleMediaPseudonym = (staffId) => {
+        setArticleMediaProviders(prev =>
+            prev.map(m => (m.staff_id === staffId ? { ...m, use_pseudonym: !m.use_pseudonym } : m))
+        )
+    }
+
+    // Remove an author from this article
+    const handleRemoveAuthor = (staffId) => {
+        setArticleAuthors(prev => prev.filter(a => a.staff_id !== staffId))
+    }
+
+    // Remove a media provider from this article
+    const handleRemoveMediaProvider = (staffId) => {
+        setArticleMediaProviders(prev => prev.filter(m => m.staff_id !== staffId))
+    }
+
+    // Callback when a staff member's profile is edited and saved
+    const handleStaffProfileSaved = (updatedMember) => {
+        setStaffMemberToEdit(null)
+
+        // Update allStaff cache
+        setAllStaff(prev =>
+            prev.map(s => (s.staff_id === updatedMember.staff_id ? { ...s, ...updatedMember } : s))
+        )
+
+        // Update authors list
+        setArticleAuthors(prev =>
+            prev.map(a => (a.staff_id === updatedMember.staff_id ? { ...a, ...updatedMember } : a))
+        )
+
+        // Update media providers list
+        setArticleMediaProviders(prev =>
+            prev.map(m => (m.staff_id === updatedMember.staff_id ? { ...m, ...updatedMember } : m))
+        )
+    }
 
     const handleMovePhoto = async (currentIndex, targetIndex) => {
         if (targetIndex < 0 || targetIndex >= attachedPhotos.length) return
@@ -299,6 +436,41 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
 
             if (error) throw error
 
+            // Synchronize article_staff contributors
+            try {
+                await supabase
+                    .from("article_staff")
+                    .delete()
+                    .eq("article_id", article.article_id)
+
+                const staffPayloads = [
+                    ...articleAuthors.map(a => ({
+                        article_id: article.article_id,
+                        staff_id: a.staff_id,
+                        contribution_as: "Author",
+                        use_pseudonym: Boolean(a.use_pseudonym)
+                    })),
+                    ...articleMediaProviders.map(m => ({
+                        article_id: article.article_id,
+                        staff_id: m.staff_id,
+                        contribution_as: "Media_Provider",
+                        use_pseudonym: Boolean(m.use_pseudonym)
+                    }))
+                ]
+
+                if (staffPayloads.length > 0) {
+                    const { error: staffInsertError } = await supabase
+                        .from("article_staff")
+                        .insert(staffPayloads)
+
+                    if (staffInsertError) {
+                        console.error("Error updating article staff:", staffInsertError)
+                    }
+                }
+            } catch (staffErr) {
+                console.error("Could not sync article_staff:", staffErr)
+            }
+
             if (onSave) {
                 onSave({
                     ...article,
@@ -418,6 +590,174 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                 onChange={(e) => setTag3(e.target.value)}
                                 placeholder="Tag 3"
                             />
+                        </div>
+                    </div>
+
+                    {/* Article Contributors & Pseudonym Management */}
+                    <div className="Edit-Staff-Section">
+                        <div className="Edit-Staff-Section-Header">
+                            <div>
+                                <h3>Article Contributors & Byline</h3>
+                                <p>Manage writers and media providers credited on this article, toggle pen names (pseudonyms), or edit staff details.</p>
+                            </div>
+                        </div>
+
+                        <div className="Edit-Staff-Subsections">
+                            {/* Authors / Writers */}
+                            <div className="Edit-Staff-Group">
+                                <div className="Edit-Staff-Group-Title-Row">
+                                    <h4>Writers / Authors ({articleAuthors.length})</h4>
+                                    <button
+                                        type="button"
+                                        className="Edit-Staff-Add-Btn"
+                                        onClick={() => setIsAuthorModalOpen(true)}
+                                    >
+                                        + Add Author
+                                    </button>
+                                </div>
+
+                                {loadingStaff ? (
+                                    <p className="Edit-Staff-Empty-Hint">Loading authors...</p>
+                                ) : articleAuthors.length === 0 ? (
+                                    <p className="Edit-Staff-Empty-Hint">No authors assigned to this article yet.</p>
+                                ) : (
+                                    <div className="Edit-Staff-List">
+                                        {articleAuthors.map(author => {
+                                            const hasPseudonym = Boolean(author.staff_pseudonym)
+                                            const isUsingPseudonym = hasPseudonym && Boolean(author.use_pseudonym)
+                                            const name = author.staff_display_name || `${author.staff_first_name || ""} ${author.staff_last_name || ""}`.trim()
+
+                                            return (
+                                                <div key={author.staff_id} className="Edit-Staff-Card">
+                                                    <div className="Edit-Staff-Card-Details">
+                                                        <span className="Edit-Staff-Card-Name">
+                                                            {name}
+                                                        </span>
+                                                        {hasPseudonym ? (
+                                                            <span className="Edit-Staff-Card-Pseudonym">
+                                                                Pseudonym: <em>{author.staff_pseudonym}</em>
+                                                            </span>
+                                                        ) : (
+                                                            <span className="Edit-Staff-Card-Position">
+                                                                {replaceUnderscore(author.staff_position || "Staff")}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="Edit-Staff-Card-Actions">
+                                                        {hasPseudonym && (
+                                                            <button
+                                                                type="button"
+                                                                className={`Edit-Staff-Pseudonym-Btn ${isUsingPseudonym ? "active" : ""}`}
+                                                                onClick={() => handleToggleAuthorPseudonym(author.staff_id)}
+                                                                title="Toggle whether this article publishes under Real Name or Pen Name"
+                                                            >
+                                                                {isUsingPseudonym ? `✓ Pen Name (${author.staff_pseudonym})` : `Real Name`}
+                                                            </button>
+                                                        )}
+
+                                                        <button
+                                                            type="button"
+                                                            className="Edit-Staff-Edit-Profile-Btn"
+                                                            onClick={() => setStaffMemberToEdit(author)}
+                                                            title="Edit this staff member's profile/pseudonym directly"
+                                                        >
+                                                            ✎ Edit Staff
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            className="Edit-Staff-Remove-Btn"
+                                                            onClick={() => handleRemoveAuthor(author.staff_id)}
+                                                            title="Remove from article byline"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Media Providers / Photographers */}
+                            <div className="Edit-Staff-Group">
+                                <div className="Edit-Staff-Group-Title-Row">
+                                    <h4>Media Providers / Photographers ({articleMediaProviders.length})</h4>
+                                    <button
+                                        type="button"
+                                        className="Edit-Staff-Add-Btn"
+                                        onClick={() => setIsMediaModalOpen(true)}
+                                    >
+                                        + Add Media Provider
+                                    </button>
+                                </div>
+
+                                {loadingStaff ? (
+                                    <p className="Edit-Staff-Empty-Hint">Loading media providers...</p>
+                                ) : articleMediaProviders.length === 0 ? (
+                                    <p className="Edit-Staff-Empty-Hint">No media providers assigned yet.</p>
+                                ) : (
+                                    <div className="Edit-Staff-List">
+                                        {articleMediaProviders.map(media => {
+                                            const hasPseudonym = Boolean(media.staff_pseudonym)
+                                            const isUsingPseudonym = hasPseudonym && Boolean(media.use_pseudonym)
+                                            const name = media.staff_display_name || `${media.staff_first_name || ""} ${media.staff_last_name || ""}`.trim()
+
+                                            return (
+                                                <div key={media.staff_id} className="Edit-Staff-Card">
+                                                    <div className="Edit-Staff-Card-Details">
+                                                        <span className="Edit-Staff-Card-Name">
+                                                            {name}
+                                                        </span>
+                                                        {hasPseudonym ? (
+                                                            <span className="Edit-Staff-Card-Pseudonym">
+                                                                Pseudonym: <em>{media.staff_pseudonym}</em>
+                                                            </span>
+                                                        ) : (
+                                                            <span className="Edit-Staff-Card-Position">
+                                                                {replaceUnderscore(media.staff_position || "Staff")}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="Edit-Staff-Card-Actions">
+                                                        {hasPseudonym && (
+                                                            <button
+                                                                type="button"
+                                                                className={`Edit-Staff-Pseudonym-Btn ${isUsingPseudonym ? "active" : ""}`}
+                                                                onClick={() => handleToggleMediaPseudonym(media.staff_id)}
+                                                                title="Toggle whether to credit under Real Name or Pen Name"
+                                                            >
+                                                                {isUsingPseudonym ? `✓ Pen Name (${media.staff_pseudonym})` : `Real Name`}
+                                                            </button>
+                                                        )}
+
+                                                        <button
+                                                            type="button"
+                                                            className="Edit-Staff-Edit-Profile-Btn"
+                                                            onClick={() => setStaffMemberToEdit(media)}
+                                                            title="Edit this staff member's profile/pseudonym directly"
+                                                        >
+                                                            ✎ Edit Staff
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            className="Edit-Staff-Remove-Btn"
+                                                            onClick={() => handleRemoveMediaProvider(media.staff_id)}
+                                                            title="Remove from article credits"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -567,6 +907,39 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                         </button>
                     </div>
                 </form>
+
+                {/* Sub-modals for Contributors Selection & Staff Profile Editing */}
+                <SelectStaffersModal
+                    isOpen={isAuthorModalOpen}
+                    onClose={() => setIsAuthorModalOpen(false)}
+                    staffers={allStaff}
+                    initialSelectedStaffers={articleAuthors}
+                    title="Select Authors / Writers"
+                    onConfirm={(selectedStaffers) => {
+                        setArticleAuthors(selectedStaffers)
+                        setIsAuthorModalOpen(false)
+                    }}
+                />
+
+                <SelectStaffersModal
+                    isOpen={isMediaModalOpen}
+                    onClose={() => setIsMediaModalOpen(false)}
+                    staffers={allStaff}
+                    initialSelectedStaffers={articleMediaProviders}
+                    title="Select Media Providers / Photographers"
+                    onConfirm={(selectedStaffers) => {
+                        setArticleMediaProviders(selectedStaffers)
+                        setIsMediaModalOpen(false)
+                    }}
+                />
+
+                {staffMemberToEdit && (
+                    <EditStaffModal
+                        staff={staffMemberToEdit}
+                        onClose={() => setStaffMemberToEdit(null)}
+                        onSave={handleStaffProfileSaved}
+                    />
+                )}
             </div>
         </div>
     )

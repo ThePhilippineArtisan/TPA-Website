@@ -41,7 +41,7 @@ const menuItems = [
         label: "Manage Pubmats",
     },
     {
-        path: "/admin/dashboard#activity-logs",
+        path: "/admin/audit-logs",
         label: "Activity & Logs",
     }
 ]

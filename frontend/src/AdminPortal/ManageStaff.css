@@ -153,4 +153,21 @@
 
 .Manage-Staff-Clickable-Row:hover .Manage-Staff-Grid-Row {
     background-color: #f0f7ff;
+}
+
+.Staff-Row-Edit-Btn {
+    background-color: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+.Staff-Row-Edit-Btn:hover {
+    background-color: #014c80;
 }

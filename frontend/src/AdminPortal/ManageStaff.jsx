@@ -107,6 +107,7 @@ const ManageStaff = () => {
                                 <th className = "Manage-Staff-Grid-Column"> <h4> Position </h4> </th>
                                 <th className = "Manage-Staff-Grid-Column"> <h4> Photo</h4> </th>
                                 <th className = "Manage-Staff-Grid-Column"> <h4> Join Date</h4> </th>
+                                <th className = "Manage-Staff-Grid-Column"> <h4> Actions </h4> </th>
                             </tr>
                         </thead>
                         
@@ -130,6 +131,16 @@ const ManageStaff = () => {
                                     <td className = "Manage-Staff-Grid-Row"> {replaceUnderscore(member.staff_position)} </td>
                                     <td className = "Manage-Staff-Grid-Row long-column"> {member.staff_picture || "-"} </td>
                                     <td className = "Manage-Staff-Grid-Row"> {member.join_date || "-"} </td>
+                                    <td className = "Manage-Staff-Grid-Row" onClick = {(e) => e.stopPropagation()}>
+                                        <button
+                                            type = "button"
+                                            className = "Staff-Row-Edit-Btn"
+                                            onClick = {() => setSelectedStaffToEdit(member)}
+                                            title = "Edit staff details and pseudonym"
+                                        >
+                                            ✎ Edit
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

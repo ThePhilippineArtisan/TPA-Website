@@ -1,0 +1,547 @@
+.Manage-Audit-Logs-Page {
+    padding: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    color: #1e293b;
+    box-sizing: border-box;
+}
+
+.Manage-Audit-Logs-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.Audit-Header-Title h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.Audit-Header-Title p {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+    max-width: 800px;
+    line-height: 1.5;
+}
+
+.Audit-Refresh-Btn {
+    background: #0265A9;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+.Audit-Refresh-Btn:hover {
+    background: #014c80;
+}
+
+.Audit-Refresh-Btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Toolbar */
+.Audit-Filter-Toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.Audit-Filter-Group-Actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.Audit-Action-Chip {
+    padding: 0.45rem 0.9rem;
+    border-radius: 9999px;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.Audit-Action-Chip:hover {
+    border-color: #0265A9;
+    color: #0265A9;
+}
+
+.Audit-Action-Chip.active {
+    background: #0265A9;
+    color: #ffffff;
+    border-color: #0265A9;
+}
+
+.Audit-Filter-Group-Right {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.Audit-Table-Filter-Select {
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+    background-color: #ffffff;
+    outline: none;
+    cursor: pointer;
+}
+
+.Audit-Table-Filter-Select:focus {
+    border-color: #0265A9;
+}
+
+.Audit-Search-Input-Wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.Audit-Search-Input {
+    padding: 0.5rem 2rem 0.5rem 0.85rem;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e1;
+    font-size: 0.85rem;
+    color: #1e293b;
+    width: 260px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.Audit-Search-Input:focus {
+    border-color: #0265A9;
+}
+
+.Audit-Search-Clear-Btn {
+    position: absolute;
+    right: 0.6rem;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.Audit-Search-Clear-Btn:hover {
+    color: #0f172a;
+}
+
+/* Status & Setup Cards */
+.Audit-Status-Card {
+    background: #ffffff;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 3.5rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.Audit-Setup-Card {
+    background: #fffbeb;
+    border: 2px solid #fde68a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.Audit-Setup-Header h3 {
+    margin: 0 0 0.5rem 0;
+    color: #92400e;
+    font-size: 1.15rem;
+}
+
+.Audit-Setup-Header p {
+    margin: 0;
+    color: #78350f;
+    font-size: 0.9rem;
+}
+
+.Audit-Setup-Toggle {
+    margin-top: 1rem;
+    padding: 0.45rem 0.9rem;
+    background: #f59e0b;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.Audit-Sql-Box {
+    margin-top: 1rem;
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.Audit-Sql-Code {
+    color: #38bdf8;
+    font-size: 0.8rem;
+    font-family: monospace;
+    overflow-x: auto;
+    margin: 0;
+}
+
+/* Logs Container & List */
+.Audit-Logs-Container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.Audit-Logs-Summary-Bar {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.Audit-Cards-List {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.Audit-Log-Card {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.Audit-Log-Card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.Audit-Log-Card.is-expanded {
+    border-color: #0265A9;
+    box-shadow: 0 6px 16px rgba(2, 101, 169, 0.08);
+}
+
+.Audit-Card-Main-Row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.Audit-Card-Left-Info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 280px;
+}
+
+.Audit-Card-Badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.Audit-Action-Badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.Audit-Action-Badge.badge-insert {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.Audit-Action-Badge.badge-update {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.Audit-Action-Badge.badge-delete {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.Audit-Table-Badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: #f1f5f9;
+    color: #475569;
+    text-transform: uppercase;
+}
+
+.Audit-Record-Id-Badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.Audit-Card-Headline {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.4;
+}
+
+.Audit-Card-Metadata {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    flex-wrap: wrap;
+}
+
+.Audit-Fields-Changed-Count {
+    color: #0265A9;
+    font-weight: 700;
+}
+
+/* Actions Row */
+.Audit-Card-Actions-Row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.Audit-Action-Btn {
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.Audit-Btn-Edit {
+    background: #0265A9;
+    color: #ffffff;
+    border: 1.5px solid #0265A9;
+}
+
+.Audit-Btn-Edit:hover {
+    background: #014c80;
+    border-color: #014c80;
+}
+
+.Audit-Btn-View {
+    background: #f8fafc;
+    color: #0265A9;
+    border: 1.5px solid #cbd5e1;
+}
+
+.Audit-Btn-View:hover {
+    background: #e0f2fe;
+    border-color: #0265A9;
+}
+
+.Audit-Btn-Secondary {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1.5px solid #cbd5e1;
+}
+
+.Audit-Btn-Secondary:hover {
+    background: #e2e8f0;
+}
+
+.Audit-Btn-Expand {
+    background: #f8fafc;
+    color: #64748b;
+    border: 1.5px solid #e2e8f0;
+}
+
+.Audit-Btn-Expand:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Expanded Diff Section */
+.Audit-Card-Expanded-Details {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.Audit-Diff-Container h4,
+.Audit-Json-Section h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.Audit-Diff-Table-Wrapper {
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.Audit-Diff-Table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+.Audit-Diff-Table th {
+    background: #f8fafc;
+    padding: 0.6rem 0.85rem;
+    color: #64748b;
+    font-weight: 700;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.Audit-Diff-Table td {
+    padding: 0.65rem 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+}
+
+.Audit-Diff-Key-Cell code {
+    font-weight: 700;
+    color: #0f172a;
+    background: #f1f5f9;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+}
+
+.Audit-Diff-Old-Cell pre {
+    margin: 0;
+    color: #991b1b;
+    background: #fef2f2;
+    padding: 0.35rem 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    max-height: 140px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.Audit-Diff-New-Cell pre {
+    margin: 0;
+    color: #166534;
+    background: #f0fdf4;
+    padding: 0.35rem 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    max-height: 140px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Raw Json Cols */
+.Audit-Json-Cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.Audit-Json-Col {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 0.85rem;
+    overflow: hidden;
+}
+
+.Audit-Json-Label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+}
+
+.Audit-Json-Col pre {
+    margin: 0;
+    color: #38bdf8;
+    font-size: 0.75rem;
+    font-family: monospace;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+@media (max-width: 768px) {
+    .Manage-Audit-Logs-Page {
+        padding: 1.25rem;
+    }
+
+    .Manage-Audit-Logs-Header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .Audit-Filter-Toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .Audit-Search-Input {
+        width: 100%;
+    }
+
+    .Audit-Card-Main-Row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .Audit-Card-Actions-Row {
+        justify-content: flex-start;
+    }
+}

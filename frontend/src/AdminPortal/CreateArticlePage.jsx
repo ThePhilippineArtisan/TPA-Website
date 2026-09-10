@@ -491,6 +491,10 @@ const CreateArticlePage = () => {
                         <option value="LOOK"> LOOK </option>
                         <option value="ICYMI"> ICYMI </option>
                         <option value="ANNOUNCEMENT"> ANNOUNCEMENT </option>
+                        <option value="BREAKING_NEWS"> BREAKING NEWS </option>
+                        <option value="CLOSURE_REPORT"> CLOSURE REPORT </option>
+                        <option value="OFFICIAL_STATEMENT"> OFFICIAL STATEMENT </option>
+                        <option value="ELECTION_UPDATES"> ELECTION UPDATES </option>
                         <option value="WALANG_PASOK"> WALANG PASOK </option>
                         <option value="ADVISORY"> ADVISORY </option>
                         <option value="ALERT"> ALERT </option>
@@ -570,6 +574,8 @@ const CreateArticlePage = () => {
                         isOpen={isAuthorModalOpen}
                         onClose={() => setIsAuthorModalOpen(false)}
                         staffers={staff}
+                        initialSelectedStaffers={selectedAuthors}
+                        title="Select Authors / Writers"
                         onConfirm={(selectedStaffers) => {
                             setSelectedAuthors(selectedStaffers)
                             setIsAuthorModalOpen(false)
@@ -590,6 +596,8 @@ const CreateArticlePage = () => {
                         isOpen={isMediaModalOpen}
                         onClose={() => setIsMediaModalOpen(false)}
                         staffers={staff}
+                        initialSelectedStaffers={selectedMediaProviders}
+                        title="Select Media Providers / Photographers"
                         onConfirm={(selectedStaffers) => {
                             setSelectedMediaProviders(selectedStaffers)
                             setIsMediaModalOpen(false)
@@ -634,35 +642,54 @@ const CreateArticlePage = () => {
                                                 )}
                                             </div>
 
-                                            <button
-                                                type="button"
-                                                disabled={!hasPseudonym}
-                                                onClick={() => {
-                                                    if (!hasPseudonym) return
-                                                    const updated = [...selectedAuthors]
-                                                    updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
-                                                    setSelectedAuthors(updated)
-                                                }}
-                                                style={{
-                                                    padding: '0.35rem 0.75rem',
-                                                    borderRadius: 'var(--radius-sm)',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '800',
-                                                    cursor: hasPseudonym ? 'pointer' : 'not-allowed',
-                                                    border: '2px solid #000',
-                                                    background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
-                                                    color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
-                                                    transition: 'all 0.15s ease',
-                                                    boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
-                                                }}
-                                            >
-                                                {!hasPseudonym
-                                                    ? `No Pseudonym Set`
-                                                    : isUsingPseudonym
-                                                        ? `Pseudonym (${authorObj.staff_pseudonym})`
-                                                        : `Real Name (${authorObj.staff_display_name})`
-                                                }
-                                            </button>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <button
+                                                    type="button"
+                                                    disabled={!hasPseudonym}
+                                                    onClick={() => {
+                                                        if (!hasPseudonym) return
+                                                        const updated = [...selectedAuthors]
+                                                        updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
+                                                        setSelectedAuthors(updated)
+                                                    }}
+                                                    style={{
+                                                        padding: '0.35rem 0.75rem',
+                                                        borderRadius: 'var(--radius-sm)',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: '800',
+                                                        cursor: hasPseudonym ? 'pointer' : 'not-allowed',
+                                                        border: '2px solid #000',
+                                                        background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
+                                                        color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
+                                                        transition: 'all 0.15s ease',
+                                                        boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
+                                                    }}
+                                                >
+                                                    {!hasPseudonym
+                                                        ? `No Pseudonym Set`
+                                                        : isUsingPseudonym
+                                                            ? `Pseudonym (${authorObj.staff_pseudonym})`
+                                                            : `Real Name (${authorObj.staff_display_name})`
+                                                    }
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedAuthors(prev => prev.filter((_, i) => i !== idx))}
+                                                    style={{
+                                                        background: '#fee2e2',
+                                                        border: '1.5px solid #ef4444',
+                                                        color: '#b91c1c',
+                                                        borderRadius: 'var(--radius-sm)',
+                                                        cursor: 'pointer',
+                                                        padding: '0.3rem 0.5rem',
+                                                        fontSize: '0.85rem',
+                                                        fontWeight: 'bold'
+                                                    }}
+                                                    title="Remove author"
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
                                         </div>
                                     )
                                 })}
@@ -702,35 +729,54 @@ const CreateArticlePage = () => {
                                                 )}
                                             </div>
 
-                                            <button
-                                                type="button"
-                                                disabled={!hasPseudonym}
-                                                onClick={() => {
-                                                    if (!hasPseudonym) return
-                                                    const updated = [...selectedMediaProviders]
-                                                    updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
-                                                    setSelectedMediaProviders(updated)
-                                                }}
-                                                style={{
-                                                    padding: '0.35rem 0.75rem',
-                                                    borderRadius: 'var(--radius-sm)',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: '800',
-                                                    cursor: hasPseudonym ? 'pointer' : 'not-allowed',
-                                                    border: '2px solid #000',
-                                                    background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
-                                                    color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
-                                                    transition: 'all 0.15s ease',
-                                                    boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
-                                                }}
-                                            >
-                                                {!hasPseudonym
-                                                    ? `No Pseudonym Set`
-                                                    : isUsingPseudonym
-                                                        ? `Pseudonym (${mediaObj.staff_pseudonym})`
-                                                        : `Real Name (${mediaObj.staff_display_name})`
-                                                }
-                                            </button>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <button
+                                                    type="button"
+                                                    disabled={!hasPseudonym}
+                                                    onClick={() => {
+                                                        if (!hasPseudonym) return
+                                                        const updated = [...selectedMediaProviders]
+                                                        updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
+                                                        setSelectedMediaProviders(updated)
+                                                    }}
+                                                    style={{
+                                                        padding: '0.35rem 0.75rem',
+                                                        borderRadius: 'var(--radius-sm)',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: '800',
+                                                        cursor: hasPseudonym ? 'pointer' : 'not-allowed',
+                                                        border: '2px solid #000',
+                                                        background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
+                                                        color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
+                                                        transition: 'all 0.15s ease',
+                                                        boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
+                                                    }}
+                                                >
+                                                    {!hasPseudonym
+                                                        ? `No Pseudonym Set`
+                                                        : isUsingPseudonym
+                                                            ? `Pseudonym (${mediaObj.staff_pseudonym})`
+                                                            : `Real Name (${mediaObj.staff_display_name})`
+                                                    }
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedMediaProviders(prev => prev.filter((_, i) => i !== idx))}
+                                                    style={{
+                                                        background: '#fee2e2',
+                                                        border: '1.5px solid #ef4444',
+                                                        color: '#b91c1c',
+                                                        borderRadius: 'var(--radius-sm)',
+                                                        cursor: 'pointer',
+                                                        padding: '0.3rem 0.5rem',
+                                                        fontSize: '0.85rem',
+                                                        fontWeight: 'bold'
+                                                    }}
+                                                    title="Remove media provider"
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
                                         </div>
                                     )
                                 })}

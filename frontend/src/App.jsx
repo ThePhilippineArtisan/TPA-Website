@@ -32,6 +32,7 @@ const ManageFrontPage = lazy(() => import('./AdminPortal/ManageFrontPage.jsx'))
 const ManageVideosPage = lazy(() => import('./AdminPortal/ManageVideos.jsx'))
 const ManageReleasesPage = lazy(() => import('./AdminPortal/ManageReleases.jsx'))
 const ManagePubmatsPage = lazy(() => import('./AdminPortal/ManagePubmats.jsx'))
+const ManageAuditLogsPage = lazy(() => import('./AdminPortal/ManageAuditLogs.jsx'))
 
 const MainLayout = () => {
   return (
@@ -144,6 +145,7 @@ const App = () => {
               <Route path="/admin/manage-videos" element={<ManageVideosPage />} />
               <Route path="/admin/manage-releases" element={<ManageReleasesPage />} />
               <Route path="/admin/manage-pubmats" element={<ManagePubmatsPage />} />
+              <Route path="/admin/audit-logs" element={<ManageAuditLogsPage />} />
             </Route>
           </Route>
 
