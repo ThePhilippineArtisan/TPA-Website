@@ -38,7 +38,7 @@ const SelectPubmatModal = ({ isOpen, onClose, onSelectPubmat, selectedPubmatId }
         try {
             const { data, error } = await supabase
                 .from("pubmat")
-                .select("*")
+                .select("*, media(media_id, media_url)")
                 .eq("is_active", true)
                 .order("created_at", { ascending: false })
 
@@ -49,7 +49,11 @@ const SelectPubmatModal = ({ isOpen, onClose, onSelectPubmat, selectedPubmatId }
                     throw error
                 }
             } else {
-                setPubmats(data || [])
+                const formatted = (data || []).map(p => ({
+                    ...p,
+                    image_url: p.image_url || p.media?.media_url || ""
+                }))
+                setPubmats(formatted)
             }
         } catch (err) {
             console.error("Error fetching pubmats for selection:", err)
