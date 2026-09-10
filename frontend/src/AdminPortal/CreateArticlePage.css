@@ -648,6 +648,30 @@ dialog {
     color: #111827;
 }
 
+.Side-Header-Actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.Side-Add-Pubmat-Btn {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #0265A9;
+    border: 1.5px solid #0265A9;
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.65rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.Side-Add-Pubmat-Btn:hover {
+    background-color: #024e82;
+}
+
 .Side-Add-Photos-Btn {
     font-family: var(--font-sans);
     font-size: 0.78rem;
@@ -665,6 +689,144 @@ dialog {
 .Side-Add-Photos-Btn:hover {
     background-color: #0265A9;
     color: #ffffff;
+}
+
+.Side-Pubmat-Item {
+    border: 2px solid #0265A9;
+    box-shadow: 0 2px 8px rgba(2, 101, 169, 0.12);
+}
+
+.Side-Pubmat-Badge {
+    background: linear-gradient(135deg, #0265a9 0%, #0891b2 100%) !important;
+}
+
+.Side-Pubmat-Details {
+    padding: 0.45rem 0.65rem;
+    background-color: #f8fafc;
+    border-top: 1px solid var(--border-color);
+}
+
+.Side-Pubmat-Title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Article-Cover-Graphic-Preview {
+    margin-bottom: 1.25rem;
+    border: 2px solid #0265A9;
+    border-radius: var(--radius-sm);
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(2, 101, 169, 0.08);
+}
+
+.Cover-Preview-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f7ff;
+    padding: 0.5rem 0.85rem;
+    border-bottom: 1px solid #bfdbfe;
+}
+
+.Cover-Preview-Tag {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #0265A9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.Cover-Preview-Actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.Cover-Action-Btn {
+    background-color: #ffffff;
+    border: 1px solid #0265A9;
+    color: #0265A9;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+}
+
+.Cover-Action-Btn:hover {
+    background-color: #0265A9;
+    color: #ffffff;
+}
+
+.Cover-Action-Btn-Remove {
+    background-color: #ffffff;
+    border: 1px solid #dc2626;
+    color: #dc2626;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+}
+
+.Cover-Action-Btn-Remove:hover {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.Cover-Preview-Content {
+    display: flex;
+    gap: 1rem;
+    padding: 0.85rem;
+    align-items: center;
+}
+
+.Cover-Preview-Content img {
+    width: 140px;
+    height: 105px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.Cover-Preview-Meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.Cover-Preview-Meta h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.Cover-Preview-Meta p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.Photo-Only-Notice-Banner {
+    padding: 0.75rem 1rem;
+    background-color: #eff6ff;
+    border: 1.5px dashed #93c5fd;
+    border-radius: var(--radius-sm);
+    color: #1e40af;
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
 }
 
 .Side-Photos-List {

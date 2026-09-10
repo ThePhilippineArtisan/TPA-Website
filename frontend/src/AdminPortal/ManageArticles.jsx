@@ -170,6 +170,7 @@ const ManageArticles = () => {
                                 <th className="Manage-Staff-Grid-Column"> Authors </th>
                                 <th className="Manage-Staff-Grid-Column"> Media Providers </th>
                                 <th className="Manage-Staff-Grid-Column"> Publish Date </th>
+                                <th className="Manage-Staff-Grid-Column" style={{ width: "130px" }}> Actions </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -196,6 +197,27 @@ const ManageArticles = () => {
                                             year: "numeric"
                                         }) : "N/A"
                                         } </td>
+                                    <td className="Manage-Staff-Grid-Row" style={{ whiteSpace: "nowrap" }}>
+                                        <button
+                                            type="button"
+                                            className="Manage-Article-Edit-Btn"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                setSelectedArticleToEdit(article)
+                                            }}
+                                        >
+                                            Edit
+                                        </button>
+                                        <a
+                                            href={getArticleUrl(article)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="Manage-Article-View-Btn"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            View
+                                        </a>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

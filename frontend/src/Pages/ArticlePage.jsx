@@ -9,7 +9,6 @@ import { sanitizeUrl } from "../utils/stringUtils.js"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx"
 import NeighboringArticles from "../Components/NeighboringArticles.jsx"
 import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx"
-import EditArticleModal from "../AdminPortal/Modals/EditArticleModal.jsx"
 import "../CSS/ArticlePage.css"
 
 const ArticlePage = () => {
@@ -21,14 +20,6 @@ const ArticlePage = () => {
     const [currentPhoto, setCurrentPhoto] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [isAdmin, setIsAdmin] = useState(false)
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-
-    useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setIsAdmin(Boolean(session))
-        })
-    }, [])
 
     useEffect(() => {
         const fetchArticleDetails = async () => {
@@ -172,135 +163,131 @@ const ArticlePage = () => {
             .filter(Boolean)
         : []
 
+    const tags = [
+        getMediaSegmentLabel(articleDetails.article_type) || articleDetails.article_type,
+        articleDetails.article_tag1,
+        articleDetails.article_tag2,
+        articleDetails.article_tag3
+    ].filter(Boolean)
+
+    const hasBody = Boolean(articleDetails.article_body && articleDetails.article_body.trim() !== "")
+
     return (
         <div className="Article-Page">
-            <div className="Article-Header-Section">
-                <span className="Article-Category-Tag">
-                    {getMediaSegmentLabel(articleDetails.article_type) || articleDetails.article_type || "News"}
-                </span>
-                <h1 className="Article-Title">{articleDetails.article_headline}</h1>
-                <div className="Article-Meta-Bar">
-                    <p className="Article-Author">
-                        By{" "}
+            <div className="Article-Headline">
+                <div className="Simple-Tag">
+                    <h4>{tags.join(", ").replace(/_/g, " ")}</h4>
+                </div>
+
+                <h1>{articleDetails.article_headline}</h1>
+
+                <hr />
+
+                <div className="Author-and-Date">
+                    <div className="Author">
                         {authors.length > 0 ? (
                             authors.map((auth, idx) => (
-                                <span key={auth.staff_id}>
-                                    <Link to={`/staff/${slugify(auth.displayName)}`}>{auth.displayName}</Link>
-                                    {idx < authors.length - 1 ? ", " : ""}
+                                <span key={auth.staff_id || idx}>
+                                    <Link to={`/staff/${slugify(auth.displayName)}`}>
+                                        <h3>{auth.displayName}{idx < authors.length - 1 ? ", " : ""}</h3>
+                                    </Link>
                                 </span>
                             ))
                         ) : (
-                            "The Philippine Artisan Staff"
+                            <a><h3>The Philippine Artisan Staff</h3></a>
                         )}
-                    </p>
-                    <span className="Meta-Dot">•</span>
-                    <span className="Article-Date">{formatDateReadable(articleDetails.published_at)}</span>
+                    </div>
 
-                    {isAdmin && (
-                        <button
-                            type="button"
-                            onClick={() => setIsEditModalOpen(true)}
-                            style={{
-                                marginLeft: "auto",
-                                padding: "0.35rem 0.85rem",
-                                fontSize: "0.8rem",
-                                fontWeight: "700",
-                                color: "#ffffff",
-                                backgroundColor: "var(--primary-blue, #0265A9)",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: "pointer"
-                            }}
-                        >
-                            Edit Article
-                        </button>
-                    )}
+                    <div className="Date">
+                        <a><h3>{formatDateReadable(articleDetails.published_at)}</h3></a>
+                    </div>
                 </div>
             </div>
 
-            {currentPhoto && (
-                <div className="Article-Main-Image-Wrapper">
-                    <img src={currentPhoto} alt={articleDetails.article_headline} className="Article-Main-Image" />
-                    {mediaProviders.length > 0 && (
-                        <p className="Image-Credit">
-                            Photo by{" "}
-                            {mediaProviders.map((med, idx) => (
-                                <span key={med.staff_id}>
-                                    <Link to={`/staff/${slugify(med.displayName)}`}>{med.displayName}</Link>
-                                    {idx < mediaProviders.length - 1 ? ", " : ""}
-                                </span>
-                            ))}
-                        </p>
-                    )}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                {currentPhoto && (
+                    <div className="Foreground-Photo">
+                        <img src={currentPhoto} alt={articleDetails.article_headline} loading="eager" />
+                    </div>
+                )}
+            </div>
 
-                    {mediaUrls.length > 1 && (
-                        <div className="Article-Photo-Gallery-Strip" style={{
-                            display: "flex",
-                            gap: "0.5rem",
-                            marginTop: "0.75rem",
-                            overflowX: "auto",
-                            paddingBottom: "0.5rem"
-                        }}>
-                            {mediaUrls.map((url, idx) => (
-                                <button
-                                    key={idx}
-                                    type="button"
-                                    onClick={() => setCurrentPhoto(url)}
-                                    style={{
-                                        border: currentPhoto === url ? "3px solid #0265A9" : "2px solid #e2e8f0",
-                                        borderRadius: "4px",
-                                        padding: 0,
-                                        background: "none",
-                                        cursor: "pointer",
-                                        overflow: "hidden",
-                                        width: "68px",
-                                        height: "50px",
-                                        flexShrink: 0,
-                                        opacity: currentPhoto === url ? 1 : 0.7,
-                                        transition: "all 0.15s ease"
-                                    }}
-                                    title={`View Photo ${idx + 1}`}
-                                >
-                                    <img
-                                        src={url}
-                                        alt={`Thumbnail ${idx + 1}`}
-                                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                                    />
-                                </button>
-                            ))}
-                        </div>
-                    )}
+            {mediaProviders.length > 0 && (
+                <div className="Photo-Illustration-Layout-Credits" style={{ textAlign: "center" }}>
+                    Photo by{" "}
+                    {mediaProviders.map((med, idx) => (
+                        <span key={med.staff_id || idx}>
+                            <Link to={`/staff/${slugify(med.displayName)}`}>{med.displayName}</Link>
+                            {idx < mediaProviders.length - 1 ? ", " : ""}
+                        </span>
+                    ))}
                 </div>
             )}
 
-            <div className="Article-Body-Container">
-                <div className="Article-Main-Column">
-                    {articleDetails.article_body ? (
-                        <div 
-                            className="Article-Body-Text" 
-                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(articleDetails.article_body) }} 
-                        />
-                    ) : (
-                        <p className="No-Body-Text">No article content available.</p>
-                    )}
+            {mediaUrls.length > 1 && (
+                <div className="Extra-Photos-Container">
+                    <div className="Extra-Photos">
+                        {mediaUrls.map((photo, index) => (
+                            <img
+                                key={index}
+                                src={photo}
+                                alt={`Photo ${index + 1}`}
+                                loading="lazy"
+                                onClick={() => setCurrentPhoto(photo)}
+                                style={{
+                                    cursor: "pointer",
+                                    border: photo === currentPhoto ? "3px solid var(--primary-blue, #0265A9)" : "2px solid transparent"
+                                }}
+                                title={`View Photo ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
 
+            <div 
+                className="Below-Small-Photos"
+                style={!hasBody ? { gridTemplateColumns: "1fr", width: "100%" } : {}}
+            >
+                {hasBody ? (
+                    <div 
+                        className="Article-Body" 
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(articleDetails.article_body) }} 
+                    />
+                ) : (
+                    <div style={{ padding: "1.5rem 0", color: "#64748b", fontStyle: "italic" }}>
+                        <p>This is a photo release from The Philippine Artisan.</p>
+                    </div>
+                )}
+
+                <div style={!hasBody ? { width: "100%" } : {}}>
                     {articleDetails.article_source && (
-                        <div className="Article-Source-Box">
-                            <span>
+                        <h4 style={{ marginBottom: "1rem" }}>
+                            <span style={{ color: "var(--primary-blue, #0265A9)" }}>
                                 Source / Reference:{" "}
-                                <a href={sanitizeUrl(articleDetails.article_source)} target="_blank" rel="noopener noreferrer">
+                                <a target="_blank" rel="noopener noreferrer" href={sanitizeUrl(articleDetails.article_source)}>
                                     {articleDetails.article_source}
                                 </a>
                             </span>
-                        </div>
+                        </h4>
                     )}
 
-                    <NewsletterSubscribe variant="article" />
-                </div>
+                    <h4>
+                        {articleDetails.word_count || 0} words | {Math.ceil((articleDetails.word_count || 0) / 200)} minute read
+                    </h4>
 
-                <div className="Article-Sidebar-Column">
-                    <VerticalFastNews isHorizontal={false} />
+                    <hr />
+
+                    <NewsletterSubscribe variant="article" />
+
+                    <div style={{ marginTop: "1.5rem" }}>
+                        <VerticalFastNews isHorizontal={!hasBody} />
+                    </div>
                 </div>
+            </div>
+
+            <div style={{ marginLeft: "10%", marginRight: "10%" }}>
+                <hr style={{ borderBottom: "2px solid var(--primary-blue, #0265A9)" }} />
             </div>
 
             {/* Chronological Neighboring Articles Component */}
@@ -310,13 +297,7 @@ const ArticlePage = () => {
                 isMediaSegment={false} 
             />
 
-            {isEditModalOpen && (
-                <EditArticleModal
-                    article={articleDetails}
-                    onClose={() => setIsEditModalOpen(false)}
-                    onSave={(updated) => setArticleDetails((prev) => ({ ...prev, ...updated }))}
-                />
-            )}
+
         </div>
     )
 }

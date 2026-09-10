@@ -78,7 +78,13 @@ const CreateArticlePage = () => {
 
     // Move any attached photo to primary position (index 0)
     const handleSetAsCover = (indexToPromote) => {
-        if (indexToPromote === 0) return
+        if (selectedPubmat) {
+            const confirmChange = window.confirm("A Pubmat is currently set as Cover (#1). Promoting this photo to Cover will remove the Pubmat as cover. Continue?")
+            if (!confirmChange) return
+            setSelectedPubmat(null)
+        } else if (indexToPromote === 0) {
+            return
+        }
         setMediaImagePhoto(prev => {
             const chosen = prev[indexToPromote]
             const remaining = prev.filter((_, idx) => idx !== indexToPromote)
@@ -733,49 +739,46 @@ const CreateArticlePage = () => {
                     </div>
                 )}
 
-                {(isPhotoOnly || selectedPubmat) && (
-                    <div className="Single-Photo-Post-Container">
-                        <div className="Single-Photo-Post-Header">
-                            <span>Single Photo Post (Pubmat)</span>
-                            <div className="Single-Photo-Post-Actions">
+                {selectedPubmat && (
+                    <div className="Article-Cover-Graphic-Preview">
+                        <div className="Cover-Preview-Header">
+                            <span className="Cover-Preview-Tag">📌 Cover Graphic (Pubmat)</span>
+                            <div className="Cover-Preview-Actions">
                                 <button
                                     type="button"
-                                    className="Single-Photo-Action-Btn"
+                                    className="Cover-Action-Btn"
                                     onClick={() => setIsPubmatModalOpen(true)}
                                 >
-                                    {selectedPubmat ? "Change Pubmat" : "Select Pubmat"}
+                                    Change Pubmat
                                 </button>
-                                {selectedPubmat && (
-                                    <button
-                                        type="button"
-                                        className="Single-Photo-Action-Btn-Remove"
-                                        onClick={() => setSelectedPubmat(null)}
-                                    >
-                                        Remove
-                                    </button>
-                                )}
+                                <button
+                                    type="button"
+                                    className="Cover-Action-Btn-Remove"
+                                    onClick={() => setSelectedPubmat(null)}
+                                >
+                                    Remove
+                                </button>
                             </div>
                         </div>
-                        {selectedPubmat ? (
-                            <div className="Single-Photo-Post-Preview">
-                                <img src={selectedPubmat.media_url || selectedPubmat.preview} alt="Single post pubmat" />
-                                {selectedPubmat.title && (
-                                    <div style={{ marginTop: "0.5rem", fontSize: "0.85rem", color: "#64748b" }}>
-                                        Pubmat: <strong>{selectedPubmat.title}</strong>
-                                    </div>
-                                )}
+                        <div className="Cover-Preview-Content">
+                            <img src={selectedPubmat.media_url || selectedPubmat.preview} alt="Selected pubmat cover" />
+                            <div className="Cover-Preview-Meta">
+                                <h4>{selectedPubmat.title || "Graphic Pubmat"}</h4>
+                                <p>
+                                    Set as <strong>Cover (#1)</strong> of this article.
+                                    {mediaImagePhoto.length > 0
+                                        ? ` (${mediaImagePhoto.length} additional gallery photo${mediaImagePhoto.length > 1 ? "s" : ""} attached in side panel)`
+                                        : ` You can attach additional photos in the side panel if this article has a photo gallery.`
+                                    }
+                                </p>
                             </div>
-                        ) : (
-                            <div className="Single-Photo-Post-Placeholder">
-                                <button
-                                    type="button"
-                                    className="Single-Photo-Placeholder-Btn"
-                                    onClick={() => setIsPubmatModalOpen(true)}
-                                >
-                                    Select Pubmat
-                                </button>
-                            </div>
-                        )}
+                        </div>
+                    </div>
+                )}
+
+                {isPhotoOnly && !selectedPubmat && (
+                    <div className="Photo-Only-Notice-Banner">
+                        <span>📸 <strong>Photo Release Mode is ON</strong> (Body text is optional). Pick a Pubmat or add photos in the right-hand panel.</span>
                     </div>
                 )}
 
@@ -873,18 +876,28 @@ const CreateArticlePage = () => {
             {/* Side Media Panel */}
             <aside className="Admin-Article-Side-Panel">
                 <div className="Side-Panel-Header">
-                    <h3>Photos ({mediaImagePhoto.length})</h3>
-                    <label className="Side-Add-Photos-Btn" style={{ opacity: isCompressingPhotos ? 0.7 : 1 }}>
-                        {isCompressingPhotos ? `Compressing (${compressingCount})...` : "+ Add Photos"}
-                        <input
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            disabled={isCompressingPhotos}
-                            style={{ display: "none" }}
-                            onChange={handleFileChange}
-                        />
-                    </label>
+                    <h3>Photos ({(selectedPubmat ? 1 : 0) + mediaImagePhoto.length})</h3>
+                    <div className="Side-Header-Actions">
+                        <button
+                            type="button"
+                            className="Side-Add-Pubmat-Btn"
+                            onClick={() => setIsPubmatModalOpen(true)}
+                            title="Choose reusable graphic pubmat as cover"
+                        >
+                            {selectedPubmat ? "Change Pubmat" : "+ Pubmat"}
+                        </button>
+                        <label className="Side-Add-Photos-Btn" style={{ opacity: isCompressingPhotos ? 0.7 : 1 }}>
+                            {isCompressingPhotos ? `Compressing (${compressingCount})...` : "+ Add Photos"}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                disabled={isCompressingPhotos}
+                                style={{ display: "none" }}
+                                onChange={handleFileChange}
+                            />
+                        </label>
+                    </div>
                 </div>
 
                 {isCompressingPhotos && (
@@ -899,72 +912,148 @@ const CreateArticlePage = () => {
                     </div>
                 )}
 
-                {mediaImagePhoto.length > 0 ? (
+                {(selectedPubmat || mediaImagePhoto.length > 0) ? (
                     <>
                         <div className="Side-Photos-List">
-                            {mediaImagePhoto.map((imgObj, idx) => (
-                                <div 
-                                    key={idx} 
-                                    className={`Side-Photo-Item ${draggedPhotoIndex === idx ? 'is-dragging' : ''}`}
-                                    draggable
-                                    onDragStart={(e) => handlePhotoDragStart(e, idx)}
-                                    onDragOver={(e) => handlePhotoDragOver(e, idx)}
-                                    onDrop={(e) => handlePhotoDrop(e, idx)}
-                                >
+                            {/* If Pubmat is selected, it occupies Cover #1 */}
+                            {selectedPubmat && (
+                                <div className="Side-Photo-Item Side-Pubmat-Item">
                                     <div className="Side-Photo-Thumb-Wrapper">
-                                        <img src={imgObj.preview} alt={`Article media ${idx + 1}`} draggable={false} />
-                                        <span className="Side-Photo-Badge">
-                                            {idx === 0 ? "Cover (#1)" : `#${idx + 1}`}
+                                        <img
+                                            src={selectedPubmat.media_url || selectedPubmat.preview}
+                                            alt={selectedPubmat.title || "Pubmat Cover"}
+                                            draggable={false}
+                                        />
+                                        <span className="Side-Photo-Badge Side-Pubmat-Badge">
+                                            Cover (#1) · PUBMAT
+                                        </span>
+                                    </div>
+                                    <div className="Side-Pubmat-Details">
+                                        <span className="Side-Pubmat-Title" title={selectedPubmat.title}>
+                                            {selectedPubmat.title || "Graphic Pubmat"}
                                         </span>
                                     </div>
                                     <div className="Side-Photo-Item-Actions">
                                         <button
                                             type="button"
-                                            className="Side-Btn-Action Side-Btn-Arrow"
-                                            disabled={idx === 0}
-                                            title="Move up"
-                                            onClick={() => handleMoveImageUp(idx)}
+                                            className="Side-Btn-Action"
+                                            title="Choose a different pubmat"
+                                            onClick={() => setIsPubmatModalOpen(true)}
                                         >
-                                            ▲
+                                            Change
                                         </button>
-                                        <button
-                                            type="button"
-                                            className="Side-Btn-Action Side-Btn-Arrow"
-                                            disabled={idx === mediaImagePhoto.length - 1}
-                                            title="Move down"
-                                            onClick={() => handleMoveImageDown(idx)}
-                                        >
-                                            ▼
-                                        </button>
-                                        {idx !== 0 && (
-                                            <button
-                                                type="button"
-                                                className="Side-Btn-Action"
-                                                title="Make primary cover"
-                                                onClick={() => handleSetAsCover(idx)}
-                                            >
-                                                Cover
-                                            </button>
-                                        )}
                                         <button
                                             type="button"
                                             className="Side-Btn-Action Side-Btn-Delete"
-                                            title="Remove image"
-                                            onClick={() => handleRemoveImage(idx)}
+                                            title="Remove pubmat cover"
+                                            onClick={() => setSelectedPubmat(null)}
                                         >
-                                            ✕
+                                            ✕ Remove
                                         </button>
                                     </div>
                                 </div>
-                            ))}
+                            )}
+
+                            {/* Uploaded Photos */}
+                            {mediaImagePhoto.map((imgObj, idx) => {
+                                const photoOrder = selectedPubmat ? idx + 2 : idx + 1
+                                const isCoverPhoto = !selectedPubmat && idx === 0
+                                return (
+                                    <div 
+                                        key={idx} 
+                                        className={`Side-Photo-Item ${draggedPhotoIndex === idx ? 'is-dragging' : ''}`}
+                                        draggable
+                                        onDragStart={(e) => handlePhotoDragStart(e, idx)}
+                                        onDragOver={(e) => handlePhotoDragOver(e, idx)}
+                                        onDrop={(e) => handlePhotoDrop(e, idx)}
+                                    >
+                                        <div className="Side-Photo-Thumb-Wrapper">
+                                            <img src={imgObj.preview} alt={`Article media ${photoOrder}`} draggable={false} />
+                                            <span className="Side-Photo-Badge">
+                                                {isCoverPhoto ? "Cover (#1)" : `#${photoOrder}`}
+                                            </span>
+                                        </div>
+                                        <div className="Side-Photo-Item-Actions">
+                                            <button
+                                                type="button"
+                                                className="Side-Btn-Action Side-Btn-Arrow"
+                                                disabled={idx === 0}
+                                                title="Move up"
+                                                onClick={() => handleMoveImageUp(idx)}
+                                            >
+                                                ▲
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="Side-Btn-Action Side-Btn-Arrow"
+                                                disabled={idx === mediaImagePhoto.length - 1}
+                                                title="Move down"
+                                                onClick={() => handleMoveImageDown(idx)}
+                                            >
+                                                ▼
+                                            </button>
+                                            {(!isCoverPhoto) && (
+                                                <button
+                                                    type="button"
+                                                    className="Side-Btn-Action"
+                                                    title={selectedPubmat ? "Make cover (replaces pubmat cover)" : "Make primary cover"}
+                                                    onClick={() => handleSetAsCover(idx)}
+                                                >
+                                                    Cover
+                                                </button>
+                                            )}
+                                            <button
+                                                type="button"
+                                                className="Side-Btn-Action Side-Btn-Delete"
+                                                title="Remove image"
+                                                onClick={() => handleRemoveImage(idx)}
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                        <p className="Side-Photos-Tip">
-                            💡 Drag and drop or use ▲ / ▼ to reorder photos. #1 is the article cover.
-                        </p>
+
+                        {selectedPubmat && mediaImagePhoto.length > 0 ? (
+                            <p className="Side-Photos-Tip">
+                                💡 Pubmat is set as <strong>Cover (#1)</strong>. Photos below (#2, #{mediaImagePhoto.length + 1}) will appear in the article's gallery.
+                            </p>
+                        ) : selectedPubmat ? (
+                            <p className="Side-Photos-Tip">
+                                💡 Pubmat is set as <strong>Cover (#1)</strong>. Click <strong>+ Add Photos</strong> above if this article has additional gallery photos.
+                            </p>
+                        ) : (
+                            <p className="Side-Photos-Tip">
+                                💡 Drag and drop or use ▲ / ▼ to reorder photos. Photo #1 is the article cover. You can also pick a <strong>+ Pubmat</strong> as cover.
+                            </p>
+                        )}
                     </>
                 ) : (
                     <div className="Side-Photos-Empty">
-                        No photos added yet. Click "+ Add Photos" to upload multiple images.
+                        <p style={{ margin: "0 0 0.85rem 0", color: "#64748b" }}>
+                            No cover graphic or photos added yet.
+                        </p>
+                        <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", flexWrap: "wrap" }}>
+                            <button
+                                type="button"
+                                className="Side-Add-Pubmat-Btn"
+                                onClick={() => setIsPubmatModalOpen(true)}
+                            >
+                                + Select Pubmat
+                            </button>
+                            <label className="Side-Add-Photos-Btn">
+                                + Upload Photos
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    style={{ display: "none" }}
+                                    onChange={handleFileChange}
+                                />
+                            </label>
+                        </div>
                     </div>
                 )}
             </aside>
