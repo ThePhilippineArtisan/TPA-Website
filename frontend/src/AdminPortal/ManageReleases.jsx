@@ -38,6 +38,7 @@ const ManageReleases = () => {
     const [uploadingPages, setUploadingPages] = useState(false);
     const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, active: false });
     const [draggedPageIndex, setDraggedPageIndex] = useState(null);
+    const [isDraggingOver, setIsDraggingOver] = useState(false);
 
     const pageUrls = useMemo(() => {
         return formState.photosText
@@ -72,6 +73,40 @@ const ManageReleases = () => {
     const handleSetPageAsCover = (index) => {
         if (index === 0) return;
         handleMovePage(index, 0);
+    };
+
+    const handleSetAsReleaseCover = (url) => {
+        if (!url) return;
+        setFormState(prev => ({ ...prev, coverUrl: url }));
+        alert("Set page as main Release Cover!");
+    };
+
+    const handleClearAllPages = () => {
+        if (pageUrls.length === 0) return;
+        if (window.confirm(`Are you sure you want to remove all ${pageUrls.length} page(s)?`)) {
+            setFormState(prev => ({ ...prev, photosText: "" }));
+        }
+    };
+
+    const handleReversePages = () => {
+        if (pageUrls.length <= 1) return;
+        setFormState(prev => ({
+            ...prev,
+            photosText: [...pageUrls].reverse().join("\n")
+        }));
+    };
+
+    const handleSortPagesNumerically = () => {
+        if (pageUrls.length <= 1) return;
+        const sorted = [...pageUrls].sort((a, b) => {
+            const fileA = a.split("/").pop().split("?")[0];
+            const fileB = b.split("/").pop().split("?")[0];
+            return fileA.localeCompare(fileB, undefined, { numeric: true, sensitivity: 'base' });
+        });
+        setFormState(prev => ({
+            ...prev,
+            photosText: sorted.join("\n")
+        }));
     };
 
     const handleDragStart = (e, index) => {
@@ -178,67 +213,128 @@ const ManageReleases = () => {
         }
     };
 
-    // Upload multiple flipbook page files with progress tracking
-    const handlePagePhotosUpload = async (e) => {
-        const files = Array.from(e.target.files || []);
-        if (files.length === 0) return;
+    // Natural numeric sorting for file lists (page_1, page_2, ... page_10)
+    const naturalSortFiles = (fileList) => {
+        return Array.from(fileList).sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
+        );
+    };
+
+    // Upload multiple flipbook page files concurrently with natural sort and progress tracking
+    const processBulkPageFiles = async (fileList) => {
+        const rawFiles = Array.from(fileList).filter(f => f.type && f.type.startsWith('image/'));
+        if (rawFiles.length === 0) {
+            alert("Please select image files (PNG, JPG, WebP, etc.).");
+            return;
+        }
+
+        const sortedFiles = naturalSortFiles(rawFiles);
+        const total = sortedFiles.length;
 
         setUploadingPages(true);
-        setUploadProgress({ current: 0, total: files.length, active: true });
-        try {
-            const uploadedUrls = [];
+        setUploadProgress({ current: 0, total, active: true });
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                setUploadProgress({ current: i + 1, total: files.length, active: true });
+        const results = new Array(total);
+        let completedCount = 0;
+        let nextIndex = 0;
+        const batchId = Date.now();
+        const concurrency = Math.min(3, total);
 
-                const compressedBlob = await compressImage(file, 1200, 1200, 0.8, 'image/webp');
-                const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+        const worker = async () => {
+            while (nextIndex < total) {
+                const currentIndex = nextIndex++;
+                const file = sortedFiles[currentIndex];
 
-                let finalUrl = null;
                 try {
+                    const compressedBlob = await compressImage(file, 1400, 1400, 0.82, 'image/webp');
+                    const cleanBase = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_");
+                    const pageNum = String(currentIndex + 1).padStart(3, "0");
+                    const uniqueFileName = `${batchId}_p${pageNum}_${cleanBase}.webp`;
+
                     const uploadResult = await uploadToR2Storage({
                         file: compressedBlob,
-                        filename: compressedFileName,
+                        filename: uniqueFileName,
                         folder: 'releases/pages',
                         contentType: 'image/webp',
                         bucket: 'article-photos'
                     });
+
                     if (uploadResult?.publicUrl) {
-                        finalUrl = uploadResult.publicUrl;
+                        results[currentIndex] = uploadResult.publicUrl;
+                    } else {
+                        throw new Error("R2 upload did not return a public URL");
                     }
                 } catch (r2Err) {
-                    console.warn("R2 upload failed for page photo, falling back to data URL:", r2Err);
+                    console.error(`R2 upload failed for page ${currentIndex + 1} (${file.name}):`, r2Err);
+                    results[currentIndex] = null;
+                } finally {
+                    completedCount++;
+                    setUploadProgress({ current: completedCount, total, active: true });
                 }
+            }
+        };
 
-                if (!finalUrl) {
-                    finalUrl = await new Promise((resolve) => {
-                        const r = new FileReader();
-                        r.onloadend = () => resolve(r.result);
-                        r.readAsDataURL(compressedBlob);
-                    });
-                }
+        try {
+            const workers = Array.from({ length: concurrency }, () => worker());
+            await Promise.all(workers);
 
-                if (finalUrl) uploadedUrls.push(finalUrl);
+            const successfulUrls = results.filter(Boolean);
+            const failedCount = total - successfulUrls.length;
+
+            if (successfulUrls.length > 0) {
+                setFormState(prev => {
+                    const existing = prev.photosText ? prev.photosText.trim() : "";
+                    const newText = successfulUrls.join("\n");
+                    return {
+                        ...prev,
+                        photosText: existing ? `${existing}\n${newText}` : newText
+                    };
+                });
             }
 
-            setFormState(prev => {
-                const existing = prev.photosText ? prev.photosText.trim() : "";
-                const newText = uploadedUrls.join("\n");
-                return {
-                    ...prev,
-                    photosText: existing ? `${existing}\n${newText}` : newText
-                };
-            });
-
-            alert(`Added ${uploadedUrls.length} page photo(s)!`);
+            if (failedCount > 0) {
+                alert(`Uploaded ${successfulUrls.length} page(s). ${failedCount} file(s) failed.`);
+            } else {
+                alert(`Successfully processed and uploaded ${successfulUrls.length} page(s) in sequential order!`);
+            }
         } catch (err) {
-            console.error("Page photos upload error:", err);
-            alert("Error uploading page images: " + (err.message || err));
+            console.error("Bulk upload batch error:", err);
+            alert("Error during page upload: " + (err.message || err));
         } finally {
             setUploadingPages(false);
             setUploadProgress({ current: 0, total: 0, active: false });
-            e.target.value = "";
+        }
+    };
+
+    const handlePagePhotosUpload = (e) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            processBulkPageFiles(files);
+        }
+        e.target.value = "";
+    };
+
+    // Dropzone drag-and-drop handlers
+    const handleDropzoneDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isDraggingOver) setIsDraggingOver(true);
+    };
+
+    const handleDropzoneDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDraggingOver(false);
+    };
+
+    const handleDropzoneDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDraggingOver(false);
+
+        const droppedFiles = e.dataTransfer?.files;
+        if (droppedFiles && droppedFiles.length > 0) {
+            processBulkPageFiles(droppedFiles);
         }
     };
 
@@ -627,8 +723,8 @@ const ManageReleases = () => {
                                 <label htmlFor="photosText" style={{ margin: 0 }}>
                                     Flipbook Page Images ({pageUrls.length})
                                 </label>
-                                <label className="Admin-Primary-Button" style={{ cursor: 'pointer', margin: 0, fontSize: '0.8rem' }}>
-                                    {uploadingPages ? "Uploading..." : "+ Add Images"}
+                                <label className="Admin-Primary-Button" style={{ cursor: uploadingPages ? 'not-allowed' : 'pointer', margin: 0, fontSize: '0.8rem' }}>
+                                    {uploadingPages ? "Processing..." : "+ Add Images"}
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -640,16 +736,48 @@ const ManageReleases = () => {
                                 </label>
                             </div>
 
+                            {/* Drag and Drop Dropzone */}
+                            <div 
+                                className={`Page-Upload-Dropzone ${isDraggingOver ? 'is-dragover' : ''} ${uploadingPages ? 'is-uploading' : ''}`}
+                                onDragOver={handleDropzoneDragOver}
+                                onDragEnter={handleDropzoneDragOver}
+                                onDragLeave={handleDropzoneDragLeave}
+                                onDrop={handleDropzoneDrop}
+                            >
+                                <div className="Dropzone-Content">
+                                    <span className="Dropzone-Icon">📥</span>
+                                    <div className="Dropzone-Text">
+                                        <p className="Dropzone-Title">
+                                            {uploadingPages ? "Uploading pages in parallel..." : "Drag & Drop multiple page images here"}
+                                        </p>
+                                        <p className="Dropzone-Subtitle">
+                                            or <label className="Dropzone-Browse-Label">
+                                                browse files
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    multiple
+                                                    onChange={handlePagePhotosUpload}
+                                                    disabled={uploadingPages}
+                                                    style={{ display: 'none' }}
+                                                />
+                                            </label>
+                                            — auto-sorted numerically (P.1, P.2... P.10) & converted to WebP
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
                             {uploadProgress.active && (
                                 <div className="Batch-Upload-Progress">
                                     <div className="Batch-Upload-Status">
                                         <span>Uploading page {uploadProgress.current} of {uploadProgress.total}...</span>
-                                        <span>{Math.round((uploadProgress.current / uploadProgress.total) * 100)}%</span>
+                                        <span>{uploadProgress.total > 0 ? Math.round((uploadProgress.current / uploadProgress.total) * 100) : 0}%</span>
                                     </div>
                                     <div className="Progress-Track">
                                         <div 
                                             className="Progress-Bar" 
-                                            style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
+                                            style={{ width: `${uploadProgress.total > 0 ? (uploadProgress.current / uploadProgress.total) * 100 : 0}%` }}
                                         />
                                     </div>
                                 </div>
@@ -657,6 +785,45 @@ const ManageReleases = () => {
 
                             {pageUrls.length > 0 && (
                                 <>
+                                    {/* Batch Actions Toolbar */}
+                                    <div className="Batch-Actions-Toolbar">
+                                        <span className="Batch-Count-Badge">{pageUrls.length} Pages Loaded</span>
+                                        <div className="Batch-Buttons-Group">
+                                            <button
+                                                type="button"
+                                                className="Batch-Btn"
+                                                onClick={() => handleSetAsReleaseCover(pageUrls[0])}
+                                                title="Set Page 1 as the main Release Cover Image"
+                                            >
+                                                🌟 Set P.1 as Cover
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="Batch-Btn"
+                                                onClick={handleSortPagesNumerically}
+                                                title="Sort all pages numerically by filename"
+                                            >
+                                                🔢 Sort 1-N
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="Batch-Btn"
+                                                onClick={handleReversePages}
+                                                title="Reverse page sequence"
+                                            >
+                                                🔄 Reverse
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="Batch-Btn Batch-Btn-Danger"
+                                                onClick={handleClearAllPages}
+                                                title="Clear all pages"
+                                            >
+                                                🗑️ Clear All
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     <div className="Thumbnail-Grid" style={{ marginBottom: '0.5rem' }}>
                                         {pageUrls.map((url, idx) => (
                                             <div 

@@ -462,3 +462,143 @@
     opacity: 0.3;
     cursor: not-allowed;
 }
+
+/* Bulk Upload Drag and Drop Dropzone */
+.Page-Upload-Dropzone {
+    border: 2px dashed #cbd5e1;
+    border-radius: var(--radius-md);
+    background: #f8fafc;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 0.85rem;
+    position: relative;
+    user-select: none;
+}
+
+.Page-Upload-Dropzone:hover {
+    border-color: #0265A9;
+    background: #f0f7ff;
+}
+
+.Page-Upload-Dropzone.is-dragover {
+    border-color: #0265A9;
+    background: #e0f2fe;
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(2, 101, 169, 0.15);
+}
+
+.Page-Upload-Dropzone.is-uploading {
+    pointer-events: none;
+    opacity: 0.75;
+    background: #f1f5f9;
+}
+
+.Dropzone-Content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+}
+
+.Dropzone-Icon {
+    font-size: 2rem;
+    line-height: 1;
+    animation: dropzone-pulse 2s infinite ease-in-out;
+}
+
+@keyframes dropzone-pulse {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.Dropzone-Text {
+    text-align: left;
+}
+
+.Dropzone-Title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.2rem 0;
+}
+
+.Dropzone-Subtitle {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.Dropzone-Browse-Label {
+    color: #0265A9;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.Dropzone-Browse-Label:hover {
+    color: #014c80;
+}
+
+/* Batch Actions Toolbar */
+.Batch-Actions-Toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.6rem;
+}
+
+.Batch-Count-Badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #334155;
+    background: #e2e8f0;
+    padding: 0.2rem 0.55rem;
+    border-radius: 12px;
+}
+
+.Batch-Buttons-Group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.Batch-Btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #ffffff;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.Batch-Btn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.Batch-Btn-Danger {
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+.Batch-Btn-Danger:hover {
+    background: #fef2f2;
+    border-color: #f87171;
+    color: #b91c1c;
+}
+
