@@ -408,24 +408,43 @@ declare
     current_user_id uuid;
     current_user_email text;
     rec_id text;
+    data_json jsonb;
 begin
     current_user_id := auth.uid();
     current_user_email := auth.jwt() ->> 'email';
 
     if (tg_op = 'DELETE') then
-        rec_id := coalesce(old.article_id::text, old.staff_id::text, old.pubmat_id::text, old.id::text, null);
+        data_json := to_jsonb(old);
+        rec_id := coalesce(
+            data_json ->> 'article_id',
+            data_json ->> 'staff_id',
+            data_json ->> 'pubmat_id',
+            data_json ->> 'id'
+        );
         insert into public.audit_logs (table_name, action, record_id, user_id, user_email, old_data)
-        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, to_jsonb(old));
+        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, data_json);
         return old;
     elsif (tg_op = 'UPDATE') then
-        rec_id := coalesce(new.article_id::text, new.staff_id::text, new.pubmat_id::text, new.id::text, null);
+        data_json := to_jsonb(new);
+        rec_id := coalesce(
+            data_json ->> 'article_id',
+            data_json ->> 'staff_id',
+            data_json ->> 'pubmat_id',
+            data_json ->> 'id'
+        );
         insert into public.audit_logs (table_name, action, record_id, user_id, user_email, old_data, new_data)
-        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, to_jsonb(old), to_jsonb(new));
+        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, to_jsonb(old), data_json);
         return new;
     elsif (tg_op = 'INSERT') then
-        rec_id := coalesce(new.article_id::text, new.staff_id::text, new.pubmat_id::text, new.id::text, null);
+        data_json := to_jsonb(new);
+        rec_id := coalesce(
+            data_json ->> 'article_id',
+            data_json ->> 'staff_id',
+            data_json ->> 'pubmat_id',
+            data_json ->> 'id'
+        );
         insert into public.audit_logs (table_name, action, record_id, user_id, user_email, new_data)
-        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, to_jsonb(new));
+        values (tg_table_name, tg_op, rec_id, current_user_id, current_user_email, data_json);
         return new;
     end if;
     return null;

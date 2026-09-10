@@ -25,7 +25,7 @@ const AdminLogInPage = lazy(() => import('./AdminPortal/AdminPageLogIn.jsx'))
 const AdminPage = lazy(() => import('./AdminPortal/AdminPage.jsx'))
 const AdminDashboard = lazy(() => import('./AdminPortal/AdminDashboard.jsx'))
 const CreateArticlePage = lazy(() => import('./AdminPortal/CreateArticlePage.jsx'))
-const AdminCalendar = lazy (()=> import('./AdminPortal/AdminCalendar.jsx'))
+const AdminCalendar = lazy(() => import('./AdminPortal/AdminCalendar.jsx'))
 const ManageArticlesPage = lazy(() => import('./AdminPortal/ManageArticles.jsx'))
 const ManageStaffPage = lazy(() => import('./AdminPortal/ManageStaff.jsx'))
 const ManageFrontPage = lazy(() => import('./AdminPortal/ManageFrontPage.jsx'))
@@ -38,8 +38,8 @@ const MainLayout = () => {
     <>
       <NavbarComponent />
 
-      <Suspense fallback = {<AnimatedLoader />}>
-        <main className = "Main-Content">
+      <Suspense fallback={<AnimatedLoader />}>
+        <main className="Main-Content">
           <Outlet />
         </main>
       </Suspense>
@@ -88,11 +88,11 @@ const HomePage = () => {
 
   return (
     <>
-      <section id = "home">
+      <section id="home">
         <FirstFacade />
       </section>
 
-      <section id = "news">
+      <section id="news">
         <SecondFacade />
       </section>
     </>
@@ -121,7 +121,7 @@ const ProtectedRoute = () => {
   }
 
   if (!session) {
-    return <Navigate to = "/admin/login" replace />
+    return <Navigate to="/admin/login" replace />
   }
 
   return <Outlet />
@@ -129,43 +129,42 @@ const ProtectedRoute = () => {
 
 const App = () => {
   return (
-    <div className = "App-Wrapper">
+    <div className="App-Wrapper">
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route element = {<ProtectedRoute />}>
-            <Route element = {<AdminPage />}>
-              <Route path = "/admin/dashboard" element = {<AdminDashboard />} />
-              <Route path = "/admin/create-article" element = {<CreateArticlePage />} />
-              <Route path = "/admin/content-calendar" element = {<AdminCalendar />} />
-              <Route path = "/admin/articles" element = {<ManageArticlesPage />} />
-              <Route path = "/admin/staff" element = {<ManageStaffPage />} />
-              <Route path = "/admin/manage-page" element = {<ManageFrontPage />} />
-              <Route path = "/admin/manage-videos" element = {<ManageVideosPage />} />
-              <Route path = "/admin/manage-releases" element = {<ManageReleasesPage />} />
-              <Route path = "/admin/manage-pubmats" element = {<ManagePubmatsPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AdminPage />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/create-article" element={<CreateArticlePage />} />
+              <Route path="/admin/content-calendar" element={<AdminCalendar />} />
+              <Route path="/admin/articles" element={<ManageArticlesPage />} />
+              <Route path="/admin/staff" element={<ManageStaffPage />} />
+              <Route path="/admin/manage-page" element={<ManageFrontPage />} />
+              <Route path="/admin/manage-videos" element={<ManageVideosPage />} />
+              <Route path="/admin/manage-releases" element={<ManageReleasesPage />} />
+              <Route path="/admin/manage-pubmats" element={<ManagePubmatsPage />} />
             </Route>
           </Route>
 
-          <Route element = {<MainLayout />}>
+          <Route element={<MainLayout />}>
 
-            <Route path = "/" element = {<HomePage />} />
+            <Route path="/" element={<HomePage />} />
 
-            <Route path = "/article/:articleId" element = {<ArticlePage />} />
-            <Route path = "/article/:articleId/:slug" element = {<ArticlePage />} />
-            <Route path = "/joseph-brian-balut" element = {<PlaceholderArticlePage />} />
-            <Route path = "/latest" element = {<LatestPosts />} />
-            <Route path = "/about" element = {<AboutPage />} />
-            <Route path = "/staff/:staffSlug" element = {<StaffProfilePage />} />
-            <Route path = "/releases" element = {<ReleasesPage />} />
+            <Route path="/article/:articleId" element={<ArticlePage />} />
+            <Route path="/article/:articleId/:slug" element={<ArticlePage />} />
+            <Route path="/joseph-brian-balut" element={<PlaceholderArticlePage />} />
+            <Route path="/latest" element={<LatestPosts />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
+            <Route path="/releases" element={<ReleasesPage />} />
 
-            <Route path = "/media-segment" element = {<MediaSegmentPage />} />
-            <Route path = "/media-segment/:id" element = {<MediaSegmentArticle />} />
-            <Route path = "/media-segment/:id/:slug" element = {<MediaSegmentArticle />} />
-            <Route path = "/media-segment/id" element = {<PlaceholderMediaSegmentArticle />} />
+            <Route path="/media-segment" element={<MediaSegmentPage />} />
+            <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
+            <Route path="/media-segment/:id/:slug" element={<MediaSegmentArticle />} />
+            <Route path="/media-segment/id" element={<PlaceholderMediaSegmentArticle />} />
 
-            <Route path = "/admin/login" element = {<AdminLogInPage />} />
-            <Route path = "/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element = {<AdminLogInPage />} />
+            <Route path="/admin/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
 
           </Route>
         </Routes>
