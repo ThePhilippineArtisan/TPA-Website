@@ -25,7 +25,8 @@ const initialFormState = {
     photosText: "",
     datePublished: "",
     isVisible: true,
-    isFeatured: false
+    isFeatured: false,
+    order: ""
 };
 
 const ManageReleases = () => {
@@ -35,6 +36,8 @@ const ManageReleases = () => {
     const [formState, setFormState] = useState(initialFormState);
     const [uploadingCover, setUploadingCover] = useState(false);
     const [uploadingPages, setUploadingPages] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, active: false });
+    const [draggedPageIndex, setDraggedPageIndex] = useState(null);
 
     const pageUrls = useMemo(() => {
         return formState.photosText
@@ -53,12 +56,51 @@ const ManageReleases = () => {
         });
     };
 
+    const handleMovePage = (currentIndex, targetIndex) => {
+        setFormState(prev => {
+            const pages = prev.photosText ? prev.photosText.split("\n").map(u => u.trim()).filter(Boolean) : [];
+            if (targetIndex < 0 || targetIndex >= pages.length) return prev;
+            const [moved] = pages.splice(currentIndex, 1);
+            pages.splice(targetIndex, 0, moved);
+            return {
+                ...prev,
+                photosText: pages.join("\n")
+            };
+        });
+    };
+
+    const handleSetPageAsCover = (index) => {
+        if (index === 0) return;
+        handleMovePage(index, 0);
+    };
+
+    const handleDragStart = (e, index) => {
+        setDraggedPageIndex(index);
+        e.dataTransfer.effectAllowed = "move";
+    };
+
+    const handleDragOver = (e, index) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    };
+
+    const handleDrop = (e, targetIndex) => {
+        e.preventDefault();
+        if (draggedPageIndex === null || draggedPageIndex === targetIndex) {
+            setDraggedPageIndex(null);
+            return;
+        }
+        handleMovePage(draggedPageIndex, targetIndex);
+        setDraggedPageIndex(null);
+    };
+
     const fetchReleases = async () => {
         setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('releases')
                 .select('*')
+                .order('order', { ascending: true, nullsFirst: false })
                 .order('created_at', { ascending: false });
 
             if (error) {
@@ -155,16 +197,20 @@ const ManageReleases = () => {
         }
     };
 
-    // Upload multiple flipbook page files
+    // Upload multiple flipbook page files with progress tracking
     const handlePagePhotosUpload = async (e) => {
         const files = Array.from(e.target.files || []);
         if (files.length === 0) return;
 
         setUploadingPages(true);
+        setUploadProgress({ current: 0, total: files.length, active: true });
         try {
             const uploadedUrls = [];
 
-            for (const file of files) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                setUploadProgress({ current: i + 1, total: files.length, active: true });
+
                 const compressedBlob = await compressImage(file, 1200, 1200, 0.8, 'image/webp');
                 const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
 
@@ -229,6 +275,7 @@ const ManageReleases = () => {
             alert("Error uploading page images: " + (err.message || err));
         } finally {
             setUploadingPages(false);
+            setUploadProgress({ current: 0, total: 0, active: false });
             e.target.value = "";
         }
     };
@@ -237,7 +284,7 @@ const ManageReleases = () => {
         setEditingId(item.id);
 
         let formattedDate = "";
-        const rawDate = item.date_published || item.created_at || item.published_at;
+        const rawDate = item.date_published || item.release_date || item.created_at || item.published_at;
         if (rawDate) {
             const d = new Date(rawDate);
             if (!isNaN(d.getTime())) {
@@ -257,15 +304,16 @@ const ManageReleases = () => {
         setFormState({
             title: item.title || item.release_title || "",
             releaseType: item.release_type || item.type || item.category || "Kalyo",
-            academicYear: item.academic_year || item.year || "AY 2024 - 2025",
+            academicYear: item.academic_year || item.year || (item.release_date ? `AY ${new Date(item.release_date).getFullYear()}` : "AY 2024 - 2025"),
             subtitle: item.subtitle || item.tagline || "",
-            description: item.description || item.caption || "",
+            description: item.description || item.caption || item.releases_description || "",
             coverUrl: item.cover_url || item.cover_image || item.thumbnail || "",
             softCopyUrl: item.soft_copy_url || item.pdf_url || item.link || "",
             photosText: photosStr,
             datePublished: formattedDate,
             isVisible: item.is_visible ?? true,
-            isFeatured: item.is_featured ?? item.is_pinned ?? false
+            isFeatured: item.is_featured ?? item.is_pinned ?? false,
+            order: item.order !== null && item.order !== undefined ? item.order : ""
         });
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -290,6 +338,10 @@ const ManageReleases = () => {
             .map(url => url.trim())
             .filter(Boolean);
 
+        const dateObj = formState.datePublished ? new Date(formState.datePublished) : new Date();
+        const isoDate = dateObj.toISOString();
+        const dateOnly = isoDate.split("T")[0];
+
         const payload = {
             title: title,
             release_type: formState.releaseType,
@@ -299,34 +351,81 @@ const ManageReleases = () => {
             cover_url: formState.coverUrl || "",
             soft_copy_url: formState.softCopyUrl || "",
             photos: photosArray,
-            date_published: formState.datePublished ? new Date(formState.datePublished).toISOString() : new Date().toISOString(),
+            date_published: isoDate,
+            release_date: dateOnly,
             is_visible: Boolean(formState.isVisible),
-            is_featured: Boolean(formState.isFeatured)
+            is_featured: Boolean(formState.isFeatured),
+            order: formState.order !== "" && formState.order !== null && !isNaN(formState.order) ? parseInt(formState.order, 10) : null
+        };
+
+        const attemptSave = async (dataPayload) => {
+            if (editingId) {
+                return await supabase
+                    .from('releases')
+                    .update(dataPayload)
+                    .eq('id', editingId);
+            } else {
+                return await supabase
+                    .from('releases')
+                    .insert([dataPayload]);
+            }
         };
 
         try {
-            if (editingId) {
-                const { error } = await supabase
-                    .from('releases')
-                    .update(payload)
-                    .eq('id', editingId);
-
-                if (error) throw error;
-                alert("Release updated successfully!");
-            } else {
-                const { error } = await supabase
-                    .from('releases')
-                    .insert([payload]);
-
-                if (error) throw error;
-                alert("Release saved successfully!");
+            let res = await attemptSave(payload);
+            if (res.error && res.error.message && res.error.message.includes("release_date")) {
+                const fallbackPayload = { ...payload };
+                delete fallbackPayload.release_date;
+                res = await attemptSave(fallbackPayload);
+            }
+            if (res.error && res.error.message && res.error.message.includes("order")) {
+                const fallbackPayload = { ...payload };
+                delete fallbackPayload.order;
+                res = await attemptSave(fallbackPayload);
             }
 
+            if (res.error) throw res.error;
+
+            alert(editingId ? "Release updated successfully!" : "Release saved successfully!");
             handleCancelEdit();
             fetchReleases();
         } catch (err) {
             console.error("Error saving release to Supabase:", err);
             alert(`Failed to save release: ${err.message || err}`);
+        }
+    };
+
+    const handleReorderRelease = async (releaseId, direction) => {
+        const sorted = [...releases].sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
+        const index = sorted.findIndex(r => r.id === releaseId);
+        if (index === -1) return;
+        const targetIndex = direction === "up" ? index - 1 : index + 1;
+        if (targetIndex < 0 || targetIndex >= sorted.length) return;
+
+        const currentItem = sorted[index];
+        const targetItem = sorted[targetIndex];
+
+        const currentOrder = currentItem.order ?? index + 1;
+        const targetOrder = targetItem.order ?? targetIndex + 1;
+
+        const newCurrentOrder = targetOrder === currentOrder ? (direction === "up" ? currentOrder - 1 : currentOrder + 1) : targetOrder;
+        const newTargetOrder = currentOrder;
+
+        setReleases(prev => prev.map(r => {
+            if (r.id === currentItem.id) return { ...r, order: newCurrentOrder };
+            if (r.id === targetItem.id) return { ...r, order: newTargetOrder };
+            return r;
+        }));
+
+        try {
+            await Promise.all([
+                supabase.from('releases').update({ order: newCurrentOrder }).eq('id', currentItem.id),
+                supabase.from('releases').update({ order: newTargetOrder }).eq('id', targetItem.id)
+            ]);
+            fetchReleases();
+        } catch (err) {
+            console.error("Error reordering releases:", err);
+            fetchReleases();
         }
     };
 
@@ -443,14 +542,48 @@ const ManageReleases = () => {
                             </div>
 
                             <div className="Form-Group">
-                                <label htmlFor="academicYear">Academic Year</label>
+                                <label htmlFor="academicYear">Academic Year / Period</label>
                                 <input
                                     type="text"
                                     id="academicYear"
                                     name="academicYear"
+                                    list="academic-year-suggestions"
                                     value={formState.academicYear}
                                     onChange={handleChange}
-                                    placeholder="e.g. AY 2025 - 2026"
+                                    placeholder="e.g. AY 2025 - 2026 or 2025"
+                                />
+                                <datalist id="academic-year-suggestions">
+                                    <option value="AY 2025 - 2026" />
+                                    <option value="AY 2024 - 2025" />
+                                    <option value="AY 2023 - 2024" />
+                                    <option value="AY 2022 - 2023" />
+                                    <option value="AY 2021 - 2022" />
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <div className="Form-Row-Two">
+                            <div className="Form-Group">
+                                <label htmlFor="order">Catalog Display Order (Lower = First)</label>
+                                <input
+                                    type="number"
+                                    id="order"
+                                    name="order"
+                                    value={formState.order}
+                                    onChange={handleChange}
+                                    placeholder="e.g. 1, 2, 3..."
+                                    min="1"
+                                />
+                            </div>
+
+                            <div className="Form-Group">
+                                <label htmlFor="datePublished">Publication Date</label>
+                                <input
+                                    type="datetime-local"
+                                    id="datePublished"
+                                    name="datePublished"
+                                    value={formState.datePublished}
+                                    onChange={handleChange}
                                 />
                             </div>
                         </div>
@@ -545,25 +678,83 @@ const ManageReleases = () => {
                                 </label>
                             </div>
 
-                            {pageUrls.length > 0 && (
-                                <div className="Thumbnail-Grid" style={{ marginBottom: '0.75rem' }}>
-                                    {pageUrls.map((url, idx) => (
-                                        <div key={idx} className="Page-Thumbnail-Card">
-                                            <div className="Thumbnail-Wrapper">
-                                                <img src={url} alt={`Page ${idx + 1}`} />
-                                                <span className="Page-Number-Badge">P.{idx + 1}</span>
-                                                <button
-                                                    type="button"
-                                                    className="Remove-Page-Btn"
-                                                    title="Remove page"
-                                                    onClick={() => handleRemovePage(idx)}
-                                                >
-                                                    ✕
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
+                            {uploadProgress.active && (
+                                <div className="Batch-Upload-Progress">
+                                    <div className="Batch-Upload-Status">
+                                        <span>Uploading page {uploadProgress.current} of {uploadProgress.total}...</span>
+                                        <span>{Math.round((uploadProgress.current / uploadProgress.total) * 100)}%</span>
+                                    </div>
+                                    <div className="Progress-Track">
+                                        <div 
+                                            className="Progress-Bar" 
+                                            style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
+                                        />
+                                    </div>
                                 </div>
+                            )}
+
+                            {pageUrls.length > 0 && (
+                                <>
+                                    <div className="Thumbnail-Grid" style={{ marginBottom: '0.5rem' }}>
+                                        {pageUrls.map((url, idx) => (
+                                            <div 
+                                                key={idx} 
+                                                className={`Page-Thumbnail-Card ${draggedPageIndex === idx ? 'is-dragging' : ''}`}
+                                                draggable
+                                                onDragStart={(e) => handleDragStart(e, idx)}
+                                                onDragOver={(e) => handleDragOver(e, idx)}
+                                                onDrop={(e) => handleDrop(e, idx)}
+                                            >
+                                                <div className="Thumbnail-Wrapper">
+                                                    <img src={url} alt={`Page ${idx + 1}`} draggable={false} />
+                                                    <span className="Page-Number-Badge">P.{idx + 1}</span>
+                                                    {idx === 0 && <span className="Page-Cover-Badge">Cover</span>}
+                                                    <button
+                                                        type="button"
+                                                        className="Remove-Page-Btn"
+                                                        title="Remove page"
+                                                        onClick={() => handleRemovePage(idx)}
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                                <div className="Thumbnail-Controls">
+                                                    <button
+                                                        type="button"
+                                                        className="Thumbnail-Control-Btn"
+                                                        disabled={idx === 0}
+                                                        title="Move left"
+                                                        onClick={() => handleMovePage(idx, idx - 1)}
+                                                    >
+                                                        ◀
+                                                    </button>
+                                                    {idx !== 0 && (
+                                                        <button
+                                                            type="button"
+                                                            className="Thumbnail-Control-Btn Make-First-Btn"
+                                                            title="Set as Page 1"
+                                                            onClick={() => handleSetPageAsCover(idx)}
+                                                        >
+                                                            ★
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        className="Thumbnail-Control-Btn"
+                                                        disabled={idx === pageUrls.length - 1}
+                                                        title="Move right"
+                                                        onClick={() => handleMovePage(idx, idx + 1)}
+                                                    >
+                                                        ▶
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <p className="Thumbnail-Helper-Note">
+                                        💡 <strong>Tip:</strong> Drag and drop thumbnails or use ◀ / ▶ to reorder. <strong>P.1</strong> is always the flipbook cover.
+                                    </p>
+                                </>
                             )}
 
                             <textarea
@@ -573,17 +764,6 @@ const ManageReleases = () => {
                                 value={formState.photosText}
                                 onChange={handleChange}
                                 placeholder="Page URLs (one per line, filled automatically when you add images)"
-                            />
-                        </div>
-
-                        <div className="Form-Group">
-                            <label htmlFor="datePublished">Publication Date</label>
-                            <input
-                                type="datetime-local"
-                                id="datePublished"
-                                name="datePublished"
-                                value={formState.datePublished}
-                                onChange={handleChange}
                             />
                         </div>
 
@@ -638,14 +818,15 @@ const ManageReleases = () => {
                     ) : releases.length === 0 ? (
                         <p style={{ color: "#666", padding: "1rem 0" }}>No media releases found. Add one on the left form!</p>
                     ) : (
-                        releases.map((item) => {
+                        releases.map((item, relIdx) => {
                             const title = item.title || item.release_title || "Untitled Release";
                             const cover = item.cover_url || item.cover_image || item.thumbnail;
                             const type = item.release_type || item.type || item.category || "General";
                             const year = item.academic_year || item.year || "";
                             const isVisible = item.is_visible ?? true;
                             const isFeatured = item.is_featured ?? item.is_pinned ?? false;
-                            const pubDate = formatDate(item.date_published || item.created_at || item.published_at);
+                            const pubDate = formatDate(item.date_published || item.release_date || item.created_at || item.published_at);
+                            const orderNum = item.order !== null && item.order !== undefined ? item.order : null;
 
                             return (
                                 <div key={item.id} className={`Release-Item-Card ${!isVisible ? 'is-hidden' : ''}`}>
@@ -665,6 +846,7 @@ const ManageReleases = () => {
                                             {item.subtitle && <p className="Release-Item-Subtitle">{item.subtitle}</p>}
 
                                             <div className="Release-Badges">
+                                                {orderNum !== null && <span className="Release-Badge Release-Badge-Order">#{orderNum}</span>}
                                                 <span className="Release-Badge Release-Badge-Category">{type}</span>
                                                 {year && <span className="Release-Badge Release-Badge-Year">{year}</span>}
                                                 {isFeatured && <span className="Release-Badge Release-Badge-Featured">⭐ Featured</span>}
@@ -679,6 +861,27 @@ const ManageReleases = () => {
                                         </div>
 
                                         <div className="Release-Item-Actions">
+                                            <div className="Release-Item-Reorder-Group">
+                                                <button
+                                                    type="button"
+                                                    className="Btn-Action-Small Btn-Reorder-Arrow"
+                                                    disabled={relIdx === 0}
+                                                    title="Move up in list"
+                                                    onClick={() => handleReorderRelease(item.id, 'up')}
+                                                >
+                                                    ▲
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="Btn-Action-Small Btn-Reorder-Arrow"
+                                                    disabled={relIdx === releases.length - 1}
+                                                    title="Move down in list"
+                                                    onClick={() => handleReorderRelease(item.id, 'down')}
+                                                >
+                                                    ▼
+                                                </button>
+                                            </div>
+
                                             <button
                                                 type="button"
                                                 className="Btn-Action-Small"

@@ -344,3 +344,121 @@
 .Remove-Page-Btn:hover {
     background-color: #dc2626;
 }
+
+.Page-Cover-Badge {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background-color: #0265A9;
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+
+.Page-Thumbnail-Card.is-dragging {
+    opacity: 0.4;
+    border: 2px dashed #0265A9;
+}
+
+.Thumbnail-Controls {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f8fafc;
+    border-top: 1px solid var(--border-color);
+    padding: 2px;
+}
+
+.Thumbnail-Control-Btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-size: 0.65rem;
+    padding: 2px 0;
+    cursor: pointer;
+    color: #475569;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-radius: 2px;
+}
+
+.Thumbnail-Control-Btn:hover:not(:disabled) {
+    background: #0265A9;
+    color: #ffffff;
+}
+
+.Thumbnail-Control-Btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.Thumbnail-Control-Btn.Make-First-Btn {
+    color: #d97706;
+    font-weight: bold;
+}
+
+.Thumbnail-Control-Btn.Make-First-Btn:hover {
+    background: #d97706;
+    color: #ffffff;
+}
+
+.Thumbnail-Helper-Note {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0.35rem 0 0.75rem 0;
+}
+
+.Batch-Upload-Progress {
+    margin-bottom: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: var(--radius-sm);
+}
+
+.Batch-Upload-Status {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 0.35rem;
+}
+
+.Progress-Track {
+    width: 100%;
+    height: 6px;
+    background: #dbeafe;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.Progress-Bar {
+    height: 100%;
+    background: #0265A9;
+    transition: width 0.2s ease;
+}
+
+.Release-Badge-Order {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    font-weight: 700;
+}
+
+.Release-Item-Reorder-Group {
+    display: flex;
+    gap: 0.2rem;
+    margin-right: 0.25rem;
+}
+
+.Btn-Reorder-Arrow {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.7rem;
+    line-height: 1;
+}
+
+.Btn-Reorder-Arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}

@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { supabase } from "../../supabaseClient"
 import { slugify, replaceUnderscore } from "../../utils/slugifyUtils"
-import { getArticleUrl } from "../../utils/articleUtils"
+import { getArticleUrl, isMediaSegment } from "../../utils/articleUtils"
+import { compressImage } from "../../utils/imageUtils"
 import "./EditArticleModal.css"
 
 const ARTICLE_TYPES = [
@@ -64,8 +65,230 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
     const [articleSource, setArticleSource] = useState(article.article_source || "")
     const [body, setBody] = useState(article.article_body || "")
 
+    // Photo Management States
+    const [attachedPhotos, setAttachedPhotos] = useState([])
+    const [loadingPhotos, setLoadingPhotos] = useState(true)
+    const [uploadingNewPhoto, setUploadingNewPhoto] = useState(false)
+    const [photoUploadProgress, setPhotoUploadProgress] = useState("")
+    const [draggedEditPhotoIndex, setDraggedEditPhotoIndex] = useState(null)
+
     const [saving, setSaving] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
+    const fetchArticlePhotos = async () => {
+        if (!article?.article_id) return
+        setLoadingPhotos(true)
+        try {
+            const { data, error } = await supabase
+                .from("article_media")
+                .select(`
+                    id,
+                    article_id,
+                    media_id,
+                    media_order,
+                    caption,
+                    media (
+                        media_id,
+                        media_url,
+                        media_altText
+                    )
+                `)
+                .eq("article_id", article.article_id)
+                .order("media_order", { ascending: true })
+
+            if (error) throw error
+            setAttachedPhotos(data || [])
+        } catch (err) {
+            console.warn("Could not fetch article photos:", err)
+            setAttachedPhotos([])
+        } finally {
+            setLoadingPhotos(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchArticlePhotos()
+    }, [article?.article_id])
+
+    const handleMovePhoto = async (currentIndex, targetIndex) => {
+        if (targetIndex < 0 || targetIndex >= attachedPhotos.length) return
+        const updated = [...attachedPhotos]
+        const [moved] = updated.splice(currentIndex, 1)
+        updated.splice(targetIndex, 0, moved)
+
+        const reordered = updated.map((item, idx) => ({
+            ...item,
+            media_order: idx + 1
+        }))
+        setAttachedPhotos(reordered)
+
+        try {
+            await Promise.all(
+                reordered.map(item =>
+                    supabase
+                        .from("article_media")
+                        .update({ media_order: item.media_order })
+                        .eq("id", item.id)
+                )
+            )
+        } catch (err) {
+            console.error("Error updating photo order:", err)
+            fetchArticlePhotos()
+        }
+    }
+
+    const handleMakeCover = (index) => {
+        if (index === 0) return
+        handleMovePhoto(index, 0)
+    }
+
+    const handleDeletePhoto = async (articleMediaId) => {
+        if (!window.confirm("Remove this photo from the article?")) return
+        try {
+            const { error } = await supabase
+                .from("article_media")
+                .delete()
+                .eq("id", articleMediaId)
+
+            if (error) throw error
+            const remaining = attachedPhotos.filter(p => p.id !== articleMediaId)
+            const reindexed = remaining.map((item, idx) => ({ ...item, media_order: idx + 1 }))
+            setAttachedPhotos(reindexed)
+
+            await Promise.all(
+                reindexed.map(item =>
+                    supabase.from("article_media").update({ media_order: item.media_order }).eq("id", item.id)
+                )
+            )
+        } catch (err) {
+            console.error("Error removing photo:", err)
+            alert("Failed to remove photo: " + (err.message || err))
+            fetchArticlePhotos()
+        }
+    }
+
+    const handleAddPhotosToArticle = async (e) => {
+        const files = Array.from(e.target.files || [])
+        if (!files.length) return
+
+        setUploadingNewPhoto(true)
+        try {
+            const pubYear = article.published_at ? new Date(article.published_at).getFullYear() : new Date().getFullYear()
+            const slug = article.slug_headline || slugify(article.article_headline || "article")
+            let folder = `articles/${pubYear}/${slug}`
+            if (isMediaSegment(article.article_type)) {
+                const segFolder = article.article_type.toLowerCase().replace(/_/g, "-")
+                folder = `media-segments/${pubYear}/${segFolder}/${slug}`
+            }
+
+            const currentCount = attachedPhotos.length
+            const newRecords = []
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i]
+                setPhotoUploadProgress(`Uploading ${i + 1} of ${files.length}...`)
+
+                const compressedBlob = await compressImage(file, 1600, 1600, 0.82, "image/webp")
+                const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp"
+
+                const { data: { session } } = await supabase.auth.getSession()
+                const token = session?.access_token
+
+                const presignRes = await fetch("/api/media/presign", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        ...(token ? { Authorization: `Bearer ${token}` } : {})
+                    },
+                    body: JSON.stringify({
+                        filename: compressedFileName,
+                        contentType: "image/webp",
+                        folder: folder,
+                        bucket: "article-photos"
+                    })
+                })
+
+                if (!presignRes.ok) {
+                    throw new Error("Failed to obtain presigned upload URL")
+                }
+
+                const { presignedUrl, publicUrl } = await presignRes.json()
+
+                const uploadRes = await fetch(presignedUrl, {
+                    method: "PUT",
+                    headers: { "Content-Type": "image/webp" },
+                    body: compressedBlob
+                })
+
+                if (!uploadRes.ok) {
+                    throw new Error(`Upload failed with status ${uploadRes.status}`)
+                }
+
+                const { data: mediaRow, error: mediaInsertError } = await supabase
+                    .from("media")
+                    .insert([{ media_url: publicUrl }])
+                    .select()
+                    .single()
+
+                if (mediaInsertError) throw mediaInsertError
+
+                const nextOrder = currentCount + i + 1
+                const { data: amRow, error: amError } = await supabase
+                    .from("article_media")
+                    .insert([{
+                        article_id: article.article_id,
+                        media_id: mediaRow.media_id,
+                        media_order: nextOrder
+                    }])
+                    .select(`
+                        id,
+                        article_id,
+                        media_id,
+                        media_order,
+                        caption,
+                        media (
+                            media_id,
+                            media_url,
+                            media_altText
+                        )
+                    `)
+                    .single()
+
+                if (amError) throw amError
+                newRecords.push(amRow)
+            }
+
+            setAttachedPhotos(prev => [...prev, ...newRecords])
+            alert(`Added ${newRecords.length} photo(s) to article!`)
+        } catch (err) {
+            console.error("Error adding photos to article:", err)
+            alert("Error adding photos: " + (err.message || err))
+        } finally {
+            setUploadingNewPhoto(false)
+            setPhotoUploadProgress("")
+            e.target.value = ""
+        }
+    }
+
+    const handleEditPhotoDragStart = (e, index) => {
+        setDraggedEditPhotoIndex(index)
+        e.dataTransfer.effectAllowed = "move"
+    }
+
+    const handleEditPhotoDragOver = (e, index) => {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = "move"
+    }
+
+    const handleEditPhotoDrop = (e, targetIndex) => {
+        e.preventDefault()
+        if (draggedEditPhotoIndex === null || draggedEditPhotoIndex === targetIndex) {
+            setDraggedEditPhotoIndex(null)
+            return
+        }
+        handleMovePhoto(draggedEditPhotoIndex, targetIndex)
+        setDraggedEditPhotoIndex(null)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -235,6 +458,106 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                             placeholder="Write or edit article content here..."
                             className="Edit-Article-Body-Textarea"
                         />
+                    </div>
+
+                    {/* Attached Photos & Media Section */}
+                    <div className="Edit-Article-Photos-Section">
+                        <div className="Edit-Article-Photos-Header">
+                            <div>
+                                <h3 style={{ margin: 0, fontSize: "1rem", color: "#0f2c59", fontWeight: 700 }}>
+                                    Article Photos ({attachedPhotos.length})
+                                </h3>
+                                <p style={{ margin: "2px 0 0 0", fontSize: "0.75rem", color: "#64748b" }}>
+                                    Add, remove, or reorder photos. The first photo (#1) serves as the primary cover.
+                                </p>
+                            </div>
+                            <label className="Edit-Add-Photos-Btn" style={{ opacity: uploadingNewPhoto ? 0.7 : 1 }}>
+                                {uploadingNewPhoto ? (photoUploadProgress || "Uploading...") : "+ Add Photos"}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    disabled={uploadingNewPhoto}
+                                    style={{ display: "none" }}
+                                    onChange={handleAddPhotosToArticle}
+                                />
+                            </label>
+                        </div>
+
+                        {photoUploadProgress && (
+                            <div className="Edit-Photo-Upload-Notice">
+                                🚀 {photoUploadProgress}
+                            </div>
+                        )}
+
+                        {loadingPhotos ? (
+                            <p style={{ fontSize: "0.85rem", color: "#64748b", margin: "0.5rem 0" }}>Loading article photos...</p>
+                        ) : attachedPhotos.length > 0 ? (
+                            <div className="Edit-Photos-Grid">
+                                {attachedPhotos.map((photoItem, pIdx) => {
+                                    const imgUrl = photoItem.media?.media_url
+                                    return (
+                                        <div
+                                            key={photoItem.id}
+                                            className={`Edit-Photo-Card ${draggedEditPhotoIndex === pIdx ? 'is-dragging' : ''}`}
+                                            draggable
+                                            onDragStart={(e) => handleEditPhotoDragStart(e, pIdx)}
+                                            onDragOver={(e) => handleEditPhotoDragOver(e, pIdx)}
+                                            onDrop={(e) => handleEditPhotoDrop(e, pIdx)}
+                                        >
+                                            <div className="Edit-Photo-Thumb-Wrapper">
+                                                <img src={imgUrl} alt={`Photo ${pIdx + 1}`} draggable={false} />
+                                                <span className="Edit-Photo-Badge">
+                                                    {pIdx === 0 ? "Cover (#1)" : `#${pIdx + 1}`}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    className="Edit-Photo-Remove-Btn"
+                                                    title="Remove photo"
+                                                    onClick={() => handleDeletePhoto(photoItem.id)}
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                            <div className="Edit-Photo-Card-Actions">
+                                                <button
+                                                    type="button"
+                                                    className="Edit-Photo-Action-Btn"
+                                                    disabled={pIdx === 0}
+                                                    title="Move left"
+                                                    onClick={() => handleMovePhoto(pIdx, pIdx - 1)}
+                                                >
+                                                    ◀
+                                                </button>
+                                                {pIdx !== 0 && (
+                                                    <button
+                                                        type="button"
+                                                        className="Edit-Photo-Action-Btn Make-Cover-Btn"
+                                                        title="Set as Cover (#1)"
+                                                        onClick={() => handleMakeCover(pIdx)}
+                                                    >
+                                                        ★
+                                                    </button>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    className="Edit-Photo-Action-Btn"
+                                                    disabled={pIdx === attachedPhotos.length - 1}
+                                                    title="Move right"
+                                                    onClick={() => handleMovePhoto(pIdx, pIdx + 1)}
+                                                >
+                                                    ▶
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <div className="Edit-Photos-Empty">
+                                No photos currently attached to this article. Click "+ Add Photos" to upload images.
+                            </div>
+                        )}
                     </div>
 
                     <div className="Edit-Modal-Toggles-Row">

@@ -52,3 +52,165 @@
     color: #64748b;
     align-self: center;
 }
+
+/* Attached Photos Section */
+.Edit-Article-Photos-Section {
+    margin: 1.25rem 0;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm, 6px);
+    background-color: #fafafa;
+}
+
+.Edit-Article-Photos-Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.Edit-Add-Photos-Btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background-color: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.Edit-Add-Photos-Btn:hover {
+    background-color: #024f85;
+}
+
+.Edit-Photo-Upload-Notice {
+    padding: 0.45rem 0.75rem;
+    margin-bottom: 0.75rem;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+.Edit-Photos-Grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.75rem;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 0.25rem;
+}
+
+.Edit-Photo-Card {
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.Edit-Photo-Card.is-dragging {
+    opacity: 0.4;
+    border: 2px dashed #0265A9;
+}
+
+.Edit-Photo-Thumb-Wrapper {
+    position: relative;
+    width: 100%;
+    height: 100px;
+}
+
+.Edit-Photo-Thumb-Wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.Edit-Photo-Badge {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background-color: rgba(2, 101, 169, 0.9);
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+.Edit-Photo-Remove-Btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: rgba(220, 38, 38, 0.85);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.Edit-Photo-Remove-Btn:hover {
+    background-color: #dc2626;
+}
+
+.Edit-Photo-Card-Actions {
+    display: flex;
+    border-top: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+.Edit-Photo-Action-Btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.35rem 0.25rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #475569;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.Edit-Photo-Action-Btn:not(:last-child) {
+    border-right: 1px solid #e2e8f0;
+}
+
+.Edit-Photo-Action-Btn:hover:not(:disabled) {
+    background-color: #0265A9;
+    color: #ffffff;
+}
+
+.Edit-Photo-Action-Btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.Edit-Photo-Action-Btn.Make-Cover-Btn {
+    color: #d97706;
+    font-weight: bold;
+}
+
+.Edit-Photo-Action-Btn.Make-Cover-Btn:hover {
+    background-color: #d97706;
+    color: #ffffff;
+}
+
+.Edit-Photos-Empty {
+    font-size: 0.85rem;
+    color: #64748b;
+    padding: 1.5rem 0;
+    text-align: center;
+}

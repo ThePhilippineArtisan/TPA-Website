@@ -70,6 +70,12 @@ const CreateArticlePage = () => {
 
     const [articleSource, setArticleSource] = useState("")
 
+    // Reordering & progress states for photos
+    const [isCompressingPhotos, setIsCompressingPhotos] = useState(false)
+    const [compressingCount, setCompressingCount] = useState(0)
+    const [uploadStatusText, setUploadStatusText] = useState("")
+    const [draggedPhotoIndex, setDraggedPhotoIndex] = useState(null)
+
     // Move any attached photo to primary position (index 0)
     const handleSetAsCover = (indexToPromote) => {
         if (indexToPromote === 0) return
@@ -80,11 +86,60 @@ const CreateArticlePage = () => {
         })
     }
 
+    const handleMoveImageUp = (index) => {
+        if (index === 0) return
+        setMediaImagePhoto(prev => {
+            const updated = [...prev]
+            const temp = updated[index]
+            updated[index] = updated[index - 1]
+            updated[index - 1] = temp
+            return updated
+        })
+    }
+
+    const handleMoveImageDown = (index) => {
+        setMediaImagePhoto(prev => {
+            if (index >= prev.length - 1) return prev
+            const updated = [...prev]
+            const temp = updated[index]
+            updated[index] = updated[index + 1]
+            updated[index + 1] = temp
+            return updated
+        })
+    }
+
+    const handlePhotoDragStart = (e, index) => {
+        setDraggedPhotoIndex(index)
+        e.dataTransfer.effectAllowed = "move"
+    }
+
+    const handlePhotoDragOver = (e, index) => {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = "move"
+    }
+
+    const handlePhotoDrop = (e, targetIndex) => {
+        e.preventDefault()
+        if (draggedPhotoIndex === null || draggedPhotoIndex === targetIndex) {
+            setDraggedPhotoIndex(null)
+            return
+        }
+        setMediaImagePhoto(prev => {
+            const updated = [...prev]
+            const [moved] = updated.splice(draggedPhotoIndex, 1)
+            updated.splice(targetIndex, 0, moved)
+            return updated
+        })
+        setDraggedPhotoIndex(null)
+    }
+
     // General file upload from toolbar
     const handleFileChange = async (e) => {
         const files = Array.from(e.target.files)
         if (!files.length) return
 
+        setIsCompressingPhotos(true)
+        setCompressingCount(files.length)
         try {
             const compressedResults = await Promise.all(
                 files.map(async (file) => {
@@ -102,6 +157,8 @@ const CreateArticlePage = () => {
             console.error("Image compression error: ", error)
             alert("Error compressing images: " + error.message)
         } finally {
+            setIsCompressingPhotos(false)
+            setCompressingCount(0)
             e.target.value = ""
         }
     }
@@ -267,6 +324,7 @@ const CreateArticlePage = () => {
             for (let idx = 0; idx < mediaImagePhoto.length; idx++) {
                 const imgObj = mediaImagePhoto[idx]
                 const currentOrder = pubmatMediaId ? idx + 2 : idx + 1
+                setUploadStatusText(`Uploading photo ${idx + 1} of ${mediaImagePhoto.length}...`)
 
                 try {
                     // Use a single bucket (article-photos) to simplify CORS and public URLs,
@@ -392,6 +450,7 @@ const CreateArticlePage = () => {
             alert(err.message || err)
         } finally {
             setIsUploading(false)
+            setUploadStatusText("")
         }
     }
 
@@ -830,60 +889,110 @@ const CreateArticlePage = () => {
 
                 <div className="Button-Container">
                     <button type="submit" onClick={() => addNewArticle(false)} disabled={isUploading}>
-                        {isUploading ? "Saving Draft..." : "Save as Draft"}
+                        {uploadStatusText ? uploadStatusText : (isUploading ? "Saving Draft..." : "Save as Draft")}
                     </button>
                     <button type="submit" onClick={() => addNewArticle(true)} disabled={isUploading}>
-                        {isUploading ? "Posting..." : "Post"}
+                        {uploadStatusText ? uploadStatusText : (isUploading ? "Posting..." : "Post")}
                     </button>
                 </div>
 
             </div>
 
-            {/* Side Media Panel - Simple, no icons, no small text, no two-tone containers */}
+            {/* Side Media Panel */}
             <aside className="Admin-Article-Side-Panel">
                 <div className="Side-Panel-Header">
-                    <h3>Photos</h3>
-                    <label className="Side-Add-Photos-Btn">
-                        Add Photos
+                    <h3>Photos ({mediaImagePhoto.length})</h3>
+                    <label className="Side-Add-Photos-Btn" style={{ opacity: isCompressingPhotos ? 0.7 : 1 }}>
+                        {isCompressingPhotos ? `Compressing (${compressingCount})...` : "+ Add Photos"}
                         <input
                             type="file"
                             accept="image/*"
                             multiple
+                            disabled={isCompressingPhotos}
                             style={{ display: "none" }}
                             onChange={handleFileChange}
                         />
                     </label>
                 </div>
 
+                {isCompressingPhotos && (
+                    <div className="Side-Compressing-Notice">
+                        ⏳ Compressing {compressingCount} photo(s) to WebP...
+                    </div>
+                )}
+
+                {uploadStatusText && (
+                    <div className="Side-Upload-Notice">
+                        🚀 {uploadStatusText}
+                    </div>
+                )}
+
                 {mediaImagePhoto.length > 0 ? (
-                    <div className="Side-Photos-List">
-                        {mediaImagePhoto.map((imgObj, idx) => (
-                            <div key={idx} className="Side-Photo-Item">
-                                <img src={imgObj.preview} alt="Article media" />
-                                <div className="Side-Photo-Item-Actions">
-                                    {idx !== 0 && (
+                    <>
+                        <div className="Side-Photos-List">
+                            {mediaImagePhoto.map((imgObj, idx) => (
+                                <div 
+                                    key={idx} 
+                                    className={`Side-Photo-Item ${draggedPhotoIndex === idx ? 'is-dragging' : ''}`}
+                                    draggable
+                                    onDragStart={(e) => handlePhotoDragStart(e, idx)}
+                                    onDragOver={(e) => handlePhotoDragOver(e, idx)}
+                                    onDrop={(e) => handlePhotoDrop(e, idx)}
+                                >
+                                    <div className="Side-Photo-Thumb-Wrapper">
+                                        <img src={imgObj.preview} alt={`Article media ${idx + 1}`} draggable={false} />
+                                        <span className="Side-Photo-Badge">
+                                            {idx === 0 ? "Cover (#1)" : `#${idx + 1}`}
+                                        </span>
+                                    </div>
+                                    <div className="Side-Photo-Item-Actions">
                                         <button
                                             type="button"
-                                            className="Side-Btn-Action"
-                                            onClick={() => handleSetAsCover(idx)}
+                                            className="Side-Btn-Action Side-Btn-Arrow"
+                                            disabled={idx === 0}
+                                            title="Move up"
+                                            onClick={() => handleMoveImageUp(idx)}
                                         >
-                                            Make Cover
+                                            ▲
                                         </button>
-                                    )}
-                                    <button
-                                        type="button"
-                                        className="Side-Btn-Action Side-Btn-Delete"
-                                        onClick={() => handleRemoveImage(idx)}
-                                    >
-                                        Remove
-                                    </button>
+                                        <button
+                                            type="button"
+                                            className="Side-Btn-Action Side-Btn-Arrow"
+                                            disabled={idx === mediaImagePhoto.length - 1}
+                                            title="Move down"
+                                            onClick={() => handleMoveImageDown(idx)}
+                                        >
+                                            ▼
+                                        </button>
+                                        {idx !== 0 && (
+                                            <button
+                                                type="button"
+                                                className="Side-Btn-Action"
+                                                title="Make primary cover"
+                                                onClick={() => handleSetAsCover(idx)}
+                                            >
+                                                Cover
+                                            </button>
+                                        )}
+                                        <button
+                                            type="button"
+                                            className="Side-Btn-Action Side-Btn-Delete"
+                                            title="Remove image"
+                                            onClick={() => handleRemoveImage(idx)}
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                        <p className="Side-Photos-Tip">
+                            💡 Drag and drop or use ▲ / ▼ to reorder photos. #1 is the article cover.
+                        </p>
+                    </>
                 ) : (
                     <div className="Side-Photos-Empty">
-                        No photos added
+                        No photos added yet. Click "+ Add Photos" to upload multiple images.
                     </div>
                 )}
             </aside>

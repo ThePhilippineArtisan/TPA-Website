@@ -250,6 +250,45 @@ const MediaSegmentArticle = () => {
                         src = {currentPhoto}
                         alt = {articleDetails.article_headline}
                     />
+
+                    {mediaUrls.length > 1 && (
+                        <div style={{
+                            display: "flex",
+                            gap: "0.5rem",
+                            marginTop: "0.75rem",
+                            overflowX: "auto",
+                            paddingBottom: "0.5rem",
+                            width: "100%"
+                        }}>
+                            {mediaUrls.map((url, idx) => (
+                                <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => setCurrentPhoto(url)}
+                                    style={{
+                                        border: currentPhoto === url ? "3px solid #0265A9" : "2px solid #e2e8f0",
+                                        borderRadius: "4px",
+                                        padding: 0,
+                                        background: "none",
+                                        cursor: "pointer",
+                                        overflow: "hidden",
+                                        width: "68px",
+                                        height: "50px",
+                                        flexShrink: 0,
+                                        opacity: currentPhoto === url ? 1 : 0.7,
+                                        transition: "all 0.15s ease"
+                                    }}
+                                    title={`View Photo ${idx + 1}`}
+                                >
+                                    <img
+                                        src={url}
+                                        alt={`Thumbnail ${idx + 1}`}
+                                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
 

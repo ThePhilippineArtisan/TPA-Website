@@ -8,19 +8,31 @@ const ReleasesPage = () => {
   const [dbReleases, setDbReleases] = useState([])
   const [selectedRelease, setSelectedRelease] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [pageOrientation, setPageOrientation] = useState("portrait")
+  const [bookDimensions, setBookDimensions] = useState({ width: 500, height: 600 })
   const flipbookRef = useRef(null)
 
   useEffect(() => {
     const fetchPublicReleases = async () => {
       setLoading(true)
       try {
-        const { data, error } = await supabase
+        let { data, error } = await supabase
           .from('releases')
           .select('*')
           .eq('is_visible', true)
+          .order('order', { ascending: true, nullsFirst: false })
           .order('date_published', { ascending: false })
 
-        if (!error && data && data.length > 0) {
+        if (error) {
+          const fallback = await supabase
+            .from('releases')
+            .select('*')
+            .eq('is_visible', true)
+            .order('date_published', { ascending: false })
+          data = fallback.data
+        }
+
+        if (data && data.length > 0) {
           setDbReleases(data)
           // Set featured or first release as selected
           const featured = data.find(r => r.is_featured) || data[0]
@@ -59,6 +71,36 @@ const ReleasesPage = () => {
     ? selectedRelease.photos
     : (selectedRelease && selectedRelease.cover_url ? [selectedRelease.cover_url] : [])
 
+  // Auto-detect whether the release pages are portrait or landscape
+  useEffect(() => {
+    const firstImage = currentPhotos[0]
+    if (!firstImage) {
+      setPageOrientation("portrait")
+      setBookDimensions({ width: 500, height: 600 })
+      return
+    }
+
+    const img = new Image()
+    img.onload = () => {
+      const isLandscape = img.naturalWidth > img.naturalHeight
+      if (isLandscape) {
+        setPageOrientation("landscape")
+        const ratio = img.naturalWidth / img.naturalHeight
+        const height = 450
+        const width = Math.min(Math.round(height * ratio), 650)
+        setBookDimensions({ width, height })
+      } else {
+        setPageOrientation("portrait")
+        setBookDimensions({ width: 500, height: 600 })
+      }
+    }
+    img.onerror = () => {
+      setPageOrientation("portrait")
+      setBookDimensions({ width: 500, height: 600 })
+    }
+    img.src = firstImage
+  }, [selectedRelease?.id, currentPhotos[0]])
+
   return (
     <div className = "Releases-Page-Container">
       <div className = "Releases-Page">
@@ -87,6 +129,11 @@ const ReleasesPage = () => {
           <div className = "Releases-Title-Type">
             <p>{currentSubtitle}</p>
             <span>{currentTitle}</span>
+            {selectedRelease?.academic_year && (
+              <p style={{ margin: "0.25rem 0 0 0", fontSize: "0.95rem", fontWeight: "700", color: "#0265A9" }}>
+                {selectedRelease.academic_year}
+              </p>
+            )}
             <hr style = {{ width: "80%", margin: "1rem 0rem" }}></hr>
             {currentSoftCopyUrl && (
               <div>
@@ -112,10 +159,11 @@ const ReleasesPage = () => {
             {currentPhotos.length > 0 ? (
               <>
                 <HTMLFlipbook
+                  key = {`${selectedRelease?.id}-${pageOrientation}-${bookDimensions.width}`}
                   ref = {flipbookRef}
                   className = "Releases-Book"
-                  width = {500}
-                  height = {600}
+                  width = {bookDimensions.width}
+                  height = {bookDimensions.height}
                   maxShadowOpacity = {0.5}
                   drawShadow = {true}
                   showCover = {true}
@@ -128,7 +176,13 @@ const ReleasesPage = () => {
                         alt = {`Page ${index + 1}`}
                         loading = "lazy"
                         draggable = {false}
-                        style = {{ width: "100%", height: "100%", cursor: "grab", objectFit: "cover" }}
+                        style = {{
+                          width: "100%",
+                          height: "100%",
+                          cursor: "grab",
+                          objectFit: pageOrientation === "landscape" ? "contain" : "cover",
+                          backgroundColor: "#fdfdf3"
+                        }}
                       />
                     </div>
                   ))}
@@ -180,7 +234,7 @@ const ReleasesPage = () => {
                       style = {{ cursor: 'pointer' }}
                     >
                       <span className = "Releases-Option-Title">
-                        <b>{rel.release_type || "Release"}</b> {rel.title || rel.release_title}
+                        <b>{rel.release_type || "Release"}</b> {rel.title || rel.release_title} {rel.academic_year ? `(${rel.academic_year})` : ""}
                       </span>
                       <div className = "Releases-Book-Image">
                         {rel.cover_url || rel.cover_image ? (
