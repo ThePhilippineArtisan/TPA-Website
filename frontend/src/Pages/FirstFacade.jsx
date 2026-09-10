@@ -141,6 +141,10 @@ const FirstFacade = () => {
                 <img 
                     key={artisanLogo?.order || "artisan-logo"}
                     src={artisanLogo?.image_url || "/TPA-LEFT_BLUE.png"}
+                    onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/TPA-LEFT_BLUE.png";
+                    }}
                     id="ArtisanLogo"
                     alt="The Philippine Artisan"
                 />

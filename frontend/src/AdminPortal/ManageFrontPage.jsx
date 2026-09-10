@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
+import { compressImage, uploadToR2Storage } from "../utils/imageUtils"
 
 import './ManageFrontPage.css'
 
@@ -26,6 +27,8 @@ const ManageFrontPage = () => {
     const [slides, setSlides] = useState([])
     const [editingId, setEditingId] = useState(null)
     const [formState, setFormState] = useState(initialFormState)
+    const [uploadingForeground, setUploadingForeground] = useState(false)
+    const [uploadingBackground, setUploadingBackground] = useState(false)
 
     const fetchSlides = async () => {
         setLoading(true)
@@ -84,6 +87,90 @@ const ManageFrontPage = () => {
     const handleCancelEdit = () => {
         setEditingId(null)
         setFormState(initialFormState)
+    }
+
+    const handleForegroundFileUpload = async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setUploadingForeground(true)
+        try {
+            const compressedBlob = await compressImage(file, 1400, 1400, 0.82, 'image/webp')
+            const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") + ".webp"
+
+            try {
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: cleanName,
+                    folder: 'homepage_slides',
+                    contentType: 'image/webp',
+                    bucket: 'article-photos'
+                })
+
+                if (publicUrl) {
+                    setFormState(prev => ({ ...prev, imageUrl: publicUrl }))
+                    alert("Foreground image converted to WebP and uploaded to storage!")
+                    return
+                }
+            } catch (r2Err) {
+                console.warn("R2 upload error, falling back to compressed Data URL:", r2Err)
+            }
+
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setFormState(prev => ({ ...prev, imageUrl: reader.result }))
+                alert("Foreground image compressed to WebP successfully!")
+            }
+            reader.readAsDataURL(compressedBlob)
+        } catch (err) {
+            console.error("Foreground image compression error:", err)
+            alert("Error processing foreground image: " + (err.message || err))
+        } finally {
+            setUploadingForeground(false)
+            e.target.value = ""
+        }
+    }
+
+    const handleBackgroundFileUpload = async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setUploadingBackground(true)
+        try {
+            const compressedBlob = await compressImage(file, 1920, 1080, 0.78, 'image/webp')
+            const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") + "-bg.webp"
+
+            try {
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: cleanName,
+                    folder: 'homepage_slides',
+                    contentType: 'image/webp',
+                    bucket: 'article-photos'
+                })
+
+                if (publicUrl) {
+                    setFormState(prev => ({ ...prev, backgroundUrl: publicUrl }))
+                    alert("Background cover converted to WebP and uploaded to storage!")
+                    return
+                }
+            } catch (r2Err) {
+                console.warn("R2 upload error, falling back to compressed Data URL:", r2Err)
+            }
+
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setFormState(prev => ({ ...prev, backgroundUrl: reader.result }))
+                alert("Background cover compressed to WebP successfully!")
+            }
+            reader.readAsDataURL(compressedBlob)
+        } catch (err) {
+            console.error("Background cover compression error:", err)
+            alert("Error processing background cover image: " + (err.message || err))
+        } finally {
+            setUploadingBackground(false)
+            e.target.value = ""
+        }
     }
 
     const handleSubmitSlide = async (e) => {
@@ -225,27 +312,113 @@ const ManageFrontPage = () => {
 
                             <div className="Front-Page-Fields">
                                 <p> Main Foreground Image </p>
-                                <input
-                                    type="text"
-                                    name="imageUrl"
-                                    className="Form-Input"
-                                    placeholder="Paste image link or asset URL..."
-                                    value={formState.imageUrl}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input
+                                        type="text"
+                                        name="imageUrl"
+                                        className="Form-Input"
+                                        style={{ flex: 1 }}
+                                        placeholder="Paste image link or upload a file..."
+                                        value={formState.imageUrl}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <label
+                                        className="Admin-Primary-Button"
+                                        style={{
+                                            cursor: uploadingForeground ? 'not-allowed' : 'pointer',
+                                            whiteSpace: 'nowrap',
+                                            margin: 0,
+                                            padding: '0.55rem 0.85rem',
+                                            fontSize: '0.8rem'
+                                        }}
+                                    >
+                                        {uploadingForeground ? "Processing..." : "📁 Upload Image"}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleForegroundFileUpload}
+                                            disabled={uploadingForeground}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </label>
+                                </div>
+                                {formState.imageUrl && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+                                        <img
+                                            src={formState.imageUrl}
+                                            alt="Foreground preview"
+                                            style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border-color)' }}
+                                            onError={(e) => {
+                                                e.currentTarget.onerror = null;
+                                                e.currentTarget.src = "/TPA-LEFT_BLUE.png";
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="Button-Outline"
+                                            style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
+                                            onClick={() => setFormState(prev => ({ ...prev, imageUrl: "" }))}
+                                        >
+                                            Clear
+                                        </button>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="Front-Page-Fields">
                                 <p> Background Cover Image </p>
-                                <input
-                                    type="text"
-                                    name="backgroundUrl"
-                                    className="Form-Input"
-                                    placeholder="Paste background image link..."
-                                    value={formState.backgroundUrl}
-                                    onChange={handleChange}
-                                />
+                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input
+                                        type="text"
+                                        name="backgroundUrl"
+                                        className="Form-Input"
+                                        style={{ flex: 1 }}
+                                        placeholder="Paste background image link or upload a file..."
+                                        value={formState.backgroundUrl}
+                                        onChange={handleChange}
+                                    />
+                                    <label
+                                        className="Admin-Primary-Button"
+                                        style={{
+                                            cursor: uploadingBackground ? 'not-allowed' : 'pointer',
+                                            whiteSpace: 'nowrap',
+                                            margin: 0,
+                                            padding: '0.55rem 0.85rem',
+                                            fontSize: '0.8rem'
+                                        }}
+                                    >
+                                        {uploadingBackground ? "Processing..." : "📁 Upload Background"}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleBackgroundFileUpload}
+                                            disabled={uploadingBackground}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </label>
+                                </div>
+                                {formState.backgroundUrl && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+                                        <img
+                                            src={formState.backgroundUrl}
+                                            alt="Background preview"
+                                            style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border-color)' }}
+                                            onError={(e) => {
+                                                e.currentTarget.onerror = null;
+                                                e.currentTarget.src = "/TPA-LEFT_BLUE.png";
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="Button-Outline"
+                                            style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
+                                            onClick={() => setFormState(prev => ({ ...prev, backgroundUrl: "" }))}
+                                        >
+                                            Clear
+                                        </button>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="Front-Page-Text-Fields">
@@ -417,6 +590,10 @@ const ManageFrontPage = () => {
                                             src={item.image_url}
                                             alt={item.header}
                                             className="Item-Thumb"
+                                            onError={(e) => {
+                                                e.currentTarget.onerror = null;
+                                                e.currentTarget.src = "/TPA-LEFT_BLUE.png";
+                                            }}
                                         />
 
                                     </div>

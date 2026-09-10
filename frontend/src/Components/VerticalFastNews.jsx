@@ -59,13 +59,13 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
     return (
         <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
 
-            <div style={{ padding: "2rem 0rem" }}>
+            <div style={{ padding: "2rem" }}>
                 <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }}> BULLETIN BOARD </Link>
 
-                <div className="Vertical-Side-News">
-                    <hr className="Vertical-Divider-Side-News" />
+                <div className="Vertical-Side-News" style={{ margin: "1.5rem", border: "1px solid #0265A9" }}>
+
                     <a href="https://youtube.com/@AvoirJoseph" target="_blank" rel="noopener noreferrer">
-                        Want to join the Philippine Artisan? <br /><br />
+                        Want to join the Philippine Artisan?
                         Click <span style={{ color: '#0265A9' }}>here</span> to be included in the list of our future applicants!
                     </a>
                 </div>
