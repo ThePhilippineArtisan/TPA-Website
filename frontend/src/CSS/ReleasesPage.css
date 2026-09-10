@@ -1,13 +1,21 @@
+/* ==========================================================================
+   RELEASES PAGE STYLES - EDITORIAL SQUIRCLE ARCHIVE (DARK THEME)
+   The Philippine Artisan Web Platform
+   ========================================================================== */
+
 .Releases-Page-Container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
-  color: white;
-  padding: clamp(1.5rem, 4vw, 4rem) clamp(1rem, 3vw, 2.5rem);
-  background-color: var(--bg-dark);
-  height: auto;
+  color: #ffffff;
+  padding-top: clamp(6.5rem, 10vw, 8.5rem);
+  padding-bottom: clamp(2rem, 4vw, 4rem);
+  padding-left: clamp(1rem, 3vw, 2.5rem);
+  padding-right: clamp(1rem, 3vw, 2.5rem);
+  background-color: #000000;
+  min-height: 100vh;
   box-sizing: border-box;
   width: 100%;
 }
@@ -15,76 +23,266 @@
 .Releases-Page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   width: 100%;
-  max-width: var(--container-max-width);
-  background-color: var(--bg-dark);
+  max-width: var(--container-max-width, 1600px);
+  background-color: #000000;
 }
 
-.List-of-Releases-Covers {
-  margin: clamp(1.5rem, 3vw, 3rem) 0;
-  width: 100%;
-  max-width: var(--container-max-width);
-}
-
-.Releases-Option {
+/* --------------------------------------------------------------------------
+   Category Filter Navigation & Academic Year Filter
+   -------------------------------------------------------------------------- */
+.Releases-Filter-Nav {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  white-space: nowrap;
-
-  margin-top: clamp(1.5rem, 3vw, 4rem);
-  height: auto;
+  align-items: center;
+  gap: 1rem;
   width: 100%;
-  max-width: 80vw;
-  overflow-x: auto;
-  padding: 0.5rem 0;
-
-  border-radius: 100px;
-  
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  padding: 0;
+  background: transparent;
+  border: none;
+  margin-top: 0.5rem;
+  margin-bottom: 2.5rem;
+  box-sizing: border-box;
 }
 
-.Releases-Option::-webkit-scrollbar {
+.Releases-Category-Pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  max-width: 100%;
+}
+
+.Releases-Category-Pills::-webkit-scrollbar {
   display: none;
 }
 
-.Releases-Option-Title {
-  font-family: var(--font-sans);
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
-  padding: clamp(0.5rem, 1.5vw, 1rem);
-  margin: 0.5rem;
-  border: 3px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  background-color: var(--primary-blue);
-
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+/* Squircle Category Tabs */
+.Releases-Filter-Pill {
+  display: inline-flex;
   align-items: center;
-}
-
-.Releases-Option-Title:hover {
-  z-index: 10;
-  background-color: var(--primary-blue-hover);
-  border: 3px solid var(--primary-blue-hover);
+  gap: 0.5rem;
+  background: #000000;
+  border: 1px solid #222222;
+  color: #ffffff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
   cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  box-shadow: none;
 }
 
+.Releases-Filter-Pill:hover {
+  background: #111111;
+  border-color: #333333;
+  color: #ffffff;
+}
+
+.Releases-Filter-Pill.active {
+  background: var(--primary-blue, #0265A9);
+  border-color: var(--primary-blue, #0265A9);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.Pill-Label {
+  letter-spacing: 0.01em;
+}
+
+.Pill-Count {
+  display: inline-block;
+  background: #181818;
+  color: #888888;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.Releases-Filter-Pill.active .Pill-Count {
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+}
+
+/* Academic Year Selector */
+.Releases-Year-Filter-Container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.Releases-Year-Filter-Label {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888888;
+  white-space: nowrap;
+}
+
+.Releases-Year-Select {
+  background: #000000;
+  border: 1px solid #222222;
+  color: #ffffff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.825rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.18s ease;
+}
+
+.Releases-Year-Select:focus {
+  border-color: var(--primary-blue, #0265A9);
+}
+
+/* --------------------------------------------------------------------------
+   Selected Release Details Header
+   -------------------------------------------------------------------------- */
+.Releases-Title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.Releases-Title-Type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+.Releases-Meta-Badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.Releases-Type-Badge {
+  background: var(--primary-blue, #0265A9);
+  color: #ffffff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+}
+
+.Releases-Year-Badge {
+  background: #000000;
+  border: 1px solid #222222;
+  color: #a0a0a0;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.725rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+}
+
+.Releases-Subtitle-Text {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  color: #777777;
+  margin: 0.25rem 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.Releases-Main-Title {
+  font-family: var(--font-serif, 'Lora', Georgia, serif);
+  font-weight: 800;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1.18;
+  color: #ffffff;
+  margin: 0.5rem 0 0.75rem 0;
+}
+
+.Releases-Divider {
+  width: min(350px, 75%);
+  height: 1px;
+  background: #222222;
+  border: none;
+  margin: 1.25rem 0;
+}
+
+.Releases-Download-Container {
+  margin: 0.25rem 0 1.25rem 0;
+}
+
+.Releases-Download-Button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-blue, #0265A9);
+  border: 1px solid var(--primary-blue, #0265A9);
+  color: #ffffff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.55rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: none;
+  transition: background-color 0.18s ease;
+}
+
+.Releases-Download-Button:hover {
+  background: var(--primary-blue-hover, #014c80);
+  border-color: var(--primary-blue-hover, #014c80);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.Releases-Caption {
+  text-align: center;
+  max-width: 800px;
+  margin: 0.5rem auto 0 auto;
+}
+
+.Releases-Caption p {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.925rem, 1.15vw, 1.05rem);
+  line-height: 1.7;
+  color: #888888;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Flipbook Reader Container
+   -------------------------------------------------------------------------- */
 .Releases-Book-Container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-.Demo-Page {
-  background-color: rgb(253, 253, 243);
-  color: black;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 1rem 0 3rem 0;
 }
 
 .Releases-Book-Button-Container {
@@ -93,160 +291,339 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-
-  padding: clamp(1.5rem, 3vw, 3rem) 0;
   width: 100%;
 }
 
 .Releases-Book {
   max-width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95);
+  border-radius: 4px;
+}
+
+.Demo-Page {
+  background-color: #fdfdf3;
+  color: #121824;
 }
 
 .Releases-Book-Button {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  height: 40px;
-  width: min(300px, 90vw);
-  padding: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
+  height: 44px;
+  min-width: 310px;
+  max-width: 90vw;
+  padding: 0.3rem 0.5rem;
+  margin-top: 1.75rem;
 
-  border-radius: 100rem;
-  border: 1px solid var(--bg-light);
-  background-color: var(--bg-dark);
-}
-
-.Releases-Book-Button p {
-  text-align: center;
-  margin: 0;
-}
-
-.Releases-Book-Button-Counter {
-  border-radius: 100rem;
-  font-size: 0.9rem;
-  padding: 0.30rem 0.75rem;
-  background-color: var(--text-muted);
-  color: white;
-  font-weight: 900;
+  border-radius: 8px;
+  border: 1px solid #222222;
+  background-color: #000000;
+  box-shadow: none;
 }
 
 .Releases-Book-Button button {
   background-color: transparent;
-  border: transparent;
-  color: var(--bg-light);
-
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 800;
-  font-family: var(--font-sans);
+  border: none;
+  color: #ffffff;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+  box-shadow: none;
 }
 
 .Releases-Book-Button button:hover {
-  background-color: var(--primary-blue-hover);
-  color: var(--bg-light);
-  border-radius: var(--radius-md);
-  transition: all 0.2s ease;
+  background-color: var(--primary-blue, #0265A9);
+  color: #ffffff;
 }
 
-.Releases-Book-And-Title {
+.Releases-Book-Button-Counter {
+  border-radius: 4px;
+  font-size: 0.825rem;
+  padding: 0.25rem 0.75rem;
+  background-color: #111111;
+  border: 1px solid #222222;
+  color: #a0a0a0;
+  font-weight: 700;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+}
+
+.Releases-Book-Button-Counter p {
+  margin: 0;
+}
+
+.Releases-Empty-Preview {
+  width: min(520px, 92vw);
+  min-height: 360px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-
+  justify-content: center;
+  background-color: #050505;
+  border: 1px dashed #222222;
+  border-radius: 8px;
+  color: #777777;
   text-align: center;
-  border: 1px solid var(--primary-blue);
-  padding: clamp(0.75rem, 1.5vw, 1.25rem);
-  background-color: var(--secondary-navy);
-  border-radius: var(--radius-lg);
-  scroll-snap-align: start;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-.Releases-Book-And-Title p {
-  font-weight: 900;
-  font-size: clamp(0.875rem, 1.2vw, 1rem);
+/* --------------------------------------------------------------------------
+   Releases Catalog Section
+   -------------------------------------------------------------------------- */
+.List-Of-Releases-Container {
+  width: 100%;
+  margin-top: 1rem;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 2rem;
 }
 
+.List-Of-Releases {
+  width: 100%;
+}
+
+.Catalog-Header-Bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.25rem;
+  gap: 0.75rem;
+}
+
+.Catalog-Section-Title {
+  font-family: var(--font-serif, 'Lora', Georgia, serif);
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+.Catalog-Section-Subtitle {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.85rem;
+  color: #777777;
+  margin: 0;
+}
+
+.Catalog-Hint-Text {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.8rem;
+  color: #888888;
+  font-weight: 600;
+}
+
+/* Horizontal Scroll / Flex Catalog Rack */
 .Releases-Book-And-Title-Container {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
-  
-  gap: clamp(1rem, 2vw, 2rem);
-  padding: 1rem clamp(1rem, 3vw, 3rem);
-
-  backdrop-filter: blur(50px);
-  -webkit-backdrop-filter: blur(10px);
+  gap: 1.25rem;
+  padding: 0.5rem 0 1.5rem 0;
 
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--primary-blue) rgba(255, 255, 255, 0.05);
+  scrollbar-color: #333333 #0a0a0a;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
 }
 
-.Releases-Book-And-Title:hover {
-  transition: all 0.2s ease;
-  transform: scale(1.03);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+.Releases-Book-And-Title-Container::-webkit-scrollbar {
+  height: 5px;
 }
 
-.Releases-Book-Image img {
-  max-height: clamp(12rem, 25vw, 17rem);
+.Releases-Book-And-Title-Container::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
 }
 
-.Releases-Book-And-Title:hover img {
-  transition: all 0.2s ease;
-  transform: rotate(1deg) scale(1.03);
+.Releases-Book-And-Title-Container::-webkit-scrollbar-track {
+  background: #0a0a0a;
+  border-radius: 4px;
 }
 
-.Releases-Title span {
-  width: 100%;
-  font-family: var(--font-serif);
-  font-weight: 800;
-  font-size: clamp(2.25rem, 5vw + 0.5rem, 4.5rem);
-  text-align: center;
-}
-
-.Releases-Title {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.Releases-Title-Type {
+/* Squircle Release Card */
+.Releases-Book-And-Title {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  flex: 0 0 210px;
+  max-width: 210px;
+  background-color: #000000;
+  border: 1px solid #1c1c1c;
+  border-radius: 8px;
+  padding: 0.65rem;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  box-sizing: border-box;
+  position: relative;
+  box-shadow: none;
+}
+
+.Releases-Book-And-Title:hover {
+  transform: translateY(-3px);
+  border-color: #333333;
+  background-color: #0a0a0a;
+  box-shadow: none;
+}
+
+.Releases-Book-And-Title.is-selected {
+  border-color: var(--primary-blue, #0265A9);
+  background-color: #050505;
+  box-shadow: none;
+}
+
+/* Card Cover Image */
+.Releases-Book-Image-Wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #080808;
+  box-shadow: none;
+}
+
+.Releases-Card-Cover-Img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.Releases-Book-And-Title:hover .Releases-Card-Cover-Img {
+  transform: scale(1.03);
+}
+
+.Releases-No-Cover-Placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
   align-items: center;
-  text-align: center;
-}
-
-.Releases-Title-Type span {
-  text-align: center;
-  font-size: clamp(2rem, 5vw, 4.5rem);
-  line-height: 1.15;
-  letter-spacing: -0.005ch;
-  margin: 1rem 0;
-  padding: 0.5rem 0;
-}
-
-.Releases-Title-Type p {
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  justify-content: center;
+  background: #080808;
+  color: #666666;
+  font-size: 0.8rem;
   font-weight: 700;
-  font-family: var(--font-sans);
-  color: var(--hr-color);
-}
-
-.Releases-Caption {
   text-align: center;
-  max-width: var(--container-max-width);
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.Releases-Caption p {
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 1.3vw, 1.25rem);
-  line-height: 1.7;
-}
+/* Overlay Badges on Card */
+.Card-Overlay-Badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.Card-Type-Badge {
+  background: var(--primary-blue, #0265A9);
+  color: #ffffff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+}
+
+.Card-Year-Badge {
+  background: #000000;
+  border: 1px solid #222222;
+  color: #a0a0a0;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* Card Meta Content */
+.Releases-Card-Meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.65rem;
+}
+
+.Releases-Card-Title {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.Releases-Card-Date {
+  font-size: 0.725rem;
+  color: #555555;
+  font-weight: 600;
+}
+
+/* Empty Catalog State */
+.Releases-Catalog-Empty {
+  width: 100%;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: #777777;
+  background: #000000;
+  border: 1px dashed #222222;
+  border-radius: 8px;
+}
+
+.Btn-Reset-Filters {
+  margin-top: 1rem;
+  background: var(--primary-blue, #0265A9);
+  color: #ffffff;
+  border: 1px solid var(--primary-blue, #0265A9);
+  padding: 0.5rem 1.15rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 0.18s ease;
+}
+
+.Btn-Reset-Filters:hover {
+  background: var(--primary-blue-hover, #014c80);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .Releases-Filter-Nav {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .Releases-Year-Filter-Container {
+    margin: 0.25rem 0 0 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .Releases-Book-Button {
+    min-width: 280px;
+  }
+
+  .Releases-Book-And-Title {
+    flex: 0 0 165px;
+    max-width: 165px;
+  }
+}

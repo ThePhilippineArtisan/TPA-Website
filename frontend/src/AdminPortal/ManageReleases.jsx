@@ -34,6 +34,7 @@ const ManageReleases = () => {
     const [formState, setFormState] = useState(initialFormState);
     const [uploadingCover, setUploadingCover] = useState(false);
     const [uploadingPages, setUploadingPages] = useState(false);
+    const [saving, setSaving] = useState(false);
     const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, active: false });
     const [draggedPageIndex, setDraggedPageIndex] = useState(null);
     const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -394,16 +395,25 @@ const ManageReleases = () => {
     const handleSubmitRelease = async (e) => {
         e.preventDefault();
 
-        const title = formState.title.trim();
+        const title = formState.title ? formState.title.trim() : "";
         if (!title) {
-            alert("Please enter a title for the release.");
+            alert("Please enter a Title for the release (at the top of the form).");
+            const titleInput = document.getElementById("title");
+            if (titleInput) {
+                titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                titleInput.focus();
+            }
             return;
         }
 
         const photosArray = formState.photosText
-            .split("\n")
-            .map(url => url.trim())
-            .filter(Boolean);
+            ? formState.photosText.split("\n").map(url => url.trim()).filter(Boolean)
+            : [];
+
+        if (photosArray.length === 0 && !formState.coverUrl) {
+            alert("Please upload at least one page image or provide a cover image URL before saving.");
+            return;
+        }
 
         // If coverUrl is provided and not already first in photosArray, ensure it's at index 0
         if (formState.coverUrl && formState.coverUrl.trim()) {
@@ -427,7 +437,7 @@ const ManageReleases = () => {
             ? parseInt(formState.order, 10)
             : null;
 
-        const releasePayload = {
+        const basePayload = {
             release_title: title,
             releases_description: formState.description.trim() || title,
             release_date: dateOnly,
@@ -436,16 +446,43 @@ const ManageReleases = () => {
             is_visible: Boolean(formState.isVisible)
         };
 
+        const fullPayload = {
+            ...basePayload,
+            academic_year: formState.academicYear ? formState.academicYear.trim() : null,
+            subtitle: formState.subtitle ? formState.subtitle.trim() : null,
+            soft_copy_url: formState.softCopyUrl ? formState.softCopyUrl.trim() : null
+        };
+
+        setSaving(true);
         try {
+            // Verify session before saving to avoid silent auth failures
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                alert("Your admin session has expired. Please refresh the page and log in again.");
+                return;
+            }
+
             let targetReleaseId = editingId;
+            let missingExtraColumns = false;
 
             if (editingId) {
-                const { error: updateErr } = await supabase
+                let { error: updateErr } = await supabase
                     .from('releases')
-                    .update(releasePayload)
+                    .update(fullPayload)
                     .eq('id', editingId);
 
-                if (updateErr) throw updateErr;
+                // If error is due to missing columns in DB, fall back to basePayload
+                if (updateErr && (updateErr.code === '42703' || updateErr.message?.toLowerCase().includes('column'))) {
+                    console.warn("Extra columns (academic_year/subtitle/soft_copy_url) not found in table. Retrying with base payload:", updateErr.message);
+                    missingExtraColumns = true;
+                    const { error: retryErr } = await supabase
+                        .from('releases')
+                        .update(basePayload)
+                        .eq('id', editingId);
+                    if (retryErr) throw retryErr;
+                } else if (updateErr) {
+                    throw updateErr;
+                }
 
                 // Delete old pages to re-insert in the updated sequence
                 await supabase
@@ -453,14 +490,28 @@ const ManageReleases = () => {
                     .delete()
                     .eq('releases_id', editingId);
             } else {
-                const { data: inserted, error: insertErr } = await supabase
+                let { data: inserted, error: insertErr } = await supabase
                     .from('releases')
-                    .insert([releasePayload])
+                    .insert([fullPayload])
                     .select('id')
                     .single();
 
-                if (insertErr) throw insertErr;
-                targetReleaseId = inserted.id;
+                if (insertErr && (insertErr.code === '42703' || insertErr.message?.toLowerCase().includes('column'))) {
+                    console.warn("Extra columns not found in table. Retrying insert with base payload:", insertErr.message);
+                    missingExtraColumns = true;
+                    const { data: retryInserted, error: retryInsertErr } = await supabase
+                        .from('releases')
+                        .insert([basePayload])
+                        .select('id')
+                        .single();
+
+                    if (retryInsertErr) throw retryInsertErr;
+                    targetReleaseId = retryInserted.id;
+                } else if (insertErr) {
+                    throw insertErr;
+                } else {
+                    targetReleaseId = inserted.id;
+                }
             }
 
             // Insert flipbook pages into releases_pages
@@ -482,12 +533,18 @@ const ManageReleases = () => {
                 }
             }
 
-            alert(editingId ? "Release updated successfully!" : "Release saved successfully!");
+            if (missingExtraColumns) {
+                alert(`${editingId ? "Release updated!" : "Release saved!"}\n\nNote: Academic Year, Subtitle, and Soft Copy URL were not saved because their columns haven't been added to your Supabase 'releases' table yet.\n\nTo enable them, go to your Supabase SQL Editor and run:\nALTER TABLE public.releases ADD COLUMN IF NOT EXISTS academic_year text, ADD COLUMN IF NOT EXISTS subtitle text, ADD COLUMN IF NOT EXISTS soft_copy_url text;`);
+            } else {
+                alert(editingId ? "Release updated successfully!" : "Release saved successfully!");
+            }
             handleCancelEdit();
             fetchReleases();
         } catch (err) {
             console.error("Error saving release to Supabase:", err);
             alert(`Failed to save release: ${err.message || err}`);
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -587,7 +644,7 @@ const ManageReleases = () => {
                     </h2>
                     <hr className="Divider-Line" />
 
-                    <form onSubmit={handleSubmitRelease}>
+                    <form noValidate onSubmit={handleSubmitRelease}>
                         <div className="Form-Group">
                             <label htmlFor="title">Release Title *</label>
                             <input
@@ -597,7 +654,6 @@ const ManageReleases = () => {
                                 value={formState.title}
                                 onChange={handleChange}
                                 placeholder="e.g. KALYO: ? '24 - '25"
-                                required
                             />
                         </div>
 
@@ -693,7 +749,7 @@ const ManageReleases = () => {
                             </label>
                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                 <input
-                                    type="url"
+                                    type="text"
                                     id="coverUrl"
                                     name="coverUrl"
                                     value={formState.coverUrl}
@@ -726,7 +782,7 @@ const ManageReleases = () => {
                         <div className="Form-Group">
                             <label htmlFor="softCopyUrl">Soft Copy / Download Link (PDF URL)</label>
                             <input
-                                type="url"
+                                type="text"
                                 id="softCopyUrl"
                                 name="softCopyUrl"
                                 value={formState.softCopyUrl}
@@ -931,8 +987,8 @@ const ManageReleases = () => {
                         </div>
 
                         <div className="Form-Actions">
-                            <button type="submit" className="Btn-Submit">
-                                {editingId ? "Update Release" : "Save Release"}
+                            <button type="submit" className="Btn-Submit" disabled={saving}>
+                                {saving ? "Saving Release..." : (editingId ? "Update Release" : "Save Release")}
                             </button>
                             {editingId && (
                                 <button type="button" className="Btn-Cancel" onClick={handleCancelEdit}>
