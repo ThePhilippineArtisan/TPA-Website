@@ -83,7 +83,7 @@ export async function onRequestPost(context) {
 
         // 4. Sanitize Filename & Folder (Prevent Path Traversal)
         const cleanFilename = filename.replace(/[^a-zA-Z0-9_.-]/g, '_').replace(/\.{2,}/g, '.')
-        const cleanFolder = folder ? folder.replace(/[^a-zA-Z0-9_-]/g, '') : ''
+        const cleanFolder = folder ? folder.replace(/[^a-zA-Z0-9_/-]/g, '').replace(/\/{2,}/g, '/').replace(/^\/|\/$/g, '') : ''
         const key = cleanFolder ? `${cleanFolder}/${cleanFilename}` : cleanFilename
 
         // 5. Restrict target bucket

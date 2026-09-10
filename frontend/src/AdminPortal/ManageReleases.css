@@ -502,15 +502,11 @@
     gap: 0.85rem;
 }
 
-.Dropzone-Icon {
-    font-size: 2rem;
-    line-height: 1;
-    animation: dropzone-pulse 2s infinite ease-in-out;
-}
-
-@keyframes dropzone-pulse {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+.Dropzone-Icon-Svg {
+    width: 28px;
+    height: 28px;
+    color: #0265A9;
+    flex-shrink: 0;
 }
 
 .Dropzone-Text {

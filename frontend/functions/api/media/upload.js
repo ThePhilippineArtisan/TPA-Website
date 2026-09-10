@@ -88,7 +88,7 @@ export async function onRequestPost(context) {
 
         // 4. Sanitize Filename & Folder
         const cleanFilename = filename.replace(/[^a-zA-Z0-9_.-]/g, '_').replace(/\.{2,}/g, '.')
-        const cleanFolder = folder ? folder.replace(/[^a-zA-Z0-9_-]/g, '') : ''
+        const cleanFolder = folder ? folder.replace(/[^a-zA-Z0-9_/-]/g, '').replace(/\/{2,}/g, '/').replace(/^\/|\/$/g, '') : ''
         const key = cleanFolder ? `${cleanFolder}/${cleanFilename}` : cleanFilename
 
         // 5. Restrict target bucket
@@ -97,8 +97,9 @@ export async function onRequestPost(context) {
         const fileBytes = new Uint8Array(await file.arrayBuffer())
 
         // 6. Direct R2 Worker binding check (if configured in Cloudflare Pages)
-        if (env.R2_BUCKET && typeof env.R2_BUCKET.put === 'function') {
-            await env.R2_BUCKET.put(key, fileBytes, {
+        const bucketBinding = env.R2_BUCKET || env.ARTICLE_PHOTOS
+        if (bucketBinding && typeof bucketBinding.put === 'function') {
+            await bucketBinding.put(key, fileBytes, {
                 httpMetadata: { contentType }
             })
         } else {

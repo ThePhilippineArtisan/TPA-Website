@@ -293,9 +293,9 @@ const ManageReleases = () => {
             }
 
             if (failedCount > 0) {
-                alert(`Uploaded ${successfulUrls.length} page(s). ${failedCount} file(s) failed.`);
+                alert(`Uploaded ${successfulUrls.length} of ${total} page(s). ${failedCount} failed.\n\nNote: If you encounter a CORS error, please configure CORS on your Cloudflare R2 'article-photos' bucket to allow origin 'https://philartisan.org'.`);
             } else {
-                alert(`Successfully processed and uploaded ${successfulUrls.length} page(s) in sequential order!`);
+                alert(`Successfully processed and uploaded ${successfulUrls.length} page(s) in sequential order.`);
             }
         } catch (err) {
             console.error("Bulk upload batch error:", err);
@@ -745,7 +745,11 @@ const ManageReleases = () => {
                                 onDrop={handleDropzoneDrop}
                             >
                                 <div className="Dropzone-Content">
-                                    <span className="Dropzone-Icon">📥</span>
+                                    <svg className="Dropzone-Icon-Svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0265A9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="17 8 12 3 7 8" />
+                                        <line x1="12" y1="3" x2="12" y2="15" />
+                                    </svg>
                                     <div className="Dropzone-Text">
                                         <p className="Dropzone-Title">
                                             {uploadingPages ? "Uploading pages in parallel..." : "Drag & Drop multiple page images here"}
@@ -795,7 +799,7 @@ const ManageReleases = () => {
                                                 onClick={() => handleSetAsReleaseCover(pageUrls[0])}
                                                 title="Set Page 1 as the main Release Cover Image"
                                             >
-                                                🌟 Set P.1 as Cover
+                                                Set P.1 as Cover
                                             </button>
                                             <button
                                                 type="button"
@@ -803,7 +807,7 @@ const ManageReleases = () => {
                                                 onClick={handleSortPagesNumerically}
                                                 title="Sort all pages numerically by filename"
                                             >
-                                                🔢 Sort 1-N
+                                                Sort Numerically
                                             </button>
                                             <button
                                                 type="button"
@@ -811,7 +815,7 @@ const ManageReleases = () => {
                                                 onClick={handleReversePages}
                                                 title="Reverse page sequence"
                                             >
-                                                🔄 Reverse
+                                                Reverse Order
                                             </button>
                                             <button
                                                 type="button"
@@ -819,7 +823,7 @@ const ManageReleases = () => {
                                                 onClick={handleClearAllPages}
                                                 title="Clear all pages"
                                             >
-                                                🗑️ Clear All
+                                                Clear All
                                             </button>
                                         </div>
                                     </div>
@@ -881,7 +885,7 @@ const ManageReleases = () => {
                                         ))}
                                     </div>
                                     <p className="Thumbnail-Helper-Note">
-                                        💡 <strong>Tip:</strong> Drag and drop thumbnails or use ◀ / ▶ to reorder. <strong>P.1</strong> is always the flipbook cover.
+                                        <strong>Tip:</strong> Drag and drop thumbnails or use ◀ / ▶ to reorder. <strong>P.1</strong> is always the flipbook cover.
                                     </p>
                                 </>
                             )}

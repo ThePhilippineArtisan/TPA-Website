@@ -177,6 +177,9 @@ export const uploadToR2Storage = async ({
         if (proxyRes.ok) {
             const proxyData = await proxyRes.json()
             return proxyData
+        } else {
+            const errText = await proxyRes.text().catch(() => "")
+            console.warn(`Server proxy upload returned status ${proxyRes.status}:`, errText)
         }
     } catch (proxyErr) {
         console.warn("Server proxy upload fallback also failed:", proxyErr)
