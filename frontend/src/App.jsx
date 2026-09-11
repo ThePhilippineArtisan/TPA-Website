@@ -16,6 +16,7 @@ const PlaceholderMediaSegmentArticle = lazy(() => import('./Pages/PlaceholderMed
 const AboutPage = lazy(() => import('./Pages/AboutPage.jsx'))
 const MediaSegmentPage = lazy(() => import('./Pages/MediaSegmentPage.jsx'))
 const MediaSegmentArticle = lazy(() => import('./Pages/MediaSegmentArticle.jsx'))
+const VideosPage = lazy(() => import('./Pages/VideosPage.jsx'))
 const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'))
 const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'))
 const StaffProfilePage = lazy(() => import('./Pages/StaffProfile.jsx'))
@@ -165,6 +166,9 @@ const App = () => {
             <Route path="/media-segment/:id" element={<MediaSegmentArticle />} />
             <Route path="/media-segment/:id/:slug" element={<MediaSegmentArticle />} />
             <Route path="/media-segment/id" element={<PlaceholderMediaSegmentArticle />} />
+
+            <Route path="/videos" element={<VideosPage />} />
+            <Route path="/video" element={<VideosPage />} />
 
             <Route path="/admin/AdminLogInRandomWordsToMakeItHarderToGuessBecauseWhyNot" element={<AdminLogInPage />} />
 

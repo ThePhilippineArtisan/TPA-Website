@@ -81,7 +81,39 @@
 
 .Vertical-Side-News:hover {
     background-color: rgba(255, 255, 255);
+}
 
+.Vertical-Substack-News {
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.Vertical-Substack-News:hover {
+    background-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.Substack-News-Link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: var(--text-dark, #121824);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+    width: 100%;
+}
+
+.Substack-News-Link:hover {
+    color: var(--primary-blue, #0265A9);
+}
+
+.Substack-Logo-Icon {
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .Vertical-Divider-Side-News {

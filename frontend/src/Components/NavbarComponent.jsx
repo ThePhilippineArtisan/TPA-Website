@@ -76,6 +76,7 @@ const NavbarComponent = () => {
     const isNewsActive = location.pathname === "/" && location.hash === "#news";
     const isReleasesActive = location.pathname.startsWith("/releases");
     const isMediaActive = location.pathname.startsWith("/media-segment");
+    const isVideosActive = location.pathname.startsWith("/video");
     const isAboutActive = location.pathname.startsWith("/about");
 
     return (
@@ -99,6 +100,7 @@ const NavbarComponent = () => {
                         <Link to="/#news" onClick={(e) => handleNavClick(e, "#news")} className={isNewsActive ? "active" : ""}> News </Link> 
                         <Link to="/releases" className={isReleasesActive ? "active" : ""}> Releases </Link>
                         <Link to="/media-segment" className={isMediaActive ? "active" : ""}> Media Segments </Link>
+                        <Link to="/videos" className={isVideosActive ? "active" : ""}> Videos </Link>
                     </div>
 
                     <Link to="/about" className="tpa-circle-logo">
@@ -170,6 +172,19 @@ const NavbarComponent = () => {
                         </svg>
                     </div>
                     <span className="bottom-nav-label">Media</span>
+                </Link>
+
+                <Link 
+                    to="/videos" 
+                    className={`bottom-nav-item ${isVideosActive ? "active" : ""}`}
+                >
+                    <div className="bottom-nav-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7" />
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                        </svg>
+                    </div>
+                    <span className="bottom-nav-label">Videos</span>
                 </Link>
 
                 <Link 

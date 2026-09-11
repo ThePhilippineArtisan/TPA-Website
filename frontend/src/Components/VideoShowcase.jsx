@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { supabase } from "../supabaseClient"
 import { formatRelativeTime } from "../utils/dateUtils"
 import { sanitizeUrl, getYoutubeThumbnail } from "../utils/stringUtils"
@@ -27,10 +28,9 @@ const VideoShowcase = () => {
 
     return (
         <div className="Video-Showcase">
-            <a href="https://www.youtube.com/@tek_artisanmnl" 
-               target="_blank" rel="noopener noreferrer"> 
+            <Link to="/videos"> 
                TUNE IN WITH TEK ⟶ 
-            </a>
+            </Link>
             <p> Explore The Philippine Artisan's latest content, coverages, and media segments on YouTube! </p>
             <div className="Thumbnail-Container">
                 <div className="Thumbnail-Videos">

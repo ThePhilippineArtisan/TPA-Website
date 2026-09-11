@@ -12,7 +12,6 @@ import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx"
 import "../CSS/LatestMediaSegment.css"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx"
 import NeighboringArticles from "../Components/NeighboringArticles.jsx"
-import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx"
 
 const MediaSegmentArticle = () => {
     const { id, slug } = useParams()
@@ -349,7 +348,15 @@ const MediaSegmentArticle = () => {
                             {articleDetails.article_source && (
                                 <h5>
                                     <span>
-                                        Click this link to view the <a target = "_blank" href = {sanitizeUrl(articleDetails.article_source)} rel = "noopener noreferrer" style = {{ color: '#0265A9', textDecoration: 'underline' }}>sources</a>, interview, or media used in this article.
+                                        Source:{" "}
+                                        <a 
+                                            target="_blank" 
+                                            href={sanitizeUrl(articleDetails.article_source)} 
+                                            rel="noopener noreferrer" 
+                                            style={{ color: '#0265A9', textDecoration: 'underline', fontWeight: 600 }}
+                                        >
+                                            Source
+                                        </a>
                                     </span>
                                 </h5>
                             )}
@@ -365,8 +372,6 @@ const MediaSegmentArticle = () => {
 
                 </div>
             </div>
-
-            <NewsletterSubscribe variant="article" />
 
             <NeighboringArticles 
                 currentArticleId={articleDetails.article_id} 

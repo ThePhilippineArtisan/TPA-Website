@@ -8,7 +8,6 @@ import DOMPurify from "dompurify"
 import { sanitizeUrl } from "../utils/stringUtils.js"
 import VerticalFastNews from "../Components/VerticalFastNews.jsx"
 import NeighboringArticles from "../Components/NeighboringArticles.jsx"
-import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx"
 import "../CSS/ArticlePage.css"
 
 const ArticlePage = () => {
@@ -263,10 +262,15 @@ const ArticlePage = () => {
                 <div style={!hasBody ? { width: "100%" } : {}}>
                     {articleDetails.article_source && (
                         <h4 style={{ marginBottom: "1rem" }}>
-                            <span style={{ color: "var(--primary-blue, #0265A9)" }}>
+                            <span>
                                 Source / Reference:{" "}
-                                <a target="_blank" rel="noopener noreferrer" href={sanitizeUrl(articleDetails.article_source)}>
-                                    {articleDetails.article_source}
+                                <a 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    href={sanitizeUrl(articleDetails.article_source)}
+                                    style={{ color: "var(--primary-blue, #0265A9)", textDecoration: "underline", fontWeight: 600 }}
+                                >
+                                    Source
                                 </a>
                             </span>
                         </h4>
@@ -277,8 +281,6 @@ const ArticlePage = () => {
                     </h4>
 
                     <hr />
-
-                    <NewsletterSubscribe variant="article" />
 
                     <div style={{ marginTop: "1.5rem" }}>
                         <VerticalFastNews isHorizontal={!hasBody} />

@@ -70,10 +70,27 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     </a>
                 </div>
 
-                <div className="Vertical-Side-News">
+                <div className="Vertical-Side-News Vertical-Substack-News">
                     <hr className="Vertical-Divider-Side-News" />
-                    <a href="https://youtube.com/@AvoirJoseph" target="_blank" rel="noopener noreferrer">
-                        Subscribe to our email newsletter for updates inside and outside our university!
+                    <a
+                        href="https://philartisan.substack.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="Substack-News-Link"
+                    >
+                        <svg
+                            className="Substack-Logo-Icon"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fill="#FF6719"
+                                d="M22.539 8.242H1.46V5.406h21.08v2.836zM22.539 2.836H1.46V0h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46z"
+                            />
+                        </svg>
+                        <span>Subscribe to our weekly newsletter</span>
                     </a>
                 </div>
             </div>
