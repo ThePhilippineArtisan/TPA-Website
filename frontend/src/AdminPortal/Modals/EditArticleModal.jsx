@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { supabase } from "../../supabaseClient"
 import { slugify, replaceUnderscore } from "../../utils/slugifyUtils"
 import { getArticleUrl, isMediaSegment } from "../../utils/articleUtils"
-import { compressImage, uploadToR2Storage } from "../../utils/imageUtils"
+import { compressImage, uploadToR2Storage, generateSafeFilename } from "../../utils/imageUtils"
 import SelectStaffersModal from "./SelectStaffersModal.jsx"
 import EditStaffModal from "./EditStaffModal.jsx"
 import "./EditArticleModal.css"
@@ -311,11 +311,10 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
         setUploadingNewPhoto(true)
         try {
             const pubYear = article.published_at ? new Date(article.published_at).getFullYear() : new Date().getFullYear()
-            const slug = article.slug_headline || slugify(article.article_headline || "article")
-            let folder = `articles/${pubYear}/${slug}`
+            let folder = `articles/${pubYear}/${article.article_id}`
             if (isMediaSegment(article.article_type)) {
                 const segFolder = article.article_type.toLowerCase().replace(/_/g, "-")
-                folder = `media-segments/${pubYear}/${segFolder}/${slug}`
+                folder = `media-segments/${pubYear}/${segFolder}/${article.article_id}`
             }
 
             const currentCount = attachedPhotos.length
@@ -326,11 +325,11 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                 setPhotoUploadProgress(`Uploading ${i + 1} of ${files.length}...`)
 
                 const compressedBlob = await compressImage(file, 1600, 1600, 0.82, "image/webp")
-                const compressedFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp"
+                const safeFilename = generateSafeFilename(file.name || `photo-${i + 1}`)
 
                 const { publicUrl } = await uploadToR2Storage({
                     file: compressedBlob,
-                    filename: compressedFileName,
+                    filename: safeFilename,
                     folder: folder,
                     contentType: "image/webp",
                     bucket: "article-photos"

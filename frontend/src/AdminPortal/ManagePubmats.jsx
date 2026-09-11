@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
-import { compressImage, uploadToR2Storage } from "../utils/imageUtils"
+import { compressImage, uploadToR2Storage, generateSafeFilename } from "../utils/imageUtils"
 import "./ManagePubmats.css"
 
 export const PUBMAT_CATEGORIES = [
@@ -165,11 +165,11 @@ const ManagePubmats = () => {
             // If a new image file was picked, upload to R2 and save in media table
             if (selectedFile) {
                 const compressedBlob = await compressImage(selectedFile)
-                const cleanName = selectedFile.name.replace(/\.[^/.]+$/, "") + ".webp"
+                const safeFilename = generateSafeFilename(selectedFile.name || "pubmat")
 
                 const { publicUrl } = await uploadToR2Storage({
                     file: compressedBlob,
-                    filename: cleanName,
+                    filename: safeFilename,
                     folder: "pubmats",
                     contentType: "image/webp",
                     bucket: "article-photos"

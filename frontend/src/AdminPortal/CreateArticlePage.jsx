@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
-import { compressImage, uploadToR2Storage } from "../utils/imageUtils.js"
+import { compressImage, uploadToR2Storage, generateSafeFilename } from "../utils/imageUtils.js"
 import { formatDateReadable, formatRelativeTime } from "../utils/dateUtils"
 import { isMediaSegment } from "../utils/articleUtils"
 
@@ -336,18 +336,20 @@ const CreateArticlePage = () => {
                     // Use a single bucket (article-photos) to simplify CORS and public URLs,
                     // but organize files by year and type.
                     const targetBucket = "article-photos"
-                    let uploadFolder = `articles/${pubYear}/${generatedSlug}`
+                    let uploadFolder = `articles/${pubYear}/${newArticleId}`
 
                     if (isMediaSegment(articleType)) {
                         const folderName = articleType.toLowerCase().replace(/_/g, "-")
-                        uploadFolder = `media-segments/${pubYear}/${folderName}/${generatedSlug}`
+                        uploadFolder = `media-segments/${pubYear}/${folderName}/${newArticleId}`
                     }
+
+                    const safeFilename = generateSafeFilename(imgObj.name || `photo-${idx + 1}`)
 
                     const { publicUrl } = await uploadToR2Storage({
                         file: imgObj.file,
-                        filename: imgObj.name,
+                        filename: safeFilename,
                         folder: uploadFolder,
-                        contentType: imgObj.file.type,
+                        contentType: imgObj.file.type || "image/webp",
                         bucket: targetBucket
                     })
 

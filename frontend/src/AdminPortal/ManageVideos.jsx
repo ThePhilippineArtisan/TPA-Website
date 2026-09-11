@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient.js"
 import { getYoutubeThumbnail } from "../utils/stringUtils.js"
-import { compressImage, uploadToR2Storage } from "../utils/imageUtils.js"
+import { compressImage, uploadToR2Storage, generateSafeFilename } from "../utils/imageUtils.js"
 
 import "./ManageVideos.css"
 import "./ManageFrontPage.css"
@@ -144,12 +144,12 @@ const ManageVideos = () => {
         setUploadingThumbnail(true)
         try {
             const compressedBlob = await compressImage(file, 1280, 720, 0.8, 'image/webp')
-            const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") + ".webp"
+            const safeName = generateSafeFilename(file.name || "video-thumb")
 
             try {
                 const { publicUrl } = await uploadToR2Storage({
                     file: compressedBlob,
-                    filename: cleanName,
+                    filename: safeName,
                     folder: 'video_thumbnails',
                     contentType: 'image/webp',
                     bucket: 'article-photos'

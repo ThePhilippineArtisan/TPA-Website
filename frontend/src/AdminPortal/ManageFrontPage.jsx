@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
-import { compressImage, uploadToR2Storage } from "../utils/imageUtils"
+import { compressImage, uploadToR2Storage, generateSafeFilename } from "../utils/imageUtils"
 
 import './ManageFrontPage.css'
 
@@ -96,12 +96,12 @@ const ManageFrontPage = () => {
         setUploadingForeground(true)
         try {
             const compressedBlob = await compressImage(file, 1400, 1400, 0.82, 'image/webp')
-            const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") + ".webp"
+            const safeName = generateSafeFilename(file.name || "slide-fg")
 
             try {
                 const { publicUrl } = await uploadToR2Storage({
                     file: compressedBlob,
-                    filename: cleanName,
+                    filename: safeName,
                     folder: 'homepage_slides',
                     contentType: 'image/webp',
                     bucket: 'article-photos'
@@ -138,12 +138,12 @@ const ManageFrontPage = () => {
         setUploadingBackground(true)
         try {
             const compressedBlob = await compressImage(file, 1920, 1080, 0.78, 'image/webp')
-            const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") + "-bg.webp"
+            const safeName = generateSafeFilename(file.name || "slide-bg")
 
             try {
                 const { publicUrl } = await uploadToR2Storage({
                     file: compressedBlob,
-                    filename: cleanName,
+                    filename: safeName,
                     folder: 'homepage_slides',
                     contentType: 'image/webp',
                     bucket: 'article-photos'

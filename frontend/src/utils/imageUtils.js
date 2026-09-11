@@ -90,6 +90,26 @@ export const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality =
 }
 
 /**
+ * Generates a collision-safe, CDN cache-busting filename with clean base and short unique hash.
+ * Example: "Student Rally.JPG" -> "student-rally-x8f2a.webp"
+ * 
+ * @param {string} originalName - Original filename or label
+ * @param {string} [extension="webp"] - File extension without dot
+ * @returns {string} - Clean, unique filename
+ */
+export const generateSafeFilename = (originalName = "image", extension = "webp") => {
+    const base = String(originalName || "image")
+        .replace(/\.[^/.]+$/, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "") || "photo"
+    const hash = Math.random().toString(36).substring(2, 8)
+    const cleanExt = extension.replace(/^\./, "")
+    return `${base}-${hash}.${cleanExt}`
+}
+
+/**
  * Upload an image (File or Blob) to Cloudflare R2 storage.
  * 
  * Attempts direct presigned URL PUT first (fastest direct-to-storage upload).
