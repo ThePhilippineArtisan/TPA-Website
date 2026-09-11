@@ -158,17 +158,17 @@ const ReleasesPage = () => {
 
   const currentSubtitle = selectedRelease
     ? (selectedRelease.subtitle && !selectedRelease.subtitle.startsWith("The Official ")
-        ? selectedRelease.subtitle
-        : (selectedRelease.tagline && !selectedRelease.tagline.startsWith("The Official ")
-            ? selectedRelease.tagline
-            : defaultSubtitle))
+      ? selectedRelease.subtitle
+      : (selectedRelease.tagline && !selectedRelease.tagline.startsWith("The Official ")
+        ? selectedRelease.tagline
+        : defaultSubtitle))
     : "The Official Publications of The Philippine Artisan"
 
   const currentCaption = selectedRelease
     ? selectedRelease.description || selectedRelease.caption
     : (filteredReleases.length === 0
-        ? "No publication matches the chosen category or academic year filter. Try choosing another category above."
-        : "Explore the official publications, literary folios, broadsheets, and newsletters released by The Philippine Artisan.")
+      ? "No publication matches the chosen category or academic year filter. Try choosing another category above."
+      : "Explore the official publications, literary folios, broadsheets, and newsletters released by The Philippine Artisan.")
 
   const currentSoftCopyUrl = selectedRelease
     ? selectedRelease.soft_copy_url || selectedRelease.pdf_url || selectedRelease.link
@@ -259,18 +259,13 @@ const ReleasesPage = () => {
         {/* Selected Release Header & Details */}
         <div className="Releases-Title">
           <div className="Releases-Title-Type">
-            <div className="Releases-Meta-Badges">
-              {selectedRelease?.release_type && (
-                <span className="Releases-Type-Badge">
-                  {selectedRelease.release_type.replace(/_/g, " ")}
-                </span>
-              )}
-              {selectedRelease?.academic_year && (
+            {selectedRelease?.academic_year && (
+              <div className="Releases-Meta-Badges">
                 <span className="Releases-Year-Badge">
                   {selectedRelease.academic_year}
                 </span>
-              )}
-            </div>
+              </div>
+            )}
 
             <p className="Releases-Subtitle-Text">{currentSubtitle}</p>
             <span className="Releases-Main-Title">{currentTitle}</span>
@@ -284,12 +279,8 @@ const ReleasesPage = () => {
                   rel="noopener noreferrer"
                   className="Releases-Download-Button"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                  <span>Download Full Soft Copy (PDF)</span>
+
+                  <span>Download Full Soft Copy</span>
                 </a>
               </div>
             )}
@@ -361,7 +352,7 @@ const ReleasesPage = () => {
                 <p>
                   {loading
                     ? "Loading publication preview..."
-                    : "No flipbook pages uploaded for this release yet. Please check back soon!"}
+                    : "No flipbook pages uploaded for this release yet."}
                 </p>
               </div>
             )}
@@ -374,17 +365,11 @@ const ReleasesPage = () => {
             <div className="Catalog-Header-Bar">
               <div>
                 <h2 className="Catalog-Section-Title">Releases Catalog</h2>
-                <p className="Catalog-Section-Subtitle">
-                  {selectedCategory === "ALL"
-                    ? `Displaying all ${filteredReleases.length} publications`
-                    : `Displaying ${filteredReleases.length} ${selectedCategory.replace(/_/g, " ")} publication${filteredReleases.length === 1 ? '' : 's'}`}
-                  {selectedYear !== "ALL" ? ` • ${selectedYear}` : ""}
-                </p>
               </div>
 
               {filteredReleases.length > 1 && (
                 <span className="Catalog-Hint-Text">
-                  Click any issue to open in flipbook viewer
+                  Click any issue to open as a flipbook
                 </span>
               )}
             </div>
@@ -393,7 +378,6 @@ const ReleasesPage = () => {
               {filteredReleases.length > 0 ? (
                 filteredReleases.map(rel => {
                   const isSelected = selectedRelease?.id === rel.id
-                  const typeLabel = (rel.release_type || "Release").replace(/_/g, " ")
 
                   return (
                     <div
@@ -423,12 +407,11 @@ const ReleasesPage = () => {
                           </div>
                         )}
 
-                        <div className="Card-Overlay-Badges">
-                          <span className="Card-Type-Badge">{typeLabel}</span>
-                          {rel.academic_year && (
+                        {rel.academic_year && (
+                          <div className="Card-Overlay-Badges">
                             <span className="Card-Year-Badge">{rel.academic_year}</span>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
 
                       <div className="Releases-Card-Meta">
@@ -461,7 +444,7 @@ const ReleasesPage = () => {
                         setSelectedYear("ALL")
                       }}
                     >
-                      View All Publications
+                      View All Releases
                     </button>
                   )}
                 </div>
