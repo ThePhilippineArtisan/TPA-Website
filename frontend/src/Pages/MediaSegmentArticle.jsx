@@ -341,6 +341,11 @@ const MediaSegmentArticle = () => {
                                 </div>
                             )}
 
+                            <div className = "Sidebar-Fast-News-Section" style={{ marginBottom: "1.5rem" }}>
+                                <hr></hr>
+                                <VerticalFastNews isHorizontal = {!hasBody} />
+                            </div>
+
                             <h5> Published on <span> {formatDateReadable(articleDetails.published_at)} </span></h5>
 
                             <h5> {articleDetails.word_count || 0} <span>words</span> | {Math.ceil((articleDetails.word_count || 0) / 200)} <span>min read</span></h5>
@@ -360,10 +365,6 @@ const MediaSegmentArticle = () => {
                                     </span>
                                 </h5>
                             )}
-                            <div className = "Sidebar-Fast-News-Section">
-                                <hr></hr>
-                                <VerticalFastNews isHorizontal = {!hasBody} />
-                            </div>
                         </div>
                     </div>
                     {hasBody && (

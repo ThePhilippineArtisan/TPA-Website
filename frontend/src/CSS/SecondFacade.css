@@ -368,3 +368,592 @@ a {
 .Large-Photo-News:hover .Vertical-Divider {
     height: 3rem;
 }
+
+.More-Stories-Grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    width: 100%;
+    margin-bottom: 2rem;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+.Story-Card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+.Story-Card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    background-color: white;
+    border-color: var(--primary-blue);
+}
+
+.Story-Card-Image-Wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #0b1a2e;
+    flex-shrink: 0;
+}
+
+.Story-Card-Image-Wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: object-position 1s, transform 1s ease-in-out;
+}
+
+.Story-Card:hover .Story-Card-Image-Wrapper img {
+    object-position: 90% 90%;
+}
+
+.Story-Card-Tag {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm, 4px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.Story-Card-Content {
+    display: flex;
+    flex-direction: column;
+    padding: 1.15rem 1.25rem;
+    gap: 0.45rem;
+    flex: 1;
+    box-sizing: border-box;
+    justify-content: flex-start;
+}
+
+.Story-Card-Headline {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.35;
+    height: 2.7em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease;
+}
+
+.Story-Card:hover .Story-Card-Headline {
+    color: var(--primary-blue);
+}
+
+.Story-Card-Excerpt {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    height: 3em;
+    color: var(--text-muted);
+    margin: 0.25rem 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Photo-Story-Card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+.Photo-Story-Card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    background-color: white;
+    border-color: var(--primary-blue);
+}
+
+.Photo-Story-Main-Image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #0b1a2e;
+    flex-shrink: 0;
+}
+
+.Photo-Story-Main-Image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: object-position 1s, transform 1s ease-in-out;
+}
+
+.Photo-Story-Card:hover .Photo-Story-Main-Image img {
+    object-position: 90% 90%;
+}
+
+.Photo-Count-Badge {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    background: rgba(11, 26, 46, 0.85);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm, 4px);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    z-index: 1;
+}
+
+.Photo-Preview-Strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+    background-color: rgba(2, 101, 169, 0.06);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.Photo-Thumb-Wrapper {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #0b1a2e;
+}
+
+.Photo-Thumb-Wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.Photo-Story-Card:hover .Photo-Thumb-Wrapper img {
+    transform: scale(1.05);
+}
+
+.Photo-Thumb-More-Overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 101, 169, 0.78);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 800;
+    backdrop-filter: blur(2px);
+}
+
+@media (max-width: 1024px) {
+    .More-Stories-Grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .More-Stories-Grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   NEWS SECTION: LEAD + 3 & THE LIST THING LAYOUTS
+   ========================================================================== */
+
+.News-Section-Container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Layout 1: Lead Story + 3 Side Stack --- */
+.News-Lead-Stack-Layout {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: clamp(1.25rem, 2vw, 2rem);
+    width: 100%;
+    margin-bottom: 2.5rem;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+@media (max-width: 992px) {
+    .News-Lead-Stack-Layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.News-Hero-Card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.News-Hero-Card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    background-color: white;
+    border-color: var(--primary-blue);
+}
+
+.News-Hero-Image-Wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #0b1a2e;
+}
+
+.News-Hero-Image-Wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.News-Hero-Card:hover .News-Hero-Image-Wrapper img {
+    transform: scale(1.03);
+}
+
+.News-Hero-Content {
+    padding: clamp(1.2rem, 2vw, 1.8rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+}
+
+.News-Hero-Headline {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+}
+
+.News-Hero-Card:hover .News-Hero-Headline {
+    color: var(--primary-blue);
+}
+
+.News-Hero-Excerpt {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0.25rem 0 0.5rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.News-Read-More-Btn {
+    margin-top: auto;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.News-Side-Stack-Column {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 1.2vw, 1rem);
+    height: 100%;
+    justify-content: space-between;
+}
+
+.News-Stack-Item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-smooth);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    flex: 1;
+}
+
+.News-Stack-Item:hover {
+    transform: translateX(4px);
+    background-color: white;
+    border-color: var(--primary-blue);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.News-Stack-Image-Wrapper {
+    position: relative;
+    width: 120px;
+    height: 85px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #0b1a2e;
+}
+
+.News-Stack-Image-Wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.News-Stack-Item:hover .News-Stack-Image-Wrapper img {
+    transform: scale(1.06);
+}
+
+.News-Stack-Tag {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background-color: rgba(2, 101, 169, 0.9);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.News-Stack-Content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    overflow: hidden;
+}
+
+.News-Stack-Headline {
+    font-family: var(--font-display);
+    font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease;
+}
+
+.News-Stack-Item:hover .News-Stack-Headline {
+    color: var(--primary-blue);
+}
+
+/* --- Layout 2: The List Thing (Horizontal Wire Section) --- */
+.News-Wire-Section {
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.News-Wire-Section-Header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.News-Wire-Section-Title {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.3vw, 1.25rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.News-Wire-Section-Line {
+    flex: 1;
+    border: none;
+    height: 2px;
+    background: rgba(2, 101, 169, 0.25);
+    margin: 0;
+}
+
+.News-Wire-List {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    width: 100%;
+}
+
+.News-Wire-Row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    padding: 1.1rem 1.25rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-smooth);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.News-Wire-Row:hover {
+    transform: translateY(-2px);
+    background-color: white;
+    border-color: var(--primary-blue);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.News-Wire-Thumb-Wrapper {
+    position: relative;
+    width: clamp(130px, 22%, 220px);
+    aspect-ratio: 16 / 10;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #0b1a2e;
+}
+
+.News-Wire-Thumb-Wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.News-Wire-Row:hover .News-Wire-Thumb-Wrapper img {
+    transform: scale(1.05);
+}
+
+.News-Wire-Body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    overflow: hidden;
+}
+
+.News-Wire-Headline {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+}
+
+.News-Wire-Row:hover .News-Wire-Headline {
+    color: var(--primary-blue);
+}
+
+.News-Wire-Excerpt {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 640px) {
+    .News-Wire-Row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .News-Wire-Thumb-Wrapper {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+}

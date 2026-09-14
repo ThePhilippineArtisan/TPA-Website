@@ -954,4 +954,24 @@ dialog {
     text-align: center;
 }
 
+@media (max-width: 640px) {
+    .Entire-Page {
+        padding: 0.75rem;
+    }
+
+    .Editor-Rectangle {
+        padding: 1rem;
+    }
+
+    .Text-Formatting-Section {
+        justify-content: flex-start;
+        gap: 0.35rem;
+        padding: 0.5rem;
+    }
+
+    .Text-Formatting-Section img {
+        height: 24px;
+    }
+}
+
 

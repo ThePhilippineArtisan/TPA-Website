@@ -651,7 +651,14 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                                 onClick={() => handleToggleAuthorPseudonym(author.staff_id)}
                                                                 title="Toggle whether this article publishes under Real Name or Pen Name"
                                                             >
-                                                                {isUsingPseudonym ? `✓ Pen Name (${author.staff_pseudonym})` : `Real Name`}
+                                                                {isUsingPseudonym ? (
+                                                                    <>
+                                                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                                            <polyline points="20 6 9 17 4 12"/>
+                                                                        </svg>
+                                                                        <span>Pen Name ({author.staff_pseudonym})</span>
+                                                                    </>
+                                                                ) : `Real Name`}
                                                             </button>
                                                         )}
 
@@ -661,7 +668,10 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                             onClick={() => setStaffMemberToEdit(author)}
                                                             title="Edit this staff member's profile/pseudonym directly"
                                                         >
-                                                            ✎ Edit Staff
+                                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                                            </svg>
+                                                            <span>Edit Staff</span>
                                                         </button>
 
                                                         <button
@@ -669,8 +679,12 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                             className="Edit-Staff-Remove-Btn"
                                                             onClick={() => handleRemoveAuthor(author.staff_id)}
                                                             title="Remove from article byline"
+                                                            aria-label="Remove author"
                                                         >
-                                                            ✕
+                                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                                                <line x1="6" y1="6" x2="18" y2="18"/>
+                                                            </svg>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -729,7 +743,14 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                                 onClick={() => handleToggleMediaPseudonym(media.staff_id)}
                                                                 title="Toggle whether to credit under Real Name or Pen Name"
                                                             >
-                                                                {isUsingPseudonym ? `✓ Pen Name (${media.staff_pseudonym})` : `Real Name`}
+                                                                {isUsingPseudonym ? (
+                                                                    <>
+                                                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                                            <polyline points="20 6 9 17 4 12"/>
+                                                                        </svg>
+                                                                        <span>Pen Name ({media.staff_pseudonym})</span>
+                                                                    </>
+                                                                ) : `Real Name`}
                                                             </button>
                                                         )}
 
@@ -739,7 +760,10 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                             onClick={() => setStaffMemberToEdit(media)}
                                                             title="Edit this staff member's profile/pseudonym directly"
                                                         >
-                                                            ✎ Edit Staff
+                                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                                            </svg>
+                                                            <span>Edit Staff</span>
                                                         </button>
 
                                                         <button
@@ -747,8 +771,12 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                             className="Edit-Staff-Remove-Btn"
                                                             onClick={() => handleRemoveMediaProvider(media.staff_id)}
                                                             title="Remove from article credits"
+                                                            aria-label="Remove media provider"
                                                         >
-                                                            ✕
+                                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                                                <line x1="6" y1="6" x2="18" y2="18"/>
+                                                            </svg>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -828,9 +856,13 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                                     type="button"
                                                     className="Edit-Photo-Remove-Btn"
                                                     title="Remove photo"
+                                                    aria-label="Remove photo"
                                                     onClick={() => handleDeletePhoto(photoItem.id)}
                                                 >
-                                                    ✕
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                                    </svg>
                                                 </button>
                                             </div>
                                             <div className="Edit-Photo-Card-Actions">

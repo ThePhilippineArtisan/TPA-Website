@@ -155,9 +155,28 @@ hr {
 
 @media (max-width: 1024px) {
     .Below-Small-Photos {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 2rem;
     }
+
+    .Article-Sidebar {
+        order: -1;
+        width: 100%;
+    }
+}
+
+.Article-Bio-Card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.Staff-Bio-Text {
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .Article-Body {

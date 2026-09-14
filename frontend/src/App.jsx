@@ -20,6 +20,7 @@ const VideosPage = lazy(() => import('./Pages/VideosPage.jsx'))
 const LatestPosts = lazy(() => import('./Pages/LatestPosts.jsx'))
 const ReleasesPage = lazy(() => import('./Pages/ReleasesPage.jsx'))
 const StaffProfilePage = lazy(() => import('./Pages/StaffProfile.jsx'))
+const StaffDirectoryPage = lazy(() => import('./Pages/StaffDirectoryPage.jsx'))
 
 // AdminPortal Folder
 const AdminLogInPage = lazy(() => import('./AdminPortal/AdminPageLogIn.jsx'))
@@ -159,6 +160,13 @@ const App = () => {
             <Route path="/joseph-brian-balut" element={<PlaceholderArticlePage />} />
             <Route path="/latest" element={<LatestPosts />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/editorial-board" element={<StaffDirectoryPage initialCategory="editorial-board" />} />
+            <Route path="/senior-staffers" element={<StaffDirectoryPage initialCategory="senior-staffers" />} />
+            <Route path="/junior-staffers" element={<StaffDirectoryPage initialCategory="junior-staffers" />} />
+            <Route path="/staff" element={<StaffDirectoryPage initialCategory="all" />} />
+            <Route path="/staff/editorial-board" element={<StaffDirectoryPage initialCategory="editorial-board" />} />
+            <Route path="/staff/senior-staffers" element={<StaffDirectoryPage initialCategory="senior-staffers" />} />
+            <Route path="/staff/junior-staffers" element={<StaffDirectoryPage initialCategory="junior-staffers" />} />
             <Route path="/staff/:staffSlug" element={<StaffProfilePage />} />
             <Route path="/releases" element={<ReleasesPage />} />
 

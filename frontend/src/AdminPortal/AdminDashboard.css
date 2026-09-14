@@ -48,11 +48,11 @@
 }
 
 .Admin-Dashboard-BTN {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: clamp(0.75rem, 1.5vw, 1.25rem);
     padding: 1rem 0;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
 .Admin-Dashboard-BTN-Stats {
@@ -61,14 +61,10 @@
     align-items: center;
     flex-direction: column;
     text-align: center;
-
     font-family: var(--font-sans);
-
     padding: 0.85rem;
-    min-width: 130px;
-    flex: 1;
+    min-width: 0;
     background-color: white;
-
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
@@ -687,4 +683,36 @@
     overflow: auto;
     white-space: pre-wrap;
     word-break: break-all;
+}
+
+@media (max-width: 768px) {
+    .Admin-Dashboard-Header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .Create-Article-Button {
+        width: 100%;
+    }
+
+    .Create-Article-Button button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .Audit-Filters-Right {
+        width: 100%;
+    }
+
+    .Audit-Table-Select,
+    .Audit-Search-Input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .Admin-Dashboard-BTN {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

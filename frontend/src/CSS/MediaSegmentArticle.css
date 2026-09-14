@@ -176,18 +176,14 @@
     margin: 0.75rem 0;
 }
 
-/* Responsive layout adjustments for tablet & mobile */
 @media (max-width: 1024px) {
-    .Sidebar-Fast-News-Section {
-        display: none;
-    }
-
     .Media-Segment-Article-Below-Photo {
         flex-direction: column;
         width: 100%;
     }
 
     .Author-and-Details {
+        order: -1;
         width: 100%;
     }
 }

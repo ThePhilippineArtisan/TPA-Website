@@ -1,18 +1,32 @@
-.Manage-Articles-Page{
-    height: 87%;
+.Manage-Articles-Page {
+    min-height: 100%;
     width: 100%;
-    padding: 3rem;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: clamp(1rem, 2.5vw, 2.5rem);
+    box-sizing: border-box;
     font-family: var(--font-sans);
 }
 
-.Manage-Articles-Page-Header{
+.Manage-Articles-Page-Header {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    margin-bottom: 0.5rem;
 }
 
-.Manage-Articles-Page-Header p{
+.Manage-Articles-Page-Header h1 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-family: var(--font-serif);
+    margin: 0 0 0.25rem 0;
+    color: var(--text-dark);
+}
+
+.Manage-Articles-Page-Header p {
     color: var(--text-muted);
     font-weight: 300;
+    font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+    margin: 0;
 }
 
 .Manage-Article-Edit-Btn {

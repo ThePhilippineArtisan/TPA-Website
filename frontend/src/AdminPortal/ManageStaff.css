@@ -1,33 +1,45 @@
-.Manage-Staff-Page{
+.Manage-Staff-Page {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     flex: 1;
-    height: 90%;
+    min-height: 100%;
     width: 100%;
-    padding: 2rem;
-    margin-top: 1rem;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: clamp(1rem, 2.5vw, 2.5rem);
     box-sizing: border-box;
     font-family: var(--font-sans);
 }
 
-.Manage-Staff-Page-Header{
+.Manage-Staff-Page-Header {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 100%;
+    margin-bottom: 0.5rem;
 }
 
-.Manage-Staff-Page-Header p{
+.Manage-Staff-Page-Header h1 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-family: var(--font-serif);
+    margin: 0 0 0.25rem 0;
+    color: var(--text-dark);
+}
+
+.Manage-Staff-Page-Header p {
     color: var(--text-muted);
     font-weight: 300;
+    font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+    margin: 0;
 }
 
 .Admin-Search-Container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 0.75rem;
-    margin: 1rem 0;
-    width: 95%;
+    margin: 1.25rem 0;
+    width: 100%;
 }
 
 .Admin-Search-Input-Wrapper {
@@ -35,7 +47,8 @@
     display: flex;
     align-items: center;
     flex: 1;
-    max-width: 450px;
+    min-width: 240px;
+    max-width: 480px;
 }
 
 .Admin-Search-Icon {
@@ -78,63 +91,70 @@
     color: #334155;
 }
 
-.Manage-Staff-Grid-Container{
-    width: 95%;
+.Manage-Staff-Grid-Container {
+    width: 100%;
     max-width: 100%; 
-    
-    height: 85dvh;
+    max-height: calc(100vh - 220px);
+    min-height: 380px;
     border-radius: var(--radius-md);
     background-color: white;
-    box-shadow: 0 0 10px hsla(207, 15%, 12%, 0.089);
-    
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     overflow-x: auto; 
     overflow-y: auto;
-    
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--border-color);
 }
 
-.Manage-Staff-Table{
+.Manage-Staff-Table {
     width: 100%;
     min-width: max-content;
     border-collapse: collapse;
 }
 
-.Manage-Staff-Grid-Columns{
-    height: 60px;
-    
-    border-top-left-radius: var(--radius-md);
-    border-top-right-radius: var(--radius-md);
-
+.Manage-Staff-Grid-Columns {
+    height: 52px;
     border-bottom: 3px solid var(--primary-blue);
     background-color: var(--bg-light);
 }
 
-.Manage-Staff-Grid-Column{
-    max-width: 20ch;
+.Manage-Staff-Grid-Columns th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--bg-light);
+}
 
-    padding: 0rem 1rem;
+.Manage-Staff-Grid-Column {
+    max-width: 25ch;
+    padding: 0.6rem 1rem;
     text-align: center;
-
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
     color: var(--text-dark);
     font-weight: 700;
+    font-size: 0.85rem;
 }
 
-.long-column{
-    max-width: 20ch;
+.Manage-Staff-Grid-Column h4 {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.long-column {
+    max-width: 22ch;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .Manage-Staff-Grid-Row {
-    padding: 1rem;
+    padding: 0.85rem 1rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
     white-space: nowrap;
     color: var(--text-dark);
+    font-size: 0.88rem;
 }
 
 .Manage-Staff-Grid-Column:last-child,
@@ -170,4 +190,24 @@
 
 .Staff-Row-Edit-Btn:hover {
     background-color: #014c80;
+}
+
+@media (max-width: 768px) {
+    .Manage-Staff-Page {
+        padding: 1rem;
+    }
+
+    .Admin-Search-Container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .Admin-Search-Input-Wrapper {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .Manage-Staff-Grid-Container {
+        max-height: calc(100vh - 260px);
+    }
 }

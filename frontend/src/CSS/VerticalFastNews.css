@@ -14,15 +14,13 @@
     padding: 0.75rem 1rem;
     margin: 1.5rem 0rem;
 
-    height: 5rem;
+    min-height: 5rem;
     box-sizing: border-box;
 }
 
 .Vertical-Fast-News {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    justify-content: space-around;
 
 }
 
@@ -133,7 +131,6 @@
 .Vertical-Headlines {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.2rem;

@@ -136,7 +136,10 @@ const NeighboringArticles = ({ currentArticleId, publishedAt, isMediaSegment = f
                 {previousArticle ? (
                     <Link to={getArticleUrl(previousArticle)} className="Neighbor-Card Previous">
                         <div className="Neighbor-Direction">
-                            <span>← Previous {itemLabel}</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            <span>Previous {itemLabel}</span>
                         </div>
                         <div className="Neighbor-Content">
                             <img 
@@ -155,7 +158,12 @@ const NeighboringArticles = ({ currentArticleId, publishedAt, isMediaSegment = f
                     </Link>
                 ) : (
                     <div className="Neighbor-Card Empty">
-                        <span className="Neighbor-Direction">← Oldest {itemLabel}</span>
+                        <span className="Neighbor-Direction">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            <span>Oldest {itemLabel}</span>
+                        </span>
                         <p className="Empty-Text">You are viewing the oldest {itemLabel.toLowerCase()}.</p>
                     </div>
                 )}
@@ -163,7 +171,10 @@ const NeighboringArticles = ({ currentArticleId, publishedAt, isMediaSegment = f
                 {nextArticle ? (
                     <Link to={getArticleUrl(nextArticle)} className="Neighbor-Card Next">
                         <div className="Neighbor-Direction">
-                            <span>Next {itemLabel} →</span>
+                            <span>Next {itemLabel}</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
                         </div>
                         <div className="Neighbor-Content">
                             <img 
@@ -182,7 +193,12 @@ const NeighboringArticles = ({ currentArticleId, publishedAt, isMediaSegment = f
                     </Link>
                 ) : (
                     <div className="Neighbor-Card Empty">
-                        <span className="Neighbor-Direction">Latest {itemLabel} →</span>
+                        <span className="Neighbor-Direction">
+                            <span>Latest {itemLabel}</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </span>
                         <p className="Empty-Text">You are viewing the latest {itemLabel.toLowerCase()}.</p>
                     </div>
                 )}

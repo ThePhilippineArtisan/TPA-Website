@@ -177,6 +177,8 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -424,13 +426,56 @@
 }
 
 @media (max-width: 768px) {
+    .Calendar-Header-Row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .Calendar-Primary-Btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .Calendar-Stats-Bar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .Stat-Item {
+        min-width: 0;
+        padding: 0.75rem;
+    }
+
+    .Calendar-Controls-Bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .Calendar-Nav-Controls {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .Filter-Pills {
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.35rem;
+    }
+
     .Calendar-Grid {
         font-size: 0.75rem;
+        min-width: 680px;
     }
+
     .Calendar-Cell {
         min-height: 90px;
         padding: 0.3rem;
     }
+
     .Card-Header {
         display: none;
     }

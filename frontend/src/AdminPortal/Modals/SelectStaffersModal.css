@@ -323,3 +323,22 @@
 .Staff-Modal-Confirm-Btn:hover {
     background-color: #014c80;
 }
+
+@media (max-width: 640px) {
+    .Dialog-Box {
+        width: 96vw;
+        padding: 1rem;
+        max-height: 92dvh;
+    }
+
+    .Staff-Modal-Footer {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+
+    .Staff-Modal-Cancel-Btn,
+    .Staff-Modal-Confirm-Btn {
+        width: 100%;
+        text-align: center;
+    }
+}

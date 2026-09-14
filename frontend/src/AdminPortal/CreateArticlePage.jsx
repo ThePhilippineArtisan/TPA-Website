@@ -684,12 +684,17 @@ const CreateArticlePage = () => {
                                                         borderRadius: 'var(--radius-sm)',
                                                         cursor: 'pointer',
                                                         padding: '0.3rem 0.5rem',
-                                                        fontSize: '0.85rem',
-                                                        fontWeight: 'bold'
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center'
                                                     }}
                                                     title="Remove author"
+                                                    aria-label="Remove author"
                                                 >
-                                                    ✕
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                                    </svg>
                                                 </button>
                                             </div>
                                         </div>
@@ -771,12 +776,17 @@ const CreateArticlePage = () => {
                                                         borderRadius: 'var(--radius-sm)',
                                                         cursor: 'pointer',
                                                         padding: '0.3rem 0.5rem',
-                                                        fontSize: '0.85rem',
-                                                        fontWeight: 'bold'
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center'
                                                     }}
                                                     title="Remove media provider"
+                                                    aria-label="Remove media provider"
                                                 >
-                                                    ✕
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                                    </svg>
                                                 </button>
                                             </div>
                                         </div>
@@ -994,9 +1004,15 @@ const CreateArticlePage = () => {
                                             type="button"
                                             className="Side-Btn-Action Side-Btn-Delete"
                                             title="Remove pubmat cover"
+                                            aria-label="Remove pubmat cover"
                                             onClick={() => setSelectedPubmat(null)}
+                                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
                                         >
-                                            ✕ Remove
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                                <line x1="6" y1="6" x2="18" y2="18"/>
+                                            </svg>
+                                            <span>Remove</span>
                                         </button>
                                     </div>
                                 </div>
@@ -1027,18 +1043,24 @@ const CreateArticlePage = () => {
                                                 className="Side-Btn-Action Side-Btn-Arrow"
                                                 disabled={idx === 0}
                                                 title="Move up"
+                                                aria-label="Move up"
                                                 onClick={() => handleMoveImageUp(idx)}
                                             >
-                                                ▲
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                    <polyline points="18 15 12 9 6 15"/>
+                                                </svg>
                                             </button>
                                             <button
                                                 type="button"
                                                 className="Side-Btn-Action Side-Btn-Arrow"
                                                 disabled={idx === mediaImagePhoto.length - 1}
                                                 title="Move down"
+                                                aria-label="Move down"
                                                 onClick={() => handleMoveImageDown(idx)}
                                             >
-                                                ▼
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                    <polyline points="6 9 12 15 18 9"/>
+                                                </svg>
                                             </button>
                                             {(!isCoverPhoto) && (
                                                 <button
@@ -1054,9 +1076,13 @@ const CreateArticlePage = () => {
                                                 type="button"
                                                 className="Side-Btn-Action Side-Btn-Delete"
                                                 title="Remove image"
+                                                aria-label="Remove image"
                                                 onClick={() => handleRemoveImage(idx)}
                                             >
-                                                ✕
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
                                             </button>
                                         </div>
                                     </div>

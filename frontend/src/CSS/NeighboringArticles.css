@@ -76,12 +76,18 @@
 }
 
 .Neighbor-Direction {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
     color: #0265A9;
     margin-bottom: 0.75rem;
     letter-spacing: 0.5px;
+}
+.Neighbor-Card.Next .Neighbor-Direction {
+    justify-content: flex-end;
 }
 
 .Neighbor-Content {

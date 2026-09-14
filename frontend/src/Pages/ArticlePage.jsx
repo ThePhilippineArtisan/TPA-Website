@@ -259,9 +259,66 @@ const ArticlePage = () => {
                     </div>
                 )}
 
-                <div style={!hasBody ? { width: "100%" } : {}}>
+                <aside className="Article-Sidebar" style={!hasBody ? { width: "100%" } : {}}>
+                    {/* Author & Photojournalist Bios at the top */}
+                    {(authors.length > 0 || mediaProviders.length > 0) && (
+                        <div className="Article-Bio-Card" style={{ marginBottom: "1.5rem" }}>
+                            {authors.length > 0 && (
+                                <div style={{ marginBottom: mediaProviders.length > 0 ? "1.25rem" : "0" }}>
+                                    <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1.05rem" }}>
+                                        <span style={{ color: "var(--primary-blue)" }}>
+                                            {authors.length === 1 ? `About ${authors[0].displayName}` : "About the Authors"}
+                                        </span>
+                                    </h3>
+                                    {authors.map((auth, idx) => (
+                                        <div key={auth.staff_id || idx} style={{ marginBottom: idx < authors.length - 1 ? "1rem" : "0" }}>
+                                            {authors.length > 1 && (
+                                                <h4 style={{ color: "var(--primary-blue)", fontWeight: "bold", margin: "0 0 0.25rem 0", fontSize: "0.95rem" }}>
+                                                    {auth.displayName}
+                                                </h4>
+                                            )}
+                                            <p className="Staff-Bio-Text" style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.25rem 0", lineHeight: "1.5" }}>
+                                                {auth.staff_bio || "No bio available."}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {mediaProviders.length > 0 && (
+                                <div>
+                                    <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1.05rem" }}>
+                                        <span style={{ color: "var(--primary-blue)" }}>
+                                            {mediaProviders.length === 1 ? `About ${mediaProviders[0].displayName}` : "About the Photojournalists"}
+                                        </span>
+                                    </h3>
+                                    {mediaProviders.map((med, idx) => (
+                                        <div key={med.staff_id || idx} style={{ marginBottom: idx < mediaProviders.length - 1 ? "1rem" : "0" }}>
+                                            {mediaProviders.length > 1 && (
+                                                <h4 style={{ color: "var(--primary-blue)", fontWeight: "bold", margin: "0 0 0.25rem 0", fontSize: "0.95rem" }}>
+                                                    {med.displayName}
+                                                </h4>
+                                            )}
+                                            <p className="Staff-Bio-Text" style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.25rem 0", lineHeight: "1.5" }}>
+                                                {med.staff_bio || "No bio available."}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Vertical Fast News at the top alongside bio */}
+                    <div className="Sidebar-Fast-News-Section" style={{ marginBottom: "1.5rem" }}>
+                        <hr />
+                        <VerticalFastNews isHorizontal={!hasBody} />
+                    </div>
+
+                    <hr />
+
                     {articleDetails.article_source && (
-                        <h4 style={{ marginBottom: "1rem" }}>
+                        <h4 style={{ marginBottom: "0.75rem", fontSize: "0.85rem" }}>
                             <span>
                                 Source / Reference:{" "}
                                 <a 
@@ -276,16 +333,10 @@ const ArticlePage = () => {
                         </h4>
                     )}
 
-                    <h4>
+                    <h4 style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.25rem 0" }}>
                         {articleDetails.word_count || 0} words | {Math.ceil((articleDetails.word_count || 0) / 200)} minute read
                     </h4>
-
-                    <hr />
-
-                    <div style={{ marginTop: "1.5rem" }}>
-                        <VerticalFastNews isHorizontal={!hasBody} />
-                    </div>
-                </div>
+                </aside>
             </div>
 
             <div style={{ marginLeft: "10%", marginRight: "10%" }}>

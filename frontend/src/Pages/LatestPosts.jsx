@@ -15,12 +15,16 @@ const LatestPosts = () => {
     const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(true)
-    const [selectedFilters, setSelectedFilters] = useState([])
+    const [selectedFilters, setSelectedFilters] = useState(searchParams.get("filter") ? [searchParams.get("filter")] : [])
     const [visibleWeeks, setVisibleWeeks] = useState(3) // only three weeks
 
     useEffect(() => {
         const q = searchParams.get("q") || ""
         setSearchQuery(q)
+        const filterParam = searchParams.get("filter")
+        if (filterParam) {
+            setSelectedFilters([filterParam])
+        }
     }, [searchParams])
 
     useEffect(() => {

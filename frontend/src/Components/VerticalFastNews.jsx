@@ -40,7 +40,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     // Exclude media segments and take up to 6 fast news articles
                     const filteredArticles = data
                         .filter(article => !isMediaSegment(article.article_type))
-                        .slice(0, 6);
+                        .slice(0, 8);
                     setFastNewsArticles(filteredArticles);
                 }
             } catch (err) {
@@ -53,8 +53,8 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
         fetchFastNews();
     }, []);
 
-    const textOnlyFastNews = fastNewsArticles.slice(0, 3);
-    const mediaFastNews = fastNewsArticles.slice(3, 6);
+    const textOnlyFastNews = fastNewsArticles.slice(0, 4);
+    const mediaFastNews = fastNewsArticles.slice(4, 8);
 
     return (
         <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
@@ -62,11 +62,14 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
             <div style={{ padding: "2rem" }}>
                 <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }}> BULLETIN BOARD </Link>
 
-                <div className="Vertical-Side-News" style={{ margin: "1.5rem", border: "1px solid #0265A9" }}>
+                <div className="Vertical-Side-News Vertical-Substack-News" style={{ margin: "2rem 0rem", border: "1px solid #0265A9" }}>
+                    <hr className="Vertical-Divider-Side-News" />
+                    <a href="https://philartisan.substack.com/p/want-to-join-the-philippine-artisan" target="_blank" rel="noopener noreferrer">
 
-                    <a href="https://youtube.com/@AvoirJoseph" target="_blank" rel="noopener noreferrer">
-                        Want to join the Philippine Artisan?
-                        Click <span style={{ color: '#0265A9' }}>here</span> to be included in the list of our future applicants!
+                        <p style={{ padding: "1rem 0rem" }}> Want to join the Philippine Artisan? </p>
+
+                        <p>Click <span style={{ color: '#0265A9' }}>here</span> to be notified when applications are open!</p>
+
                     </a>
                 </div>
 
@@ -93,6 +96,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                         <span>Subscribe to our weekly newsletter</span>
                     </a>
                 </div>
+
             </div>
 
             <div className="Vertical-Fast-News">
@@ -106,7 +110,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     ) : fastNewsArticles.length === 0 ? (
                         <p style={{ fontSize: "0.85rem", color: "#666", padding: "1rem 0" }}>No fast news available.</p>
                     ) : (
-                        (textOnlyFastNews.length > 0 ? textOnlyFastNews : fastNewsArticles.slice(0, 3)).map((article) => (
+                        (textOnlyFastNews.length > 0 ? textOnlyFastNews : fastNewsArticles.slice(0, 4)).map((article) => (
                             <Link to={getArticleUrl(article)} className="Vertical-Side-News" key={article.article_id}>
                                 <hr className="Vertical-Divider-Side-News" />
                                 <div className="Vertical-Headlines">
@@ -154,7 +158,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 

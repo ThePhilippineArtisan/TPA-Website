@@ -45,14 +45,16 @@ const NewsletterSubscribe = ({
                 </div>
 
                 <div className="tpa-newsletter-iframe-wrapper">
-                    <iframe
-                        src="https://philartisan.substack.com/embed"
+                    <a
+                        href="https://philartisan.substack.com/embed"
                         className="tpa-newsletter-iframe"
                         title="The Philippine Artisan Newsletter Subscription"
-                        frameBorder="0"
-                        scrolling="no"
-                        loading="lazy"
-                    />
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <img src="https://philartisan.substack.com/embed"
+                            alt="The Philippine Artisan Newsletter Subscription"
+                        />
+                    </a>
                 </div>
             </div>
         </section>

@@ -1,11 +1,22 @@
-.Admin-Page-Layout{
+.Admin-Page-Layout {
     display: flex;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
     background: linear-gradient(135deg, #f8fafc 0%, #edf5fa 50%, #e1eff8 100%);
-
 }
 
-.Display-Main-Content{
+.Display-Main-Content {
     flex: 1;
+    min-width: 0;
+    width: 100%;
     box-sizing: border-box;    
-    font-family: var(--font-sans)
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .Admin-Page-Layout {
+        flex-direction: column;
+    }
 }

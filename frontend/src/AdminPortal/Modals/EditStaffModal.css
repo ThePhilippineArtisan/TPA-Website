@@ -218,3 +218,26 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+@media (max-width: 640px) {
+    .Edit-Modal-Card {
+        padding: 1.15rem;
+        width: 96vw;
+        max-height: 92dvh;
+    }
+
+    .Edit-Modal-Form-Row {
+        grid-template-columns: 1fr;
+    }
+
+    .Edit-Modal-Actions {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+
+    .Edit-Btn-Cancel,
+    .Edit-Btn-Save {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -298,7 +298,7 @@ const AdminDashboard = () => {
                             <p> Manage Pubmats </p>
                         </Link>
                         <Link to="/admin/audit-logs" style={{ textDecoration: "none", color: "inherit" }} className="Admin-Quick-Actions">
-                            <p> 📋 View Activity & Audit Logs </p>
+                            <p> View Activity & Audit Logs </p>
                         </Link>
                     </div>
                 </div>
@@ -364,11 +364,37 @@ const AdminDashboard = () => {
                                                 fontWeight: "800",
                                                 padding: "0.2rem 0.5rem",
                                                 borderRadius: "4px",
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: "0.3rem",
                                                 background: log.action === "INSERT" ? "#dcfce7" : log.action === "UPDATE" ? "#e0f2fe" : "#fee2e2",
                                                 color: log.action === "INSERT" ? "#166534" : log.action === "UPDATE" ? "#0369a1" : "#991b1b"
                                             }}
                                         >
-                                            {log.action === "INSERT" ? "+ Created" : log.action === "UPDATE" ? "✎ Edited" : "✕ Deleted"}
+                                            {log.action === "INSERT" && (
+                                                <>
+                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                                    </svg>
+                                                    <span>Created</span>
+                                                </>
+                                            )}
+                                            {log.action === "UPDATE" && (
+                                                <>
+                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                                    </svg>
+                                                    <span>Edited</span>
+                                                </>
+                                            )}
+                                            {log.action === "DELETE" && (
+                                                <>
+                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                                    </svg>
+                                                    <span>Deleted</span>
+                                                </>
+                                            )}
                                         </span>
                                         <span style={{ fontSize: "0.75rem", fontWeight: "700", color: "#64748b", background: "#f1f5f9", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
                                             {log.table_name}
