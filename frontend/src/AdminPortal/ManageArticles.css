@@ -66,3 +66,211 @@
     color: #0f172a;
     border-color: #94a3b8;
 }
+
+/* Search & Controls grouping */
+.Manage-Articles-Search-Container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.Manage-Articles-Controls-Group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.Manage-Articles-Filter-Item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 500;
+}
+
+.Manage-Articles-Select {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #1e293b;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: var(--radius-sm, 4px);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.Manage-Articles-Select:focus {
+    border-color: var(--primary-blue, #0265A9);
+}
+
+.Manage-Articles-Refresh-Btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.Manage-Articles-Refresh-Btn:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+/* Status Badges */
+.Article-Status-Badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.Article-Status-Badge.status-published {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.Article-Status-Badge.status-draft {
+    background-color: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+/* Pagination container and controls */
+.Manage-Articles-Pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding: 0.85rem 0.25rem;
+}
+
+.Pagination-Info {
+    font-size: 0.88rem;
+    color: #475569;
+}
+
+.Pagination-Filter-Note {
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+.Pagination-Controls-Wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.Pagination-Nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.Pagination-Btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: var(--radius-sm, 4px);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.Pagination-Btn:hover:not(:disabled) {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.Pagination-Btn.active {
+    background-color: var(--primary-blue, #0265A9);
+    border-color: var(--primary-blue, #0265A9);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.Pagination-Btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: #f8fafc;
+}
+
+.Pagination-Ellipsis {
+    padding: 0 0.35rem;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    user-select: none;
+}
+
+.Pagination-Jump {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.Pagination-Jump input {
+    width: 50px;
+    padding: 0.25rem 0.35rem;
+    font-size: 0.82rem;
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: var(--radius-sm, 4px);
+    text-align: center;
+    outline: none;
+}
+
+.Pagination-Jump input:focus {
+    border-color: var(--primary-blue, #0265A9);
+}
+
+@media (max-width: 768px) {
+    .Manage-Articles-Search-Container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .Manage-Articles-Controls-Group {
+        justify-content: space-between;
+    }
+
+    .Manage-Articles-Pagination {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    .Pagination-Controls-Wrapper {
+        justify-content: center;
+    }
+}
