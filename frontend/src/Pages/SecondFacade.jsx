@@ -151,7 +151,7 @@ const SecondFacade = () => {
                         if (reservedIds.has(art.article_id)) return false;
                         if (isMediaSegment(art.article_type)) return false;
                         const mediaCount = (art.article_media && art.article_media.length) || 0;
-                        return mediaCount > 1 || art.article_type === "IN_PHOTOS";
+                        return mediaCount > 1 || art.article_type === "IN_PHOTOS" || art.article_type === "HIGHLIGHTS";
                     }).slice(0, 3);
 
                     setPhotoArticles(multiPhotoArticles);

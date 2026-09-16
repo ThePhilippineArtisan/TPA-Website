@@ -54,6 +54,8 @@ export const getMediaSegmentLabel = (type) => {
         "TODAY_IN_HISTORY": "Today in History",
         "CALL_FOR_APPLICATIONS": "Call for Applications",
         "CALL_FOR_SUBMISSIONS": "Call for Submissions",
+        "HIGHLIGHTS": "Highlights",
+        "IN_PHOTOS": "In Photos",
         "NULL": "Standard Article",
         "NONE": "Standard Article"
     }
@@ -68,6 +70,8 @@ export const isFastNewsCardType = (type) => {
         "JUST_IN",
         "WALANG_PASOK",
         "LOOK",
+        "HIGHLIGHTS",
+        "IN_PHOTOS",
         "ANNOUNCEMENT",
         "BREAKING_NEWS",
         "CLOSURE_REPORT",

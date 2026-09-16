@@ -31,6 +31,8 @@ const ARTICLE_TYPES = [
     "TODAY_IN_HISTORY",
     "CALL_FOR_APPLICATIONS",
     "CALL_FOR_SUBMISSIONS",
+    "HIGHLIGHTS",
+    "IN_PHOTOS",
     "MAKATA_MONDAYS",
     "TEK_TUESDAY",
     "WANKJOB_WEDNESDAY",
@@ -484,7 +486,13 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             onClose()
         } catch (err) {
             console.error("Error updating article:", err)
-            setErrorMessage(err.message || "Failed to update article. Please try again.")
+            if (err.message && err.message.includes("invalid input value for enum article_type")) {
+                setErrorMessage(
+                    `Database update required: The selected article type (${articleType}) is not yet added to your PostgreSQL enum in Supabase. Please run this in your Supabase SQL Editor: ALTER TYPE public.article_type ADD VALUE IF NOT EXISTS '${articleType}';`
+                )
+            } else {
+                setErrorMessage(err.message || "Failed to update article. Please try again.")
+            }
         } finally {
             setSaving(false)
         }
@@ -555,8 +563,12 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                                     <option value="ALERT">Alert</option>
                                     <option value="ERRATUM">Erratum</option>
                                 </optgroup>
-                                <optgroup label="Fast News & Updates">
+                                <optgroup label="Look & Highlights">
                                     <option value="LOOK">Look</option>
+                                    <option value="HIGHLIGHTS">Highlights</option>
+                                    <option value="IN_PHOTOS">In Photos</option>
+                                </optgroup>
+                                <optgroup label="Fast News & Updates">
                                     <option value="ICYMI">ICYMI</option>
                                     <option value="JUST_IN">Just In</option>
                                     <option value="HAPPENING_NOW">Happening Now</option>

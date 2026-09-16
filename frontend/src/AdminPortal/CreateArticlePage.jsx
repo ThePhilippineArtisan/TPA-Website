@@ -158,6 +158,9 @@ const CreateArticlePage = () => {
             } else if (e.key === "u" || e.key === "U") {
                 e.preventDefault()
                 executeCommand("underline")
+            } else if ((e.key === "h" || e.key === "H") && e.shiftKey) {
+                e.preventDefault()
+                handleHighlight()
             }
         }
     }
@@ -635,8 +638,13 @@ const CreateArticlePage = () => {
                                 <option value="ERRATUM"> ERRATUM </option>
                             </optgroup>
 
-                            <optgroup label="Fast News & Updates">
+                            <optgroup label="Look & Highlights">
                                 <option value="LOOK"> LOOK </option>
+                                <option value="HIGHLIGHTS"> HIGHLIGHTS </option>
+                                <option value="IN_PHOTOS"> IN PHOTOS </option>
+                            </optgroup>
+
+                            <optgroup label="Fast News & Updates">
                                 <option value="ICYMI"> ICYMI </option>
                                 <option value="JUST_IN"> JUST IN </option>
                                 <option value="HAPPENING_NOW"> HAPPENING NOW </option>
