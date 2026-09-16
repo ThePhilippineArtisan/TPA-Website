@@ -49,7 +49,13 @@ export const getMediaSegmentLabel = (type) => {
         "TALA_THURSDAY": "Tala Thursday",
         "FEATURES_FRIDAY": "Features Friday",
         "STREAMING_SATURDAY": "Streaming Saturday",
-        "SPORTS_SUNDAY": "Sports Sunday"
+        "SPORTS_SUNDAY": "Sports Sunday",
+        "SPECIAL_POSTINGS": "Special Postings",
+        "TODAY_IN_HISTORY": "Today in History",
+        "CALL_FOR_APPLICATIONS": "Call for Applications",
+        "CALL_FOR_SUBMISSIONS": "Call for Submissions",
+        "NULL": "Standard Article",
+        "NONE": "Standard Article"
     }
     return mapping[type.toUpperCase()] || type
 }
@@ -72,7 +78,11 @@ export const isFastNewsCardType = (type) => {
         "ICYMI",
         "HAPPENING_NOW",
         "DEVELOPING_STORY",
-        "ERRATUM"
+        "ERRATUM",
+        "SPECIAL_POSTINGS",
+        "TODAY_IN_HISTORY",
+        "CALL_FOR_APPLICATIONS",
+        "CALL_FOR_SUBMISSIONS"
     ]
     return cardTypes.includes(type.toUpperCase())
 }

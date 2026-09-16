@@ -27,6 +27,10 @@ const ARTICLE_TYPES = [
     "SPORTS_NEWS",
     "DEVELOPING_STORY",
     "ERRATUM",
+    "SPECIAL_POSTINGS",
+    "TODAY_IN_HISTORY",
+    "CALL_FOR_APPLICATIONS",
+    "CALL_FOR_SUBMISSIONS",
     "MAKATA_MONDAYS",
     "TEK_TUESDAY",
     "WANKJOB_WEDNESDAY",
@@ -415,7 +419,7 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             const updates = {
                 article_headline: trimmedHeadline,
                 slug_headline: newSlug,
-                article_type: articleType,
+                article_type: (articleType && articleType !== "NULL") ? articleType : null,
                 is_published: isPublished,
                 published_at: isoPublishedAt,
                 article_tag1: tag1.trim() || null,
@@ -529,16 +533,56 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
 
                     <div className="Edit-Modal-Form-Row">
                         <div className="Edit-Form-Group">
-                            <label>Article Type / Section *</label>
+                            <label>Article Type / Section</label>
                             <select
-                                value={articleType}
-                                onChange={(e) => setArticleType(e.target.value)}
+                                value={articleType || "NULL"}
+                                onChange={(e) => setArticleType(e.target.value === "NULL" ? null : e.target.value)}
                             >
-                                {ARTICLE_TYPES.map((type) => (
-                                    <option key={type} value={type}>
-                                        {replaceUnderscore(type)}
-                                    </option>
-                                ))}
+                                <optgroup label="General">
+                                    <option value="NULL">None / Standard Article</option>
+                                </optgroup>
+                                <optgroup label="Announcements & Special Postings">
+                                    <option value="SPECIAL_POSTINGS">Special Postings</option>
+                                    <option value="TODAY_IN_HISTORY">Today in History</option>
+                                    <option value="CALL_FOR_APPLICATIONS">Call for Applications</option>
+                                    <option value="CALL_FOR_SUBMISSIONS">Call for Submissions</option>
+                                    <option value="ANNOUNCEMENT">Announcement</option>
+                                    <option value="OFFICIAL_STATEMENT">Official Statement</option>
+                                    <option value="CLOSURE_REPORT">Closure Report</option>
+                                    <option value="ELECTION_UPDATES">Election Updates</option>
+                                    <option value="WALANG_PASOK">Walang Pasok</option>
+                                    <option value="ADVISORY">Advisory</option>
+                                    <option value="ALERT">Alert</option>
+                                    <option value="ERRATUM">Erratum</option>
+                                </optgroup>
+                                <optgroup label="Fast News & Updates">
+                                    <option value="LOOK">Look</option>
+                                    <option value="ICYMI">ICYMI</option>
+                                    <option value="JUST_IN">Just In</option>
+                                    <option value="HAPPENING_NOW">Happening Now</option>
+                                    <option value="BREAKING_NEWS">Breaking News</option>
+                                    <option value="DEVELOPING_STORY">Developing Story</option>
+                                </optgroup>
+                                <optgroup label="News Beats">
+                                    <option value="LOCAL_NEWS">Local News</option>
+                                    <option value="UNIVERSITY_NEWS">University News</option>
+                                    <option value="NATIONAL_NEWS">National News</option>
+                                    <option value="INTERNATIONAL_NEWS">International News</option>
+                                    <option value="SPORTS_NEWS">Sports News</option>
+                                </optgroup>
+                                <optgroup label="Weekly Media Segments">
+                                    <option value="MAKATA_MONDAYS">Makata Mondays</option>
+                                    <option value="TEK_TUESDAY">Tek Tuesday</option>
+                                    <option value="WANKJOB_WEDNESDAY">Wankjob Wednesday</option>
+                                    <option value="TALA_THURSDAY">Tala Thursday</option>
+                                    <option value="FEATURES_FRIDAY">Features Friday</option>
+                                    <option value="STREAMING_SATURDAY">Streaming Saturday</option>
+                                    <option value="SPORTS_SUNDAY">Sports Sunday</option>
+                                </optgroup>
+                                <optgroup label="Opinion & Columns">
+                                    <option value="OPINION">Opinion</option>
+                                    <option value="EDITORIAL">Editorial</option>
+                                </optgroup>
                             </select>
                         </div>
 

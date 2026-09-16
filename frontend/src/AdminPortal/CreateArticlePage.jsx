@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { supabase } from "../supabaseClient"
 import { replaceUnderscore, slugify } from "../utils/slugifyUtils"
 import { compressImage, uploadToR2Storage, generateSafeFilename } from "../utils/imageUtils.js"
@@ -24,9 +24,8 @@ import StaffModal from "./Modals/SelectStaffersModal.jsx"
 import SelectPubmatModal from "./Modals/SelectPubmatModal.jsx"
 
 const CreateArticlePage = () => {
-
     // container for all staff
-    const [staff, setStaff] = useState([]);
+    const [staff, setStaff] = useState([])
 
     // fetch all staffers with qualifiers
     useEffect(() => {
@@ -38,25 +37,27 @@ const CreateArticlePage = () => {
                 .order('staff_order', { ascending: true })
 
             if (error) {
-                console.log('Error fetching staffers: ', error)
+                console.error('Error fetching staffers: ', error)
             } else {
-                setStaff(data)
+                setStaff(data || [])
             }
         }
 
-        fetchStaff() // everytime you initiate fetchStaff, you call it immediately after before component can be seen
+        fetchStaff()
     }, [])
 
     // container for selected authors and media providers
     const [selectedAuthors, setSelectedAuthors] = useState([])
     const [selectedMediaProviders, setSelectedMediaProviders] = useState([])
 
-    // container for headline and body, initially empty string
+    // container for headline and body
     const [headline, setHeadline] = useState("")
     const [body, setBody] = useState("")
     const [articleType, setArticleType] = useState("LOOK")
+    const [isHtmlMode, setIsHtmlMode] = useState(false)
+    const editorRef = useRef(null)
 
-    // container for photo/s, initially empty array
+    // container for photo/s
     const [mediaImagePhoto, setMediaImagePhoto] = useState([])
 
     // Reusable Pubmat for single photo posts / storage saving
@@ -75,6 +76,148 @@ const CreateArticlePage = () => {
     const [compressingCount, setCompressingCount] = useState(0)
     const [uploadStatusText, setUploadStatusText] = useState("")
     const [draggedPhotoIndex, setDraggedPhotoIndex] = useState(null)
+
+    // Modal states for authors and media providers
+    const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false)
+    const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
+
+    const [scheduledTime, setScheduledTime] = useState("")
+    const [isUploading, setIsUploading] = useState(false)
+    const [publishedUrl, setPublishedUrl] = useState("")
+
+    const countWords = (htmlString) => {
+        if (!htmlString) return 0
+        const cleanText = htmlString.replace(/<\/?[^>]+(>|$)/g, " ")
+        const words = cleanText.trim().split(/\s+/)
+        return words[0] === "" ? 0 : words.length
+    }
+
+    // Rich Text Formatting execution
+    const executeCommand = (command, value = null) => {
+        if (isHtmlMode) return
+        if (editorRef.current) {
+            editorRef.current.focus()
+        }
+        document.execCommand(command, false, value)
+        if (editorRef.current) {
+            setBody(editorRef.current.innerHTML)
+        }
+    }
+
+    const handleHighlight = () => {
+        if (isHtmlMode) return
+        const selection = window.getSelection()
+        if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+            alert("Please highlight some text first to apply highlight.")
+            return
+        }
+        try {
+            const range = selection.getRangeAt(0)
+            const mark = document.createElement("mark")
+            mark.className = "Article-Highlight"
+            mark.style.backgroundColor = "#fef08a"
+            mark.style.color = "#854d0e"
+            mark.style.padding = "2px 4px"
+            mark.style.borderRadius = "3px"
+            range.surroundContents(mark)
+            if (editorRef.current) {
+                setBody(editorRef.current.innerHTML)
+            }
+        } catch (err) {
+            document.execCommand("hiliteColor", false, "#fef08a")
+            if (editorRef.current) {
+                setBody(editorRef.current.innerHTML)
+            }
+        }
+    }
+
+    const handleInsertEmDash = () => {
+        if (isHtmlMode) {
+            setBody(prev => prev + "—")
+            return
+        }
+        if (editorRef.current) editorRef.current.focus()
+        document.execCommand("insertText", false, "—")
+        if (editorRef.current) setBody(editorRef.current.innerHTML)
+    }
+
+    const handleBlockquote = () => {
+        if (isHtmlMode) return
+        executeCommand("formatBlock", "<blockquote>")
+    }
+
+    // Keyboard shortcuts (Ctrl+B, Ctrl+I, Ctrl+U)
+    const handleEditorKeyDown = (e) => {
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === "b" || e.key === "B") {
+                e.preventDefault()
+                executeCommand("bold")
+            } else if (e.key === "i" || e.key === "I") {
+                e.preventDefault()
+                executeCommand("italic")
+            } else if (e.key === "u" || e.key === "U") {
+                e.preventDefault()
+                executeCommand("underline")
+            }
+        }
+    }
+
+    // Smart Paste Sanitizer
+    const handleSmartPaste = (e) => {
+        if (isHtmlMode) return
+        e.preventDefault()
+
+        const clipboardData = e.clipboardData || window.clipboardData
+        const pastedHtml = clipboardData.getData("text/html")
+        const pastedText = clipboardData.getData("text/plain")
+
+        if (pastedHtml) {
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(pastedHtml, "text/html")
+
+            const junkElements = doc.body.querySelectorAll("script, style, meta, link, xml")
+            junkElements.forEach(el => el.remove())
+
+            const allElements = doc.body.querySelectorAll("*")
+            allElements.forEach(el => {
+                el.removeAttribute("style")
+                el.removeAttribute("class")
+                el.removeAttribute("id")
+                el.removeAttribute("face")
+                el.removeAttribute("color")
+                el.removeAttribute("size")
+                el.removeAttribute("align")
+            })
+
+            const cleanedHtml = doc.body.innerHTML
+            document.execCommand("insertHTML", false, cleanedHtml)
+        } else if (pastedText) {
+            const paragraphs = pastedText.split(/\r?\n\r?\n/)
+            if (paragraphs.length > 1) {
+                const formatted = paragraphs.map(p => `<p>${p.replace(/\r?\n/g, "<br>")}</p>`).join("")
+                document.execCommand("insertHTML", false, formatted)
+            } else {
+                document.execCommand("insertText", false, pastedText)
+            }
+        }
+
+        if (editorRef.current) {
+            setBody(editorRef.current.innerHTML)
+        }
+    }
+
+    const toggleHtmlMode = () => {
+        if (!isHtmlMode && editorRef.current) {
+            setBody(editorRef.current.innerHTML)
+        }
+        setIsHtmlMode(prev => !prev)
+    }
+
+    useEffect(() => {
+        if (!isHtmlMode && editorRef.current && editorRef.current.innerHTML !== body) {
+            editorRef.current.innerHTML = body
+        }
+    }, [isHtmlMode])
 
     // Move any attached photo to primary position (index 0)
     const handleSetAsCover = (indexToPromote) => {
@@ -119,7 +262,7 @@ const CreateArticlePage = () => {
         e.dataTransfer.effectAllowed = "move"
     }
 
-    const handlePhotoDragOver = (e, index) => {
+    const handlePhotoDragOver = (e) => {
         e.preventDefault()
         e.dataTransfer.dropEffect = "move"
     }
@@ -141,7 +284,7 @@ const CreateArticlePage = () => {
 
     // General file upload from toolbar
     const handleFileChange = async (e) => {
-        const files = Array.from(e.target.files)
+        const files = Array.from(e.target.files || [])
         if (!files.length) return
 
         setIsCompressingPhotos(true)
@@ -183,26 +326,9 @@ const CreateArticlePage = () => {
         })
     }
 
-    // Modal states for authors and media providers
-    const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false)
-    const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
-
-    const [scheduledTime, setScheduledTime] = useState("")
-    const [isUploading, setIsUploading] = useState(false)
-    const [publishedUrl, setPublishedUrl] = useState("")
-
-    const countWords = (htmlString) => {
-        if (!htmlString) return 0
-
-        const cleanText = htmlString.replace(/<\/?[^>]+(>|$)/g, " ")
-
-        const words = cleanText.trim().split(/\s+/)
-        return words[0] === "" ? 0 : words.length
-    }
-
-    // multiple consecutive supabase inserts and updates
+    // Submit article handler
     const addNewArticle = async (isPublishedStatus) => {
-        if (!headline) {
+        if (!headline.trim()) {
             alert("Please enter a headline before submitting.")
             return
         }
@@ -210,11 +336,11 @@ const CreateArticlePage = () => {
         setIsUploading(true)
 
         try {
-            const generatedSlug = slugify(headline)
+            const generatedSlug = slugify(headline.trim())
 
-            let finalTag1 = tag1
-            let finalTag2 = tag2
-            let finalTag3 = tag3
+            let finalTag1 = tag1.trim()
+            let finalTag2 = tag2.trim()
+            let finalTag3 = tag3.trim()
 
             if (isPhotoOnly) {
                 if (!finalTag1) {
@@ -226,23 +352,23 @@ const CreateArticlePage = () => {
                 }
             }
 
+            const currentBody = isHtmlMode ? body : (editorRef.current ? editorRef.current.innerHTML : body)
+            const typeToSave = (articleType && articleType !== "NULL") ? articleType : null
+
             const newArticlePayloads = {
-                article_headline: headline,
-                article_body: body,
-                article_type: articleType || null,
+                article_headline: headline.trim(),
+                article_body: currentBody,
+                article_type: typeToSave,
                 slug_headline: generatedSlug,
                 is_published: isPublishedStatus,
-                published_at: scheduledTime ? new Date(scheduledTime).toISOString() : undefined,
-                // published_by: figure it out
-                word_count: countWords(body),
-                article_tag1: finalTag1,
-                article_tag2: finalTag2,
-                article_tag3: finalTag3,
-                article_source: articleSource,
-                // edit_history: probably just json
+                published_at: scheduledTime ? new Date(scheduledTime).toISOString() : (isPublishedStatus ? new Date().toISOString() : undefined),
+                word_count: countWords(currentBody),
+                article_tag1: finalTag1 || null,
+                article_tag2: finalTag2 || null,
+                article_tag3: finalTag3 || null,
+                article_source: articleSource.trim() || null,
             }
 
-            // send single row all the article payloads at once
             let { data: articleData, error: articleError } = await supabase
                 .from('article')
                 .insert([newArticlePayloads])
@@ -250,12 +376,17 @@ const CreateArticlePage = () => {
                 .single()
 
             if (articleError) {
-                console.log('Error creating new article: ', articleError.message || articleError)
-                alert(articleError.message || JSON.stringify(articleError))
+                console.error('Error creating new article: ', articleError)
+                if (articleError.message && articleError.message.includes("invalid input value for enum article_type")) {
+                    alert(
+                        `Database update required:\n\nThe selected article type (${articleType}) is not yet added to your PostgreSQL enum in Supabase.\n\nPlease run this in your Supabase SQL Editor:\n\nALTER TYPE public.article_type ADD VALUE IF NOT EXISTS '${articleType}';`
+                    )
+                } else {
+                    alert(articleError.message || JSON.stringify(articleError))
+                }
                 return
             }
 
-            // Inserting in article_staff for credits
             const newArticleId = articleData.article_id
 
             const authorPayloads = selectedAuthors.map(author => ({
@@ -272,7 +403,7 @@ const CreateArticlePage = () => {
                 use_pseudonym: !!media.use_pseudonym
             }))
 
-            const allStaffPayloads = [...authorPayloads, ...mediaPayloads] // combines both to be inserted in the article_staff for credits
+            const allStaffPayloads = [...authorPayloads, ...mediaPayloads]
 
             if (allStaffPayloads.length > 0) {
                 let { error: staffError } = await supabase
@@ -280,17 +411,14 @@ const CreateArticlePage = () => {
                     .insert(allStaffPayloads)
 
                 if (staffError) {
-                    console.log('Error linking staff: ', staffError)
+                    console.error('Error linking staff: ', staffError)
                     alert(staffError.message || staffError)
                     return
                 }
             }
 
-            // Collect and upload images to Cloudflare R2
-
             const articleMediaPayloads = []
 
-            // If a pubmat was selected, link it directly as primary #1 (zero duplicate uploads)
             let pubmatMediaId = selectedPubmat?.media_id
             if (selectedPubmat?.media_url && !pubmatMediaId) {
                 const { data: createdMedia } = await supabase
@@ -314,16 +442,12 @@ const CreateArticlePage = () => {
                 })
             }
 
-            // default to the first one in the array, ?.staff_id optional chaining
-            const mediaContributorId = selectedMediaProviders[0]?.staff_id || null
-
-            // Extract the publication year (default to current year if parsing fails or is empty)
-            let pubYear = new Date().getFullYear();
+            let pubYear = new Date().getFullYear()
             if (scheduledTime) {
                 try {
-                    pubYear = new Date(scheduledTime).getFullYear();
+                    pubYear = new Date(scheduledTime).getFullYear()
                 } catch (e) {
-                    console.error("Error parsing scheduledTime year:", e);
+                    console.error("Error parsing scheduledTime year:", e)
                 }
             }
 
@@ -333,13 +457,11 @@ const CreateArticlePage = () => {
                 setUploadStatusText(`Uploading photo ${idx + 1} of ${mediaImagePhoto.length}...`)
 
                 try {
-                    // Use a single bucket (article-photos) to simplify CORS and public URLs,
-                    // but organize files by year and type.
                     const targetBucket = "article-photos"
                     let uploadFolder = `articles/${pubYear}/${newArticleId}`
 
-                    if (isMediaSegment(articleType)) {
-                        const folderName = articleType.toLowerCase().replace(/_/g, "-")
+                    if (typeToSave && isMediaSegment(typeToSave)) {
+                        const folderName = typeToSave.toLowerCase().replace(/_/g, "-")
                         uploadFolder = `media-segments/${pubYear}/${folderName}/${newArticleId}`
                     }
 
@@ -353,7 +475,6 @@ const CreateArticlePage = () => {
                         bucket: targetBucket
                     })
 
-                    // Save image metadata in media table
                     const { data: mediaRow, error: mediaInsertError } = await supabase
                         .from('media')
                         .insert([{
@@ -362,23 +483,20 @@ const CreateArticlePage = () => {
                         .select()
                         .single()
 
-                    if (mediaInsertError)
-                        throw mediaInsertError
+                    if (mediaInsertError) throw mediaInsertError
 
-                    // Collect bridging record for article_media
                     articleMediaPayloads.push({
-                        article_id: newArticleId, // add this to article_media
+                        article_id: newArticleId,
                         media_id: mediaRow.media_id,
                         media_order: currentOrder
                     })
                 } catch (err) {
                     console.error(`Error uploading image "${imgObj.name}": `, err)
-                    alert(`Error uploding image "${imgObj.name}": ` + err.message)
+                    alert(`Error uploading image "${imgObj.name}": ` + err.message)
                     return
                 }
             }
 
-            // save bridging records in article_media
             if (articleMediaPayloads.length > 0) {
                 const { error: amError } = await supabase
                     .from('article_media')
@@ -391,7 +509,7 @@ const CreateArticlePage = () => {
                 }
             }
 
-            const articlePath = isMediaSegment(articleType)
+            const articlePath = (typeToSave && isMediaSegment(typeToSave))
                 ? `/media-segment/${newArticleId}/${generatedSlug}`
                 : `/article/${newArticleId}/${generatedSlug}`
             const fullUrl = `${window.location.origin}${articlePath}`
@@ -404,7 +522,6 @@ const CreateArticlePage = () => {
 
             setPublishedUrl(fullUrl)
 
-            // reset states to null/empty arrays
             setHeadline("")
             setBody("")
             setSelectedAuthors([])
@@ -415,6 +532,7 @@ const CreateArticlePage = () => {
             setTag3("")
             setArticleSource("")
             setSelectedPubmat(null)
+            setIsPhotoOnly(false)
 
             mediaImagePhoto.forEach(imgObj => {
                 if (imgObj.preview) {
@@ -423,8 +541,9 @@ const CreateArticlePage = () => {
             })
             setMediaImagePhoto([])
 
-            const bodyDiv = document.getElementById("Body-Text")
-            if (bodyDiv) bodyDiv.innerHTML = ""
+            if (editorRef.current) {
+                editorRef.current.innerHTML = ""
+            }
         } catch (err) {
             console.error("Error creating article:", err)
             alert(err.message || err)
@@ -476,679 +595,692 @@ const CreateArticlePage = () => {
             )}
 
             <div className="Admin-Article-Create-Layout">
+                {/* Unified Single-Frame Editor Rectangle */}
                 <div className="Editor-Rectangle">
+                    <div className="Text-Formatting-Section">
+                        {/* Working rich-text miniature icons */}
+                        <img src={BOLD} title="Bold (Ctrl+B)" alt="Bold" onClick={() => executeCommand("bold")} />
+                        <img src={ITALIC} title="Italic (Ctrl+I)" alt="Italic" onClick={() => executeCommand("italic")} />
+                        <img src={HIGHLIGHT} title="Highlight Text" alt="Highlight" onClick={handleHighlight} />
+                        <img src={REFERENCE} title="Blockquote / Citation" alt="Reference" onClick={handleBlockquote} />
+                        <img src={SUBSCRIPT} title="Subscript" alt="Subscript" onClick={() => executeCommand("subscript")} />
+                        <img src={SUPERSCRIPT} title="Superscript" alt="Superscript" onClick={() => executeCommand("superscript")} />
+                        <img src={BULLET} title="Bullet List" alt="Bullets" onClick={() => executeCommand("insertUnorderedList")} />
+                        <img src={NUMBERED} title="Numbered List" alt="Numbers" onClick={() => executeCommand("insertOrderedList")} />
+                        <img src={EMDASH} title="Insert Em-dash (—)" alt="Em-dash" onClick={handleInsertEmDash} />
 
-                <div className="Text-Formatting-Section">
-                    <img src={BOLD} />
-                    <img src={ITALIC} />
-                    <img src={HIGHLIGHT} />
-                    <img src={REFERENCE} />
-                    <img src={SUBSCRIPT} />
-                    <img src={SUPERSCRIPT} />
-                    <img src={BULLET} />
-                    <img src={NUMBERED} />
-                    <img src={EMDASH} />
+                        {/* Article Type Select with New Types and None Category */}
+                        <select
+                            name="Article-Type"
+                            id="Article-Type"
+                            value={articleType || "NULL"}
+                            onChange={(e) => setArticleType(e.target.value)}
+                        >
+                            <optgroup label="General">
+                                <option value="NULL"> None </option>
+                            </optgroup>
 
-                    <select name="Article-Type" id="Article-Type" value={articleType} onChange={(e) => setArticleType(e.target.value)}>
-                        <option value="LOOK"> LOOK </option>
-                        <option value="ICYMI"> ICYMI </option>
-                        <option value="ANNOUNCEMENT"> ANNOUNCEMENT </option>
-                        <option value="BREAKING_NEWS"> BREAKING NEWS </option>
-                        <option value="CLOSURE_REPORT"> CLOSURE REPORT </option>
-                        <option value="OFFICIAL_STATEMENT"> OFFICIAL STATEMENT </option>
-                        <option value="ELECTION_UPDATES"> ELECTION UPDATES </option>
-                        <option value="WALANG_PASOK"> WALANG PASOK </option>
-                        <option value="ADVISORY"> ADVISORY </option>
-                        <option value="ALERT"> ALERT </option>
-                        <option value="JUST_IN"> JUST IN </option>
-                        <option value="HAPPENING_NOW"> HAPPENING NOW </option>
-                        <option value="LOCAL_NEWS"> LOCAL NEWS </option>
-                        <option value="UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
-                        <option value="NATIONAL_NEWS"> NATIONAL NEWS </option>
-                        <option value="INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
-                        <option value="SPORTS_NEWS"> SPORTS NEWS </option>
-                        <option value="DEVELOPING_STORY"> DEVELOPING STORY </option>
-                        <option value="ERRATUM"> ERRATUM </option>
+                            <optgroup label="Announcements & Special Postings">
+                                <option value="SPECIAL_POSTINGS"> Special Postings </option>
+                                <option value="TODAY_IN_HISTORY"> Today in History </option>
+                                <option value="CALL_FOR_APPLICATIONS"> Call for Applications </option>
+                                <option value="CALL_FOR_SUBMISSIONS"> Call for Submissions </option>
+                                <option value="ANNOUNCEMENT"> ANNOUNCEMENT </option>
+                                <option value="OFFICIAL_STATEMENT"> OFFICIAL STATEMENT </option>
+                                <option value="CLOSURE_REPORT"> CLOSURE REPORT </option>
+                                <option value="ELECTION_UPDATES"> ELECTION UPDATES </option>
+                                <option value="WALANG_PASOK"> WALANG PASOK </option>
+                                <option value="ADVISORY"> ADVISORY </option>
+                                <option value="ALERT"> ALERT </option>
+                                <option value="ERRATUM"> ERRATUM </option>
+                            </optgroup>
 
-                        <option value="NULL"> None </option>
+                            <optgroup label="Fast News & Updates">
+                                <option value="LOOK"> LOOK </option>
+                                <option value="ICYMI"> ICYMI </option>
+                                <option value="JUST_IN"> JUST IN </option>
+                                <option value="HAPPENING_NOW"> HAPPENING NOW </option>
+                                <option value="BREAKING_NEWS"> BREAKING NEWS </option>
+                                <option value="DEVELOPING_STORY"> DEVELOPING STORY </option>
+                            </optgroup>
 
-                        <option value="MAKATA_MONDAYS"> Makata Mondays </option>
-                        <option value="TEK_TUESDAY"> Tek Tuesday </option>
-                        <option value="WANKJOB_WEDNESDAY"> Wankjob Wednesday </option>
-                        <option value="TALA_THURSDAY"> Tala Thursday</option>
-                        <option value="FEATURES_FRIDAY"> Features Friday </option>
-                        <option value="STREAMING_SATURDAY"> Streaming Saturday </option>
-                        <option value="SPORTS_SUNDAY"> Sports Sunday </option>
-                        <option value="OPINION"> OPINION </option>
-                        <option value="EDITORIAL"> EDITORIAL </option>
-                    </select>
+                            <optgroup label="News Beats">
+                                <option value="LOCAL_NEWS"> LOCAL NEWS </option>
+                                <option value="UNIVERSITY_NEWS"> UNIVERSITY NEWS </option>
+                                <option value="NATIONAL_NEWS"> NATIONAL NEWS </option>
+                                <option value="INTERNATIONAL_NEWS"> INTERNATIONAL NEWS </option>
+                                <option value="SPORTS_NEWS"> SPORTS NEWS </option>
+                            </optgroup>
 
-                    <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", color: "#334155", cursor: "pointer", userSelect: "none" }}>
-                        <input
-                            type="checkbox"
-                            checked={isPhotoOnly}
-                            onChange={(e) => setIsPhotoOnly(e.target.checked)}
-                        />
-                        Set Photo Only
-                    </label>
+                            <optgroup label="Weekly Media Segments">
+                                <option value="MAKATA_MONDAYS"> Makata Mondays </option>
+                                <option value="TEK_TUESDAY"> Tek Tuesday </option>
+                                <option value="WANKJOB_WEDNESDAY"> Wankjob Wednesday </option>
+                                <option value="TALA_THURSDAY"> Tala Thursday </option>
+                                <option value="FEATURES_FRIDAY"> Features Friday </option>
+                                <option value="STREAMING_SATURDAY"> Streaming Saturday </option>
+                                <option value="SPORTS_SUNDAY"> Sports Sunday </option>
+                            </optgroup>
 
-                    <button
-                        type="button"
-                        className="Toolbar-Pubmat-Btn"
-                        onClick={() => setIsPubmatModalOpen(true)}
-                    >
-                        Pubmats{selectedPubmat ? " (1)" : ""}
-                    </button>
+                            <optgroup label="Opinion & Columns">
+                                <option value="OPINION"> OPINION </option>
+                                <option value="EDITORIAL"> EDITORIAL </option>
+                            </optgroup>
+                        </select>
 
-                    <label
-                        htmlFor="file-upload"
-                        title="Upload Custom Image or Graphic Card"
-                        style={{ display: "flex", alignItems: "center", gap: "0.3rem", cursor: "pointer" }}
-                    >
-                        <img
-                            src={ATTACH}
-                            alt="Upload Photo"
-                            style={{ cursor: "pointer" }}
-                        />
-                        <span style={{ fontSize: "0.85rem", color: "#0265A9", fontWeight: "600" }}>Attach Photo</span>
-
-                        <input
-                            id="file-upload"
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            style={{ display: "none" }}
-                            onChange={handleFileChange}
-                        />
-                    </label>
-
-                    <img
-                        src={Author}
-                        alt="Select Author/s"
-                        onClick={() =>
-                            setIsAuthorModalOpen(true)
-                        }
-
-                        style={{ cursor: "pointer" }}
-                    />
-
-                    <StaffModal
-                        isOpen={isAuthorModalOpen}
-                        onClose={() => setIsAuthorModalOpen(false)}
-                        staffers={staff}
-                        initialSelectedStaffers={selectedAuthors}
-                        title="Select Authors / Writers"
-                        onConfirm={(selectedStaffers) => {
-                            setSelectedAuthors(selectedStaffers)
-                            setIsAuthorModalOpen(false)
-                        }}
-                    />
-
-                    <img
-                        src={MediaProvider}
-                        alt="Select Media Provider/s"
-                        onClick={() =>
-                            setIsMediaModalOpen(true)
-                        }
-
-                        style={{ cursor: "pointer" }}
-                    />
-
-                    <StaffModal
-                        isOpen={isMediaModalOpen}
-                        onClose={() => setIsMediaModalOpen(false)}
-                        staffers={staff}
-                        initialSelectedStaffers={selectedMediaProviders}
-                        title="Select Media Providers / Photographers"
-                        onConfirm={(selectedStaffers) => {
-                            setSelectedMediaProviders(selectedStaffers)
-                            setIsMediaModalOpen(false)
-                        }}
-                    />
-
-                </div>
-
-
-                {(selectedAuthors.length > 0 || selectedMediaProviders.length > 0) && (
-                    <div className="Selected-Staffers" style={{ padding: "1rem" }}>
-                        {selectedAuthors.length > 0 && (
-                            <div className="Selected-Authors">
-                                <p style={{ fontWeight: "800", textTransform: "uppercase", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
-                                    Selected Writer(s):
-                                </p>
-                                {selectedAuthors.map((authorObj, idx) => {
-                                    const hasPseudonym = Boolean(authorObj.staff_pseudonym)
-                                    const isUsingPseudonym = hasPseudonym && !!authorObj.use_pseudonym
-                                    return (
-                                        <div key={idx} className="Selected-Staff-Card" style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between',
-                                            background: '#ffffff',
-                                            border: '2px solid var(--border-color)',
-                                            borderRadius: 'var(--radius-md)',
-                                            padding: '0.5rem 0.8rem',
-                                            marginBottom: '0.5rem',
-                                            boxShadow: '2px 2px 0px #000'
-                                        }}>
-                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <strong style={{ fontSize: '0.9rem' }}>{authorObj.staff_display_name}</strong>
-                                                {hasPseudonym ? (
-                                                    <span style={{ fontSize: '0.75rem', color: '#666' }}>
-                                                        Pseudonym: <em>{authorObj.staff_pseudonym}</em>
-                                                    </span>
-                                                ) : (
-                                                    <span style={{ fontSize: '0.75rem', color: '#999', fontStyle: 'italic' }}>
-                                                        No pseudonym configured
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <button
-                                                    type="button"
-                                                    disabled={!hasPseudonym}
-                                                    onClick={() => {
-                                                        if (!hasPseudonym) return
-                                                        const updated = [...selectedAuthors]
-                                                        updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
-                                                        setSelectedAuthors(updated)
-                                                    }}
-                                                    style={{
-                                                        padding: '0.35rem 0.75rem',
-                                                        borderRadius: 'var(--radius-sm)',
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: '800',
-                                                        cursor: hasPseudonym ? 'pointer' : 'not-allowed',
-                                                        border: '2px solid #000',
-                                                        background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
-                                                        color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
-                                                        transition: 'all 0.15s ease',
-                                                        boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
-                                                    }}
-                                                >
-                                                    {!hasPseudonym
-                                                        ? `No Pseudonym Set`
-                                                        : isUsingPseudonym
-                                                            ? `Pseudonym (${authorObj.staff_pseudonym})`
-                                                            : `Real Name (${authorObj.staff_display_name})`
-                                                    }
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setSelectedAuthors(prev => prev.filter((_, i) => i !== idx))}
-                                                    style={{
-                                                        background: '#fee2e2',
-                                                        border: '1.5px solid #ef4444',
-                                                        color: '#b91c1c',
-                                                        borderRadius: 'var(--radius-sm)',
-                                                        cursor: 'pointer',
-                                                        padding: '0.3rem 0.5rem',
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center'
-                                                    }}
-                                                    title="Remove author"
-                                                    aria-label="Remove author"
-                                                >
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                        <line x1="18" y1="6" x2="6" y2="18"/>
-                                                        <line x1="6" y1="6" x2="18" y2="18"/>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        )}
-
-                        {selectedMediaProviders.length > 0 && (
-                            <div className="Selected-Media-Providers" style={{ marginTop: selectedAuthors.length > 0 ? "1rem" : "0" }}>
-                                <p style={{ fontWeight: "800", textTransform: "uppercase", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
-                                    Selected Media Provider(s):
-                                </p>
-                                {selectedMediaProviders.map((mediaObj, idx) => {
-                                    const hasPseudonym = Boolean(mediaObj.staff_pseudonym)
-                                    const isUsingPseudonym = hasPseudonym && !!mediaObj.use_pseudonym
-                                    return (
-                                        <div key={idx} className="Selected-Staff-Card" style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between',
-                                            background: '#ffffff',
-                                            border: '2px solid var(--border-color)',
-                                            borderRadius: 'var(--radius-md)',
-                                            padding: '0.5rem 0.8rem',
-                                            marginBottom: '0.5rem',
-                                            boxShadow: '2px 2px 0px #000'
-                                        }}>
-                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <strong style={{ fontSize: '0.9rem' }}>{mediaObj.staff_display_name}</strong>
-                                                {hasPseudonym ? (
-                                                    <span style={{ fontSize: '0.75rem', color: '#666' }}>
-                                                        Pseudonym: <em>{mediaObj.staff_pseudonym}</em>
-                                                    </span>
-                                                ) : (
-                                                    <span style={{ fontSize: '0.75rem', color: '#999', fontStyle: 'italic' }}>
-                                                        No pseudonym configured
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <button
-                                                    type="button"
-                                                    disabled={!hasPseudonym}
-                                                    onClick={() => {
-                                                        if (!hasPseudonym) return
-                                                        const updated = [...selectedMediaProviders]
-                                                        updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
-                                                        setSelectedMediaProviders(updated)
-                                                    }}
-                                                    style={{
-                                                        padding: '0.35rem 0.75rem',
-                                                        borderRadius: 'var(--radius-sm)',
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: '800',
-                                                        cursor: hasPseudonym ? 'pointer' : 'not-allowed',
-                                                        border: '2px solid #000',
-                                                        background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
-                                                        color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
-                                                        transition: 'all 0.15s ease',
-                                                        boxShadow: hasPseudonym ? '1px 1px 0px #000' : 'none'
-                                                    }}
-                                                >
-                                                    {!hasPseudonym
-                                                        ? `No Pseudonym Set`
-                                                        : isUsingPseudonym
-                                                            ? `Pseudonym (${mediaObj.staff_pseudonym})`
-                                                            : `Real Name (${mediaObj.staff_display_name})`
-                                                    }
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setSelectedMediaProviders(prev => prev.filter((_, i) => i !== idx))}
-                                                    style={{
-                                                        background: '#fee2e2',
-                                                        border: '1.5px solid #ef4444',
-                                                        color: '#b91c1c',
-                                                        borderRadius: 'var(--radius-sm)',
-                                                        cursor: 'pointer',
-                                                        padding: '0.3rem 0.5rem',
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center'
-                                                    }}
-                                                    title="Remove media provider"
-                                                    aria-label="Remove media provider"
-                                                >
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                        <line x1="18" y1="6" x2="6" y2="18"/>
-                                                        <line x1="6" y1="6" x2="18" y2="18"/>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {selectedPubmat && (
-                    <div className="Article-Cover-Graphic-Preview">
-                        <div className="Cover-Preview-Header">
-                            <span className="Cover-Preview-Tag">📌 Cover Graphic (Pubmat)</span>
-                            <div className="Cover-Preview-Actions">
-                                <button
-                                    type="button"
-                                    className="Cover-Action-Btn"
-                                    onClick={() => setIsPubmatModalOpen(true)}
-                                >
-                                    Change Pubmat
-                                </button>
-                                <button
-                                    type="button"
-                                    className="Cover-Action-Btn-Remove"
-                                    onClick={() => setSelectedPubmat(null)}
-                                >
-                                    Remove
-                                </button>
-                            </div>
-                        </div>
-                        <div className="Cover-Preview-Content">
-                            <img src={selectedPubmat.media_url || selectedPubmat.preview} alt="Selected pubmat cover" />
-                            <div className="Cover-Preview-Meta">
-                                <h4>{selectedPubmat.title || "Graphic Pubmat"}</h4>
-                                <p>
-                                    Set as <strong>Cover (#1)</strong> of this article.
-                                    {mediaImagePhoto.length > 0
-                                        ? ` (${mediaImagePhoto.length} additional gallery photo${mediaImagePhoto.length > 1 ? "s" : ""} attached in side panel)`
-                                        : ` You can attach additional photos in the side panel if this article has a photo gallery.`
-                                    }
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {isPhotoOnly && !selectedPubmat && (
-                    <div className="Photo-Only-Notice-Banner">
-                        <span>📸 <strong>Photo Release Mode is ON</strong> (Body text is optional). Pick a Pubmat or add photos in the right-hand panel.</span>
-                    </div>
-                )}
-
-                <div className="Text-Area">
-                    <input
-                        type="text"
-                        placeholder="Enter your new article headline here."
-                        id="Headline-Text"
-                        className="Headline-Input"
-                        value={headline}
-                        onChange={(typing) => setHeadline(typing.target.value)}
-                    />
-
-                    <div
-                        contentEditable
-                        suppressContentEditableWarning={true}
-                        id="Body-Text"
-                        className="Headline-Input"
-                        onInput={(typing) => setBody(typing.currentTarget.innerHTML)}
-                    >
-                    </div>
-                    <div className="Article-Tags-Container">
-                        <div>
-                            <p> Tag 1:
-                                <input
-                                    value={tag1}
-                                    onChange={(typing) => setTag1(typing.target.value)}
-                                    className="Article-Tags"
-                                />
-                            </p>
-                        </div>
-                        <div>
-                            <p> Tag 2:
-                                <input
-                                    value={tag2}
-                                    onChange={(typing) => setTag2(typing.target.value)}
-                                    className="Article-Tags"
-                                />
-                            </p>
-                        </div>
-                        <div>
-                            <p> Tag 3:
-                                <input
-                                    value={tag3}
-                                    onChange={(typing) => setTag3(typing.target.value)}
-                                    className="Article-Tags"
-                                />
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="Word-Count-And-Sources">
-                        <div className="Word-Count">
-                            <p> Word Count: <span> {countWords(body)} </span></p>
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <label htmlFor="publish-datetime" style={{ fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-sans)', color: 'black' }}>
-                                    PUBLISH DATE & TIME (OPTIONAL):
-                                </label>
-                                <input
-                                    id="publish-datetime"
-                                    type="datetime-local"
-                                    value={scheduledTime}
-                                    onChange={(e) => setScheduledTime(e.target.value)}
-                                    style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
+                        <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", color: "#334155", cursor: "pointer", userSelect: "none" }}>
                             <input
-                                className="Article-Tags"
-                                placeholder="Sources"
-                                value={articleSource}
-                                onChange={(typing) => setArticleSource(typing.target.value)}
-                                style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
+                                type="checkbox"
+                                checked={isPhotoOnly}
+                                onChange={(e) => setIsPhotoOnly(e.target.checked)}
                             />
-                        </div>
-                    </div>
-                </div>
+                            Set Photo Only
+                        </label>
 
-                <div className="Button-Container">
-                    <button type="submit" onClick={() => addNewArticle(false)} disabled={isUploading}>
-                        {uploadStatusText ? uploadStatusText : (isUploading ? "Saving Draft..." : "Save as Draft")}
-                    </button>
-                    <button type="submit" onClick={() => addNewArticle(true)} disabled={isUploading}>
-                        {uploadStatusText ? uploadStatusText : (isUploading ? "Posting..." : "Post")}
-                    </button>
-                </div>
-
-            </div>
-
-            {/* Side Media Panel */}
-            <aside className="Admin-Article-Side-Panel">
-                <div className="Side-Panel-Header">
-                    <h3>Photos ({(selectedPubmat ? 1 : 0) + mediaImagePhoto.length})</h3>
-                    <div className="Side-Header-Actions">
                         <button
                             type="button"
-                            className="Side-Add-Pubmat-Btn"
+                            className="Toolbar-Pubmat-Btn"
                             onClick={() => setIsPubmatModalOpen(true)}
-                            title="Choose reusable graphic pubmat as cover"
                         >
-                            {selectedPubmat ? "Change Pubmat" : "+ Pubmat"}
+                            Pubmats{selectedPubmat ? " (1)" : ""}
                         </button>
-                        <label className="Side-Add-Photos-Btn" style={{ opacity: isCompressingPhotos ? 0.7 : 1 }}>
-                            {isCompressingPhotos ? `Compressing (${compressingCount})...` : "+ Add Photos"}
+
+                        <label
+                            htmlFor="file-upload"
+                            title="Upload Custom Image or Graphic Card"
+                            style={{ display: "flex", alignItems: "center", gap: "0.3rem", cursor: "pointer" }}
+                        >
+                            <img
+                                src={ATTACH}
+                                alt="Upload Photo"
+                                style={{ cursor: "pointer" }}
+                            />
+                            <span style={{ fontSize: "0.85rem", color: "#0265A9", fontWeight: "600" }}>Attach Photo</span>
+
                             <input
+                                id="file-upload"
                                 type="file"
                                 accept="image/*"
                                 multiple
-                                disabled={isCompressingPhotos}
                                 style={{ display: "none" }}
                                 onChange={handleFileChange}
                             />
                         </label>
-                    </div>
-                </div>
 
-                {isCompressingPhotos && (
-                    <div className="Side-Compressing-Notice">
-                        ⏳ Compressing {compressingCount} photo(s) to WebP...
-                    </div>
-                )}
+                        <img
+                            src={Author}
+                            alt="Select Author/s"
+                            title="Select Authors / Writers"
+                            onClick={() => setIsAuthorModalOpen(true)}
+                            style={{ cursor: "pointer" }}
+                        />
 
-                {uploadStatusText && (
-                    <div className="Side-Upload-Notice">
-                        🚀 {uploadStatusText}
-                    </div>
-                )}
+                        <img
+                            src={MediaProvider}
+                            alt="Select Media Provider/s"
+                            title="Select Media Providers / Photographers"
+                            onClick={() => setIsMediaModalOpen(true)}
+                            style={{ cursor: "pointer" }}
+                        />
 
-                {(selectedPubmat || mediaImagePhoto.length > 0) ? (
-                    <>
-                        <div className="Side-Photos-List">
-                            {/* If Pubmat is selected, it occupies Cover #1 */}
-                            {selectedPubmat && (
-                                <div className="Side-Photo-Item Side-Pubmat-Item">
-                                    <div className="Side-Photo-Thumb-Wrapper">
-                                        <img
-                                            src={selectedPubmat.media_url || selectedPubmat.preview}
-                                            alt={selectedPubmat.title || "Pubmat Cover"}
-                                            draggable={false}
-                                        />
-                                        <span className="Side-Photo-Badge Side-Pubmat-Badge">
-                                            Cover (#1) · PUBMAT
-                                        </span>
-                                    </div>
-                                    <div className="Side-Pubmat-Details">
-                                        <span className="Side-Pubmat-Title" title={selectedPubmat.title}>
-                                            {selectedPubmat.title || "Graphic Pubmat"}
-                                        </span>
-                                    </div>
-                                    <div className="Side-Photo-Item-Actions">
-                                        <button
-                                            type="button"
-                                            className="Side-Btn-Action"
-                                            title="Choose a different pubmat"
-                                            onClick={() => setIsPubmatModalOpen(true)}
-                                        >
-                                            Change
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="Side-Btn-Action Side-Btn-Delete"
-                                            title="Remove pubmat cover"
-                                            aria-label="Remove pubmat cover"
-                                            onClick={() => setSelectedPubmat(null)}
-                                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
-                                        >
-                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                <line x1="18" y1="6" x2="6" y2="18"/>
-                                                <line x1="6" y1="6" x2="18" y2="18"/>
-                                            </svg>
-                                            <span>Remove</span>
-                                        </button>
-                                    </div>
+                        <button
+                            type="button"
+                            className="Toolbar-Pubmat-Btn"
+                            onClick={toggleHtmlMode}
+                            title={isHtmlMode ? "Switch to Visual Editor" : "Switch to Raw HTML Mode"}
+                            style={{ marginLeft: "auto", fontSize: "0.75rem" }}
+                        >
+                            {isHtmlMode ? "Visual" : "</> HTML"}
+                        </button>
+                    </div>
+
+                    {/* Selected Staffers (Authors & Media Providers) */}
+                    {(selectedAuthors.length > 0 || selectedMediaProviders.length > 0) && (
+                        <div className="Selected-Staffers" style={{ padding: "1rem" }}>
+                            {selectedAuthors.length > 0 && (
+                                <div className="Selected-Authors">
+                                    <p style={{ fontWeight: "800", textTransform: "uppercase", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
+                                        Selected Writer(s):
+                                    </p>
+                                    {selectedAuthors.map((authorObj, idx) => {
+                                        const hasPseudonym = Boolean(authorObj.staff_pseudonym)
+                                        const isUsingPseudonym = hasPseudonym && !!authorObj.use_pseudonym
+                                        return (
+                                            <div key={idx} className="Selected-Staff-Card" style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                                background: '#ffffff',
+                                                border: '2px solid var(--border-color)',
+                                                borderRadius: 'var(--radius-md)',
+                                                padding: '0.5rem 0.8rem',
+                                                marginBottom: '0.5rem'
+                                            }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <strong style={{ fontSize: '0.9rem' }}>{authorObj.staff_display_name}</strong>
+                                                    {hasPseudonym ? (
+                                                        <span style={{ fontSize: '0.75rem', color: '#666' }}>
+                                                            Pseudonym: <em>{authorObj.staff_pseudonym}</em>
+                                                        </span>
+                                                    ) : (
+                                                        <span style={{ fontSize: '0.75rem', color: '#999', fontStyle: 'italic' }}>
+                                                            No pseudonym configured
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <button
+                                                        type="button"
+                                                        disabled={!hasPseudonym}
+                                                        onClick={() => {
+                                                            if (!hasPseudonym) return
+                                                            const updated = [...selectedAuthors]
+                                                            updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
+                                                            setSelectedAuthors(updated)
+                                                        }}
+                                                        style={{
+                                                            padding: '0.35rem 0.75rem',
+                                                            borderRadius: 'var(--radius-sm)',
+                                                            fontSize: '0.75rem',
+                                                            fontWeight: '800',
+                                                            cursor: hasPseudonym ? 'pointer' : 'not-allowed',
+                                                            border: '2px solid #000',
+                                                            background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
+                                                            color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
+                                                            transition: 'all 0.15s ease'
+                                                        }}
+                                                    >
+                                                        {!hasPseudonym
+                                                            ? `No Pseudonym Set`
+                                                            : isUsingPseudonym
+                                                                ? `Pseudonym (${authorObj.staff_pseudonym})`
+                                                                : `Real Name (${authorObj.staff_display_name})`
+                                                        }
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setSelectedAuthors(prev => prev.filter((_, i) => i !== idx))}
+                                                        style={{
+                                                            background: '#fee2e2',
+                                                            border: '1.5px solid #ef4444',
+                                                            color: '#b91c1c',
+                                                            borderRadius: 'var(--radius-sm)',
+                                                            cursor: 'pointer',
+                                                            padding: '0.3rem 0.5rem',
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center'
+                                                        }}
+                                                        title="Remove author"
+                                                        aria-label="Remove author"
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             )}
 
-                            {/* Uploaded Photos */}
-                            {mediaImagePhoto.map((imgObj, idx) => {
-                                const photoOrder = selectedPubmat ? idx + 2 : idx + 1
-                                const isCoverPhoto = !selectedPubmat && idx === 0
-                                return (
-                                    <div 
-                                        key={idx} 
-                                        className={`Side-Photo-Item ${draggedPhotoIndex === idx ? 'is-dragging' : ''}`}
-                                        draggable
-                                        onDragStart={(e) => handlePhotoDragStart(e, idx)}
-                                        onDragOver={(e) => handlePhotoDragOver(e, idx)}
-                                        onDrop={(e) => handlePhotoDrop(e, idx)}
+                            {selectedMediaProviders.length > 0 && (
+                                <div className="Selected-Media-Providers" style={{ marginTop: selectedAuthors.length > 0 ? "1rem" : "0" }}>
+                                    <p style={{ fontWeight: "800", textTransform: "uppercase", fontSize: "0.85rem", marginBottom: "0.5rem" }}>
+                                        Selected Media Provider(s):
+                                    </p>
+                                    {selectedMediaProviders.map((mediaObj, idx) => {
+                                        const hasPseudonym = Boolean(mediaObj.staff_pseudonym)
+                                        const isUsingPseudonym = hasPseudonym && !!mediaObj.use_pseudonym
+                                        return (
+                                            <div key={idx} className="Selected-Staff-Card" style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                                background: '#ffffff',
+                                                border: '2px solid var(--border-color)',
+                                                borderRadius: 'var(--radius-md)',
+                                                padding: '0.5rem 0.8rem',
+                                                marginBottom: '0.5rem'
+                                            }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <strong style={{ fontSize: '0.9rem' }}>{mediaObj.staff_display_name}</strong>
+                                                    {hasPseudonym ? (
+                                                        <span style={{ fontSize: '0.75rem', color: '#666' }}>
+                                                            Pseudonym: <em>{mediaObj.staff_pseudonym}</em>
+                                                        </span>
+                                                    ) : (
+                                                        <span style={{ fontSize: '0.75rem', color: '#999', fontStyle: 'italic' }}>
+                                                            No pseudonym configured
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <button
+                                                        type="button"
+                                                        disabled={!hasPseudonym}
+                                                        onClick={() => {
+                                                            if (!hasPseudonym) return
+                                                            const updated = [...selectedMediaProviders]
+                                                            updated[idx] = { ...updated[idx], use_pseudonym: !isUsingPseudonym }
+                                                            setSelectedMediaProviders(updated)
+                                                        }}
+                                                        style={{
+                                                            padding: '0.35rem 0.75rem',
+                                                            borderRadius: 'var(--radius-sm)',
+                                                            fontSize: '0.75rem',
+                                                            fontWeight: '800',
+                                                            cursor: hasPseudonym ? 'pointer' : 'not-allowed',
+                                                            border: '2px solid #000',
+                                                            background: !hasPseudonym ? '#e5e5e5' : isUsingPseudonym ? '#0265A9' : '#f0f0f0',
+                                                            color: !hasPseudonym ? '#888888' : isUsingPseudonym ? '#ffffff' : '#333333',
+                                                            transition: 'all 0.15s ease'
+                                                        }}
+                                                    >
+                                                        {!hasPseudonym
+                                                            ? `No Pseudonym Set`
+                                                            : isUsingPseudonym
+                                                                ? `Pseudonym (${mediaObj.staff_pseudonym})`
+                                                                : `Real Name (${mediaObj.staff_display_name})`
+                                                        }
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setSelectedMediaProviders(prev => prev.filter((_, i) => i !== idx))}
+                                                        style={{
+                                                            background: '#fee2e2',
+                                                            border: '1.5px solid #ef4444',
+                                                            color: '#b91c1c',
+                                                            borderRadius: 'var(--radius-sm)',
+                                                            cursor: 'pointer',
+                                                            padding: '0.3rem 0.5rem',
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center'
+                                                        }}
+                                                        title="Remove media provider"
+                                                        aria-label="Remove media provider"
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {selectedPubmat && (
+                        <div className="Article-Cover-Graphic-Preview">
+                            <div className="Cover-Preview-Header">
+                                <span className="Cover-Preview-Tag">📌 Cover Graphic (Pubmat)</span>
+                                <div className="Cover-Preview-Actions">
+                                    <button
+                                        type="button"
+                                        className="Cover-Action-Btn"
+                                        onClick={() => setIsPubmatModalOpen(true)}
                                     >
-                                        <div className="Side-Photo-Thumb-Wrapper">
-                                            <img src={imgObj.preview} alt={`Article media ${photoOrder}`} draggable={false} />
-                                            <span className="Side-Photo-Badge">
-                                                {isCoverPhoto ? "Cover (#1)" : `#${photoOrder}`}
-                                            </span>
-                                        </div>
-                                        <div className="Side-Photo-Item-Actions">
-                                            <button
-                                                type="button"
-                                                className="Side-Btn-Action Side-Btn-Arrow"
-                                                disabled={idx === 0}
-                                                title="Move up"
-                                                aria-label="Move up"
-                                                onClick={() => handleMoveImageUp(idx)}
-                                            >
-                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                    <polyline points="18 15 12 9 6 15"/>
-                                                </svg>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="Side-Btn-Action Side-Btn-Arrow"
-                                                disabled={idx === mediaImagePhoto.length - 1}
-                                                title="Move down"
-                                                aria-label="Move down"
-                                                onClick={() => handleMoveImageDown(idx)}
-                                            >
-                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                    <polyline points="6 9 12 15 18 9"/>
-                                                </svg>
-                                            </button>
-                                            {(!isCoverPhoto) && (
-                                                <button
-                                                    type="button"
-                                                    className="Side-Btn-Action"
-                                                    title={selectedPubmat ? "Make cover (replaces pubmat cover)" : "Make primary cover"}
-                                                    onClick={() => handleSetAsCover(idx)}
-                                                >
-                                                    Cover
-                                                </button>
-                                            )}
-                                            <button
-                                                type="button"
-                                                className="Side-Btn-Action Side-Btn-Delete"
-                                                title="Remove image"
-                                                aria-label="Remove image"
-                                                onClick={() => handleRemoveImage(idx)}
-                                            >
-                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                                    <line x1="18" y1="6" x2="6" y2="18"/>
-                                                    <line x1="6" y1="6" x2="18" y2="18"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                                        Change Pubmat
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="Cover-Action-Btn-Remove"
+                                        onClick={() => setSelectedPubmat(null)}
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="Cover-Preview-Content">
+                                <img src={selectedPubmat.media_url || selectedPubmat.preview} alt="Selected pubmat cover" />
+                                <div className="Cover-Preview-Meta">
+                                    <h4>{selectedPubmat.title || "Graphic Pubmat"}</h4>
+                                    <p>
+                                        Set as <strong>Cover (#1)</strong> of this article.
+                                        {mediaImagePhoto.length > 0
+                                            ? ` (${mediaImagePhoto.length} additional gallery photo${mediaImagePhoto.length > 1 ? "s" : ""} attached in side panel)`
+                                            : ` You can attach additional photos in the side panel if this article has a photo gallery.`
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isPhotoOnly && !selectedPubmat && (
+                        <div className="Photo-Only-Notice-Banner">
+                            <span>📸 <strong>Photo Release Mode is ON</strong> (Body text is optional). Pick a Pubmat or add photos in the right-hand panel.</span>
+                        </div>
+                    )}
+
+                    <div className="Text-Area">
+                        <input
+                            type="text"
+                            placeholder="Enter your new article headline here."
+                            id="Headline-Text"
+                            className="Headline-Input"
+                            value={headline}
+                            onChange={(typing) => setHeadline(typing.target.value)}
+                        />
+
+                        {isHtmlMode ? (
+                            <textarea
+                                className="Headline-Input Body-Html-Textarea"
+                                value={body}
+                                onChange={(typing) => setBody(typing.target.value)}
+                                placeholder="Edit raw article HTML..."
+                                rows={16}
+                            />
+                        ) : (
+                            <div
+                                ref={editorRef}
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                id="Body-Text"
+                                className="Headline-Input"
+                                onInput={(typing) => setBody(typing.currentTarget.innerHTML)}
+                                onKeyDown={handleEditorKeyDown}
+                                onPaste={handleSmartPaste}
+                            />
+                        )}
+
+                        <div className="Article-Tags-Container">
+                            <div>
+                                <p> Tag 1:
+                                    <input
+                                        value={tag1}
+                                        onChange={(typing) => setTag1(typing.target.value)}
+                                        className="Article-Tags"
+                                    />
+                                </p>
+                            </div>
+                            <div>
+                                <p> Tag 2:
+                                    <input
+                                        value={tag2}
+                                        onChange={(typing) => setTag2(typing.target.value)}
+                                        className="Article-Tags"
+                                    />
+                                </p>
+                            </div>
+                            <div>
+                                <p> Tag 3:
+                                    <input
+                                        value={tag3}
+                                        onChange={(typing) => setTag3(typing.target.value)}
+                                        className="Article-Tags"
+                                    />
+                                </p>
+                            </div>
                         </div>
 
-                        {selectedPubmat && mediaImagePhoto.length > 0 ? (
-                            <p className="Side-Photos-Tip">
-                                💡 Pubmat is set as <strong>Cover (#1)</strong>. Photos below (#2, #{mediaImagePhoto.length + 1}) will appear in the article's gallery.
-                            </p>
-                        ) : selectedPubmat ? (
-                            <p className="Side-Photos-Tip">
-                                💡 Pubmat is set as <strong>Cover (#1)</strong>. Click <strong>+ Add Photos</strong> above if this article has additional gallery photos.
-                            </p>
-                        ) : (
-                            <p className="Side-Photos-Tip">
-                                💡 Drag and drop or use ▲ / ▼ to reorder photos. Photo #1 is the article cover. You can also pick a <strong>+ Pubmat</strong> as cover.
-                            </p>
-                        )}
-                    </>
-                ) : (
-                    <div className="Side-Photos-Empty">
-                        <p style={{ margin: "0 0 0.85rem 0", color: "#64748b" }}>
-                            No cover graphic or photos added yet.
-                        </p>
-                        <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", flexWrap: "wrap" }}>
+                        <div className="Word-Count-And-Sources">
+                            <div className="Word-Count">
+                                <p> Word Count: <span> {countWords(isHtmlMode ? body : (editorRef.current ? editorRef.current.innerHTML : body))} </span></p>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <label htmlFor="publish-datetime" style={{ fontSize: '0.7rem', fontWeight: '800', fontFamily: 'var(--font-sans)', color: 'black' }}>
+                                        PUBLISH DATE & TIME (OPTIONAL):
+                                    </label>
+                                    <input
+                                        id="publish-datetime"
+                                        type="datetime-local"
+                                        value={scheduledTime}
+                                        onChange={(e) => setScheduledTime(e.target.value)}
+                                        style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <input
+                                    className="Article-Tags"
+                                    placeholder="Sources"
+                                    value={articleSource}
+                                    onChange={(typing) => setArticleSource(typing.target.value)}
+                                    style={{ padding: '0.4rem', border: '3px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 'bold' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="Button-Container">
+                        <button type="submit" onClick={() => addNewArticle(false)} disabled={isUploading}>
+                            {uploadStatusText ? uploadStatusText : (isUploading ? "Saving Draft..." : "Save as Draft")}
+                        </button>
+                        <button type="submit" onClick={() => addNewArticle(true)} disabled={isUploading}>
+                            {uploadStatusText ? uploadStatusText : (isUploading ? "Posting..." : "Post")}
+                        </button>
+                    </div>
+                </div>
+
+                {/* Side Media Panel */}
+                <aside className="Admin-Article-Side-Panel">
+                    <div className="Side-Panel-Header">
+                        <h3>Photos ({(selectedPubmat ? 1 : 0) + mediaImagePhoto.length})</h3>
+                        <div className="Side-Header-Actions">
                             <button
                                 type="button"
                                 className="Side-Add-Pubmat-Btn"
                                 onClick={() => setIsPubmatModalOpen(true)}
+                                title="Choose reusable graphic pubmat as cover"
                             >
-                                + Select Pubmat
+                                {selectedPubmat ? "Change Pubmat" : "+ Pubmat"}
                             </button>
-                            <label className="Side-Add-Photos-Btn">
-                                + Upload Photos
+                            <label className="Side-Add-Photos-Btn" style={{ opacity: isCompressingPhotos ? 0.7 : 1 }}>
+                                {isCompressingPhotos ? `Compressing (${compressingCount})...` : "+ Add Photos"}
                                 <input
                                     type="file"
                                     accept="image/*"
                                     multiple
+                                    disabled={isCompressingPhotos}
                                     style={{ display: "none" }}
                                     onChange={handleFileChange}
                                 />
                             </label>
                         </div>
                     </div>
-                )}
-            </aside>
+
+                    {isCompressingPhotos && (
+                        <div className="Side-Compressing-Notice">
+                            ⏳ Compressing {compressingCount} photo(s) to WebP...
+                        </div>
+                    )}
+
+                    {uploadStatusText && (
+                        <div className="Side-Upload-Notice">
+                            🚀 {uploadStatusText}
+                        </div>
+                    )}
+
+                    {(selectedPubmat || mediaImagePhoto.length > 0) ? (
+                        <>
+                            <div className="Side-Photos-List">
+                                {selectedPubmat && (
+                                    <div className="Side-Photo-Item Side-Pubmat-Item">
+                                        <div className="Side-Photo-Thumb-Wrapper">
+                                            <img
+                                                src={selectedPubmat.media_url || selectedPubmat.preview}
+                                                alt={selectedPubmat.title || "Pubmat Cover"}
+                                                draggable={false}
+                                            />
+                                            <span className="Side-Photo-Badge Side-Pubmat-Badge">
+                                                Cover (#1) · PUBMAT
+                                            </span>
+                                        </div>
+                                        <div className="Side-Pubmat-Details">
+                                            <span className="Side-Pubmat-Title" title={selectedPubmat.title}>
+                                                {selectedPubmat.title || "Graphic Pubmat"}
+                                            </span>
+                                        </div>
+                                        <div className="Side-Photo-Item-Actions">
+                                            <button
+                                                type="button"
+                                                className="Side-Btn-Action"
+                                                onClick={() => setIsPubmatModalOpen(true)}
+                                            >
+                                                Change
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="Side-Btn-Action Side-Btn-Delete"
+                                                onClick={() => setSelectedPubmat(null)}
+                                            >
+                                                ✕ Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {mediaImagePhoto.map((imgObj, idx) => {
+                                    const photoOrder = selectedPubmat ? idx + 2 : idx + 1
+                                    const isCoverPhoto = !selectedPubmat && idx === 0
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className={`Side-Photo-Item ${draggedPhotoIndex === idx ? 'is-dragging' : ''}`}
+                                            draggable
+                                            onDragStart={(e) => handlePhotoDragStart(e, idx)}
+                                            onDragOver={handlePhotoDragOver}
+                                            onDrop={(e) => handlePhotoDrop(e, idx)}
+                                        >
+                                            <div className="Side-Photo-Thumb-Wrapper">
+                                                <img src={imgObj.preview} alt={`Article media ${photoOrder}`} draggable={false} />
+                                                <span className="Side-Photo-Badge">
+                                                    {isCoverPhoto ? "Cover (#1)" : `#${photoOrder}`}
+                                                </span>
+                                            </div>
+                                            <div className="Side-Photo-Item-Actions">
+                                                <button
+                                                    type="button"
+                                                    className="Side-Btn-Action Side-Btn-Arrow"
+                                                    disabled={idx === 0}
+                                                    title="Move up"
+                                                    onClick={() => handleMoveImageUp(idx)}
+                                                >
+                                                    ▲
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="Side-Btn-Action Side-Btn-Arrow"
+                                                    disabled={idx === mediaImagePhoto.length - 1}
+                                                    title="Move down"
+                                                    onClick={() => handleMoveImageDown(idx)}
+                                                >
+                                                    ▼
+                                                </button>
+                                                {!isCoverPhoto && (
+                                                    <button
+                                                        type="button"
+                                                        className="Side-Btn-Action"
+                                                        title="Make primary cover"
+                                                        onClick={() => handleSetAsCover(idx)}
+                                                    >
+                                                        Cover
+                                                    </button>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    className="Side-Btn-Action Side-Btn-Delete"
+                                                    title="Remove image"
+                                                    onClick={() => handleRemoveImage(idx)}
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+
+                            {selectedPubmat && mediaImagePhoto.length > 0 ? (
+                                <p className="Side-Photos-Tip">
+                                    💡 Pubmat is set as <strong>Cover (#1)</strong>. Photos below (#2, #{mediaImagePhoto.length + 1}) will appear in the gallery.
+                                </p>
+                            ) : selectedPubmat ? (
+                                <p className="Side-Photos-Tip">
+                                    💡 Pubmat is set as <strong>Cover (#1)</strong>. Click <strong>+ Add Photos</strong> above for gallery photos.
+                                </p>
+                            ) : (
+                                <p className="Side-Photos-Tip">
+                                    💡 Drag and drop or use ▲ / ▼ to reorder photos. Photo #1 is the article cover.
+                                </p>
+                            )}
+                        </>
+                    ) : (
+                        <div className="Side-Photos-Empty">
+                            <p style={{ margin: "0 0 0.85rem 0", color: "#64748b" }}>
+                                No cover graphic or photos added yet.
+                            </p>
+                            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", flexWrap: "wrap" }}>
+                                <button
+                                    type="button"
+                                    className="Side-Add-Pubmat-Btn"
+                                    onClick={() => setIsPubmatModalOpen(true)}
+                                >
+                                    + Select Pubmat
+                                </button>
+                                <label className="Side-Add-Photos-Btn">
+                                    + Upload Photos
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        style={{ display: "none" }}
+                                        onChange={handleFileChange}
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                    )}
+                </aside>
+            </div>
+
+            {/* Modals */}
+            <StaffModal
+                isOpen={isAuthorModalOpen}
+                onClose={() => setIsAuthorModalOpen(false)}
+                staffers={staff}
+                initialSelectedStaffers={selectedAuthors}
+                title="Select Authors / Writers"
+                onConfirm={(selectedStaffers) => {
+                    setSelectedAuthors(selectedStaffers)
+                    setIsAuthorModalOpen(false)
+                }}
+            />
+
+            <StaffModal
+                isOpen={isMediaModalOpen}
+                onClose={() => setIsMediaModalOpen(false)}
+                staffers={staff}
+                initialSelectedStaffers={selectedMediaProviders}
+                title="Select Media Providers / Photographers"
+                onConfirm={(selectedStaffers) => {
+                    setSelectedMediaProviders(selectedStaffers)
+                    setIsMediaModalOpen(false)
+                }}
+            />
+
+            <SelectPubmatModal
+                isOpen={isPubmatModalOpen}
+                onClose={() => setIsPubmatModalOpen(false)}
+                onSelectPubmat={(pubmat) => {
+                    setSelectedPubmat({
+                        media_id: pubmat.media_id,
+                        media_url: pubmat.image_url,
+                        title: pubmat.title,
+                        pubmat_id: pubmat.pubmat_id
+                    })
+                }}
+                selectedPubmatId={selectedPubmat?.pubmat_id}
+            />
         </div>
-
-        <SelectPubmatModal
-            isOpen={isPubmatModalOpen}
-            onClose={() => setIsPubmatModalOpen(false)}
-            onSelectPubmat={(pubmat) => {
-                setSelectedPubmat({
-                    media_id: pubmat.media_id,
-                    media_url: pubmat.image_url,
-                    title: pubmat.title,
-                    pubmat_id: pubmat.pubmat_id
-                })
-            }}
-            selectedPubmatId={selectedPubmat?.pubmat_id}
-        />
-    </div>
-
-)
+    )
 }
 
-export default CreateArticlePage;
+export default CreateArticlePage
