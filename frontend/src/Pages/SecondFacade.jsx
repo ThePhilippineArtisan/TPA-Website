@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient.js";
-import { getArticleUrl, isMediaSegment } from "../utils/articleUtils.js";
+import { getArticleUrl, isMediaSegment, getMediaSegmentLabel } from "../utils/articleUtils.js";
 import { replaceUnderscore } from "../utils/slugifyUtils.js";
 
 import "../CSS/SecondFacade.css";
@@ -12,8 +12,19 @@ import VideoShowcase from "../Components/VideoShowcase.jsx";
 import LatestMediaSegment from "../Components/LatestMediaSegment.jsx";
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx";
 
+const isPinnedOrFeatured = (art) => {
+    if (!art) return false;
+    const tags = [art.article_tag1, art.article_tag2, art.article_tag3]
+        .filter(Boolean)
+        .map(t => t.toLowerCase());
+    return tags.some(t =>
+        t.includes("pinned") || t.includes("pin") || t.includes("featured") || t.includes("feature") || t === "top"
+    );
+};
+
 const SecondFacade = () => {
     const [latestNews, setLatestNews] = useState(null);
+    const [secondaryNewsList, setSecondaryNewsList] = useState([]);
     const [opinionArticles, setOpinionArticles] = useState([]);
     const [newsArticles, setNewsArticles] = useState([]);
     const [photoArticles, setPhotoArticles] = useState([]);
@@ -113,13 +124,28 @@ const SecondFacade = () => {
                         return cleanText.split(/\s+/).filter(Boolean).length;
                     };
 
-                    const fullArticles = mappedArticles.filter(art => {
+                    const fullNewsArticles = mappedArticles.filter(art => {
                         if (getWordCount(art) < 100) return false;
                         if (isMediaSegment(art.article_type)) return false;
                         return true;
                     });
-                    const topNews = fullArticles.length > 0 ? fullArticles[0] : null;
-                    setLatestNews(topNews);
+
+                    // 1. Pinned or Top Featured Story
+                    let topFeatured = mappedArticles.find(art => isPinnedOrFeatured(art) && getWordCount(art) >= 100);
+                    if (!topFeatured) {
+                        topFeatured = fullNewsArticles.length > 0 ? fullNewsArticles[0] : null;
+                    }
+                    setLatestNews(topFeatured);
+
+                    // 2. Latest Long-Form Article OR Media Segment (excluding topFeatured)
+                    const candidateSecondaries = mappedArticles.filter(art => {
+                        if (topFeatured && art.article_id === topFeatured.article_id) return false;
+                        const isLongForm = getWordCount(art) >= 100;
+                        const isSegment = isMediaSegment(art.article_type);
+                        return isLongForm || isSegment;
+                    });
+                    const topSecondaries = candidateSecondaries.slice(0, 2);
+                    setSecondaryNewsList(topSecondaries);
 
                     const opinionList = mappedArticles.filter(art => {
                         if (getWordCount(art) < 100) return false;
@@ -136,14 +162,16 @@ const SecondFacade = () => {
                             tag3.includes("opinion") || tag3.includes("editorial")
                         );
                     });
-                    const selectedOpinion = opinionList.slice(0, 2);
+                    const filteredOpinionList = opinionList.filter(op =>
+                        op.article_id !== topFeatured?.article_id && !topSecondaries.some(s => s.article_id === op.article_id)
+                    );
+                    const selectedOpinion = filteredOpinionList.slice(0, 2);
                     setOpinionArticles(selectedOpinion);
 
                     const opinionIds = new Set(selectedOpinion.map(op => op.article_id));
-                    const topId = topNews?.article_id;
-
                     const reservedIds = new Set([
-                        topId,
+                        topFeatured?.article_id,
+                        ...topSecondaries.map(s => s.article_id),
                         ...opinionIds
                     ].filter(Boolean));
 
@@ -160,8 +188,7 @@ const SecondFacade = () => {
 
                     const remainingArticles = mappedArticles.filter(art => {
                         if (getWordCount(art) < 100) return false;
-                        if (topId && art.article_id === topId) return false;
-                        if (opinionIds.has(art.article_id)) return false;
+                        if (reservedIds.has(art.article_id)) return false;
                         if (photoIds.has(art.article_id)) return false;
                         if (isMediaSegment(art.article_type)) return false;
                         return true;
@@ -193,8 +220,7 @@ const SecondFacade = () => {
                     // Ensure at least 4 news articles by backfilling with other long-form journalistic features/reports if beat articles are fewer
                     const fallbackArticles = mappedArticles.filter(art => {
                         if (getWordCount(art) < 100) return false;
-                        if (topId && art.article_id === topId) return false;
-                        if (opinionIds.has(art.article_id)) return false;
+                        if (reservedIds.has(art.article_id)) return false;
                         if (photoIds.has(art.article_id)) return false;
                         if (beatArticles.some(b => b.article_id === art.article_id)) return false;
                         return true;
@@ -346,13 +372,26 @@ const SecondFacade = () => {
                         <div className="Large-Left-News-Column">
                             <Link to="/latest" className="Category"> LATEST NEWS <span>⟶</span> </Link>
 
+                            {/* 1. Pinned or Top Featured Story */}
                             {latestNews ? (
-                                <Link to={getArticleUrl(latestNews)} className="Large-Photo-News" style={{ flexWrap: "wrap" }}>
-                                    <img
-                                        src={getArticleMedia(latestNews)}
-                                        alt={latestNews.article_headline}
-                                        style={{ width: "100%" }}
-                                    />
+                                <Link to={getArticleUrl(latestNews)} className="Large-Photo-News Featured-Hero-News" style={{ flexWrap: "wrap" }}>
+                                    <div className="Featured-Image-Wrapper">
+                                        <img
+                                            src={getArticleMedia(latestNews)}
+                                            alt={latestNews.article_headline}
+                                            style={{ width: "100%" }}
+                                        />
+                                        <div className="Featured-Story-Badge-Row">
+                                            <span className={`Featured-Badge ${isPinnedOrFeatured(latestNews) ? "pinned" : "featured"}`}>
+                                                {isPinnedOrFeatured(latestNews) ? "📌 PINNED STORY" : "⭐ FEATURED"}
+                                            </span>
+                                            {latestNews.article_type && (
+                                                <span className="Featured-Type-Badge">
+                                                    {getMediaSegmentLabel(latestNews.article_type)}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                     <div className="Large-News">
                                         <div className="Large-News-Headline">
                                             <p>{latestNews.article_headline}</p>
@@ -363,7 +402,7 @@ const SecondFacade = () => {
                                                 <div className="Sample-Text-Container">
                                                     <hr className="Vertical-Divider" />
                                                     <div className="Sample-Text">
-                                                        <p>{getArticleExcerpt(latestNews)}</p>
+                                                        <p>{getArticleExcerpt(latestNews, 180)}</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -387,6 +426,40 @@ const SecondFacade = () => {
                                     </div>
                                 </Link>
                             )}
+
+                            {/* 2. Latest Long Form Articles OR Media Segments */}
+                            {secondaryNewsList.map((secNews) => (
+                                <Link to={getArticleUrl(secNews)} className="Large-Photo-News Secondary-Feature-News" key={secNews.article_id}>
+                                    <div className="Secondary-Feature-Image-Wrapper">
+                                        <img
+                                            loading="lazy"
+                                            src={getArticleMedia(secNews)}
+                                            alt={secNews.article_headline}
+                                        />
+                                        <span className="Secondary-Badge">
+                                            {isMediaSegment(secNews.article_type)
+                                                ? (getMediaSegmentLabel(secNews.article_type) || "MEDIA SEGMENT")
+                                                : (getMediaSegmentLabel(secNews.article_type) || "LATEST READ")}
+                                        </span>
+                                    </div>
+                                    <div className="Large-News" style={{ flex: 1 }}>
+                                        <div className="Large-News-Headline">
+                                            <p style={{ fontSize: "clamp(1rem, 1.25vw, 1.25rem)" }}>{secNews.article_headline}</p>
+                                            <div className="Article-Author-Time">
+                                                <p>{getAuthorsString(secNews)} {secNews.published_at ? `| ${formatDate(secNews.published_at)}` : ''}</p>
+                                            </div>
+                                            {secNews.article_body && (
+                                                <div className="Sample-Text-Container">
+                                                    <hr className="Vertical-Divider" />
+                                                    <div className="Sample-Text">
+                                                        <p>{getArticleExcerpt(secNews, 140)}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
                         </div>
                     </div>
 

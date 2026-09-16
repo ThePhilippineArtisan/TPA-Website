@@ -9,13 +9,50 @@ import "../CSS/LatestPosts.css"
 import CoverPhotoSearch from "../Components/CoverPhotoSearch.jsx";
 import Tabs from "../Components/Tabs.jsx"
 
+const filterMap = {
+    "Just In": { type: "JUST_IN" },
+    "In Case You Missed It!": { type: "ICYMI" },
+    "Announcement": { type: "ANNOUNCEMENT" },
+    "Advisory": { type: "ADVISORY" },
+    "Alert": { type: "ALERT" },
+    "Walang Pasok": { type: "WALANG_PASOK", tag: "walang pasok" },
+    "Happening Now": { type: "HAPPENING_NOW" },
+    "Erratum": { type: "ERRATUM" },
+    "University News": { type: "UNIVERSITY_NEWS" },
+    "Local News": { type: "LOCAL_NEWS", tag: "local news" },
+    "National News": { type: "NATIONAL_NEWS" },
+    "International News": { type: "INTERNATIONAL_NEWS" },
+    "Sports News": { type: "SPORTS_NEWS" },
+    "Developing Story": { type: "DEVELOPING_STORY" },
+    "Look": { type: "LOOK", tag: "look" },
+    "In Photos": {
+        types: ["IN_PHOTOS", "LOOK", "HIGHLIGHTS"],
+        tags: ["in photos", "in_photos", "photo", "photos", "look", "highlights"],
+        matchMultiPhoto: true
+    },
+    "Highlights": { type: "HIGHLIGHTS", tag: "highlights" },
+    "Editorial": { type: "EDITORIAL", tag: "editorial" },
+    "Opinion": { type: "OPINION", tag: "opinion" },
+};
+
+const resolveFilterParam = (raw) => {
+    if (!raw) return null;
+    const clean = raw.trim().toLowerCase().replace(/[-_]/g, " ");
+    const match = Object.keys(filterMap).find(k => k.toLowerCase() === clean);
+    return match || raw;
+};
+
 const LatestPosts = () => {
 
     const [searchParams] = useSearchParams()
     const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(true)
-    const [selectedFilters, setSelectedFilters] = useState(searchParams.get("filter") ? [searchParams.get("filter")] : [])
+    const [selectedFilters, setSelectedFilters] = useState(() => {
+        const raw = searchParams.get("filter");
+        const resolved = resolveFilterParam(raw);
+        return resolved ? [resolved] : [];
+    })
     const [visibleWeeks, setVisibleWeeks] = useState(3) // only three weeks
 
     useEffect(() => {
@@ -23,7 +60,10 @@ const LatestPosts = () => {
         setSearchQuery(q)
         const filterParam = searchParams.get("filter")
         if (filterParam) {
-            setSelectedFilters([filterParam])
+            const resolved = resolveFilterParam(filterParam);
+            if (resolved) {
+                setSelectedFilters([resolved]);
+            }
         }
     }, [searchParams])
 
@@ -227,28 +267,6 @@ const LatestPosts = () => {
 
     }
 
-    const filterMap = {
-        "Just In": { type: "JUST_IN" },
-        "In Case You Missed It!": { type: "ICYMI" },
-        "Announcement": { type: "ANNOUNCEMENT" },
-        "Advisory": { type: "ADVISORY" },
-        "Alert": { type: "ALERT" },
-        "Walang Pasok": { type: "WALANG_PASOK", tag: "walang pasok" },
-        "Happening Now": { type: "HAPPENING_NOW" },
-        "Erratum": { type: "ERRATUM" },
-        "University News": { type: "UNIVERSITY_NEWS" },
-        "Local News": { type: "LOCAL_NEWS", tag: "local news" },
-        "National News": { type: "NATIONAL_NEWS" },
-        "International News": { type: "INTERNATIONAL_NEWS" },
-        "Sports News": { type: "SPORTS_NEWS" },
-        "Developing Story": { type: "DEVELOPING_STORY" },
-        "Look": { type: "LOOK" },
-        "In Photos": { type: "IN_PHOTOS", tag: "in photos" },
-        "Highlights": { type: "HIGHLIGHTS", tag: "highlights" },
-        "Editorial": { type: "EDITORIAL", tag: "editorial" },
-        "Opinion": { type: "OPINION", tag: "opinion" },
-    }
-
     const handleFilterChange = (filterName => {
         setSelectedFilters(prev =>
             prev.includes(filterName)
@@ -360,13 +378,22 @@ const LatestPosts = () => {
                 return false
             }
 
-            const typeMatch = criteria.type && article.article_type === criteria.type
-            const tagMatch = criteria.tag && (
-                (article.article_tag1 && article.article_tag1.toLowerCase().includes(criteria.tag)) ||
-                (article.article_tag2 && article.article_tag2.toLowerCase().includes(criteria.tag)) ||
-                (article.article_tag3 && article.article_tag3.toLowerCase().includes(criteria.tag))
+            const types = criteria.types || (criteria.type ? [criteria.type] : [])
+            const typeMatch = types.length > 0 && types.includes(article.article_type)
+
+            const tags = criteria.tags || (criteria.tag ? [criteria.tag] : [])
+            const articleTags = [article.article_tag1, article.article_tag2, article.article_tag3]
+                .filter(Boolean)
+                .map(t => t.toLowerCase())
+            const tagMatch = tags.some(tagWord => articleTags.some(t => t.includes(tagWord)))
+
+            const multiPhotoMatch = Boolean(
+                criteria.matchMultiPhoto &&
+                article.article_media &&
+                article.article_media.length > 1
             )
-            return typeMatch || tagMatch
+
+            return typeMatch || tagMatch || multiPhotoMatch
         })
     })
 
@@ -420,6 +447,39 @@ const LatestPosts = () => {
                                 }}
                             >
                                 Clear search
+                            </button>
+                        </div>
+                    )}
+
+                    {selectedFilters.length > 0 && (
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            backgroundColor: "#eff6ff",
+                            border: "1px solid #bfdbfe",
+                            borderRadius: "6px",
+                            padding: "0.75rem 1.25rem",
+                            marginBottom: "1.5rem"
+                        }}>
+                            <span style={{ fontSize: "0.9rem", color: "#1e40af", fontWeight: "600" }}>
+                                Filtered by: <strong>{selectedFilters.join(", ")}</strong> ({filteredArticles.length} {filteredArticles.length === 1 ? "article" : "articles"})
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setSelectedFilters([])}
+                                style={{
+                                    background: "none",
+                                    border: "1px solid #93c5fd",
+                                    borderRadius: "4px",
+                                    padding: "0.3rem 0.75rem",
+                                    fontSize: "0.8rem",
+                                    fontWeight: "600",
+                                    color: "#1e40af",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Clear filter
                             </button>
                         </div>
                     )}

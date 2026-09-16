@@ -266,6 +266,96 @@ a {
     border-color: var(--primary-blue);
 }
 
+/* Featured & Secondary Cards under Latest News */
+.Featured-Image-Wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.Featured-Story-Badge-Row {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.Featured-Badge {
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Featured-Badge.pinned {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.Featured-Badge.featured {
+    background-color: #0265A9;
+    color: #ffffff;
+}
+
+.Featured-Type-Badge {
+    background-color: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.Secondary-Feature-Image-Wrapper {
+    position: relative;
+    width: 35%;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.Secondary-Feature-Image-Wrapper img {
+    width: 100% !important;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+}
+
+.Secondary-Badge {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    background-color: rgba(2, 101, 169, 0.9);
+    color: #ffffff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    backdrop-filter: blur(4px);
+}
+
+.Secondary-Feature-News {
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .Secondary-Feature-Image-Wrapper {
+        width: 100%;
+    }
+}
+
 .Large-News-Headline {
     display: flex;
     flex-direction: column;

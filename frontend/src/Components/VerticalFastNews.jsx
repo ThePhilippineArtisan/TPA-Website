@@ -53,57 +53,26 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
         fetchFastNews();
     }, []);
 
+    const formatNumericalDate = (dateStr) => {
+        if (!dateStr) return "";
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return "";
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        const yyyy = d.getFullYear();
+        return `${mm}.${dd}.${yyyy}`;
+    };
+
     const textOnlyFastNews = fastNewsArticles.slice(0, 4);
     const mediaFastNews = fastNewsArticles.slice(4, 8);
 
     return (
         <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
-
-            <div style={{ padding: "2rem" }}>
-                <Link to="/Joseph-Brian-Balut" style={{ fontSize: "1.5rem" }}> BULLETIN BOARD </Link>
-
-                <div className="Vertical-Side-News Vertical-Substack-News" style={{ margin: "2rem 0rem", border: "1px solid #0265A9" }}>
-                    <hr className="Vertical-Divider-Side-News" />
-                    <a href="https://philartisan.substack.com/p/want-to-join-the-philippine-artisan" target="_blank" rel="noopener noreferrer">
-
-                        <p style={{ padding: "1rem 0rem" }}> Want to join the Philippine Artisan? </p>
-
-                        <p>Click <span style={{ color: '#0265A9' }}>here</span> to be notified when applications are open!</p>
-
-                    </a>
-                </div>
-
-                <div className="Vertical-Side-News Vertical-Substack-News">
-                    <hr className="Vertical-Divider-Side-News" />
-                    <a
-                        href="https://philartisan.substack.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="Substack-News-Link"
-                    >
-                        <svg
-                            className="Substack-Logo-Icon"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            aria-hidden="true"
-                        >
-                            <path
-                                fill="#FF6719"
-                                d="M22.539 8.242H1.46V5.406h21.08v2.836zM22.539 2.836H1.46V0h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46z"
-                            />
-                        </svg>
-                        <span>Subscribe to our weekly newsletter</span>
-                    </a>
-                </div>
-
-            </div>
-
             <div className="Vertical-Fast-News">
                 <div className="Vertical-Fast-News-Links">
-                    <span style={{ fontSize: "1.5rem", fontWeight: "800", color: "#0265A9" }} id="Vertical-Fast-News-Links">
+                    <div className="Vertical-Fast-News-Heading" id="Vertical-Fast-News-Links">
                         FAST NEWS
-                    </span>
+                    </div>
 
                     {loading ? (
                         <p style={{ fontSize: "0.85rem", color: "#666", padding: "1rem 0" }}>Loading fast news...</p>
@@ -113,11 +82,24 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                         (textOnlyFastNews.length > 0 ? textOnlyFastNews : fastNewsArticles.slice(0, 4)).map((article) => (
                             <Link to={getArticleUrl(article)} className="Vertical-Side-News" key={article.article_id}>
                                 <hr className="Vertical-Divider-Side-News" />
-                                <div className="Vertical-Headlines">
-                                    <p>
-                                        <span style={{ color: '#0265A9', fontWeight: 800, textTransform: 'uppercase', marginRight: '6px' }}>
-                                            {article.article_type ? article.article_type.replace(/_/g, " ") : "FAST NEWS"}:
+                                <div className="Vertical-Headlines" style={{ width: "100%" }}>
+                                    <div className="FastNews-Header-Row">
+                                        <span className="FastNews-Type-Badge">
+                                            {article.article_type ? article.article_type.replace(/_/g, " ") : "FAST NEWS"}
                                         </span>
+                                        {article.published_at && (
+                                            <span className="FastNews-Date-Badge" title={new Date(article.published_at).toLocaleString()}>
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                </svg>
+                                                {formatNumericalDate(article.published_at)}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="FastNews-Headline-Text">
                                         {article.article_headline}
                                     </p>
                                 </div>
@@ -128,9 +110,9 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
 
                 {mediaFastNews.length > 0 && (
                     <div className="Vertical-Fast-News-Links">
-                        <span style={{ fontSize: "1.5rem", fontWeight: "800", color: "#0265A9" }}>
+                        <div className="Vertical-Fast-News-Heading">
                             MORE QUICK READS
-                        </span>
+                        </div>
 
                         {mediaFastNews.map((article) => {
                             const sortedMedia = article.article_media
@@ -144,11 +126,24 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                                         <img loading="lazy" src={firstMedia} alt={article.article_headline} />
                                     )}
                                     <hr className="Vertical-Divider-Side-News" />
-                                    <div className="Vertical-Headlines">
-                                        <p>
-                                            <span style={{ color: '#0265A9', fontWeight: 800, textTransform: 'uppercase', marginRight: '6px' }}>
-                                                {article.article_type ? article.article_type.replace(/_/g, " ") : "FAST NEWS"}:
+                                    <div className="Vertical-Headlines" style={{ width: "100%" }}>
+                                        <div className="FastNews-Header-Row">
+                                            <span className="FastNews-Type-Badge">
+                                                {article.article_type ? article.article_type.replace(/_/g, " ") : "FAST NEWS"}
                                             </span>
+                                            {article.published_at && (
+                                                <span className="FastNews-Date-Badge" title={new Date(article.published_at).toLocaleString()}>
+                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+                                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                    </svg>
+                                                    {formatNumericalDate(article.published_at)}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="FastNews-Headline-Text">
                                             {article.article_headline}
                                         </p>
                                     </div>
