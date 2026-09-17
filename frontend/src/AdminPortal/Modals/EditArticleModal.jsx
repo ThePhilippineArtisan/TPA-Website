@@ -74,6 +74,13 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
     const [tag1, setTag1] = useState(article.article_tag1 || "")
     const [tag2, setTag2] = useState(article.article_tag2 || "")
     const [tag3, setTag3] = useState(article.article_tag3 || "")
+    const initialPinned = [article.article_tag1, article.article_tag2, article.article_tag3]
+        .filter(Boolean)
+        .some(t => {
+            const lower = t.toLowerCase()
+            return lower.includes("pinned") || lower.includes("pin") || lower.includes("featured") || lower === "top"
+        })
+    const [isPinned, setIsPinned] = useState(initialPinned)
     const [articleSource, setArticleSource] = useState(article.article_source || "")
     const [body, setBody] = useState(article.article_body || "")
 
@@ -418,15 +425,34 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             const isoPublishedAt = publishedAt ? new Date(publishedAt).toISOString() : null
             const calculatedWords = countWords(body)
 
+            let finalTag1 = tag1.trim()
+            let finalTag2 = tag2.trim()
+            let finalTag3 = tag3.trim()
+
+            const isPinTag = (t) => t && (t.toLowerCase().includes("pinned") || t.toLowerCase().includes("pin") || t.toLowerCase().includes("featured") || t.toLowerCase() === "top")
+
+            if (isPinned) {
+                if (!isPinTag(finalTag1) && !isPinTag(finalTag2) && !isPinTag(finalTag3)) {
+                    if (!finalTag1) finalTag1 = "Pinned"
+                    else if (!finalTag2) finalTag2 = "Pinned"
+                    else if (!finalTag3) finalTag3 = "Pinned"
+                    else finalTag1 = "Pinned"
+                }
+            } else {
+                if (isPinTag(finalTag1)) finalTag1 = ""
+                if (isPinTag(finalTag2)) finalTag2 = ""
+                if (isPinTag(finalTag3)) finalTag3 = ""
+            }
+
             const updates = {
                 article_headline: trimmedHeadline,
                 slug_headline: newSlug,
                 article_type: (articleType && articleType !== "NULL") ? articleType : null,
                 is_published: isPublished,
                 published_at: isoPublishedAt,
-                article_tag1: tag1.trim() || null,
-                article_tag2: tag2.trim() || null,
-                article_tag3: tag3.trim() || null,
+                article_tag1: finalTag1 || null,
+                article_tag2: finalTag2 || null,
+                article_tag3: finalTag3 || null,
                 article_source: articleSource.trim() || null,
                 article_body: body,
                 word_count: calculatedWords
@@ -537,6 +563,45 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                             onChange={(e) => setHeadline(e.target.value)}
                             placeholder="Article Headline"
                         />
+                    </div>
+
+                    <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        backgroundColor: isPinned ? "#fef2f2" : "#f8fafc",
+                        border: `1px solid ${isPinned ? "#fca5a5" : "#e2e8f0"}`,
+                        borderRadius: "8px",
+                        padding: "0.75rem 1rem",
+                        marginBottom: "1rem"
+                    }}>
+                        <div>
+                            <label style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "700", color: isPinned ? "#b91c1c" : "#334155", cursor: "pointer", margin: 0 }}>
+                                <input
+                                    type="checkbox"
+                                    checked={isPinned}
+                                    onChange={(e) => setIsPinned(e.target.checked)}
+                                    style={{ width: "16px", height: "16px", cursor: "pointer" }}
+                                />
+                                Pin as Featured Story on Front Page / Facade
+                            </label>
+                            <span style={{ fontSize: "0.78rem", color: "#64748b", marginLeft: "24px", display: "block" }}>
+                                When pinned, this post/segment takes the primary spotlight in the "LATEST NEWS" section of the homepage facade.
+                            </span>
+                        </div>
+                        {isPinned && (
+                            <span style={{
+                                fontSize: "0.75rem",
+                                fontWeight: "700",
+                                backgroundColor: "#fee2e2",
+                                color: "#dc2626",
+                                padding: "0.2rem 0.55rem",
+                                borderRadius: "4px",
+                                whiteSpace: "nowrap"
+                            }}>
+                                PINNED ACTIVE
+                            </span>
+                        )}
                     </div>
 
                     <div className="Edit-Modal-Form-Row">
@@ -884,7 +949,7 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
 
                         {photoUploadProgress && (
                             <div className="Edit-Photo-Upload-Notice">
-                                🚀 {photoUploadProgress}
+                                {photoUploadProgress}
                             </div>
                         )}
 

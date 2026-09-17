@@ -1055,7 +1055,7 @@ const ManageReleases = () => {
                                                 {orderNum !== null && <span className="Release-Badge Release-Badge-Order">#{orderNum}</span>}
                                                 <span className="Release-Badge Release-Badge-Category">{type}</span>
                                                 {year && <span className="Release-Badge Release-Badge-Year">{year}</span>}
-                                                {isFeatured && <span className="Release-Badge Release-Badge-Featured">⭐ Featured</span>}
+                                                {isFeatured && <span className="Release-Badge Release-Badge-Featured">Featured</span>}
                                                 <span className={`Release-Badge Release-Badge-Status ${isVisible ? 'visible' : 'hidden'}`}>
                                                     {isVisible ? 'Visible' : 'Hidden'}
                                                 </span>

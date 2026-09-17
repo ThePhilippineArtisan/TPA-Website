@@ -59,13 +59,14 @@ const ListOfMediaSegments = ({ filterType }) => {
                     }
 
                     if (isMounted && data) {
+                        const populatedData = await attachStaffToArticles(data);
                         // Group articles by day type
                         const grouped = {};
                         WEEKLY_DAYS_ORDER.forEach(type => {
                             grouped[type] = [];
                         });
 
-                        data.forEach(item => {
+                        populatedData.forEach(item => {
                             const typeUpper = item.article_type?.toUpperCase();
                             if (grouped[typeUpper]) {
                                 grouped[typeUpper].push(item);
@@ -122,9 +123,10 @@ const ListOfMediaSegments = ({ filterType }) => {
                     }
 
                     if (isMounted && data) {
-                        const week0 = data.slice(0, 7);
-                        const week1 = data.slice(7, 14);
-                        const week2 = data.slice(14, 21);
+                        const populatedData = await attachStaffToArticles(data);
+                        const week0 = populatedData.slice(0, 7);
+                        const week1 = populatedData.slice(7, 14);
+                        const week2 = populatedData.slice(14, 21);
 
                         setLatestWeek(week0);
                         const past = [];
@@ -147,9 +149,63 @@ const ListOfMediaSegments = ({ filterType }) => {
         };
     }, [filterType]);
 
+    const attachStaffToArticles = async (articles) => {
+        if (!articles || articles.length === 0) return articles;
+        const articleIds = articles.map(a => a.article_id);
+        try {
+            const { data: staffData } = await supabase
+                .from("article_staff")
+                .select(`
+                    article_id,
+                    contribution_as,
+                    use_pseudonym,
+                    staff (
+                        staff_id,
+                        staff_display_name,
+                        staff_pseudonym,
+                        staff_first_name,
+                        staff_last_name
+                    )
+                `)
+                .in("article_id", articleIds);
+
+            if (staffData) {
+                return articles.map(art => ({
+                    ...art,
+                    article_staff: staffData.filter(s => s.article_id === art.article_id)
+                }));
+            }
+        } catch (e) {
+            console.warn("Could not fetch staff for media segments:", e);
+        }
+        return articles;
+    };
+
     const renderCard = (article) => {
         const mediaUrl = article.article_media?.[0]?.media?.media_url;
         const label = getMediaSegmentLabel(article.article_type);
+
+        const mediaProviders = (article.article_staff || [])
+            .filter(as =>
+                as.contribution_as === "Media_Provider" ||
+                as.contribution_as === "Media Provider" ||
+                as.contribution_as === "Photos" ||
+                as.contribution_as === "Visuals" ||
+                as.contribution_as === "Illustrator" ||
+                as.contribution_as === "Designer" ||
+                as.contribution_as === "Broadcaster"
+            )
+            .map(as => (as.use_pseudonym && as.staff?.staff_pseudonym) || as.staff?.staff_display_name || `${as.staff?.staff_first_name || ""} ${as.staff?.staff_last_name || ""}`.trim())
+            .filter(Boolean);
+
+        const authors = (article.article_staff || [])
+            .filter(as => as.contribution_as === "Author" || as.contribution_as === "Writer")
+            .map(as => (as.use_pseudonym && as.staff?.staff_pseudonym) || as.staff?.staff_display_name || `${as.staff?.staff_first_name || ""} ${as.staff?.staff_last_name || ""}`.trim())
+            .filter(Boolean);
+
+        const creditText = mediaProviders.length > 0
+            ? `Photo: ${mediaProviders[0]}`
+            : (authors.length > 0 ? `By: ${authors[0]}` : null);
 
         return (
             <Link
@@ -168,17 +224,30 @@ const ListOfMediaSegments = ({ filterType }) => {
                         style={{ width: '100%', height: '180px', objectFit: 'cover' }}
                     />
                 )}
-                <p style={{
-                    marginTop: '0.5rem',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    lineHeight: '1.3'
-                }}>
-                    {article.article_headline}
-                </p>
+                <div>
+                    <p style={{
+                        marginTop: '0.5rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        lineHeight: '1.3'
+                    }}>
+                        {article.article_headline}
+                    </p>
+                    {creditText && (
+                        <span style={{
+                            display: 'block',
+                            marginTop: '0.35rem',
+                            fontSize: '0.75rem',
+                            color: 'rgba(255, 255, 255, 0.75)',
+                            fontWeight: '500'
+                        }}>
+                            {creditText}
+                        </span>
+                    )}
+                </div>
             </Link>
         );
     };

@@ -333,7 +333,7 @@ const ManageFrontPage = () => {
                                             fontSize: '0.8rem'
                                         }}
                                     >
-                                        {uploadingForeground ? "Processing..." : "📁 Upload Image"}
+                                        {uploadingForeground ? "Processing..." : "Upload Image"}
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -388,7 +388,7 @@ const ManageFrontPage = () => {
                                             fontSize: '0.8rem'
                                         }}
                                     >
-                                        {uploadingBackground ? "Processing..." : "📁 Upload Background"}
+                                        {uploadingBackground ? "Processing..." : "Upload Background"}
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -609,7 +609,7 @@ const ManageFrontPage = () => {
                                             <span className="Badge" style={{ background: 'var(--bg-light)', color: 'var(--text-dark)' }}>
                                                 Order: #{item.order}
                                             </span>
-                                            {item.is_pinned && <span className="Badge Badge-Pinned">📌 Pinned</span>}
+                                            {item.is_pinned && <span className="Badge Badge-Pinned">Pinned</span>}
                                             <span className={`Badge ${item.is_visible ? 'Badge-Visible' : 'Badge-Hidden'}`}>
                                                 {item.is_visible ? 'Visible' : 'Hidden'}
                                             </span>
@@ -631,7 +631,7 @@ const ManageFrontPage = () => {
                                                     className="Btn-Outline Button-Outline"
                                                     onClick={() => togglePin(item.id)}
                                                 >
-                                                    {item.is_pinned ? 'Unpin' : '📌'}
+                                                    {item.is_pinned ? 'Unpin' : 'Pin'}
                                                 </button>
 
                                                 <button

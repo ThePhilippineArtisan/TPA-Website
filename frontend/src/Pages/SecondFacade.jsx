@@ -24,6 +24,7 @@ const isPinnedOrFeatured = (art) => {
 
 const SecondFacade = () => {
     const [latestNews, setLatestNews] = useState(null);
+    const [secondaryLatestNews, setSecondaryLatestNews] = useState(null);
     const [secondaryNewsList, setSecondaryNewsList] = useState([]);
     const [opinionArticles, setOpinionArticles] = useState([]);
     const [newsArticles, setNewsArticles] = useState([]);
@@ -130,16 +131,25 @@ const SecondFacade = () => {
                         return true;
                     });
 
-                    // 1. Pinned or Top Featured Story
-                    let topFeatured = mappedArticles.find(art => isPinnedOrFeatured(art) && getWordCount(art) >= 100);
-                    if (!topFeatured) {
-                        topFeatured = fullNewsArticles.length > 0 ? fullNewsArticles[0] : null;
+                    // 1. Pinned Story (allows articles and media segments)
+                    let pinnedStory = mappedArticles.find(art => isPinnedOrFeatured(art));
+                    let topPrimary = pinnedStory;
+                    if (!topPrimary) {
+                        topPrimary = fullNewsArticles.length > 0 ? fullNewsArticles[0] : (mappedArticles[0] || null);
                     }
-                    setLatestNews(topFeatured);
+                    setLatestNews(topPrimary);
 
-                    // 2. Latest Long-Form Article OR Media Segment (excluding topFeatured)
+                    // 2. Another Latest News (most recent long-form news story or article, excluding topPrimary)
+                    const anotherCandidate = fullNewsArticles.find(art => art.article_id !== topPrimary?.article_id)
+                        || mappedArticles.find(art => art.article_id !== topPrimary?.article_id)
+                        || null;
+                    setSecondaryLatestNews(anotherCandidate);
+
+                    const reservedTopIds = new Set([topPrimary?.article_id, anotherCandidate?.article_id].filter(Boolean));
+
+                    // 3. Secondary News below Latest News (excluding the two top stories)
                     const candidateSecondaries = mappedArticles.filter(art => {
-                        if (topFeatured && art.article_id === topFeatured.article_id) return false;
+                        if (reservedTopIds.has(art.article_id)) return false;
                         const isLongForm = getWordCount(art) >= 100;
                         const isSegment = isMediaSegment(art.article_type);
                         return isLongForm || isSegment;
@@ -163,14 +173,14 @@ const SecondFacade = () => {
                         );
                     });
                     const filteredOpinionList = opinionList.filter(op =>
-                        op.article_id !== topFeatured?.article_id && !topSecondaries.some(s => s.article_id === op.article_id)
+                        !reservedTopIds.has(op.article_id) && !topSecondaries.some(s => s.article_id === op.article_id)
                     );
                     const selectedOpinion = filteredOpinionList.slice(0, 2);
                     setOpinionArticles(selectedOpinion);
 
                     const opinionIds = new Set(selectedOpinion.map(op => op.article_id));
                     const reservedIds = new Set([
-                        topFeatured?.article_id,
+                        ...reservedTopIds,
                         ...topSecondaries.map(s => s.article_id),
                         ...opinionIds
                     ].filter(Boolean));
@@ -277,25 +287,68 @@ const SecondFacade = () => {
         return "";
     };
 
+    const getContributorName = (as) => {
+        if (!as) return "";
+        if (as.use_pseudonym && as.staff?.staff_pseudonym) {
+            return as.staff.staff_pseudonym;
+        }
+        if (as.staff?.staff_display_name && as.staff.staff_display_name.trim()) {
+            return as.staff.staff_display_name.trim();
+        }
+        const full = `${as.staff?.staff_first_name || ""} ${as.staff?.staff_last_name || ""}`.trim();
+        if (full) return full;
+        return getContributorSurname(as);
+    };
+
+    const formatNameList = (names) => {
+        if (!names || names.length === 0) return "";
+        if (names.length === 1) return names[0];
+        if (names.length === 2) return `${names[0]} & ${names[1]}`;
+        if (names.length === 3) return `${names[0]}, ${names[1]}, & ${names[2]}`;
+        return `${names.slice(0, 2).join(", ")}, & ${names.length - 2} others`;
+    };
+
     const getSmartCredits = (article) => {
         if (!article || !article.article_staff || article.article_staff.length === 0) {
             return "The Philippine Artisan Staff";
         }
 
-        const authors = article.article_staff.filter(as => as.contribution_as === "Author");
-        const activeList = authors.length > 0 ? authors : article.article_staff;
+        const authors = article.article_staff
+            .filter(as => as.contribution_as === "Author" || as.contribution_as === "Writer")
+            .map(getContributorName)
+            .filter(Boolean);
 
-        const names = activeList.map(as => {
-            const surname = getContributorSurname(as);
-            const fullName = (as.use_pseudonym && as.staff?.staff_pseudonym) || as.staff?.staff_display_name || surname;
-            return { fullName, surname };
-        }).filter(n => n.surname || n.fullName);
+        const mediaProviders = article.article_staff
+            .filter(as => 
+                as.contribution_as === "Media_Provider" ||
+                as.contribution_as === "Media Provider" ||
+                as.contribution_as === "Photos" ||
+                as.contribution_as === "Visuals" ||
+                as.contribution_as === "Illustrator" ||
+                as.contribution_as === "Designer" ||
+                as.contribution_as === "Broadcaster"
+            )
+            .map(getContributorName)
+            .filter(Boolean);
 
-        if (names.length === 0) return "The Philippine Artisan Staff";
-        if (names.length === 1) return names[0].fullName || names[0].surname;
-        if (names.length === 2) return `${names[0].surname} & ${names[1].surname}`;
-        if (names.length === 3) return `${names[0].surname}, ${names[1].surname}, & ${names[2].surname}`;
-        return `${names.slice(0, 3).map(n => n.surname).join(", ")}, & ${names.length - 3} others`;
+        const authorStr = formatNameList(authors);
+        const mediaStr = formatNameList(mediaProviders);
+
+        if (authorStr && mediaStr) {
+            if (authorStr === mediaStr) {
+                return `${authorStr} (Words & Photos)`;
+            }
+            return `By ${authorStr} • Photos by ${mediaStr}`;
+        }
+        if (authorStr) {
+            return `By ${authorStr}`;
+        }
+        if (mediaStr) {
+            return `Photos by ${mediaStr}`;
+        }
+
+        const allNames = article.article_staff.map(getContributorName).filter(Boolean);
+        return allNames.length > 0 ? formatNameList(allNames) : "The Philippine Artisan Staff";
     };
 
     const getFullCreditsTooltip = (article) => {
@@ -304,7 +357,7 @@ const SecondFacade = () => {
         }
         return article.article_staff
             .map(as => {
-                const name = (as.use_pseudonym && as.staff?.staff_pseudonym) || as.staff?.staff_display_name;
+                const name = getContributorName(as);
                 const role = as.contribution_as ? ` (${as.contribution_as.replace(/_/g, " ")})` : "";
                 return `${name}${role}`;
             })
@@ -329,7 +382,12 @@ const SecondFacade = () => {
 
     const getArticleExcerpt = (article, maxLength = 220) => {
         if (!article || !article.article_body) return "";
-        const cleanText = article.article_body.replace(/<[^>]*>/g, " ").trim();
+        const cleanText = article.article_body
+            .replace(/<[^>]*>/g, " ")
+            .replace(/&nbsp;/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+        if (!cleanText) return "";
         if (cleanText.length <= maxLength) return cleanText;
         return cleanText.slice(0, maxLength).trim() + "...";
     };
@@ -383,7 +441,7 @@ const SecondFacade = () => {
                                         />
                                         <div className="Featured-Story-Badge-Row">
                                             <span className={`Featured-Badge ${isPinnedOrFeatured(latestNews) ? "pinned" : "featured"}`}>
-                                                {isPinnedOrFeatured(latestNews) ? "📌 PINNED STORY" : "⭐ FEATURED"}
+                                                {isPinnedOrFeatured(latestNews) ? "PINNED STORY" : "FEATURED"}
                                             </span>
                                             {latestNews.article_type && (
                                                 <span className="Featured-Type-Badge">
@@ -395,17 +453,21 @@ const SecondFacade = () => {
                                     <div className="Large-News">
                                         <div className="Large-News-Headline">
                                             <p>{latestNews.article_headline}</p>
-                                            <div className="Article-Author-Time">
-                                                <p>{getAuthorsString(latestNews)} {latestNews.published_at ? `| ${formatDate(latestNews.published_at)}` : ''}</p>
+                                            <div className="Article-Author-Time" title={getFullCreditsTooltip(latestNews)}>
+                                                <p>{getSmartCredits(latestNews)} {latestNews.published_at ? `| ${formatDate(latestNews.published_at)}` : ''}</p>
                                             </div>
-                                            {latestNews.article_body && (
-                                                <div className="Sample-Text-Container">
-                                                    <hr className="Vertical-Divider" />
-                                                    <div className="Sample-Text">
-                                                        <p>{getArticleExcerpt(latestNews, 180)}</p>
+                                            {(() => {
+                                                const excerpt = getArticleExcerpt(latestNews, 180);
+                                                if (!excerpt) return null;
+                                                return (
+                                                    <div className="Sample-Text-Container">
+                                                        <hr className="Vertical-Divider" />
+                                                        <div className="Sample-Text">
+                                                            <p>{excerpt}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                 </Link>
@@ -427,7 +489,50 @@ const SecondFacade = () => {
                                 </Link>
                             )}
 
-                            {/* 2. Latest Long Form Articles OR Media Segments */}
+                            {/* 2. Another Latest News */}
+                            {secondaryLatestNews && (
+                                <Link to={getArticleUrl(secondaryLatestNews)} className="Large-Photo-News Featured-Hero-News" style={{ flexWrap: "wrap", marginTop: "1rem" }}>
+                                    <div className="Featured-Image-Wrapper">
+                                        <img
+                                            src={getArticleMedia(secondaryLatestNews)}
+                                            alt={secondaryLatestNews.article_headline}
+                                            style={{ width: "100%" }}
+                                        />
+                                        <div className="Featured-Story-Badge-Row">
+                                            <span className="Featured-Badge featured">
+                                                LATEST NEWS
+                                            </span>
+                                            {secondaryLatestNews.article_type && (
+                                                <span className="Featured-Type-Badge">
+                                                    {getMediaSegmentLabel(secondaryLatestNews.article_type)}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="Large-News">
+                                        <div className="Large-News-Headline">
+                                            <p>{secondaryLatestNews.article_headline}</p>
+                                            <div className="Article-Author-Time" title={getFullCreditsTooltip(secondaryLatestNews)}>
+                                                <p>{getSmartCredits(secondaryLatestNews)} {secondaryLatestNews.published_at ? `| ${formatDate(secondaryLatestNews.published_at)}` : ''}</p>
+                                            </div>
+                                            {(() => {
+                                                const excerpt = getArticleExcerpt(secondaryLatestNews, 180);
+                                                if (!excerpt) return null;
+                                                return (
+                                                    <div className="Sample-Text-Container">
+                                                        <hr className="Vertical-Divider" />
+                                                        <div className="Sample-Text">
+                                                            <p>{excerpt}</p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })()}
+                                        </div>
+                                    </div>
+                                </Link>
+                            )}
+
+                            {/* 3. Latest Long Form Articles OR Media Segments below that (Sample-Text-Container removed) */}
                             {secondaryNewsList.map((secNews) => (
                                 <Link to={getArticleUrl(secNews)} className="Large-Photo-News Secondary-Feature-News" key={secNews.article_id}>
                                     <div className="Secondary-Feature-Image-Wrapper">
@@ -445,17 +550,9 @@ const SecondFacade = () => {
                                     <div className="Large-News" style={{ flex: 1 }}>
                                         <div className="Large-News-Headline">
                                             <p style={{ fontSize: "clamp(1rem, 1.25vw, 1.25rem)" }}>{secNews.article_headline}</p>
-                                            <div className="Article-Author-Time">
-                                                <p>{getAuthorsString(secNews)} {secNews.published_at ? `| ${formatDate(secNews.published_at)}` : ''}</p>
+                                            <div className="Article-Author-Time" title={getFullCreditsTooltip(secNews)}>
+                                                <p>{getSmartCredits(secNews)} {secNews.published_at ? `| ${formatDate(secNews.published_at)}` : ''}</p>
                                             </div>
-                                            {secNews.article_body && (
-                                                <div className="Sample-Text-Container">
-                                                    <hr className="Vertical-Divider" />
-                                                    <div className="Sample-Text">
-                                                        <p>{getArticleExcerpt(secNews, 140)}</p>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 </Link>
@@ -484,17 +581,21 @@ const SecondFacade = () => {
                                 <div className="Large-News">
                                     <div className="Large-News-Headline">
                                         <p>{opArticle.article_headline}</p>
-                                        <div className="Article-Author-Time">
-                                            <p>{getAuthorsString(opArticle)} {opArticle.published_at ? `| ${formatDate(opArticle.published_at)}` : ''}</p>
+                                        <div className="Article-Author-Time" title={getFullCreditsTooltip(opArticle)}>
+                                            <p>{getSmartCredits(opArticle)} {opArticle.published_at ? `| ${formatDate(opArticle.published_at)}` : ''}</p>
                                         </div>
-                                        {opArticle.article_body && (
-                                            <div className="Sample-Text-Container">
-                                                <hr className="Vertical-Divider" />
-                                                <div className="Sample-Text">
-                                                    <p>{getArticleExcerpt(opArticle)}</p>
+                                        {(() => {
+                                            const excerpt = getArticleExcerpt(opArticle);
+                                            if (!excerpt) return null;
+                                            return (
+                                                <div className="Sample-Text-Container">
+                                                    <hr className="Vertical-Divider" />
+                                                    <div className="Sample-Text">
+                                                        <p>{excerpt}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            );
+                                        })()}
                                     </div>
                                 </div>
 
@@ -624,7 +725,7 @@ const SecondFacade = () => {
                                                 alt={art.article_headline}
                                             />
                                             <span className="Photo-Count-Badge">
-                                                📷 {mediaList.length} Photos
+                                                {mediaList.length} Photos
                                             </span>
                                         </div>
 

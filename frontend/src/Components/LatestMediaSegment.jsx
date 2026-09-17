@@ -153,9 +153,21 @@ const LatestMediaSegment = ({ filterType }) => {
             .filter(Boolean)
         : [];
 
-    const authorStr = authors.length > 0 ? `Written by ${authors.join(", ")}` : "";
-    const mediaStr = mediaProviders.length > 0 ? `by ${mediaProviders.join(", ")}` : "";
-    const creditsStr = [authorStr, mediaStr].filter(Boolean).join(" • ")
+    const authorsJoined = authors.join(", ");
+    const mediaJoined = mediaProviders.join(", ");
+
+    let creditsStr = "The Philippine Artisan Staff";
+    if (authorsJoined && mediaJoined) {
+        if (authorsJoined === mediaJoined) {
+            creditsStr = `Words & Photos by ${authorsJoined}`;
+        } else {
+            creditsStr = `Written by ${authorsJoined} • Photos by ${mediaJoined}`;
+        }
+    } else if (authorsJoined) {
+        creditsStr = `Written by ${authorsJoined}`;
+    } else if (mediaJoined) {
+        creditsStr = `Photos by ${mediaJoined}`;
+    }
 
     return (
         <div>

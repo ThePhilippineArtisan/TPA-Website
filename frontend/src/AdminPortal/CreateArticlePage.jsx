@@ -68,6 +68,7 @@ const CreateArticlePage = () => {
     const [tag2, setTag2] = useState("")
     const [tag3, setTag3] = useState("")
     const [isPhotoOnly, setIsPhotoOnly] = useState(false)
+    const [isPinned, setIsPinned] = useState(false)
 
     const [articleSource, setArticleSource] = useState("")
 
@@ -355,6 +356,18 @@ const CreateArticlePage = () => {
                 }
             }
 
+            if (isPinned) {
+                if (!finalTag1) {
+                    finalTag1 = "Pinned"
+                } else if (!finalTag2) {
+                    finalTag2 = "Pinned"
+                } else if (!finalTag3) {
+                    finalTag3 = "Pinned"
+                } else {
+                    finalTag1 = "Pinned"
+                }
+            }
+
             const currentBody = isHtmlMode ? body : (editorRef.current ? editorRef.current.innerHTML : body)
             const typeToSave = (articleType && articleType !== "NULL") ? articleType : null
 
@@ -536,6 +549,7 @@ const CreateArticlePage = () => {
             setArticleSource("")
             setSelectedPubmat(null)
             setIsPhotoOnly(false)
+            setIsPinned(false)
 
             mediaImagePhoto.forEach(imgObj => {
                 if (imgObj.preview) {
@@ -924,7 +938,7 @@ const CreateArticlePage = () => {
                     {selectedPubmat && (
                         <div className="Article-Cover-Graphic-Preview">
                             <div className="Cover-Preview-Header">
-                                <span className="Cover-Preview-Tag">📌 Cover Graphic (Pubmat)</span>
+                                <span className="Cover-Preview-Tag">Cover Graphic (Pubmat)</span>
                                 <div className="Cover-Preview-Actions">
                                     <button
                                         type="button"
@@ -960,7 +974,7 @@ const CreateArticlePage = () => {
 
                     {isPhotoOnly && !selectedPubmat && (
                         <div className="Photo-Only-Notice-Banner">
-                            <span>📸 <strong>Photo Release Mode is ON</strong> (Body text is optional). Pick a Pubmat or add photos in the right-hand panel.</span>
+                            <span><strong>Photo Release Mode is ON</strong> (Body text is optional). Pick a Pubmat or add photos in the right-hand panel.</span>
                         </div>
                     )}
 
@@ -1057,6 +1071,45 @@ const CreateArticlePage = () => {
                         </div>
                     </div>
 
+                    <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        backgroundColor: isPinned ? "#fef2f2" : "#f8fafc",
+                        border: `1px solid ${isPinned ? "#fca5a5" : "#e2e8f0"}`,
+                        borderRadius: "8px",
+                        padding: "0.75rem 1rem",
+                        margin: "1rem 1rem 0.5rem 1rem"
+                    }}>
+                        <div>
+                            <label style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "700", color: isPinned ? "#b91c1c" : "#334155", cursor: "pointer", margin: 0 }}>
+                                <input
+                                    type="checkbox"
+                                    checked={isPinned}
+                                    onChange={(e) => setIsPinned(e.target.checked)}
+                                    style={{ width: "16px", height: "16px", cursor: "pointer" }}
+                                />
+                                Pin as Featured Story on Front Page / Facade
+                            </label>
+                            <span style={{ fontSize: "0.78rem", color: "#64748b", marginLeft: "24px", display: "block" }}>
+                                When checked, this post/segment will be highlighted as the primary pinned story in "LATEST NEWS" on the homepage facade.
+                            </span>
+                        </div>
+                        {isPinned && (
+                            <span style={{
+                                fontSize: "0.75rem",
+                                fontWeight: "700",
+                                backgroundColor: "#fee2e2",
+                                color: "#dc2626",
+                                padding: "0.2rem 0.55rem",
+                                borderRadius: "4px",
+                                whiteSpace: "nowrap"
+                            }}>
+                                PIN UPON PUBLISH
+                            </span>
+                        )}
+                    </div>
+
                     <div className="Button-Container">
                         <button type="submit" onClick={() => addNewArticle(false)} disabled={isUploading}>
                             {uploadStatusText ? uploadStatusText : (isUploading ? "Saving Draft..." : "Save as Draft")}
@@ -1096,13 +1149,13 @@ const CreateArticlePage = () => {
 
                     {isCompressingPhotos && (
                         <div className="Side-Compressing-Notice">
-                            ⏳ Compressing {compressingCount} photo(s) to WebP...
+                            Compressing {compressingCount} photo(s) to WebP...
                         </div>
                     )}
 
                     {uploadStatusText && (
                         <div className="Side-Upload-Notice">
-                            🚀 {uploadStatusText}
+                            {uploadStatusText}
                         </div>
                     )}
 
@@ -1208,15 +1261,15 @@ const CreateArticlePage = () => {
 
                             {selectedPubmat && mediaImagePhoto.length > 0 ? (
                                 <p className="Side-Photos-Tip">
-                                    💡 Pubmat is set as <strong>Cover (#1)</strong>. Photos below (#2, #{mediaImagePhoto.length + 1}) will appear in the gallery.
+                                    Pubmat is set as <strong>Cover (#1)</strong>. Photos below (#2, #{mediaImagePhoto.length + 1}) will appear in the gallery.
                                 </p>
                             ) : selectedPubmat ? (
                                 <p className="Side-Photos-Tip">
-                                    💡 Pubmat is set as <strong>Cover (#1)</strong>. Click <strong>+ Add Photos</strong> above for gallery photos.
+                                    Pubmat is set as <strong>Cover (#1)</strong>. Click <strong>+ Add Photos</strong> above for gallery photos.
                                 </p>
                             ) : (
                                 <p className="Side-Photos-Tip">
-                                    💡 Drag and drop or use ▲ / ▼ to reorder photos. Photo #1 is the article cover.
+                                    Drag and drop or use ▲ / ▼ to reorder photos. Photo #1 is the article cover.
                                 </p>
                             )}
                         </>

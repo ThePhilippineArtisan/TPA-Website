@@ -53,7 +53,7 @@ const LatestPosts = () => {
         const resolved = resolveFilterParam(raw);
         return resolved ? [resolved] : [];
     })
-    const [visibleWeeks, setVisibleWeeks] = useState(3) // only three weeks
+    const [visibleDates, setVisibleDates] = useState(5)
 
     useEffect(() => {
         const q = searchParams.get("q") || ""
@@ -204,68 +204,44 @@ const LatestPosts = () => {
         return MedProvs.length > 0 ? MedProvs.join(", ") : "TPA Staff"
     }
 
-    const formatWeekInterval = (start, end) => {
-        const startMonth = String(start.getMonth() + 1).padStart(2, '0')
-        // + 1 because Jan = 0; padStart(2,  0) so it's '03' instead of just '3'
-        const startDay = String(start.getDate()).padStart(2, '0')
-        const startYear = start.getFullYear()
-
-        const endMonth = String(end.getMonth() + 1).padStart(2, '0')
-        const endDay = String(end.getDate()).padStart(2, '0')
-        const endYear = end.getFullYear()
-
-        // return as string formatted 1 week interval
-        // like this: • 07 / 13-19 / 2026
-        if (startYear !== endYear) {
-            return `• ${startMonth}/${startDay}/${startYear} - ${endMonth}/${endDay}/${endYear}`;
-        }
-        if (startMonth !== endMonth) {
-            return `• ${startMonth}/${startDay} - ${endMonth}/${endDay} / ${startYear}`;
-        }
-        return `• ${startMonth} / ${startDay}-${endDay} / ${startYear}`;
+    const formatArticleDate = (dateObj) => {
+        if (!dateObj || isNaN(dateObj.getTime())) return "";
+        return dateObj.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+        });
     };
 
-    const groupArticlesByWeek = (articlesList) => {
-        const groups = {} // initMedProvs.join(", "tamps
+    const groupArticlesByDate = (articlesList) => {
+        const groups = {};
 
         articlesList.forEach(article => {
             if (!article.published_at)
-                return // skip
-            const date = new Date(article.published_at)
+                return;
+            const date = new Date(article.published_at);
 
             if (isNaN(date.getTime()))
-                return // skip
+                return;
 
-            // Sunday = 0, Saturday is 6
-            const start = new Date(date)
-            const day = start.getDay()
-            start.setDate(start.getDate() - day)
-            start.setHours(0, 0, 0, 0)
+            const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            const key = startOfDay.getTime();
 
-            // end of week
-            const end = new Date(start)
-            end.setDate(start.getDate() + 6)
-            end.setHours(23, 59, 59, 999)
-
-            const key = start.getTime()
             if (!groups[key]) {
                 groups[key] = {
-                    start,
-                    end,
-                    label: formatWeekInterval(start, end),
+                    date: startOfDay,
+                    label: formatArticleDate(startOfDay),
                     articles: []
-                }
+                };
             }
-            groups[key].articles.push(article) // data structure stack, add
-        })
+            groups[key].articles.push(article);
+        });
 
-
-        // Sort groups by start date descending
+        // Sort groups by date descending
         return Object.keys(groups)
-            .sort((a, b) => b - a) // timestamps, descending order
-            .map(key => groups[key]); // sorted keys into article groups array
-
-    }
+            .sort((a, b) => Number(b) - Number(a))
+            .map(key => groups[key]);
+    };
 
     const handleFilterChange = (filterName => {
         setSelectedFilters(prev =>
@@ -273,7 +249,7 @@ const LatestPosts = () => {
                 ? prev.filter(f => f !== filterName)
                 : [...prev, filterName] // add latest toggled filter into the list
         )
-        setVisibleWeeks(3)
+        setVisibleDates(5)
     })
 
     const renderCheckbox = (filterName) => {
@@ -407,9 +383,9 @@ const LatestPosts = () => {
     // Top 3 or 4 articles best matching the query
     const bestMatchingArticles = isSearchActive ? rankedArticles.slice(0, 4) : []
 
-    const groupedWeeks = groupArticlesByWeek(rankedArticles)
+    const groupedDates = groupArticlesByDate(rankedArticles)
     const isFiltering = Boolean(searchQuery.trim() || selectedFilters.length > 0)
-    const weeksToDisplay = isFiltering ? groupedWeeks : groupedWeeks.slice(0, visibleWeeks)
+    const datesToDisplay = isFiltering ? groupedDates : groupedDates.slice(0, visibleDates)
 
     return (
         <div className="Latest-Posts-Page">
@@ -553,26 +529,26 @@ const LatestPosts = () => {
                                 </div>
                             )}
 
-                            {/* More Results by Week when there are more than 4 matches, or all weeks during regular browsing */}
+                            {/* More Results by Date when there are more than 4 matches, or all dates during regular browsing */}
                             {(!isSearchActive || rankedArticles.length > 4) && (
                                 <>
                                     {isSearchActive && rankedArticles.length > 4 && (
                                         <div className="Search-More-Results-Header">
-                                            <h3>All Results by Week ({rankedArticles.length} total)</h3>
+                                            <h3>All Results by Date ({rankedArticles.length} total)</h3>
                                             <hr className="Horizontal-Line-Date" />
                                         </div>
                                     )}
 
-                                    {weeksToDisplay.map((week, weekIdx) => (
-                                        <React.Fragment key={weekIdx}>
+                                    {datesToDisplay.map((dayGroup, groupIdx) => (
+                                        <React.Fragment key={groupIdx}>
                                             <div className="Latest-Articles-Date">
-                                                <h1>{week.label}</h1>
+                                                <h1>{dayGroup.label}</h1>
                                                 <hr className="Horizontal-Line-Date" />
                                             </div>
                                             <div className="Day-Articles">
                                                 <hr className="Vertical-Line-Date" />
                                                 <div className="Three-Article-Column">
-                                                    {week.articles.map((article) => {
+                                                    {dayGroup.articles.map((article) => {
                                                         const firstMedia = article.article_media?.[0]?.media?.media_url || Photo2
                                                         const staffList = article.article_staff || [];
                                                         const authorsCount = staffList.filter(s => s.contribution_as === "Author" && s.staff?.staff_display_name).length;
@@ -623,9 +599,9 @@ const LatestPosts = () => {
                         </>
                     )}
 
-                    {!isFiltering && visibleWeeks < groupedWeeks.length && (
+                    {!isFiltering && visibleDates < groupedDates.length && (
                         <div className="Load-More-Container">
-                            <button className="Load-More-Button" onClick={() => setVisibleWeeks(prev => prev + 3)}>
+                            <button className="Load-More-Button" onClick={() => setVisibleDates(prev => prev + 5)}>
                                 Load More Articles
                             </button>
                         </div>

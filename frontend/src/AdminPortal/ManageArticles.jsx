@@ -126,6 +126,62 @@ const ManageArticles = () => {
         return MedProvs.length > 0 ? MedProvs.join(", ") : "TPA"
     }
 
+    const isArticlePinned = (article) => {
+        if (!article) return false
+        const tags = [article.article_tag1, article.article_tag2, article.article_tag3]
+            .filter(Boolean)
+            .map(t => t.toLowerCase())
+        return tags.some(t => t.includes("pinned") || t.includes("pin") || t.includes("featured") || t === "top")
+    }
+
+    const handleTogglePin = async (e, article) => {
+        e.stopPropagation()
+        const currentlyPinned = isArticlePinned(article)
+        let updatedTag1 = article.article_tag1
+        let updatedTag2 = article.article_tag2
+        let updatedTag3 = article.article_tag3
+
+        const isPinTag = (t) => t && (t.toLowerCase().includes("pinned") || t.toLowerCase().includes("pin") || t.toLowerCase().includes("featured") || t.toLowerCase() === "top")
+
+        if (currentlyPinned) {
+            if (isPinTag(updatedTag1)) updatedTag1 = null
+            if (isPinTag(updatedTag2)) updatedTag2 = null
+            if (isPinTag(updatedTag3)) updatedTag3 = null
+        } else {
+            if (!updatedTag1) {
+                updatedTag1 = "Pinned"
+            } else if (!updatedTag2) {
+                updatedTag2 = "Pinned"
+            } else if (!updatedTag3) {
+                updatedTag3 = "Pinned"
+            } else {
+                updatedTag1 = "Pinned"
+            }
+        }
+
+        try {
+            const { error } = await supabase
+                .from("article")
+                .update({
+                    article_tag1: updatedTag1,
+                    article_tag2: updatedTag2,
+                    article_tag3: updatedTag3
+                })
+                .eq("article_id", article.article_id)
+
+            if (error) throw error
+
+            setArticles(prev => prev.map(a =>
+                a.article_id === article.article_id
+                    ? { ...a, article_tag1: updatedTag1, article_tag2: updatedTag2, article_tag3: updatedTag3 }
+                    : a
+            ))
+        } catch (err) {
+            console.error("Error toggling pin:", err)
+            alert("Could not update pin status: " + (err.message || err))
+        }
+    }
+
     const filteredArticles = useMemo(() => {
         return articles.filter((article) => {
             // Status filter
@@ -292,7 +348,7 @@ const ManageArticles = () => {
                                 <th className="Manage-Staff-Grid-Column"> Authors </th>
                                 <th className="Manage-Staff-Grid-Column"> Media Providers </th>
                                 <th className="Manage-Staff-Grid-Column"> Publish Date & Status </th>
-                                <th className="Manage-Staff-Grid-Column" style={{ width: "130px" }}> Actions </th>
+                                <th className="Manage-Staff-Grid-Column" style={{ width: "190px" }}> Actions </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -308,9 +364,16 @@ const ManageArticles = () => {
                                         {article.article_type ? replaceUnderscore(article.article_type) : "Standard Article"}
                                     </td>
                                     <td className="Manage-Staff-Grid-Row" style={{ textAlign: "left", maxWidth: "35ch", overflow: "hidden", textOverflow: "ellipsis" }} title={article.article_headline}>
-                                        <span style={{ color: "var(--primary-blue)", fontWeight: "600" }}>
-                                            {article.article_headline}
-                                        </span>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                            {isArticlePinned(article) && (
+                                                <span className="Badge-Pinned-Table" title="Pinned to Front Page / Facade">
+                                                    Pinned
+                                                </span>
+                                            )}
+                                            <span style={{ color: "var(--primary-blue)", fontWeight: "600" }}>
+                                                {article.article_headline}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td className="Manage-Staff-Grid-Row"> {getAuthorsString(article)} </td>
                                     <td className="Manage-Staff-Grid-Row"> {getMedProvsString(article)} </td>
@@ -329,6 +392,14 @@ const ManageArticles = () => {
                                         </div>
                                     </td>
                                     <td className="Manage-Staff-Grid-Row" style={{ whiteSpace: "nowrap" }}>
+                                        <button
+                                            type="button"
+                                            className={`Manage-Article-Pin-Btn ${isArticlePinned(article) ? "is-pinned" : ""}`}
+                                            onClick={(e) => handleTogglePin(e, article)}
+                                            title={isArticlePinned(article) ? "Unpin story from homepage" : "Pin story to top of homepage"}
+                                        >
+                                            {isArticlePinned(article) ? "Unpin" : "Pin"}
+                                        </button>
                                         <button
                                             type="button"
                                             className="Manage-Article-Edit-Btn"

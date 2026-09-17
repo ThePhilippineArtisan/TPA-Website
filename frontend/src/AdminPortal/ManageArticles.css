@@ -274,3 +274,48 @@
         justify-content: center;
     }
 }
+
+.Badge-Pinned-Table {
+    display: inline-flex;
+    align-items: center;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.Manage-Article-Pin-Btn {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 0.4rem;
+    transition: all 0.15s ease;
+}
+
+.Manage-Article-Pin-Btn:hover {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+
+.Manage-Article-Pin-Btn.is-pinned {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #f87171;
+    font-weight: 700;
+}
+
+.Manage-Article-Pin-Btn.is-pinned:hover {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
