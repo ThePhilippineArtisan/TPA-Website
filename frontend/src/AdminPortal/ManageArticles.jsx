@@ -128,6 +128,7 @@ const ManageArticles = () => {
 
     const isArticlePinned = (article) => {
         if (!article) return false
+        if (article.is_pinned === true || article.is_pinned === "true" || article.is_pinned === 1) return true
         const tags = [article.article_tag1, article.article_tag2, article.article_tag3]
             .filter(Boolean)
             .map(t => t.toLowerCase())
@@ -137,6 +138,7 @@ const ManageArticles = () => {
     const handleTogglePin = async (e, article) => {
         e.stopPropagation()
         const currentlyPinned = isArticlePinned(article)
+        const newPinnedState = !currentlyPinned
         let updatedTag1 = article.article_tag1
         let updatedTag2 = article.article_tag2
         let updatedTag3 = article.article_tag3
@@ -160,20 +162,33 @@ const ManageArticles = () => {
         }
 
         try {
-            const { error } = await supabase
+            let { error } = await supabase
                 .from("article")
                 .update({
+                    is_pinned: newPinnedState,
                     article_tag1: updatedTag1,
                     article_tag2: updatedTag2,
                     article_tag3: updatedTag3
                 })
                 .eq("article_id", article.article_id)
 
+            if (error && (error.code === "PGRST204" || error.message?.includes("is_pinned"))) {
+                const fallback = await supabase
+                    .from("article")
+                    .update({
+                        article_tag1: updatedTag1,
+                        article_tag2: updatedTag2,
+                        article_tag3: updatedTag3
+                    })
+                    .eq("article_id", article.article_id)
+                error = fallback.error
+            }
+
             if (error) throw error
 
             setArticles(prev => prev.map(a =>
                 a.article_id === article.article_id
-                    ? { ...a, article_tag1: updatedTag1, article_tag2: updatedTag2, article_tag3: updatedTag3 }
+                    ? { ...a, is_pinned: newPinnedState, article_tag1: updatedTag1, article_tag2: updatedTag2, article_tag3: updatedTag3 }
                     : a
             ))
         } catch (err) {

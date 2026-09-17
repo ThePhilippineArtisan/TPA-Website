@@ -30,6 +30,7 @@ create table public.article (
   -- ALTER TYPE public.article_type ADD VALUE IF NOT EXISTS 'IN_PHOTOS';
   article_source text null,
   article_tag3 text null,
+  is_pinned boolean not null default false,
   constraint article_pkey primary key (article_id),
   constraint article_article_id_key unique (article_id)
 ) TABLESPACE pg_default;
@@ -75,6 +76,7 @@ create table public.homepage_slides (
   text7 text null,
   text8 text null,
   is_visible boolean not null default false,
+  is_pinned boolean not null default false,
   "order" smallint null,
   "backgroundSRC" text null,
   constraint front_page_slides_pkey primary key (id)
@@ -99,6 +101,8 @@ create table public.releases (
   release_title text not null,
   "order" smallint null,
   is_visible boolean null,
+  is_pinned boolean not null default false,
+  is_featured boolean not null default false,
   releases_description text not null,
   release_date date null,
   issue_number smallint null,

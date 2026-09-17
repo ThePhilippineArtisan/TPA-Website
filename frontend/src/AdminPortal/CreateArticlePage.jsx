@@ -377,6 +377,7 @@ const CreateArticlePage = () => {
                 article_type: typeToSave,
                 slug_headline: generatedSlug,
                 is_published: isPublishedStatus,
+                is_pinned: isPinned,
                 published_at: scheduledTime ? new Date(scheduledTime).toISOString() : (isPublishedStatus ? new Date().toISOString() : undefined),
                 word_count: countWords(currentBody),
                 article_tag1: finalTag1 || null,
@@ -390,6 +391,17 @@ const CreateArticlePage = () => {
                 .insert([newArticlePayloads])
                 .select()
                 .single()
+
+            if (articleError && (articleError.code === "PGRST204" || articleError.message?.includes("is_pinned"))) {
+                delete newArticlePayloads.is_pinned
+                const retry = await supabase
+                    .from('article')
+                    .insert([newArticlePayloads])
+                    .select()
+                    .single()
+                articleData = retry.data
+                articleError = retry.error
+            }
 
             if (articleError) {
                 console.error('Error creating new article: ', articleError)

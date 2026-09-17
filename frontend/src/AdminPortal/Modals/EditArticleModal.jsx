@@ -449,6 +449,7 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                 slug_headline: newSlug,
                 article_type: (articleType && articleType !== "NULL") ? articleType : null,
                 is_published: isPublished,
+                is_pinned: isPinned,
                 published_at: isoPublishedAt,
                 article_tag1: finalTag1 || null,
                 article_tag2: finalTag2 || null,
@@ -458,12 +459,24 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                 word_count: calculatedWords
             }
 
-            const { data, error } = await supabase
+            let { data, error } = await supabase
                 .from("article")
                 .update(updates)
                 .eq("article_id", article.article_id)
                 .select()
                 .single()
+
+            if (error && (error.code === "PGRST204" || error.message?.includes("is_pinned"))) {
+                delete updates.is_pinned
+                const retry = await supabase
+                    .from("article")
+                    .update(updates)
+                    .eq("article_id", article.article_id)
+                    .select()
+                    .single()
+                data = retry.data
+                error = retry.error
+            }
 
             if (error) throw error
 

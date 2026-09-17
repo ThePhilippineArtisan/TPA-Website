@@ -14,6 +14,7 @@ import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx";
 
 const isPinnedOrFeatured = (art) => {
     if (!art) return false;
+    if (art.is_pinned === true || art.is_pinned === "true" || art.is_pinned === 1) return true;
     const tags = [art.article_tag1, art.article_tag2, art.article_tag3]
         .filter(Boolean)
         .map(t => t.toLowerCase());
