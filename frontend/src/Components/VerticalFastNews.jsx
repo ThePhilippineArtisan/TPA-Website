@@ -64,7 +64,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
     };
 
     const textOnlyFastNews = fastNewsArticles.slice(0, 4);
-    const mediaFastNews = fastNewsArticles.slice(4, 8);
+    const mediaFastNews = fastNewsArticles.slice(4, 11);
 
     return (
         <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
