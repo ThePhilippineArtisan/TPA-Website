@@ -339,7 +339,7 @@ const SecondFacade = () => {
             if (authorStr === mediaStr) {
                 return `${authorStr} (Words & Photos)`;
             }
-            return `By ${authorStr} • Photos by ${mediaStr}`;
+            return `By ${authorStr} • ${mediaStr}`;
         }
         if (authorStr) {
             return `By ${authorStr}`;
@@ -778,4 +778,4 @@ const SecondFacade = () => {
 };
 
 export default SecondFacade;
-
+
