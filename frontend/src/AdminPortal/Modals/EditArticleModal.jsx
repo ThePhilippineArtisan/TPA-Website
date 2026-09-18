@@ -73,13 +73,17 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
     const [publishedAt, setPublishedAt] = useState(formatDateTimeLocal(article.published_at))
     const [tag1, setTag1] = useState(article.article_tag1 || "")
     const [tag2, setTag2] = useState(article.article_tag2 || "")
-    const [tag3, setTag3] = useState(article.article_tag3 || "")
-    const initialPinned = [article.article_tag1, article.article_tag2, article.article_tag3]
-        .filter(Boolean)
-        .some(t => {
-            const lower = t.toLowerCase()
-            return lower.includes("pinned") || lower.includes("pin") || lower.includes("featured") || lower === "top"
-        })
+    const initialPinned = Boolean(
+        article.is_pinned === true ||
+        article.is_pinned === "true" ||
+        article.is_pinned === 1 ||
+        [article.article_tag1, article.article_tag2, article.article_tag3]
+            .filter(Boolean)
+            .some(t => {
+                const lower = t.toLowerCase().trim()
+                return lower === "pinned" || lower === "featured" || lower === "top" || lower === "top story"
+            })
+    )
     const [isPinned, setIsPinned] = useState(initialPinned)
     const [articleSource, setArticleSource] = useState(article.article_source || "")
     const [body, setBody] = useState(article.article_body || "")
@@ -429,19 +433,28 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             let finalTag2 = tag2.trim()
             let finalTag3 = tag3.trim()
 
-            const isPinTag = (t) => t && (t.toLowerCase().includes("pinned") || t.toLowerCase().includes("pin") || t.toLowerCase().includes("featured") || t.toLowerCase() === "top")
+            const isPinTag = (t) => {
+                if (!t) return false
+                const lower = t.toLowerCase().trim()
+                return lower === "pinned" || lower === "featured" || lower === "top" || lower === "top story"
+            }
 
-            if (isPinned) {
-                if (!isPinTag(finalTag1) && !isPinTag(finalTag2) && !isPinTag(finalTag3)) {
-                    if (!finalTag1) finalTag1 = "Pinned"
-                    else if (!finalTag2) finalTag2 = "Pinned"
-                    else if (!finalTag3) finalTag3 = "Pinned"
-                    else finalTag1 = "Pinned"
-                }
-            } else {
+            if (!isPinned) {
                 if (isPinTag(finalTag1)) finalTag1 = ""
                 if (isPinTag(finalTag2)) finalTag2 = ""
                 if (isPinTag(finalTag3)) finalTag3 = ""
+            }
+
+            if (isPinned && !initialPinned) {
+                // Ensure single-pin exclusivity if newly pinning this article
+                try {
+                    await supabase
+                        .from("article")
+                        .update({ is_pinned: false })
+                        .eq("is_pinned", true)
+                } catch (unpinErr) {
+                    console.error("Error unpinning previous articles:", unpinErr)
+                }
             }
 
             const updates = {

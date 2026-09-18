@@ -39,6 +39,7 @@ const FirstFacade = () => {
                 .from('homepage_slides')
                 .select('*')
                 .eq('is_visible', true)
+                .order('is_pinned', { ascending: false })
                 .order('order', { ascending: true })
 
             if (error) {

@@ -131,8 +131,8 @@ const ManageArticles = () => {
         if (article.is_pinned === true || article.is_pinned === "true" || article.is_pinned === 1) return true
         const tags = [article.article_tag1, article.article_tag2, article.article_tag3]
             .filter(Boolean)
-            .map(t => t.toLowerCase())
-        return tags.some(t => t.includes("pinned") || t.includes("pin") || t.includes("featured") || t === "top")
+            .map(t => t.toLowerCase().trim())
+        return tags.some(t => t === "pinned" || t === "featured" || t === "top" || t === "top story")
     }
 
     const handleTogglePin = async (e, article) => {
@@ -143,25 +143,27 @@ const ManageArticles = () => {
         let updatedTag2 = article.article_tag2
         let updatedTag3 = article.article_tag3
 
-        const isPinTag = (t) => t && (t.toLowerCase().includes("pinned") || t.toLowerCase().includes("pin") || t.toLowerCase().includes("featured") || t.toLowerCase() === "top")
+        const isPinTag = (t) => {
+            if (!t) return false
+            const lower = t.toLowerCase().trim()
+            return lower === "pinned" || lower === "featured" || lower === "top" || lower === "top story"
+        }
 
         if (currentlyPinned) {
             if (isPinTag(updatedTag1)) updatedTag1 = null
             if (isPinTag(updatedTag2)) updatedTag2 = null
             if (isPinTag(updatedTag3)) updatedTag3 = null
-        } else {
-            if (!updatedTag1) {
-                updatedTag1 = "Pinned"
-            } else if (!updatedTag2) {
-                updatedTag2 = "Pinned"
-            } else if (!updatedTag3) {
-                updatedTag3 = "Pinned"
-            } else {
-                updatedTag1 = "Pinned"
-            }
         }
 
         try {
+            if (newPinnedState) {
+                // Ensure single-pin exclusivity in database so only one story holds the spotlight
+                await supabase
+                    .from("article")
+                    .update({ is_pinned: false })
+                    .eq("is_pinned", true)
+            }
+
             let { error } = await supabase
                 .from("article")
                 .update({
@@ -186,11 +188,21 @@ const ManageArticles = () => {
 
             if (error) throw error
 
-            setArticles(prev => prev.map(a =>
-                a.article_id === article.article_id
-                    ? { ...a, is_pinned: newPinnedState, article_tag1: updatedTag1, article_tag2: updatedTag2, article_tag3: updatedTag3 }
-                    : a
-            ))
+            setArticles(prev => prev.map(a => {
+                if (a.article_id === article.article_id) {
+                    return { ...a, is_pinned: newPinnedState, article_tag1: updatedTag1, article_tag2: updatedTag2, article_tag3: updatedTag3 }
+                }
+                if (newPinnedState && (a.is_pinned || isPinTag(a.article_tag1) || isPinTag(a.article_tag2) || isPinTag(a.article_tag3))) {
+                    return {
+                        ...a,
+                        is_pinned: false,
+                        article_tag1: isPinTag(a.article_tag1) ? null : a.article_tag1,
+                        article_tag2: isPinTag(a.article_tag2) ? null : a.article_tag2,
+                        article_tag3: isPinTag(a.article_tag3) ? null : a.article_tag3
+                    }
+                }
+                return a
+            }))
         } catch (err) {
             console.error("Error toggling pin:", err)
             alert("Could not update pin status: " + (err.message || err))

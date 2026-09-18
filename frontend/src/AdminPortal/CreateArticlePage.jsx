@@ -357,14 +357,14 @@ const CreateArticlePage = () => {
             }
 
             if (isPinned) {
-                if (!finalTag1) {
-                    finalTag1 = "Pinned"
-                } else if (!finalTag2) {
-                    finalTag2 = "Pinned"
-                } else if (!finalTag3) {
-                    finalTag3 = "Pinned"
-                } else {
-                    finalTag1 = "Pinned"
+                try {
+                    // Ensure single-pin exclusivity so this new article holds the spotlight
+                    await supabase
+                        .from("article")
+                        .update({ is_pinned: false })
+                        .eq("is_pinned", true)
+                } catch (unpinErr) {
+                    console.error("Error unpinning previous articles:", unpinErr)
                 }
             }
 

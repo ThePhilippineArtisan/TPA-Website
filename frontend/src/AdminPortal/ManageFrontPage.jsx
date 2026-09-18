@@ -36,6 +36,7 @@ const ManageFrontPage = () => {
             const { data, error } = await supabase
                 .from('homepage_slides')
                 .select('*')
+                .order('is_pinned', { ascending: false })
                 .order('order', { ascending: true })
 
             if (error) {
@@ -230,7 +231,23 @@ const ManageFrontPage = () => {
         if (!slideToUpdate) return
         const updatedPinned = !slideToUpdate.is_pinned
 
-        setSlides(prev => prev.map(s => s.id === id ? { ...s, is_pinned: updatedPinned } : s))
+        if (updatedPinned) {
+            try {
+                // Ensure single-pin exclusivity for homepage slides
+                await supabase
+                    .from('homepage_slides')
+                    .update({ is_pinned: false })
+                    .eq('is_pinned', true)
+            } catch (unpinErr) {
+                console.error("Error unpinning other slides:", unpinErr)
+            }
+        }
+
+        setSlides(prev => prev.map(s => {
+            if (s.id === id) return { ...s, is_pinned: updatedPinned }
+            if (updatedPinned) return { ...s, is_pinned: false }
+            return s
+        }))
 
         try {
             const { error } = await supabase

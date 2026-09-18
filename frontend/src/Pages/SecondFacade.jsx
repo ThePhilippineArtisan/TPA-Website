@@ -17,9 +17,9 @@ const isPinnedOrFeatured = (art) => {
     if (art.is_pinned === true || art.is_pinned === "true" || art.is_pinned === 1) return true;
     const tags = [art.article_tag1, art.article_tag2, art.article_tag3]
         .filter(Boolean)
-        .map(t => t.toLowerCase());
+        .map(t => t.toLowerCase().trim());
     return tags.some(t =>
-        t.includes("pinned") || t.includes("pin") || t.includes("featured") || t.includes("feature") || t === "top"
+        t === "pinned" || t === "featured" || t === "top" || t === "top story"
     );
 };
 
@@ -35,6 +35,34 @@ const SecondFacade = () => {
     useEffect(() => {
         const fetchFacadeArticles = async () => {
             try {
+                // 1. Explicitly fetch any pinned article so it is guaranteed to be loaded even if older than limit(100)
+                let pinnedArticleRecord = null;
+                try {
+                    const { data: pinnedRow } = await supabase
+                        .from('article')
+                        .select(`
+                            *,
+                            article_media(
+                                media_order,
+                                media(
+                                    media_id,
+                                    media_url
+                                )
+                            )
+                        `)
+                        .eq("is_published", true)
+                        .eq("is_pinned", true)
+                        .order('published_at', { ascending: false })
+                        .limit(1)
+                        .maybeSingle();
+
+                    if (pinnedRow) {
+                        pinnedArticleRecord = pinnedRow;
+                    }
+                } catch (pinFetchErr) {
+                    console.error("Error fetching pinned article:", pinFetchErr);
+                }
+
                 const { data: articlesData, error: articlesError } = await supabase
                     .from('article')
                     .select(`
@@ -53,8 +81,13 @@ const SecondFacade = () => {
 
                 if (articlesError) throw articlesError;
 
-                if (articlesData && articlesData.length > 0) {
-                    const articleIds = articlesData.map(a => a.article_id);
+                let allArticlesData = articlesData || [];
+                if (pinnedArticleRecord && !allArticlesData.some(a => a.article_id === pinnedArticleRecord.article_id)) {
+                    allArticlesData = [pinnedArticleRecord, ...allArticlesData];
+                }
+
+                if (allArticlesData && allArticlesData.length > 0) {
+                    const articleIds = allArticlesData.map(a => a.article_id);
 
                     let staffContributions = [];
                     try {
@@ -104,7 +137,7 @@ const SecondFacade = () => {
                         console.error("Error fetching article media for facade:", mediaErr);
                     }
 
-                    const mappedArticles = articlesData.map(article => {
+                    const mappedArticles = allArticlesData.map(article => {
                         const contributions = staffContributions.filter(
                             sc => sc.article_id === article.article_id
                         );
