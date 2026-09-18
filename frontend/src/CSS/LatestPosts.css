@@ -20,7 +20,7 @@
     grid-template-columns: 8fr 2fr;
     justify-content: center;
     gap: clamp(1rem, 2.5vw, 2rem);
-    max-width: var(--container-max-width);
+    padding: clamp(0.25rem, 2.5vw, 2rem)
 }
 
 @media (max-width: 1024px) {
@@ -44,7 +44,7 @@
 .Horizontal-Line-Date {
     margin: 1rem;
     height: 1px;
-    width: 100%;
+    width: 80%;
 }
 
 .Vertical-Line-Date {

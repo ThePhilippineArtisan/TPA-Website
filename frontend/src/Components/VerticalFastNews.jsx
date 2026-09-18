@@ -32,15 +32,14 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     .eq("is_published", true)
                     .or("word_count.lte.120,word_count.is.null")
                     .order("published_at", { ascending: false })
-                    .limit(20);
+                    .limit(25);
 
                 if (error) {
                     console.error("Error fetching fast news articles:", error);
                 } else if (data) {
-                    // Exclude media segments and take up to 6 fast news articles
                     const filteredArticles = data
                         .filter(article => !isMediaSegment(article.article_type))
-                        .slice(0, 8);
+                        .slice(0, 11);
                     setFastNewsArticles(filteredArticles);
                 }
             } catch (err) {
@@ -64,7 +63,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
     };
 
     const textOnlyFastNews = fastNewsArticles.slice(0, 4);
-    const mediaFastNews = fastNewsArticles.slice(4, 8);
+    const mediaFastNews = fastNewsArticles.slice(5, 11);
 
     return (
         <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>

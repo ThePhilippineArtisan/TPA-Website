@@ -197,7 +197,7 @@ const SecondFacade = () => {
                         const tag1 = (art.article_tag1 || "").toLowerCase();
                         const tag2 = (art.article_tag2 || "").toLowerCase();
                         const tag3 = (art.article_tag3 || "").toLowerCase();
-                        
+
                         return (
                             type === "EDITORIAL" ||
                             type === "OPINION" ||
@@ -353,7 +353,7 @@ const SecondFacade = () => {
             .filter(Boolean);
 
         const mediaProviders = article.article_staff
-            .filter(as => 
+            .filter(as =>
                 as.contribution_as === "Media_Provider" ||
                 as.contribution_as === "Media Provider" ||
                 as.contribution_as === "Photos" ||
@@ -372,7 +372,7 @@ const SecondFacade = () => {
             if (authorStr === mediaStr) {
                 return `${authorStr} (Words & Photos)`;
             }
-            return `By ${authorStr} • Photos by ${mediaStr}`;
+            return `By ${authorStr} • ${mediaStr}`;
         }
         if (authorStr) {
             return `By ${authorStr}`;
@@ -811,4 +811,4 @@ const SecondFacade = () => {
 };
 
 export default SecondFacade;
-
+
