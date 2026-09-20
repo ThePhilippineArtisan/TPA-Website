@@ -63,13 +63,13 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
     };
 
     const textOnlyFastNews = fastNewsArticles.slice(0, 4);
-    const mediaFastNews = fastNewsArticles.slice(5, 11);
+    const mediaFastNews = fastNewsArticles.slice(4, 10);
 
     return (
-        <div className={`Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
+        <div className={`Vertical-Fast-News-Container Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>
             <div className="Vertical-Fast-News">
                 <div className="Vertical-Fast-News-Links">
-                    <div className="Vertical-Fast-News-Heading" id="Vertical-Fast-News-Links">
+                    <div className="Vertical-Fast-News-Heading">
                         FAST NEWS
                     </div>
 
@@ -81,7 +81,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                         (textOnlyFastNews.length > 0 ? textOnlyFastNews : fastNewsArticles.slice(0, 4)).map((article) => (
                             <Link to={getArticleUrl(article)} className="Vertical-Side-News" key={article.article_id}>
                                 <hr className="Vertical-Divider-Side-News" />
-                                <div className="Vertical-Headlines" style={{ width: "100%" }}>
+                                <div className="FastNews-Content-Column">
                                     <div className="FastNews-Header-Row">
                                         <span className="FastNews-Type-Badge">
                                             {article.article_type ? article.article_type.replace(/_/g, " ") : "FAST NEWS"}
@@ -122,10 +122,15 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                             return (
                                 <Link to={getArticleUrl(article)} className="Vertical-Side-News" key={article.article_id}>
                                     {firstMedia && (
-                                        <img loading="lazy" src={firstMedia} alt={article.article_headline} />
+                                        <img 
+                                            loading="lazy" 
+                                            src={firstMedia} 
+                                            alt={article.article_headline} 
+                                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                        />
                                     )}
                                     <hr className="Vertical-Divider-Side-News" />
-                                    <div className="Vertical-Headlines" style={{ width: "100%" }}>
+                                    <div className="FastNews-Content-Column">
                                         <div className="FastNews-Header-Row">
                                             <span className="FastNews-Type-Badge">
                                                 {article.article_type ? article.article_type.replace(/_/g, " ") : "FAST NEWS"}
@@ -152,7 +157,7 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     </div>
                 )}
             </div>
-        </div >
+        </div>
     );
 };
 
