@@ -8,6 +8,7 @@ import "../CSS/SecondFacade.css";
 
 import Tabs from "../Components/Tabs.jsx";
 import VerticalFastNews from "../Components/VerticalFastNews.jsx";
+import NewsletterSubscribe from "../Components/NewsletterSubscribe.jsx";
 import VideoShowcase from "../Components/VideoShowcase.jsx";
 import LatestMediaSegment from "../Components/LatestMediaSegment.jsx";
 import ListOfMediaSegments from "../Components/ListOfMediaSegments.jsx";
@@ -594,7 +595,75 @@ const SecondFacade = () => {
                         </div>
                     </div>
 
-                    <VerticalFastNews />
+                    <aside className="Second-Facade-Sidebar">
+                        <VerticalFastNews maxTextNews={4} maxQuickReads={8} />
+
+                        <div className="Sidebar-Extra-Widgets">
+                            <NewsletterSubscribe variant="sidebar" className="Sidebar-Newsletter-Widget" />
+
+                            <div className="Sidebar-Social-Connect">
+                                <div className="Sidebar-Social-Header">
+                                    <span className="Sidebar-Social-Tag">CONNECT WITH TPA</span>
+                                    <h4>The Student Press of TUP</h4>
+                                </div>
+                                <p className="Sidebar-Social-Desc">
+                                    Follow The Philippine Artisan across social channels for breaking campus alerts, coverages, and dispatches.
+                                </p>
+                                <div className="Sidebar-Social-Links">
+                                    <a
+                                        href="https://facebook.com/ThePhilippineArtisan"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="Sidebar-Social-Btn facebook"
+                                        title="Follow on Facebook"
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                        </svg>
+                                        <span>Facebook</span>
+                                    </a>
+                                    <a
+                                        href="https://twitter.com/philartisan"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="Sidebar-Social-Btn twitter"
+                                        title="Follow on X (Twitter)"
+                                    >
+                                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                        </svg>
+                                        <span>X / Twitter</span>
+                                    </a>
+                                    <a
+                                        href="https://instagram.com/thephilippineartisan"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="Sidebar-Social-Btn instagram"
+                                        title="Follow on Instagram"
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                                        </svg>
+                                        <span>Instagram</span>
+                                    </a>
+                                    <a
+                                        href="https://youtube.com/@ThePhilippineArtisan"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="Sidebar-Social-Btn youtube"
+                                        title="Subscribe on YouTube"
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                        </svg>
+                                        <span>YouTube</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
 
                 {opinionArticles.length > 0 && (

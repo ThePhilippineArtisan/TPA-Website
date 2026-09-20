@@ -153,12 +153,124 @@ a {
     }
 }
 
+.Second-Facade-Sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+}
+
 @media (min-width: 1025px) {
-    .letterA .Vertical-Fast-News-Container {
+    .letterA .Second-Facade-Sidebar {
         position: sticky;
-        top: clamp(5.25rem, 7vw, 6.25rem);
+        top: clamp(4.5rem, 6vw, 5.5rem);
         align-self: start;
     }
+}
+
+.Sidebar-Extra-Widgets {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.Sidebar-Newsletter-Widget {
+    margin: 0 !important;
+}
+
+.Sidebar-Social-Connect {
+    background: #ffffff;
+    border: 1.5px solid rgba(2, 101, 169, 0.22);
+    border-radius: var(--radius-md, 12px);
+    padding: 1.25rem 1.15rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Sidebar-Social-Connect:hover {
+    box-shadow: 0 6px 20px rgba(2, 101, 169, 0.12);
+}
+
+.Sidebar-Social-Header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.Sidebar-Social-Tag {
+    color: #0265A9;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.Sidebar-Social-Header h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark, #0f172a);
+    font-family: var(--font-display, inherit);
+}
+
+.Sidebar-Social-Desc {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-muted, #64748b);
+    line-height: 1.45;
+}
+
+.Sidebar-Social-Links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+}
+
+.Sidebar-Social-Btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1.5px solid #e2e8f0;
+    color: #1e293b;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.Sidebar-Social-Btn:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.Sidebar-Social-Btn.facebook:hover {
+    background: #1877f2;
+    border-color: #1877f2;
+}
+
+.Sidebar-Social-Btn.twitter:hover {
+    background: #0f1419;
+    border-color: #0f1419;
+}
+
+.Sidebar-Social-Btn.instagram:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    border-color: transparent;
+}
+
+.Sidebar-Social-Btn.youtube:hover {
+    background: #ff0000;
+    border-color: #ff0000;
 }
 
 .Large-Left-News-Column {

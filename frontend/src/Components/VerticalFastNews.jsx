@@ -5,7 +5,7 @@ import { getArticleUrl, isMediaSegment } from "../utils/articleUtils.js";
 
 import "../CSS/VerticalFastNews.css"
 
-const VerticalFastNews = ({ isHorizontal = false }) => {
+const VerticalFastNews = ({ isHorizontal = false, maxTextNews = 4, maxQuickReads = 6 }) => {
     const [fastNewsArticles, setFastNewsArticles] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -32,14 +32,13 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
                     .eq("is_published", true)
                     .or("word_count.lte.120,word_count.is.null")
                     .order("published_at", { ascending: false })
-                    .limit(25);
+                    .limit(40);
 
                 if (error) {
                     console.error("Error fetching fast news articles:", error);
                 } else if (data) {
                     const filteredArticles = data
-                        .filter(article => !isMediaSegment(article.article_type))
-                        .slice(0, 11);
+                        .filter(article => !isMediaSegment(article.article_type));
                     setFastNewsArticles(filteredArticles);
                 }
             } catch (err) {
@@ -62,8 +61,8 @@ const VerticalFastNews = ({ isHorizontal = false }) => {
         return `${mm}.${dd}.${yyyy}`;
     };
 
-    const textOnlyFastNews = fastNewsArticles.slice(0, 4);
-    const mediaFastNews = fastNewsArticles.slice(4, 10);
+    const textOnlyFastNews = fastNewsArticles.slice(0, maxTextNews);
+    const mediaFastNews = fastNewsArticles.slice(maxTextNews, maxTextNews + maxQuickReads);
 
     return (
         <div className={`Vertical-Fast-News-Container Vertical-Headlines ${isHorizontal ? "horizontal-mode" : ""}`}>

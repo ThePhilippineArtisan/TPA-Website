@@ -18,6 +18,43 @@
     margin-bottom: 0.5rem;
 }
 
+.Manage-Staff-Header-Top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
+
+.Add-Staff-Primary-Btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #0265A9;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(2, 101, 169, 0.25);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.Add-Staff-Primary-Btn:hover {
+    background: #014c80;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(2, 101, 169, 0.35);
+}
+
+.Add-Staff-Primary-Btn:active {
+    transform: translateY(0);
+}
+
 .Manage-Staff-Page-Header h1 {
     font-size: clamp(1.5rem, 3vw, 2.25rem);
     font-family: var(--font-serif);
