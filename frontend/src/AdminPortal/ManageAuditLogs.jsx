@@ -637,6 +637,7 @@ for each row execute function public.process_audit_log();`}
             {/* Direct Edit Modals */}
             {selectedArticleToEdit && (
                 <EditArticleModal
+                    key={selectedArticleToEdit.article_id}
                     article={selectedArticleToEdit}
                     onClose={() => setSelectedArticleToEdit(null)}
                     onSave={() => {

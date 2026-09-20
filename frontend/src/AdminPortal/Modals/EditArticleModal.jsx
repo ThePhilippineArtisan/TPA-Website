@@ -65,19 +65,18 @@ const countWords = (text) => {
 }
 
 const EditArticleModal = ({ article, onClose, onSave }) => {
-    if (!article) return null
-
-    const [headline, setHeadline] = useState(article.article_headline || "")
-    const [articleType, setArticleType] = useState(article.article_type || "LOCAL_NEWS")
-    const [isPublished, setIsPublished] = useState(Boolean(article.is_published))
-    const [publishedAt, setPublishedAt] = useState(formatDateTimeLocal(article.published_at))
-    const [tag1, setTag1] = useState(article.article_tag1 || "")
-    const [tag2, setTag2] = useState(article.article_tag2 || "")
+    const [headline, setHeadline] = useState(article?.article_headline || "")
+    const [articleType, setArticleType] = useState(article?.article_type || "LOCAL_NEWS")
+    const [isPublished, setIsPublished] = useState(Boolean(article?.is_published))
+    const [publishedAt, setPublishedAt] = useState(formatDateTimeLocal(article?.published_at))
+    const [tag1, setTag1] = useState(article?.article_tag1 || "")
+    const [tag2, setTag2] = useState(article?.article_tag2 || "")
+    const [tag3, setTag3] = useState(article?.article_tag3 || "")
     const initialPinned = Boolean(
-        article.is_pinned === true ||
-        article.is_pinned === "true" ||
-        article.is_pinned === 1 ||
-        [article.article_tag1, article.article_tag2, article.article_tag3]
+        article?.is_pinned === true ||
+        article?.is_pinned === "true" ||
+        article?.is_pinned === 1 ||
+        [article?.article_tag1, article?.article_tag2, article?.article_tag3]
             .filter(Boolean)
             .some(t => {
                 const lower = t.toLowerCase().trim()
@@ -85,8 +84,8 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             })
     )
     const [isPinned, setIsPinned] = useState(initialPinned)
-    const [articleSource, setArticleSource] = useState(article.article_source || "")
-    const [body, setBody] = useState(article.article_body || "")
+    const [articleSource, setArticleSource] = useState(article?.article_source || "")
+    const [body, setBody] = useState(article?.article_body || "")
 
     // Contributors & Staff Management
     const [allStaff, setAllStaff] = useState([])
@@ -107,6 +106,31 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
 
     const [saving, setSaving] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
+    useEffect(() => {
+        if (!article) return
+        setHeadline(article.article_headline || "")
+        setArticleType(article.article_type || "LOCAL_NEWS")
+        setIsPublished(Boolean(article.is_published))
+        setPublishedAt(formatDateTimeLocal(article.published_at))
+        setTag1(article.article_tag1 || "")
+        setTag2(article.article_tag2 || "")
+        setTag3(article.article_tag3 || "")
+        const isPinnedVal = Boolean(
+            article.is_pinned === true ||
+            article.is_pinned === "true" ||
+            article.is_pinned === 1 ||
+            [article.article_tag1, article.article_tag2, article.article_tag3]
+                .filter(Boolean)
+                .some(t => {
+                    const lower = t.toLowerCase().trim()
+                    return lower === "pinned" || lower === "featured" || lower === "top" || lower === "top story"
+                })
+        )
+        setIsPinned(isPinnedVal)
+        setArticleSource(article.article_source || "")
+        setBody(article.article_body || "")
+    }, [article])
 
     // Fetch all active staff for the selector modals
     const fetchAllStaff = async () => {
@@ -157,8 +181,9 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
 
             const authors = []
             const mediaProviders = []
+            const rows = data || []
 
-            (data || []).forEach(row => {
+            rows.forEach(row => {
                 const staffData = row.staff || {}
                 const member = {
                     ...staffData,
@@ -403,7 +428,7 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
         e.dataTransfer.effectAllowed = "move"
     }
 
-    const handleEditPhotoDragOver = (e, index) => {
+    const handleEditPhotoDragOver = (e) => {
         e.preventDefault()
         e.dataTransfer.dropEffect = "move"
     }
@@ -494,6 +519,23 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             if (error) throw error
 
             // Synchronize article_staff contributors
+            const updatedStaffContributions = [
+                ...articleAuthors.map(a => ({
+                    article_id: article.article_id,
+                    staff_id: a.staff_id,
+                    contribution_as: "Author",
+                    use_pseudonym: Boolean(a.use_pseudonym),
+                    staff: a
+                })),
+                ...articleMediaProviders.map(m => ({
+                    article_id: article.article_id,
+                    staff_id: m.staff_id,
+                    contribution_as: "Media_Provider",
+                    use_pseudonym: Boolean(m.use_pseudonym),
+                    staff: m
+                }))
+            ]
+
             try {
                 await supabase
                     .from("article_staff")
@@ -532,7 +574,8 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
                 onSave({
                     ...article,
                     ...updates,
-                    ...(data || {})
+                    ...(data || {}),
+                    article_staff: updatedStaffContributions
                 })
             }
             onClose()
@@ -549,6 +592,8 @@ const EditArticleModal = ({ article, onClose, onSave }) => {
             setSaving(false)
         }
     }
+
+    if (!article) return null
 
     return (
         <div className="Edit-Modal-Overlay" onClick={onClose}>

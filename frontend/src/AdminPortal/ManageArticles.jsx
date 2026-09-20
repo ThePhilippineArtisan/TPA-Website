@@ -543,6 +543,7 @@ const ManageArticles = () => {
 
             {selectedArticleToEdit && (
                 <EditArticleModal
+                    key={selectedArticleToEdit.article_id}
                     article={selectedArticleToEdit}
                     onClose={() => setSelectedArticleToEdit(null)}
                     onSave={handleArticleUpdated}
