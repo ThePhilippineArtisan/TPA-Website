@@ -47,10 +47,36 @@ const AboutPage = () => {
                         )
                     `)
                     .eq('is_visible', true)
-                    .order('order', { ascending: true })
 
                 if (!error && data && data.length > 0) {
-                    setDbReleases(data)
+                    // Sort all releases by date descending, then id descending to find the latest
+                    const sorted = [...data].sort((a, b) => {
+                        const dateA = a.release_date ? new Date(a.release_date).getTime() : 0
+                        const dateB = b.release_date ? new Date(b.release_date).getTime() : 0
+                        if (dateB !== dateA) return dateB - dateA
+                        return (b.id || 0) - (a.id || 0)
+                    })
+
+                    // Pick only the latest release for each unique release_type
+                    const typeMap = new Map()
+                    sorted.forEach(rel => {
+                        const typeKey = (rel.release_type || "OTHER").replace(/[_\s!]/g, "").toLowerCase()
+                        if (!typeMap.has(typeKey)) {
+                            typeMap.set(typeKey, rel)
+                        }
+                    })
+
+                    // Order the latest releases by 'order' (if configured), then by date
+                    const latestReleases = Array.from(typeMap.values()).sort((a, b) => {
+                        const orderA = a.order !== null && a.order !== undefined ? a.order : 9999
+                        const orderB = b.order !== null && b.order !== undefined ? b.order : 9999
+                        if (orderA !== orderB) return orderA - orderB
+                        const dateA = a.release_date ? new Date(a.release_date).getTime() : 0
+                        const dateB = b.release_date ? new Date(b.release_date).getTime() : 0
+                        return dateB - dateA
+                    })
+
+                    setDbReleases(latestReleases)
                 } else {
                     setDbReleases([])
                 }

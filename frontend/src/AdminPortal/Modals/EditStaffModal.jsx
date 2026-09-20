@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { supabase } from "../../supabaseClient"
 import { replaceUnderscore } from "../../utils/slugifyUtils"
+import { compressImage, uploadToR2Storage, generateSafeFilename } from "../../utils/imageUtils"
 import "./EditStaffModal.css"
 
 const STAFF_POSITIONS = [
@@ -28,29 +29,102 @@ const STAFF_POSITIONS = [
 ]
 
 const EditStaffModal = ({ staff, onClose, onSave }) => {
-    if (!staff) return null
-
-    const [firstName, setFirstName] = useState(staff.staff_first_name || "")
-    const [middleName, setMiddleName] = useState(staff.staff_middle_name || "")
-    const [lastName, setLastName] = useState(staff.staff_last_name || "")
-    const [pseudonym, setPseudonym] = useState(staff.staff_pseudonym || "")
-    const [position, setPosition] = useState(staff.staff_position || STAFF_POSITIONS[0])
-    const [bio, setBio] = useState(staff.staff_bio || "")
-    const [birthday, setBirthday] = useState(staff.staff_birthday || "")
-    const [joinDate, setJoinDate] = useState(staff.join_date || "")
-    const [pictureUrl, setPictureUrl] = useState(staff.staff_picture || "")
-    const [isActive, setIsActive] = useState(staff.staff_isactive !== false)
-    const [isEdBoard, setIsEdBoard] = useState(Boolean(staff.is_editorial_board))
+    const [firstName, setFirstName] = useState(staff?.staff_first_name || "")
+    const [middleName, setMiddleName] = useState(staff?.staff_middle_name || "")
+    const [lastName, setLastName] = useState(staff?.staff_last_name || "")
+    const [pseudonym, setPseudonym] = useState(staff?.staff_pseudonym || "")
+    const [position, setPosition] = useState(staff?.staff_position || STAFF_POSITIONS[0])
+    const [bio, setBio] = useState(staff?.staff_bio || "")
+    const [birthday, setBirthday] = useState(staff?.staff_birthday || "")
+    const [joinDate, setJoinDate] = useState(staff?.join_date || "")
+    const [pictureUrl, setPictureUrl] = useState(staff?.staff_picture || "")
+    const [selectedPhotoFile, setSelectedPhotoFile] = useState(null)
+    const [photoPreview, setPhotoPreview] = useState(staff?.staff_picture || "")
+    const [showUrlInput, setShowUrlInput] = useState(false)
+    const [isActive, setIsActive] = useState(staff?.staff_isactive !== false)
+    const [isEdBoard, setIsEdBoard] = useState(Boolean(staff?.is_editorial_board))
 
     const [saving, setSaving] = useState(false)
+    const [uploadStatus, setUploadStatus] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const fileInputRef = useRef(null)
+
+    useEffect(() => {
+        if (!staff) return
+        setFirstName(staff.staff_first_name || "")
+        setMiddleName(staff.staff_middle_name || "")
+        setLastName(staff.staff_last_name || "")
+        setPseudonym(staff.staff_pseudonym || "")
+        setPosition(staff.staff_position || STAFF_POSITIONS[0])
+        setBio(staff.staff_bio || "")
+        setBirthday(staff.staff_birthday || "")
+        setJoinDate(staff.join_date || "")
+        setPictureUrl(staff.staff_picture || "")
+        setSelectedPhotoFile(null)
+        setPhotoPreview(staff.staff_picture || "")
+        setIsActive(staff.staff_isactive !== false)
+        setIsEdBoard(Boolean(staff.is_editorial_board))
+    }, [staff])
+
+    useEffect(() => {
+        return () => {
+            if (photoPreview && photoPreview.startsWith("blob:")) {
+                URL.revokeObjectURL(photoPreview)
+            }
+        }
+    }, [photoPreview])
+
+    const handlePhotoFileChange = (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setSelectedPhotoFile(file)
+        const objectUrl = URL.createObjectURL(file)
+        setPhotoPreview(objectUrl)
+        setPictureUrl("") // Clears manual URL to prioritize newly picked file
+    }
+
+    const handleRemovePhoto = () => {
+        setSelectedPhotoFile(null)
+        setPhotoPreview("")
+        setPictureUrl("")
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setSaving(true)
         setErrorMessage("")
+        setUploadStatus("")
 
         try {
+            let finalPictureUrl = pictureUrl.trim() || null
+
+            // If a new photo file was picked, compress and upload to R2
+            if (selectedPhotoFile) {
+                setUploadStatus("Compressing photo...")
+                const compressedBlob = await compressImage(selectedPhotoFile, 1000, 1000, 0.85, "image/webp")
+
+                setUploadStatus("Uploading photo...")
+                const namePart = `${firstName.trim()}-${lastName.trim()}`.replace(/^-+|-+$/g, "")
+                const safeBase = namePart || selectedPhotoFile.name || `staff-${staff?.staff_id}`
+                const safeFilename = generateSafeFilename(safeBase)
+
+                const { publicUrl } = await uploadToR2Storage({
+                    file: compressedBlob,
+                    filename: safeFilename,
+                    folder: "staff-photos",
+                    contentType: "image/webp",
+                    bucket: "article-photos"
+                })
+
+                finalPictureUrl = publicUrl
+            }
+
+            setUploadStatus("Saving staff record...")
+
             const updates = {
                 staff_first_name: firstName.trim(),
                 staff_middle_name: middleName.trim() || null,
@@ -60,7 +134,7 @@ const EditStaffModal = ({ staff, onClose, onSave }) => {
                 staff_bio: bio.trim() || null,
                 staff_birthday: birthday || null,
                 join_date: joinDate || null,
-                staff_picture: pictureUrl.trim() || null,
+                staff_picture: finalPictureUrl,
                 staff_isactive: isActive,
                 is_editorial_board: isEdBoard
             }
@@ -89,8 +163,11 @@ const EditStaffModal = ({ staff, onClose, onSave }) => {
             setErrorMessage(err.message || "Failed to update staff record. Please try again.")
         } finally {
             setSaving(false)
+            setUploadStatus("")
         }
     }
+
+    if (!staff) return null
 
     return (
         <div className="Edit-Modal-Overlay" onClick={onClose}>
@@ -187,23 +264,92 @@ const EditStaffModal = ({ staff, onClose, onSave }) => {
                         </div>
                     </div>
 
-                    <div className="Edit-Form-Group">
-                        <label>Profile Picture URL</label>
-                        <div className="Edit-Picture-Row">
-                            <input
-                                type="url"
-                                value={pictureUrl}
-                                onChange={(e) => setPictureUrl(e.target.value)}
-                                placeholder="https://media.philartisan.org/staff-photos/name.jpg"
-                            />
-                            {pictureUrl && (
-                                <img
-                                    src={pictureUrl}
-                                    alt="Preview"
-                                    className="Edit-Picture-Preview"
-                                    onError={(e) => { e.currentTarget.style.display = "none" }}
-                                />
-                            )}
+                    <div className="Edit-Form-Group Edit-Staff-Photo-Group">
+                        <label>Profile Picture</label>
+                        <div className="Edit-Staff-Photo-Container">
+                            <div className="Edit-Staff-Photo-Avatar-Wrapper">
+                                {photoPreview ? (
+                                    <img
+                                        src={photoPreview}
+                                        alt="Staff profile preview"
+                                        className="Edit-Staff-Photo-Avatar"
+                                        onError={(e) => {
+                                            e.currentTarget.onerror = null
+                                            e.currentTarget.src = "/TPA-LEFT_BLUE.png"
+                                        }}
+                                    />
+                                ) : (
+                                    <div className="Edit-Staff-Photo-Placeholder">
+                                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                            <circle cx="12" cy="7" r="4" />
+                                        </svg>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="Edit-Staff-Photo-Controls">
+                                <div className="Edit-Staff-Photo-Btn-Row">
+                                    <label className="Edit-Staff-Upload-Btn">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="17 8 12 3 7 8" />
+                                            <line x1="12" y1="3" x2="12" y2="15" />
+                                        </svg>
+                                        <span>{photoPreview ? "Change Photo" : "Upload Photo"}</span>
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: "none" }}
+                                            onChange={handlePhotoFileChange}
+                                            disabled={saving}
+                                        />
+                                    </label>
+
+                                    {photoPreview && (
+                                        <button
+                                            type="button"
+                                            className="Edit-Staff-Remove-Photo-Btn"
+                                            onClick={handleRemovePhoto}
+                                            disabled={saving}
+                                            title="Remove photo"
+                                        >
+                                            Remove Photo
+                                        </button>
+                                    )}
+                                </div>
+
+                                {selectedPhotoFile && (
+                                    <span className="Edit-Staff-Photo-Selected-Hint">
+                                        Selected: <strong>{selectedPhotoFile.name}</strong> (will upload when you save)
+                                    </span>
+                                )}
+
+                                <div className="Edit-Staff-Url-Toggle-Row">
+                                    <button
+                                        type="button"
+                                        className="Edit-Staff-Toggle-Url-Btn"
+                                        onClick={() => setShowUrlInput(prev => !prev)}
+                                    >
+                                        {showUrlInput ? "Hide direct image URL" : "Or enter direct image URL..."}
+                                    </button>
+                                </div>
+
+                                {showUrlInput && (
+                                    <input
+                                        type="url"
+                                        value={pictureUrl}
+                                        onChange={(e) => {
+                                            setPictureUrl(e.target.value)
+                                            setPhotoPreview(e.target.value)
+                                            setSelectedPhotoFile(null)
+                                        }}
+                                        placeholder="https://media.philartisan.org/staff-photos/..."
+                                        className="Edit-Staff-Url-Input"
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -250,7 +396,7 @@ const EditStaffModal = ({ staff, onClose, onSave }) => {
                             className="Edit-Btn-Save"
                             disabled={saving}
                         >
-                            {saving ? "Saving Changes..." : "Save Changes"}
+                            {saving ? (uploadStatus || "Saving Changes...") : "Save Changes"}
                         </button>
                     </div>
                 </form>
